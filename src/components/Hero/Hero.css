@@ -1,0 +1,68 @@
+.hero {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: #090909;
+}
+
+/* Dot Grid */
+.hero__grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 8px 8px;
+
+  opacity: 0.7;
+}
+
+.hero__grid::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+  opacity: 0.05;
+  mix-blend-mode: soft-light;
+}
+
+.hero__content {
+  position: relative;
+  z-index: 2;
+  width: min(900px, 90%);
+  text-align: center;
+}
+
+.hero__tag {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: #ff7a3d;
+  font-size: 0.8rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.hero__title {
+  margin: 0;
+  color: white;
+  font-size: clamp(3.5rem, 9vw, 7rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+}
+
+.hero__description {
+  max-width: 650px;
+  margin: 2rem auto 0;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.15rem;
+  line-height: 1.8;
+}
