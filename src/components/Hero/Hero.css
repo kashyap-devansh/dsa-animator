@@ -1,24 +1,23 @@
+@import url("https://api.fontshare.com/v2/css?f[]=jetbrains-mono@300,400,500,700,900&display=swap");
+@import url("https://api.fontshare.com/v2/css?f[]=space-grotesk@300,400,500,700,900&display=swap");
+@import url("https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap");
+
 .hero {
   position: relative;
   height: 100vh;
   overflow: hidden;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
   background: #090909;
 }
 
-/* Dot Grid */
 .hero__grid {
   position: absolute;
   inset: 0;
   z-index: 0;
-
   background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-  background-size: 8px 8px;
-
+  background-size: 7px 7px;
   opacity: 0.7;
 }
 
@@ -26,9 +25,7 @@
   content: "";
   position: absolute;
   inset: 0;
-
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-
   opacity: 0.05;
   mix-blend-mode: soft-light;
 }
@@ -36,7 +33,7 @@
 .hero__content {
   position: relative;
   z-index: 2;
-  width: min(900px, 90%);
+  width: min(950px, 90%);
   text-align: center;
 }
 
@@ -45,24 +42,45 @@
   margin-bottom: 1.5rem;
   color: #ff7a3d;
   font-size: 0.8rem;
-  letter-spacing: 0.35em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 500;
+  font-family: "JetBrains Mono", monospace;
 }
 
-.hero__title {
+.hero__title:not(.cusor) {
   margin: 0;
   color: white;
   font-size: clamp(3.5rem, 9vw, 7rem);
   font-weight: 700;
   line-height: 0.95;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.0167rem;
+  font-family: "Space Grotesk";
+}
+
+.typing::after {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 0.9em;
+  background: #ff7a3d;
+  margin-left: 4px;
+  vertical-align: middle;
+  animation: blink 0.8s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
 }
 
 .hero__description {
-  max-width: 650px;
+  max-width: 600px;
   margin: 2rem auto 0;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.5);
   font-size: 1.15rem;
+  font-family: "Satoshi";
+  font-weight: 500;
   line-height: 1.8;
 }

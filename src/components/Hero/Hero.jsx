@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import "./Hero.css";
 
 const PHRASES = [
@@ -6,7 +7,36 @@ const PHRASES = [
   "Feel The Recursion.",
 ];
 
-export default function Hero() {
+const Hero = () => {
+  const [text, setText] = useState("");
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    const current = PHRASES[phraseIndex];
+
+    let timeout;
+
+    if (!isDeleting && text.length < current.length) {
+      timeout = setTimeout(() => {
+        setText(current.slice(0, text.length + 1));
+      }, 80);
+    } else if (!isDeleting && text.length === current.length) {
+      timeout = setTimeout(() => {
+        setIsDeleting(true);
+      }, 1800);
+    } else if (isDeleting && text.length > 0) {
+      timeout = setTimeout(() => {
+        setText(current.slice(0, text.length - 1));
+      }, 40);
+    } else if (isDeleting && text.length === 0) {
+      setIsDeleting(false);
+      setPhraseIndex((prev) => (prev + 1) % PHRASES.length);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [text, isDeleting, phraseIndex]);
+
   return (
     <section className="hero">
       <div className="hero__grid" />
@@ -17,7 +47,7 @@ export default function Hero() {
         </span>
 
         <h1 className="hero__title">
-          {PHRASES[1]}
+          <span className="typing">{text}</span>
         </h1>
 
         <p className="hero__description">
@@ -28,3 +58,5 @@ export default function Hero() {
     </section>
   );
 }
+
+export default Hero;
