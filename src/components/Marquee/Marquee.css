@@ -1,0 +1,44 @@
+@import url("https://api.fontshare.com/v2/css?f[]=space-grotesk@300,400,500,700,900&display=swap");
+
+.marquee {
+  width: 100%;
+  overflow: hidden;
+  background: #141416;
+  padding: 2.2rem 0;
+  border-top: 1px solid #262629;
+  border-bottom: 1px solid #262629;
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  animation: scroll 55s linear infinite;
+}
+
+.item {
+  margin-right: 80px;
+  color: #7A7A80aa;
+  font-family: "Space Grotesk";
+  font-size: 30px;
+  font-weight: 400;
+  white-space: nowrap;
+  letter-spacing: -0.041rem;
+}
+
+.item:hover {
+  color: #ff7a3d;
+}
+
+.track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}

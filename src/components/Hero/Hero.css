@@ -101,6 +101,26 @@
   line-height: 1.8;
 }
 
+.scroll,
+.scroll-arrow {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: "JetBrains Mono", monospace;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  z-index: 2;
+}
+
+.scroll {
+  bottom: 4rem;
+  font-size: 0.75rem;
+}
+
+.scroll-arrow {
+  bottom: 2rem;
+  font-size: 1rem;
+}
+
 .hero__bars {
   position: absolute;
   inset: 0;

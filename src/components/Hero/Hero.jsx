@@ -137,6 +137,20 @@ const Hero = () => {
           every comparison, swap and traversal rendered frame by frame.
         </p>
       </div>
+
+      <span className="scroll">scroll</span>
+      <motion.span
+        className="scroll-arrow"
+        animate={{
+          y: [0, -10, 0],
+        }}
+        transition={{
+          duration: 1.5,
+          repeat: Infinity,
+        }}
+      >
+        ⌄
+      </motion.span>
     </section>
   );
 }
