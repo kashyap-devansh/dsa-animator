@@ -38,20 +38,20 @@ const Preview = () => {
   const [active, setActive] = useState(1);
 
   return (
-    <div className="featuredWork-wrapper">
-      <section className="featuredWork">
-        <div className="featured-header">
-          <span className="featured-eyebrow">THE LIBRARY</span>
+    <div className="preview-wrapper">
+      <section className="preview">
+        <div className="preview-header">
+          <span className="preview-eyebrow">THE LIBRARY</span>
           <h1>What you can visualize</h1>
         </div>
 
-        <div className="featured-grid">
-          <div className="featured-list">
+        <div className="preview-grid">
+          <div className="preview-list">
             {
               PROJECTS.map((project, index) => (
                 <div
                   key={index}
-                  className={`featured-item ${active === index ? "active" : ""}`}
+                  className={`preview-item ${active === index ? "active" : ""}`}
                   onMouseEnter={() => setActive(index)}
                 >
                   <h2>{project.title}</h2>
