@@ -12,7 +12,7 @@
 .track {
   display: flex;
   width: max-content;
-  animation: scroll 55s linear infinite;
+  animation: scroll 30s linear infinite;
 }
 
 .item {
@@ -26,7 +26,7 @@
 }
 
 .item:hover {
-  color: #ff7a3d;
+  color: #ff6a3d;
 }
 
 .track:hover {

@@ -56,7 +56,7 @@
 .hero__tag {
   display: inline-block;
   margin-bottom: 1.5rem;
-  color: #ff7a3d;
+  color: #ff6a3d;
   font-size: 0.8rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -79,7 +79,7 @@
   display: inline-block;
   width: 2px;
   height: 0.9em;
-  background: #ff7a3d;
+  background: #ff6a3d;
   margin-left: 4px;
   vertical-align: middle;
   animation: blink 0.8s steps(1) infinite;

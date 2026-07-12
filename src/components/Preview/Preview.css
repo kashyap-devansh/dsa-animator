@@ -1,0 +1,121 @@
+@import url("https://api.fontshare.com/v2/css?f[]=space-grotesk@300,400,500,700,900&display=swap");
+@import url("https://api.fontshare.com/v2/css?f[]=jetbrains-mono@300,400,500,700,900&display=swap");
+@import url("https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap");
+
+.preview {
+  width: min(1400px, 92%);
+  margin: 140px auto;
+}
+
+.preview-wrapper {
+  border-bottom: 1px solid #262629;
+}
+
+.featured-header {
+  margin-bottom: 70px;
+}
+
+.featured-eyebrow {
+  display: inline-block;
+  color: #ff6a3d;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  font-size: .6rem;
+  font-family: "JetBrains Mono", monospace;
+  margin-bottom: 0.8rem;
+}
+
+.featured-header h1 {
+  font-size: clamp(2rem, 3.8vw, 3.8rem);
+  font-weight: 400;
+  line-height: 1.05;
+  font-family: "Space Grotesk";
+  margin-top: 0;
+  color: white;
+}
+
+.featured-grid {
+  display: grid;
+  grid-template-columns: 40% 48%;
+  gap: 40px;
+  align-items: start;
+}
+
+.featured-list {
+  border-top: 1px solid #262629;
+}
+
+.featured-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #262629;
+  cursor: pointer;
+  transition: .35s;
+}
+
+.featured-item h2 {
+  font-size: 2.2rem;
+  font-weight: 400;
+  font-family: "Space Grotesk";
+  color: #7a7a80;
+  transition: .35s;
+  margin-top: 22px;
+  margin-bottom: 22px;
+}
+
+.featured-item span {
+  color: #ff6a3d;
+  font-family: "JetBrains Mono", monospace;
+  font-size: .8rem;
+}
+
+.featured-item.active h2 {
+  color: #f3f2ed;
+}
+
+.featured-item:hover h2 {
+  color: white;
+  transform: translateX(8px);
+}
+
+.preview-card {
+  position: sticky;
+  box-sizing: border-box;
+  top: 120px;
+  width: 48rem;
+  height: 26rem;
+  padding: 2rem 2rem;
+  border: 1px solid #262629;
+  border-radius: 24px;
+  background: #1c1c1f;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+}
+
+.preview-complexity {
+  color: #7a7a80;
+  font-family: "JetBrains Mono", monospace;
+  margin-bottom: auto;
+  font-size: 0.8rem;
+}
+
+.preview-content {
+  margin-top: 180px;
+}
+
+.preview-content h2 {
+  font-size: 2.2rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  font-family: "Space Grotesk";
+  color: white;
+}
+
+.preview-content p {
+  color: #7a7a80;
+  max-width: 480px;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  font-family: "Satoshi";
+  font-weight: 500;
+}

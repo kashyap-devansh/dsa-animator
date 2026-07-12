@@ -1,3 +1,8 @@
 :root {
-  background-color: black;
+  background-color: #0a0a0b;
+}
+
+::selection {
+  background: #ff6a3d;
+  color: #0a0a0b;
 }

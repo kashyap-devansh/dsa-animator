@@ -1,6 +1,7 @@
 import Navbar from "./components/Navbar/Navbar.jsx";
 import Hero from "./components/Hero/Hero.jsx";
 import Marquee from "./components/Marquee/Marquee.jsx";
+import FeaturedWork from "./components/FeaturedWork/FeaturedWork.jsx";
 
 const App = () => {
   return (
@@ -8,7 +9,7 @@ const App = () => {
       <Navbar />
       <Hero />
       <Marquee />
-      <Hero />
+      <FeaturedWork />
     </div>
   )
 }
