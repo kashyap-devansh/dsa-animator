@@ -7,7 +7,7 @@ const items = [
   "trees",
   "graphs",
   "heaps",
-  "hashs",
+  "hash",
   "pointers",
   "recursion",
 ];
