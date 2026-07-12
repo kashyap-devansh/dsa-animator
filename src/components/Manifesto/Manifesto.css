@@ -1,0 +1,25 @@
+.manifesto {
+  width: min(1400px, 92%);
+  margin: 140px auto;
+}
+
+.manifesto-eyebrow {
+  display: inline-block;
+  color: #ff6a3d;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  font-size: .6rem;
+  font-family: "JetBrains Mono", monospace;
+  margin-bottom: 2.2rem;
+}
+
+
+.manifesto h1 {
+  font-size: clamp(2.5rem, 4vw, 4rem);
+  font-weight: 400;
+  line-height: 1.05;
+  font-family: "Space Grotesk";
+  margin-top: 0;
+  margin-bottom: 0.8rem;
+  color: #262626;
+}

@@ -5,6 +5,10 @@
   flex-direction: column;
 }
 
+.gallery-wrapper {
+  border-bottom: 1px solid #262629;
+}
+
 .gallery-header {
   margin-bottom: 70px;
 }

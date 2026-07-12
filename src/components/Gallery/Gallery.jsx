@@ -26,36 +26,38 @@ const GalleryElements = [
 
 const Gallery = () => {
   return (
-    <div className="gallery">
-      <div className="gallery-header">
-        <span className="gallery-eyebrow">THE GALLERY</span>
-        <h1>
-          Visualizers worth
-          <br />
-          studying
-        </h1>
-      </div>
+    <div className="gallery-wrapper">
+      <div className="gallery">
+        <div className="gallery-header">
+          <span className="gallery-eyebrow">THE GALLERY</span>
+          <h1>
+            Visualizers worth
+            <br />
+            studying
+          </h1>
+        </div>
 
-      <div className="gallery-card-wrapper">
-        {GalleryElements.map((item, index) => (
-          <div className="gallery-card" key={index}>
-            <div className="gallery-card-header">
-              <span className="gallery-number">
-                {String(index + 1).padStart(2, "0")} / {item.tag.toUpperCase()}
-              </span>
+        <div className="gallery-card-wrapper">
+          {GalleryElements.map((item, index) => (
+            <div className="gallery-card" key={index}>
+              <div className="gallery-card-header">
+                <span className="gallery-number">
+                  {String(index + 1).padStart(2, "0")} / {item.tag.toUpperCase()}
+                </span>
 
-              <span className="gallery-complexity">
-                {item.complexity}
-              </span>
+                <span className="gallery-complexity">
+                  {item.complexity}
+                </span>
+              </div>
+
+              <h1>{item.title}</h1>
+
+              <button className="gallery-btn">
+                View Case
+              </button>
             </div>
-
-            <h1>{item.title}</h1>
-
-            <button className="gallery-btn">
-              View Case
-            </button>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   )
