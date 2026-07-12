@@ -70,11 +70,11 @@
   font-size: .8rem;
 }
 
-.preview.active h2 {
+.preview-item.active h2 {
   color: #f3f2ed;
 }
 
-.preview:hover h2 {
+.preview-item:hover h2 {
   color: white;
   transform: translateX(8px);
 }

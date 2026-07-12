@@ -77,6 +77,6 @@ const Preview = () => {
       </section>
     </div>
   );
-}
+};
 
 export default Preview;
