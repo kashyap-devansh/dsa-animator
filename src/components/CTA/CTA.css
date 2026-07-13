@@ -1,0 +1,81 @@
+@import url("https://api.fontshare.com/v2/css?f[]=space-grotesk@300,400,500,700,900&display=swap");
+@import url("https://api.fontshare.com/v2/css?f[]=jetbrains-mono@300,400,500,700,900&display=swap");
+@import url("https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap");
+
+.cta {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: #080808;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+}
+
+.blob {
+  position: absolute;
+  width: 800px;
+  height: 800px;
+  border-radius: 50%;
+  filter: blur(100px);
+  will-change: transform;
+  background: radial-gradient(circle, currentColor 0%, transparent 70%);
+}
+
+.orange {
+  color: #ff6b3d;
+  top: -10rem;
+  left: 32%;
+  transform: translateX(-50%);
+}
+
+.green {
+  color: #48ff7b;
+  bottom: -12rem;
+  right: 15%;
+}
+
+.cta-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+}
+
+.cta-eyebrow {
+  display: inline-block;
+  margin-bottom: 0.8rem;
+  color: #ff6a3d;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
+.cta-content h1 {
+  color: #efefef;
+  font-size: clamp(4rem, 8vw, 8rem);
+  font-weight: 500;
+  line-height: .95;
+  letter-spacing: -4px;
+  font-family: "Space Grotesk";
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.cta-btn {
+  margin-top: 48px;
+  padding: 18px 42px;
+  border: none;
+  border-radius: 999px;
+  background: #ff6b3d;
+  color: #111;
+  font-size: 18px;
+  cursor: pointer;
+  transition: .3s;
+}
