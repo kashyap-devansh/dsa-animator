@@ -7,6 +7,7 @@ import Manifesto from "./components/Manifesto/Manifesto.jsx";
 import SlowMarquee from "./components/SlowMarquee/SlowMarquee.jsx";
 import Notes from "./components/Notes/Notes.jsx";
 import CTA from "./components/CTA/CTA.jsx";
+import Footer from "./components/Footer/Footer.jsx";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
       <SlowMarquee />
       <Notes />
       <CTA />
+      <Footer />
     </div>
   )
 }

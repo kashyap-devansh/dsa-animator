@@ -46,10 +46,10 @@ const CTA = () => {
         <motion.button
           className="cta-btn"
           animate={{
-            y: [0, -20, -12, -25, 0],
-            x: [0, 4, -4, 2, 0],
-            rotate: [0, 1.5, -0.8, 1, 0],
-            scale: [1, 1.02, 1.01, 1.03, 1],
+            y: [0, -35, -18, -45, -25, 0],
+            x: [0, 10, -10, 8, -6, 0],
+            rotate: [0, 3, -2, 2.5, -1, 0],
+            scale: [1, 1.04, 1.02, 1.06, 1.03, 1],
           }}
           transition={{
             duration: 6,
@@ -58,6 +58,9 @@ const CTA = () => {
           }}
           whileHover={{
             scale: 1.35,
+            transition: {
+              duration: 0,
+            },
           }}
         >
           Launch the Animator
