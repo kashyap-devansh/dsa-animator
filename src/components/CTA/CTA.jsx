@@ -43,11 +43,25 @@ const CTA = () => {
           it run.
         </h1>
 
-        <button
+        <motion.button
           className="cta-btn"
+          animate={{
+            y: [0, -20, -12, -25, 0],
+            x: [0, 4, -4, 2, 0],
+            rotate: [0, 1.5, -0.8, 1, 0],
+            scale: [1, 1.02, 1.01, 1.03, 1],
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          whileHover={{
+            scale: 1.35,
+          }}
         >
           Launch the Animator
-        </button>
+        </motion.button>
       </div>
     </section>
   );
