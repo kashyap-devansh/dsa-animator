@@ -1,4 +1,5 @@
-import "./Playground.css";
+import "./PlaygroundHero.css";
+import Sorting from "../Algorithms/Sorting/Sorting.jsx";
 
 const Playground = () => {
   return (
@@ -18,6 +19,8 @@ const Playground = () => {
           Real code, real execution — step forward, step back, or press play.
           Pick one below.
         </p>
+
+        <Sorting />
       </div>
     </section>
   );

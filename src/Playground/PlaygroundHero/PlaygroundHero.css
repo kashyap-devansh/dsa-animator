@@ -35,9 +35,10 @@
 }
 
 .playground-description {
-  color: #7a7a80;
+  color: #7b7b81;
   max-width: 480px;
   line-height: 1.8;
   font-family: "Satoshi";
   font-weight: 500;
+  margin-bottom: 3.5rem;
 }

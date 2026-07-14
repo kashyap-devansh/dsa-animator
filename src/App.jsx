@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 
-import Playground from "./Pages/Playground/Playground";
+import Playground from "./Playground/PlaygroundHero/PlaygroundHero";
 
 import Navbar from "./components/Navbar/Navbar";
 import Hero from "./components/Hero/Hero";
@@ -38,6 +38,7 @@ const App = () => {
         <>
           <Navbar />
           <Playground />
+          <Footer />
         </>
       } />
     </Routes>
