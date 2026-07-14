@@ -1,7 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import "./CTA.css";
 
 const CTA = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="cta">
       <div className="bg">
@@ -45,6 +48,7 @@ const CTA = () => {
 
         <motion.button
           className="cta-btn"
+          onClick={() => navigate("/playground")}
           animate={{
             y: [0, -35, -18, -45, -25, 0],
             x: [0, 10, -10, 8, -6, 0],

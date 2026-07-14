@@ -1,0 +1,43 @@
+@import url("https://api.fontshare.com/v2/css?f[]=space-grotesk@300,400,500,700,900&display=swap");
+@import url("https://api.fontshare.com/v2/css?f[]=jetbrains-mono@300,400,500,700,900&display=swap");
+@import url("https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap");
+
+.playground {
+  color: white;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.playground-content {
+  width: 70%;
+  margin-top: 7.5rem;
+}
+
+.playground-eyebrow {
+  display: inline-block;
+  color: #ff6a3d;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  font-size: .75rem;
+  font-family: "JetBrains Mono", monospace;
+  margin-bottom: .8rem;
+}
+
+.playground-title {
+  font-size: clamp(2rem, 3.8vw, 3.8rem);
+  font-weight: 400;
+  line-height: 1.05;
+  font-family: "Space Grotesk";
+  margin-top: 0;
+  color: white;
+  margin-bottom: 16px;
+}
+
+.playground-description {
+  color: #7a7a80;
+  max-width: 480px;
+  line-height: 1.8;
+  font-family: "Satoshi";
+  font-weight: 500;
+}

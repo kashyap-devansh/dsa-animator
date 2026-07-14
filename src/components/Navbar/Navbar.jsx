@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Navbar.css";
 
 function Navbar() {
+  const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -32,7 +34,10 @@ function Navbar() {
           <a href="/">Notes</a>
         </nav>
 
-        <button className="launch-btn">
+        <button
+          className="launch-btn"
+          onClick={() => navigate("/playground")}
+        >
           Launch App
         </button>
       </div>
