@@ -1,8 +1,15 @@
-import { Link } from "react-router-dom";
-import SortingData from "../Sorting/Sorting.js";
+import { Link, useParams } from "react-router-dom";
+import SortingData from "./SortingData.js";
+import BubbleSort from "./BubbleSort/BubbleSort.jsx";
 import "./Sorting.css";
 
 const Sorting = () => {
+  const { slug } = useParams();
+
+  if (slug === "bubble-sort") {
+    return <BubbleSort />;
+  }
+
   return (
     <section className="sorting">
       <p className="sorting-eyebrow">SORTING</p>
@@ -10,13 +17,13 @@ const Sorting = () => {
       <div className="sorting-grid">
         {SortingData.map((item) => (
           <Link
-            to={`/sorting/${item.slug}`}
-            className="sorting-card"
             key={item.slug}
+            to={`/playground/sorting/${item.slug}`}
+            className="sorting-card"
           >
             <div className="card-top">
               <span className="complexity">{item.complexity}</span>
-              <span className="arrow"> ↗ </span>
+              <span className="arrow">↗</span>
             </div>
 
             <h2>{item.title}</h2>
