@@ -2,21 +2,21 @@
 @import url("https://api.fontshare.com/v2/css?f[]=jetbrains-mono@300,400,500,700,900&display=swap");
 @import url("https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap");
 
-.bubble-sort-wrapper {
+.selection-sort-wrapper {
   width: 100%;
   display: flex;
   justify-content: center;
   margin-top: 7.6rem;
 }
 
-.bubble-sort {
+.selection-sort {
   font-family: "Satoshi", "Inter";
   min-height: 85dvh;
   padding: 48px clamp(20px, 2vw, 64px) 80px;
   width: 70%;
 }
 
-.bs-eyebrow {
+.sss-eyebrow {
   font-family: "JetBrains Mono", monospace;
   font-size: 0.8rem;
   letter-spacing: 0.2rem;
@@ -26,7 +26,7 @@
   text-transform: uppercase;
 }
 
-.bs-title {
+.sss-title {
   font-size: clamp(2rem, 3.8vw, 3.8rem);
   font-weight: 400;
   line-height: -1.05;
@@ -37,13 +37,13 @@
   margin-top: 0;
 }
 
-.bs-header {
+.sss-header {
   display: flex;
   justify-content: space-between;
   margin-bottom: 2.2rem;
 }
 
-.bs-blurb {
+.sss-blurb {
   font-family: "Satoshi";
   font-size: 1.05rem;
   color: #7a7a80;
@@ -51,7 +51,7 @@
   margin-top: 0;
 }
 
-.bs-complexity {
+.sss-complexity {
   display: flex;
   gap: 28px;
   font-family: "JetBrains Mono", monospace;
@@ -59,29 +59,29 @@
   color: #7a7a80;
 }
 
-.bs-complexity-label {
+.sss-complexity-label {
   font-size: 0.75rem;
   letter-spacing: 0.2em;
   margin-bottom: 6px;
   text-transform: uppercase;
 }
 
-.bs-time-value {
+.sss-time-value {
   color: #ff6a3d;
 }
 
-.bs-space-value {
+.sss-space-value {
   color: #7c8cff;
 }
 
-.bs-grid {
+.sss-grid {
   display: grid;
   grid-template-columns: 1.35fr 1fr;
   gap: 24px;
   align-items: stretch;
 }
 
-.bs-stage {
+.sss-stage {
   background: #141416;
   border: 1px solid #262629;
   border-radius: 16px;
@@ -91,7 +91,7 @@
   flex-direction: column;
 }
 
-.bs-bars {
+.sss-bars {
   flex: 1;
   display: flex;
   align-items: flex-end;
@@ -100,13 +100,13 @@
   min-height: 260px;
 }
 
-.bs-bar {
+.sss-bar {
   width: 100%;
   max-width: 40px;
   border-radius: 3px 3px 0 0;
 }
 
-.bs-status {
+.sss-status {
   font-family: "JetBrains Mono", monospace;
   font-size: 12px;
   color: #7a7a80;
@@ -115,7 +115,7 @@
   padding-top: 16px;
 }
 
-.bs-code-panel {
+.sss-code-panel {
   background: #141416;
   border: 1px solid #262629;
   border-radius: 16px;
@@ -124,7 +124,7 @@
   flex-direction: column;
 }
 
-.bs-code-header {
+.sss-code-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -132,47 +132,47 @@
   border-bottom: 1px solid #262629;
 }
 
-.bs-dummy-btns {
+.sss-dummy-btns {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.bs-red-btn,
-.bs-yellow-btn,
-.bs-green-btn {
+.sss-red-btn,
+.sss-yellow-btn,
+.sss-green-btn {
   width: 10px;
   height: 10px;
   border-radius: 50%;
   display: inline-block;
 }
 
-.bs-red-btn {
+.sss-red-btn {
   background-color: #ff5f56;
 }
 
-.bs-yellow-btn {
+.sss-yellow-btn {
   background-color: #ffbd2e;
 }
 
-.bs-green-btn {
+.sss-green-btn {
   background-color: #27c93f;
 }
 
-.bs-filename {
+.sss-filename {
   font-family: "JetBrains Mono", monospace;
   font-size: 12px;
   color: #7a7a80;
   margin-left: 8px;
 }
 
-.bs-header-complexity {
+.sss-header-complexity {
   color: #ff6a3d;
   font-family: "JetBrains Mono", monospace;
   font-size: 0.8rem;
 }
 
-.bs-code-block {
+.sss-code-block {
   margin: 0;
   padding: 16px 0;
   font-family: "JetBrains Mono", monospace;
@@ -182,19 +182,19 @@
   flex: 1;
 }
 
-.bs-code-line {
+.sss-code-line {
   padding: 1px 20px;
   white-space: pre;
   border-left: 2px solid transparent;
   color: #f3f2ed;
 }
 
-.bs-code-line-active {
+.sss-code-line-active {
   background: rgba(255, 106, 61, 0.1);
   border-left-color: #ff6a3d;
 }
 
-.bs-line-no {
+.sss-line-no {
   display: inline-block;
   width: 20px;
   color: #4a4a4f;
@@ -202,7 +202,7 @@
   margin-right: 4px;
 }
 
-.bs-controls {
+.sss-controls {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -210,7 +210,7 @@
   margin-top: 24px;
 }
 
-.bs-icon-btn {
+.sss-icon-btn {
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -224,17 +224,17 @@
   transition: border-color 0.2s, color 0.2s;
 }
 
-.bs-icon-btn:hover:not(:disabled) {
+.sss-icon-btn:hover:not(:disabled) {
   color: #f3f2ed;
   border-color: rgba(243, 242, 237, 0.3);
 }
 
-.bs-icon-btn:disabled {
+.sss-icon-btn:disabled {
   opacity: 0.3;
   cursor: not-allowed;
 }
 
-.bs-play-btn {
+.sss-play-btn {
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -249,11 +249,11 @@
   transition: opacity 0.2s;
 }
 
-.bs-play-btn:hover {
+.sss-play-btn:hover {
   opacity: 0.9;
 }
 
-.bs-shuffle-btn {
+.sss-shuffle-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -269,12 +269,12 @@
   transition: border-color 0.2s, color 0.2s;
 }
 
-.bs-shuffle-btn:hover {
+.sss-shuffle-btn:hover {
   color: #f3f2ed;
   border-color: rgba(243, 242, 237, 0.3);
 }
 
-.bs-speed {
+.sss-speed {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -284,12 +284,12 @@
   margin-left: auto;
 }
 
-.bs-speed input[type="range"] {
+.sss-speed input[type="range"] {
   accent-color: #ff6a3d;
   width: 130px;
 }
 
-.bs-stats {
+.sss-stats {
   display: flex;
   gap: 24px;
   margin-top: 18px;
@@ -298,23 +298,23 @@
   color: #7a7a80;
 }
 
-.bs-stats b {
+.sss-stats b {
   color: #f3f2ed;
   font-size: 15px;
 }
 
-.bs-steps {
+.sss-steps {
   color: #7a7a80;
 }
 
-.bs-keyword {
+.sss-keyword {
   color: #ff6a3d;
 }
 
-.bs-number {
+.sss-number {
   color: #7c8cff;
 }
 
-.bs-symbol {
+.sss-symbol {
   color: #7a7a80;
 }

@@ -1,0 +1,348 @@
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import "./SelectionSort.css";
+
+function randomArray(size = 16) {
+  const arr = [];
+
+  for (let i = 0; i < size; i++) {
+    arr.push(Math.floor(Math.random() * 90) + 10);
+  }
+
+  return arr;
+}
+
+function selectionSortSteps(input) {
+  const arr = [...input];
+  const steps = [];
+  const n = arr.length;
+
+  let comparisons = 0;
+  let swaps = 0;
+
+  function save(line, description, compare, sortedFrom) {
+    steps.push({
+      array: [...arr],
+      codeLine: line,
+      description,
+      compare,
+      sortedFrom,
+      swaps,
+      comparisons,
+    });
+  }
+
+  save(1, "Started Selection Sort", [], 0);
+
+  for (let i = 0; i < n - 1; i++) {
+
+    let min = i;
+
+    for (let j = i + 1; j < n; j++) {
+
+      comparisons++;
+      save(5, `Compare ${min} and ${j}`, [min, j], i);
+
+      if (arr[j] < arr[min]) {
+        min = j;
+        save(7, `New minimum at index ${min}`, [min], i);
+      }
+    }
+
+    if (min !== i) {
+      [arr[i], arr[min]] = [arr[min], arr[i]];
+      swaps++;
+
+      save(9, `Swap ${i} and ${min}`, [i, min], i);
+    }
+    else {
+      save(9, "No swap needed", [i], i);
+    }
+
+    save(10, `Index ${i} sorted`, [], i + 1);
+  }
+
+  save(11, "Array Sorted!", [], n);
+
+  return steps;
+}
+
+const CodeLines = [
+  <>
+    <span className="sss-keyword">function</span> selectionSort<span className="sss-symbol">(</span>arr<span className="sss-symbol">)</span> <span className="sss-symbol">{"{"}</span>
+  </>,
+
+  <>
+    &nbsp;&nbsp;<span className="sss-keyword">const</span> n <span className="sss-symbol">=</span> arr<span className="sss-symbol">.</span>length<span className="sss-symbol">;</span>
+  </>,
+
+  <>
+    &nbsp;&nbsp;<span className="sss-keyword">for</span> <span className="sss-symbol">(</span>
+    <span className="sss-keyword">let</span> i <span className="sss-symbol">=</span> <span className="sss-number">0</span><span className="sss-symbol">;</span>
+    {" "}i <span className="sss-symbol">{"<"}</span> n <span className="sss-symbol">-</span> <span className="sss-number">1</span><span className="sss-symbol">;</span>
+    {" "}i<span className="sss-symbol">++</span><span className="sss-symbol">)</span> <span className="sss-symbol">{"{"}</span>
+  </>,
+
+  <>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span className="sss-keyword">let</span> min <span className="sss-symbol">=</span> i<span className="sss-symbol">;</span>
+  </>,
+
+  <>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span className="sss-keyword">for</span> <span className="sss-symbol">(</span>
+    <span className="sss-keyword">let</span> j <span className="sss-symbol">=</span> i <span className="sss-symbol">+</span> <span className="sss-number">1</span><span className="sss-symbol">;</span>
+    {" "}j <span className="sss-symbol">{"<"}</span> n<span className="sss-symbol">;</span>
+    {" "}j<span className="sss-symbol">++</span><span className="sss-symbol">)</span> <span className="sss-symbol">{"{"}</span>
+  </>,
+
+  <>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <span className="sss-keyword">if</span> <span className="sss-symbol">(</span>arr<span className="sss-symbol">[</span>j<span className="sss-symbol">]</span> <span className="sss-symbol">{"<"}</span> arr<span className="sss-symbol">[</span>min<span className="sss-symbol">]</span><span className="sss-symbol">)</span> <span className="sss-symbol">{"{"}</span>
+  </>,
+
+  <>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    min <span className="sss-symbol">=</span> j<span className="sss-symbol">;</span>
+  </>,
+
+  <>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="sss-symbol">{"}"}</span></>,
+
+  <>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    swap<span className="sss-symbol">(</span>arr<span className="sss-symbol">[</span>i<span className="sss-symbol">]</span><span className="sss-symbol">,</span> arr<span className="sss-symbol">[</span>min<span className="sss-symbol">]</span><span className="sss-symbol">)</span><span className="sss-symbol">;</span>
+  </>,
+
+  <>&nbsp;&nbsp;&nbsp;&nbsp;<span className="sss-symbol">{"}"}</span></>,
+
+  <>
+    &nbsp;&nbsp;<span className="sss-keyword">return</span> arr<span className="sss-symbol">;</span>
+  </>,
+
+  <><span className="sss-symbol">{"}"}</span></>,
+];
+
+const SpeedDelay = {
+  1: 1400,
+  2: 1100,
+  3: 850,
+  4: 650,
+  5: 500,
+  6: 380,
+  7: 280,
+  8: 200,
+  9: 140,
+  10: 90,
+};
+
+const SelectionSort = () => {
+  const [seed, setSeed] = useState(randomArray());
+  const [index, setIndex] = useState(0);
+  const [playing, setPlaying] = useState(false);
+  const [speed, setSpeed] = useState(5);
+
+  const steps = selectionSortSteps(seed);
+  const current = steps[index];
+  const max = Math.max(...current.array);
+
+  useEffect(() => {
+    if (!playing || index >= steps.length - 1) {
+      if (index >= steps.length - 1) {
+        setPlaying(false);
+      }
+      return;
+    }
+
+    const timer = setTimeout(
+      () => setIndex(i => i + 1),
+      SpeedDelay[speed]
+    );
+
+    return () => clearTimeout(timer);
+  }, [playing, index, speed, steps.length]);
+
+  const reset = () => {
+    setPlaying(false);
+    setIndex(0);
+  };
+
+  const shuffle = () => {
+    setSeed(randomArray());
+    reset();
+  };
+
+  const stepForward = () => {
+    setPlaying(false);
+
+    if (index < steps.length - 1) {
+      setIndex(index + 1);
+    }
+  };
+
+  const stepBack = () => {
+    setPlaying(false);
+
+    if (index > 0) {
+      setIndex(index - 1);
+    }
+  };
+
+  const togglePlay = () => {
+    if (index === steps.length - 1) {
+      setIndex(0);
+    }
+
+    setPlaying(!playing);
+  };
+
+  return (
+    <div className="selection-sort-wrapper">
+      <div className="selection-sort">
+        <p className="sss-eyebrow">sorting</p>
+
+        <h1 className="sss-title">Selection Sort</h1>
+
+        <div className="sss-header">
+          <p className="sss-blurb">
+            Repeatedly selects the minimum of the unsorted tail.
+          </p>
+
+          <div className="sss-complexity">
+            <div>
+              <div className="sss-complexity-label">time</div>
+              <div className="sss-time-value">O(n²)</div>
+            </div>
+
+            <div>
+              <div className="sss-complexity-label">space</div>
+              <div className="sss-space-value">O(1)</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="sss-grid">
+          <div className="sss-stage">
+            <div className="sss-bars">
+              {current.array.map((value, i) => {
+                const isSorted = i < current.sortedFrom;
+                const isCompare = current.compare.includes(i);
+
+                let color = "#3a3a3f";
+
+                if (isSorted) color = "#b4ff39";
+                else if (isCompare) color = "#ff6a3d";
+
+                return (
+                  <motion.div
+                    key={i}
+                    className="sss-bar"
+                    animate={{
+                      height: `${(value / max) * 230 + 6}px`,
+                      backgroundColor: color,
+                    }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 260,
+                      damping: 26,
+                    }}
+                  />
+                );
+              })}
+            </div>
+
+            <p className="sss-status">{current.description}</p>
+          </div>
+
+          <div className="sss-code-panel">
+            <div className="sss-code-header">
+              <div className="sss-dummy-btns">
+                <span className="sss-red-btn"></span>
+                <span className="sss-yellow-btn"></span>
+                <span className="sss-green-btn"></span>
+                <span className="sss-filename">selection_sort.js</span>
+              </div>
+
+              <span className="sss-header-complexity">O(n²)</span>
+            </div>
+
+            <pre className="sss-code-block">
+              {
+                CodeLines.map((line, i) => {
+                  return (
+                    <div
+                      key={i}
+                      className={`sss-code-line ${current.codeLine === i + 1
+                        ? "sss-code-line-active"
+                        : ""
+                        }`}
+                    >
+                      <span className="sss-line-no">{i + 1}</span>
+                      {line}
+                    </div>
+                  );
+                })
+              }
+            </pre>
+          </div>
+        </div>
+
+        <div className="sss-controls">
+          <button className="sss-icon-btn" onClick={reset}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-ccw-icon lucide-rotate-ccw"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" /></svg>
+          </button>
+
+          <button
+            className="sss-icon-btn"
+            onClick={stepBack}
+            disabled={index === 0}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-skip-back-icon lucide-skip-back"><path d="M17.971 4.285A2 2 0 0 1 21 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432z" /><path d="M3 20V4" /></svg>
+          </button>
+
+          <button className="sss-play-btn" onClick={togglePlay}>
+            {playing ? <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0a0a0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pause-icon lucide-pause"><rect x="14" y="3" width="5" height="18" rx="1" /><rect x="5" y="3" width="5" height="18" rx="1" /></svg> : <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0a0a0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play-icon lucide-play"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></svg>}
+          </button>
+
+          <button
+            className="sss-icon-btn"
+            onClick={stepForward}
+            disabled={index === steps.length - 1}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-skip-forward-icon lucide-skip-forward"><path d="M21 4v16" /><path d="M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z" /></svg>
+          </button>
+
+          <button className="sss-shuffle-btn" onClick={shuffle}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shuffle-icon lucide-shuffle"><path d="m18 14 4 4-4 4" /><path d="m18 2 4 4-4 4" /><path d="M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22" /><path d="M2 6h1.972a4 4 0 0 1 3.6 2.2" /><path d="M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45" /></svg>
+            Shuffle
+          </button>
+
+          <div className="sss-speed">
+            <span>SPEED</span>
+
+            <input
+              type="range"
+              min="1"
+              max="10"
+              value={speed}
+              onChange={(e) => setSpeed(Number(e.target.value))}
+            />
+          </div>
+
+          <span className="sss-steps">
+            {index + 1} / {steps.length}
+          </span>
+        </div>
+
+        <div className="sss-stats">
+          <span>
+            comparisons: <b>{current.comparisons}</b>
+          </span>
+
+          <span>
+            swaps: <b>{current.swaps}</b>
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default SelectionSort;
