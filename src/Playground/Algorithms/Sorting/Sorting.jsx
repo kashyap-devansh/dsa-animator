@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import SortingData from "./SortingData.js";
 import BubbleSort from "./BubbleSort/BubbleSort.jsx";
 import SelectionSort from "./SelectionSort/SelectionSort.jsx";
+import InsertionSort from "./InsertionSort/InsertionSort.jsx";
 import "./Sorting.css";
 
 const Sorting = () => {
@@ -12,6 +13,9 @@ const Sorting = () => {
   }
   else if (slug === "selection-sort") {
     return <SelectionSort />
+  }
+  else if (slug === "insertion-sort") {
+    return <InsertionSort />
   }
 
   return (
