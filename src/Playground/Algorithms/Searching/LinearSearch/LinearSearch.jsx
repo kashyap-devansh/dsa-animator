@@ -51,6 +51,7 @@ function linearSearchSteps(input, target) {
 
   return steps;
 }
+
 const CodeLines = [
   <>
     <span className="ls-type">int</span> linearSearch

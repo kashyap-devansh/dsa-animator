@@ -1,6 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import SearchingData from "./SearchingData";
 import LinearSearch from "./LinearSearch/LinearSearch";
+import BinarySearch from "./BinarySearch/BinarySearch";
 import "./Searching.css";
 
 const Searching = () => {
@@ -8,6 +9,9 @@ const Searching = () => {
 
   if (slug === "linear-search") {
     return <LinearSearch />;
+  }
+  if (slug === "binary-search") {
+    return <BinarySearch />;
   }
 
   return (
