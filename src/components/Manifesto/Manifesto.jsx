@@ -10,14 +10,14 @@ function Manifesto() {
     offset: ["start center", "end center"],
   });
 
-  const color1 = useTransform(scrollYProgress, [0.00, 0.15], ["#262626", "#ffffff"]);
-  const color2 = useTransform(scrollYProgress, [0.10, 0.25], ["#262626", "#ffffff"]);
-  const color3 = useTransform(scrollYProgress, [0.20, 0.35], ["#262626", "#ffffff"]);
-  const color4 = useTransform(scrollYProgress, [0.30, 0.45], ["#262626", "#ffffff"]);
-  const color5 = useTransform(scrollYProgress, [0.40, 0.55], ["#262626", "#ffffff"]);
-  const color6 = useTransform(scrollYProgress, [0.50, 0.65], ["#262626", "#ffffff"]);
-  const color7 = useTransform(scrollYProgress, [0.60, 0.75], ["#262626", "#ffffff"]);
-  const color8 = useTransform(scrollYProgress, [0.70, 0.85], ["#262626", "#ffffff"]);
+  const color1 = useTransform(scrollYProgress, [0.00, 0.15], ["#262626", "#f3f2ed"]);
+  const color2 = useTransform(scrollYProgress, [0.10, 0.25], ["#262626", "#f3f2ed"]);
+  const color3 = useTransform(scrollYProgress, [0.20, 0.35], ["#262626", "#f3f2ed"]);
+  const color4 = useTransform(scrollYProgress, [0.30, 0.45], ["#262626", "#f3f2ed"]);
+  const color5 = useTransform(scrollYProgress, [0.40, 0.55], ["#262626", "#f3f2ed"]);
+  const color6 = useTransform(scrollYProgress, [0.50, 0.65], ["#262626", "#f3f2ed"]);
+  const color7 = useTransform(scrollYProgress, [0.60, 0.75], ["#262626", "#f3f2ed"]);
+  const color8 = useTransform(scrollYProgress, [0.70, 0.85], ["#262626", "#f3f2ed"]);
 
   return (
     <div ref={ref} className="manifesto">

@@ -4,7 +4,7 @@
 
 .footer {
   width: 100%;
-  color: #f2f0ef;
+  color: #f3f2ed;
   padding: 90px 0 50px;
   border-top: 1px solid #262629;
 }
@@ -64,7 +64,7 @@
 
 .footer-column a {
   text-decoration: none;
-  color: white;
+  color: #f3f2ed;
   font-size: 0.95rem;
   font-family: "Satoshi";
   line-height: 20px;
@@ -100,5 +100,5 @@
 }
 
 .footer-bottom a:hover {
-  color: #ffffff;
+  color: #f3f2ed;
 }

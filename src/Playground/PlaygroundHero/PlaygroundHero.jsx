@@ -6,7 +6,7 @@ const Playground = () => {
     <section className="playground">
       <div className="playground-content">
         <p className="playground-eyebrow">
-          THE PLAYGROUND — 12 LIVE
+          THE PLAYGROUND
         </p>
 
         <h1 className="playground-title">

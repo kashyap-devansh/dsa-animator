@@ -52,6 +52,7 @@
   color: #7a7a80;
   font-family: "JetBrains Mono", monospace;
   font-size: 1.1rem;
+  font-weight: 200;
   transition:
     color 0.3s ease,
     transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);

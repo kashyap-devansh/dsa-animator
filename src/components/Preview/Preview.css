@@ -31,7 +31,7 @@
   line-height: 1.05;
   font-family: "Space Grotesk";
   margin-top: 0;
-  color: white;
+  color: #f3f2ed;
 }
 
 .preview-grid {
@@ -75,7 +75,6 @@
 }
 
 .preview-item:hover h2 {
-  color: white;
   transform: translateX(8px);
 }
 
@@ -88,7 +87,7 @@
   padding: 2rem 2rem;
   border: 1px solid #262629;
   border-radius: 24px;
-  background: #1c1c1f;
+  background: #141416;
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
 }
 
@@ -108,7 +107,7 @@
   font-weight: 500;
   margin-bottom: 1rem;
   font-family: "Space Grotesk";
-  color: white;
+  color: #f3f2ed;
 }
 
 .preview-content p {

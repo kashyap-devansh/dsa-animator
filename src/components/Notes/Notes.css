@@ -29,7 +29,7 @@
 
 .notes-header h1 {
   margin-top: 0;
-  color: #fff;
+  color: #f3f2ed;
   font-family: "Space Grotesk", sans-serif;
   font-size: clamp(2rem, 3.8vw, 3.8rem);
   font-weight: 400;
@@ -57,7 +57,7 @@
 .notes-item h2 {
   flex: 1;
   margin: 0;
-  color: #fff;
+  color: #f3f2ed;
   font-family: "Space Grotesk", sans-serif;
   font-size: 2.2rem;
   font-weight: 400;
@@ -74,7 +74,7 @@
 
 .notes-arrow {
   display: inline-block;
-  color: #fff;
+  color: #f3f2ed;
   font-family: "JetBrains Mono", monospace;
   font-size: 1.5rem;
   transition:
