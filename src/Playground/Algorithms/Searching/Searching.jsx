@@ -1,12 +1,13 @@
 import { Link, useParams } from "react-router-dom";
 import SearchingData from "./SearchingData";
+import LinearSearch from "./LinearSearch/LinearSearch";
 import "./Searching.css";
 
 const Searching = () => {
   const { slug } = useParams();
 
   if (slug === "linear-search") {
-    return;
+    return <LinearSearch />;
   }
 
   return (

@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 
 import Playground from "./Playground/PlaygroundHero/PlaygroundHero";
 import Sorting from "./Playground/Algorithms/Sorting/Sorting";
+import Searching from "./Playground/Algorithms/Searching/Searching.jsx";
 
 import Navbar from "./components/Navbar/Navbar";
 import Hero from "./components/Hero/Hero";
@@ -48,6 +49,16 @@ const App = () => {
           <>
             <Navbar />
             <Sorting />
+            <Footer />
+          </>
+        }
+      />
+      <Route
+        path="/playground/searching/:slug"
+        element={
+          <>
+            <Navbar />
+            <Searching />
             <Footer />
           </>
         }
