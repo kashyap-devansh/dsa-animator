@@ -275,10 +275,7 @@ const InsertionSort = () => {
                 return (
                   <div
                     key={i}
-                    className={`is-code-line ${current.codeLine === i + 1
-                      ? "is-code-line-active"
-                      : ""
-                      }`}
+                    className={`is-code-line ${current.codeLine === i + 1 ? "is-code-line-active" : ""}`}
                   >
                     <span className="is-line-no">{i + 1}</span>
                     {line}

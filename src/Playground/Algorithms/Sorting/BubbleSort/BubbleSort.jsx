@@ -247,10 +247,7 @@ const BubbleSort = () => {
                 return (
                   <div
                     key={i}
-                    className={`bs-code-line ${current.codeLine === i + 1
-                      ? "bs-code-line-active"
-                      : ""
-                      }`}
+                    className={`bs-code-line ${current.codeLine === i + 1 ? "bs-code-line-active" : ""}`}
                   >
                     <span className="bs-line-no">{i + 1}</span>
                     {line}

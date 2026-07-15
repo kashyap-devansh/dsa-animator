@@ -28,11 +28,19 @@
 
 
 .sorting-card {
-  background-color: #141417;
   padding: 24px;
-  border: 1px solid #262629;
   border-radius: 15px;
   text-decoration: none;
+}
+
+.sorting-card.active {
+  background-color: #141417;
+  border: 1px solid #262629;
+}
+
+.sorting-card.locked {
+  cursor: not-allowed;
+  border: 1px solid #26262990;
 }
 
 .sorting-card .card-top {
@@ -42,16 +50,22 @@
 }
 
 .sorting-card .complexity {
-  color: #ff6a3d;
   font-family: "JetBrains Mono", monospace;
   font-size: .65rem;
+}
+
+.sorting-card.active .complexity {
+  color: #ff6a3d;
+}
+
+.sorting-card.locked .complexity {
+  color: #7a7a80;
 }
 
 .sorting-card .arrow {
   display: inline-block;
   color: #7a7a80;
   font-family: "JetBrains Mono", monospace;
-  font-size: 1.1rem;
   font-weight: 200;
   transition:
     color 0.3s ease,
@@ -59,23 +73,38 @@
 }
 
 
-.sorting-card:hover .arrow {
-  color: white;
+.sorting-card.active:hover .arrow {
+  color: #f3f2ed;
   transform: translate(6px, -6px);
 }
 
 .sorting-card h2 {
-  color: white;
   font-family: "Space Grotesk";
   margin-bottom: 8px;
   font-weight: 400;
   font-size: 1.2rem;
 }
 
+.sorting-card.active h2 {
+  color: #f3f2ed;
+}
+
+.sorting-card.locked h2 {
+  color: #B8B5AF;
+}
+
 .sorting .description {
   font-family: "Satoshi";
   font-size: 0.9rem;
-  color: #7a7a80;
   font-weight: 500;
   margin-bottom: 0;
+}
+
+.sorting-card.active .description {
+  color: #7a7a80;
+
+}
+
+.sorting-card.locked .description {
+  color: #5F5F64;
 }

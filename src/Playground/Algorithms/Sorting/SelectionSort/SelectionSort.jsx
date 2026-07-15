@@ -269,10 +269,7 @@ const SelectionSort = () => {
                   return (
                     <div
                       key={i}
-                      className={`sss-code-line ${current.codeLine === i + 1
-                        ? "sss-code-line-active"
-                        : ""
-                        }`}
+                      className={`sss-code-line ${current.codeLine === i + 1 ? "sss-code-line-active" : ""}`}
                     >
                       <span className="sss-line-no">{i + 1}</span>
                       {line}
