@@ -1,33 +1,24 @@
 import { Link, useParams } from "react-router-dom";
-import SortingData from "./SortingData.js";
-import BubbleSort from "./BubbleSort/BubbleSort.jsx";
-import SelectionSort from "./SelectionSort/SelectionSort.jsx";
-import InsertionSort from "./InsertionSort/InsertionSort.jsx";
-import "./Sorting.css";
+import SearchingData from "./SearchingData";
+import "./Searching.css";
 
-const Sorting = () => {
+const Searching = () => {
   const { slug } = useParams();
 
-  if (slug === "bubble-sort") {
-    return <BubbleSort />;
-  }
-  else if (slug === "selection-sort") {
-    return <SelectionSort />
-  }
-  else if (slug === "insertion-sort") {
-    return <InsertionSort />
+  if (slug === "linear-search") {
+    return;
   }
 
   return (
-    <div className="sorting">
-      <p className="sorting-eyebrow">SORTING</p>
+    <div className="searching">
+      <p className="searching-eyebrow">searching</p>
 
-      <div className="sorting-grid">
-        {SortingData.map((item) => (
+      <div className="searching-grid">
+        {SearchingData.map((item) => (
           <Link
             key={item.slug}
-            to={`/playground/sorting/${item.slug}`}
-            className={`sorting-card ${item.active ? "active" : "locked"}`}
+            to={`/playground/searching/${item.slug}`}
+            className={`searching-card ${item.active ? "active" : "locked"}`}
             onClick={(e) => !item.active && e.preventDefault()}
           >
             <div className="card-top">
@@ -43,8 +34,9 @@ const Sorting = () => {
           </Link>
         ))}
       </div>
-    </div>
-  );
-};
 
-export default Sorting;
+    </div>
+  )
+}
+
+export default Searching

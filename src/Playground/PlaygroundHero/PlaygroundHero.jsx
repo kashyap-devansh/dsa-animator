@@ -1,5 +1,6 @@
 import "./PlaygroundHero.css";
 import Sorting from "../Algorithms/Sorting/Sorting.jsx";
+import Searching from "../Algorithms/Searching/Searching.jsx";
 
 const Playground = () => {
   return (
@@ -21,6 +22,7 @@ const Playground = () => {
         </p>
 
         <Sorting />
+        <Searching />
       </div>
     </section>
   );
