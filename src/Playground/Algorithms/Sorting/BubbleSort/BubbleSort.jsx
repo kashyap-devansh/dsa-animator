@@ -57,23 +57,23 @@ function bubbleSortSteps(input) {
 
 const CodeLines = [
   <>
-    <span className="bs-keyword">function</span> bubbleSort<span className="bs-symbol">(</span>arr<span className="bs-symbol">)</span> <span className="bs-symbol">{"{"}</span>
+    <span className="bs-type">void</span> bubbleSort<span className="bs-symbol">(</span><span className="bs-type">vector</span><span className="bs-symbol">&lt;</span><span className="bs-type">int</span><span className="bs-symbol">&gt;&amp;</span> arr<span className="bs-symbol">)</span> <span className="bs-symbol">{"{"}</span>
   </>,
 
   <>
-    &nbsp;&nbsp;<span className="bs-keyword">const</span> n <span className="bs-symbol">=</span> arr<span className="bs-symbol">.</span>length<span className="bs-symbol">;</span>
+    &nbsp;&nbsp;<span className="bs-type">int</span> n <span className="bs-symbol">=</span> arr<span className="bs-symbol">.</span>size<span className="bs-symbol">()</span><span className="bs-symbol">;</span>
   </>,
 
   <>
     &nbsp;&nbsp;<span className="bs-keyword">for</span> <span className="bs-symbol">(</span>
-    <span className="bs-keyword">let</span> i <span className="bs-symbol">=</span> <span className="bs-number">0</span><span className="bs-symbol">;</span>
+    <span className="bs-type">int</span> i <span className="bs-symbol">=</span> <span className="bs-number">0</span><span className="bs-symbol">;</span>
     {" "}i <span className="bs-symbol">{"<"}</span> n <span className="bs-symbol">-</span> <span className="bs-number">1</span><span className="bs-symbol">;</span>
     {" "}i<span className="bs-symbol">++</span><span className="bs-symbol">)</span> <span className="bs-symbol">{"{"}</span>
   </>,
 
   <>
     &nbsp;&nbsp;&nbsp;&nbsp;<span className="bs-keyword">for</span> <span className="bs-symbol">(</span>
-    <span className="bs-keyword">let</span> j <span className="bs-symbol">=</span> <span className="bs-number">0</span><span className="bs-symbol">;</span>
+    <span className="bs-type">int</span> j <span className="bs-symbol">=</span> <span className="bs-number">0</span><span className="bs-symbol">;</span>
     {" "}j <span className="bs-symbol">{"<"}</span> n <span className="bs-symbol">-</span> <span className="bs-number">1</span> <span className="bs-symbol">-</span> i<span className="bs-symbol">;</span>
     {" "}j<span className="bs-symbol">++</span><span className="bs-symbol">)</span> <span className="bs-symbol">{"{"}</span>
   </>,
@@ -93,7 +93,7 @@ const CodeLines = [
   <>&nbsp;&nbsp;<span className="bs-symbol">{"}"}</span></>,
 
   <>
-    &nbsp;&nbsp;<span className="bs-keyword">return</span> arr<span className="bs-symbol">;</span>
+    &nbsp;&nbsp;<span className="bs-keyword">return</span><span className="bs-symbol">;</span>
   </>,
 
   <><span className="bs-symbol">{"}"}</span></>,
@@ -236,7 +236,7 @@ const BubbleSort = () => {
                 <span className="bs-red-btn"></span>
                 <span className="bs-yellow-btn"></span>
                 <span className="bs-green-btn"></span>
-                <span className="bs-filename">bubble_sort.js</span>
+                <span className="bs-filename">bubble_sort.cpp</span>
               </div>
 
               <span className="bs-header-complexity">O(n²)</span>

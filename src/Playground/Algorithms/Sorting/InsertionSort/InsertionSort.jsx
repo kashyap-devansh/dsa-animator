@@ -72,26 +72,26 @@ function insertionSortSteps(input) {
 
 const CodeLines = [
   <>
-    <span className="is-keyword">function</span> insertionSort<span className="is-symbol">(</span>arr<span className="is-symbol">)</span> <span className="is-symbol">{"{"}</span>
+    <span className="is-type">void</span> insertionSort<span className="is-symbol">(</span><span className="is-type">vector</span><span className="is-symbol">&lt;</span><span className="is-type">int</span><span className="is-symbol">&gt;&amp;</span> arr<span className="is-symbol">)</span> <span className="is-symbol">{"{"}</span>
   </>,
 
   <>
-    &nbsp;&nbsp;<span className="is-keyword">const</span> n <span className="is-symbol">=</span> arr<span className="is-symbol">.</span>length<span className="is-symbol">;</span>
+    &nbsp;&nbsp;<span className="is-type">int</span> n <span className="is-symbol">=</span> arr<span className="is-symbol">.</span>size<span className="is-symbol">()</span><span className="is-symbol">;</span>
   </>,
 
   <>
     &nbsp;&nbsp;<span className="is-keyword">for</span> <span className="is-symbol">(</span>
-    <span className="is-keyword">let</span> i <span className="is-symbol">=</span> <span className="is-number">1</span><span className="is-symbol">;</span>
+    <span className="is-type">int</span> i <span className="is-symbol">=</span> <span className="is-number">1</span><span className="is-symbol">;</span>
     {" "}i <span className="is-symbol">{"<"}</span> n<span className="is-symbol">;</span>
     {" "}i<span className="is-symbol">++</span><span className="is-symbol">)</span> <span className="is-symbol">{"{"}</span>
   </>,
 
   <>
-    &nbsp;&nbsp;&nbsp;&nbsp;<span className="is-keyword">let</span> key <span className="is-symbol">=</span> arr<span className="is-symbol">[</span>i<span className="is-symbol">]</span><span className="is-symbol">;</span>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span className="is-type">int</span> key <span className="is-symbol">=</span> arr<span className="is-symbol">[</span>i<span className="is-symbol">]</span><span className="is-symbol">;</span>
   </>,
 
   <>
-    &nbsp;&nbsp;&nbsp;&nbsp;<span className="is-keyword">let</span> j <span className="is-symbol">=</span> i <span className="is-symbol">-</span> <span className="is-number">1</span><span className="is-symbol">;</span>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span className="is-type">int</span> j <span className="is-symbol">=</span> i <span className="is-symbol">-</span> <span className="is-number">1</span><span className="is-symbol">;</span>
   </>,
 
   <>
@@ -119,7 +119,7 @@ const CodeLines = [
   </>,
 
   <>
-    &nbsp;&nbsp;<span className="is-keyword">return</span> arr<span className="is-symbol">;</span>
+    &nbsp;&nbsp;<span className="is-keyword">return</span><span className="is-symbol">;</span>
   </>,
 
   <>
@@ -264,7 +264,7 @@ const InsertionSort = () => {
                 <span className="is-red-btn"></span>
                 <span className="is-yellow-btn"></span>
                 <span className="is-green-btn"></span>
-                <span className="is-filename">insertion_sort.js</span>
+                <span className="is-filename">insertion_sort.cpp</span>
               </div>
 
               <span className="is-header-complexity">O(n²)</span>

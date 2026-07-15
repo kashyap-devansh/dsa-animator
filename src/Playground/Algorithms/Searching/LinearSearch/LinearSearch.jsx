@@ -53,14 +53,14 @@ function linearSearchSteps(input, target) {
 }
 const CodeLines = [
   <>
-    <span className="ls-keyword">function</span> linearSearch
-    <span className="ls-symbol">(</span>arr<span className="ls-symbol">,</span> target<span className="ls-symbol">)</span> <span className="ls-symbol">{"{"}</span>
+    <span className="ls-type">int</span> linearSearch
+    <span className="ls-symbol">(</span><span className="ls-type">vector</span><span className="ls-symbol">&lt;</span><span className="ls-type">int</span><span className="ls-symbol">&gt;&amp;</span> arr<span className="ls-symbol">,</span> <span className="ls-type">int</span> target<span className="ls-symbol">)</span> <span className="ls-symbol">{"{"}</span>
   </>,
 
   <>
     &nbsp;&nbsp;<span className="ls-keyword">for</span> <span className="ls-symbol">(</span>
-    <span className="ls-keyword">let</span> i <span className="ls-symbol">=</span> <span className="ls-number">0</span><span className="ls-symbol">;</span>
-    {" "}i <span className="ls-symbol">{"<"}</span> arr<span className="ls-symbol">.</span>length<span className="ls-symbol">;</span>
+    <span className="ls-type">int</span> i <span className="ls-symbol">=</span> <span className="ls-number">0</span><span className="ls-symbol">;</span>
+    {" "}i <span className="ls-symbol">{"<"}</span> arr<span className="ls-symbol">.</span>size<span className="ls-symbol">()</span><span className="ls-symbol">;</span>
     {" "}i<span className="ls-symbol">++</span><span className="ls-symbol">)</span> <span className="ls-symbol">{"{"}</span>
   </>,
 
@@ -68,7 +68,7 @@ const CodeLines = [
     &nbsp;&nbsp;&nbsp;&nbsp;
     <span className="ls-keyword">if</span> <span className="ls-symbol">(</span>
     arr<span className="ls-symbol">[</span>i<span className="ls-symbol">]</span>
-    <span className="ls-symbol">&nsbp;===&nbsp;</span>
+    <span className="ls-symbol"> == </span>
     target
     <span className="ls-symbol">)</span> <span className="ls-symbol">{"{"}</span>
   </>,
@@ -184,7 +184,7 @@ const LinearSearch = () => {
 
         <div className="ls-header">
           <p className="ls-blurb">
-            Adjacent swaps bubble the largest value to the end each pass.
+            Walks the array one element at a time until it finds a match.
           </p>
 
           <div className="ls-complexity">
@@ -238,7 +238,7 @@ const LinearSearch = () => {
                 <span className="ls-red-btn"></span>
                 <span className="ls-yellow-btn"></span>
                 <span className="ls-green-btn"></span>
-                <span className="ls-filename">linearSearch.js</span>
+                <span className="ls-filename">linearSearch.cpp</span>
               </div>
 
               <span className="ls-header-complexity">O(n)</span>
