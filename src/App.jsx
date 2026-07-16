@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import LoadingScreen from "./components/LoadingScreen/LoadingScreen.jsx";
@@ -18,9 +19,10 @@ import CTA from "./components/CTA/CTA";
 import Footer from "./components/Footer/Footer";
 
 function LandingPage() {
+  const [loading, setLoading] = useState(!sessionStorage.getItem("loaderShown"));
+
   return (
     <>
-      <LoadingScreen />
       <Navbar />
       <Hero />
       <Marquee />
@@ -31,6 +33,13 @@ function LandingPage() {
       <Notes />
       <CTA />
       <Footer />
+
+      {loading && (
+        <LoadingScreen onComplete={() => {
+          setLoading(false)
+          sessionStorage.setItem("loaderShown", "true");
+        }} />
+      )}
     </>
   );
 }
