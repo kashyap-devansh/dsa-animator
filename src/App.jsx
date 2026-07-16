@@ -1,5 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 
+import LoadingScreen from "./components/LoadingScreen/LoadingScreen.jsx";
+
 import Playground from "./Playground/PlaygroundHero/PlaygroundHero";
 import Sorting from "./Playground/Algorithms/Sorting/Sorting";
 import Searching from "./Playground/Algorithms/Searching/Searching.jsx";
@@ -18,6 +20,7 @@ import Footer from "./components/Footer/Footer";
 function LandingPage() {
   return (
     <>
+      <LoadingScreen />
       <Navbar />
       <Hero />
       <Marquee />

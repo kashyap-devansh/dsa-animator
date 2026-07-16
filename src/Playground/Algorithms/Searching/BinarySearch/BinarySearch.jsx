@@ -64,60 +64,60 @@ function binarySearchSteps(input, target) {
 
 const CodeLines = [
   <>
-    <span className="bs-type">int</span> binarySearch
-    <span className="bs-symbol">(</span><span className="bs-type">vector</span><span className="bs-symbol">&lt;</span><span className="bs-type">int</span><span className="bs-symbol">&gt;&amp;</span> arr<span className="bs-symbol">,</span> <span className="bs-type">int</span> target<span className="bs-symbol">)</span> <span className="bs-symbol">{"{"}</span>
+    <span className="bis-type">int</span> binarySearch
+    <span className="bis-symbol">(</span><span className="bis-type">vector</span><span className="bis-symbol">&lt;</span><span className="bis-type">int</span><span className="bis-symbol">&gt;&amp;</span> arr<span className="bis-symbol">,</span> <span className="bis-type">int</span> target<span className="bis-symbol">)</span> <span className="bis-symbol">{"{"}</span>
   </>,
 
   <>
-    &nbsp;&nbsp;<span className="bs-type">int</span> left <span className="bs-symbol">=</span> <span className="bs-number">0</span><span className="bs-symbol">,</span> right <span className="bs-symbol">=</span> arr<span className="bs-symbol">.</span>size<span className="bs-symbol">()</span> <span className="bs-symbol">-</span> <span className="bs-number">1</span><span className="bs-symbol">;</span>
+    &nbsp;&nbsp;<span className="bis-type">int</span> left <span className="bis-symbol">=</span> <span className="bis-number">0</span><span className="bis-symbol">,</span> right <span className="bis-symbol">=</span> arr<span className="bis-symbol">.</span>size<span className="bis-symbol">()</span> <span className="bis-symbol">-</span> <span className="bis-number">1</span><span className="bis-symbol">;</span>
   </>,
 
   <>
-    &nbsp;&nbsp;<span className="bs-keyword">while</span> <span className="bs-symbol">(</span>left <span className="bs-symbol">&lt;=</span> right<span className="bs-symbol">)</span> <span className="bs-symbol">{"{"}</span>
+    &nbsp;&nbsp;<span className="bis-keyword">while</span> <span className="bis-symbol">(</span>left <span className="bis-symbol">&lt;=</span> right<span className="bis-symbol">)</span> <span className="bis-symbol">{"{"}</span>
   </>,
 
   <>
-    &nbsp;&nbsp;&nbsp;&nbsp;<span className="bs-type">int</span> mid <span className="bs-symbol">=</span> left <span className="bs-symbol">+</span> <span className="bs-symbol">(</span>right <span className="bs-symbol">-</span> left<span className="bs-symbol">)</span> <span className="bs-symbol">/</span> <span className="bs-number">2</span><span className="bs-symbol">;</span>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span className="bis-type">int</span> mid <span className="bis-symbol">=</span> left <span className="bis-symbol">+</span> <span className="bis-symbol">(</span>right <span className="bis-symbol">-</span> left<span className="bis-symbol">)</span> <span className="bis-symbol">/</span> <span className="bis-number">2</span><span className="bis-symbol">;</span>
   </>,
 
   <>
-    &nbsp;&nbsp;&nbsp;&nbsp;<span className="bs-keyword">if</span> <span className="bs-symbol">(</span>arr<span className="bs-symbol">[</span>mid<span className="bs-symbol">]</span> <span className="bs-symbol">==</span> target<span className="bs-symbol">)</span> <span className="bs-symbol">{"{"}</span>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span className="bis-keyword">if</span> <span className="bis-symbol">(</span>arr<span className="bis-symbol">[</span>mid<span className="bis-symbol">]</span> <span className="bis-symbol">==</span> target<span className="bis-symbol">)</span> <span className="bis-symbol">{"{"}</span>
   </>,
 
   <>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="bs-keyword">return</span> mid<span className="bs-symbol">;</span>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="bis-keyword">return</span> mid<span className="bis-symbol">;</span>
   </>,
 
   <>
-    &nbsp;&nbsp;&nbsp;&nbsp;<span className="bs-symbol">{"}"}</span> <span className="bs-keyword">else if</span> <span className="bs-symbol">(</span>arr<span className="bs-symbol">[</span>mid<span className="bs-symbol">]</span> <span className="bs-symbol">&lt;</span> target<span className="bs-symbol">)</span> <span className="bs-symbol">{"{"}</span>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span className="bis-symbol">{"}"}</span> <span className="bis-keyword">else if</span> <span className="bis-symbol">(</span>arr<span className="bis-symbol">[</span>mid<span className="bis-symbol">]</span> <span className="bis-symbol">&lt;</span> target<span className="bis-symbol">)</span> <span className="bis-symbol">{"{"}</span>
   </>,
 
   <>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;left <span className="bs-symbol">=</span> mid <span className="bs-symbol">+</span> <span className="bs-number">1</span><span className="bs-symbol">;</span>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;left <span className="bis-symbol">=</span> mid <span className="bis-symbol">+</span> <span className="bis-number">1</span><span className="bis-symbol">;</span>
   </>,
 
   <>
-    &nbsp;&nbsp;&nbsp;&nbsp;<span className="bs-symbol">{"}"}</span> <span className="bs-keyword">else</span> <span className="bs-symbol">{"{"}</span>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span className="bis-symbol">{"}"}</span> <span className="bis-keyword">else</span> <span className="bis-symbol">{"{"}</span>
   </>,
 
   <>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;right <span className="bs-symbol">=</span> mid <span className="bs-symbol">-</span> <span className="bs-number">1</span><span className="bs-symbol">;</span>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;right <span className="bis-symbol">=</span> mid <span className="bis-symbol">-</span> <span className="bis-number">1</span><span className="bis-symbol">;</span>
   </>,
 
   <>
-    &nbsp;&nbsp;&nbsp;&nbsp;<span className="bs-symbol">{"}"}</span>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span className="bis-symbol">{"}"}</span>
   </>,
 
   <>
-    &nbsp;&nbsp;<span className="bs-symbol">{"}"}</span>
+    &nbsp;&nbsp;<span className="bis-symbol">{"}"}</span>
   </>,
 
   <>
-    &nbsp;&nbsp;<span className="bs-keyword">return</span> <span className="bs-symbol">-</span><span className="bs-number">1</span><span className="bs-symbol">;</span>
+    &nbsp;&nbsp;<span className="bis-keyword">return</span> <span className="bis-symbol">-</span><span className="bis-number">1</span><span className="bis-symbol">;</span>
   </>,
 
   <>
-    <span className="bs-symbol">{"}"}</span>
+    <span className="bis-symbol">{"}"}</span>
   </>,
 ];
 
@@ -202,41 +202,41 @@ const BinarySearch = () => {
   return (
     <div className="binary-search-wrapper">
       <div className="binary-search">
-        <p className="bs-eyebrow">searching</p>
+        <p className="bis-eyebrow">searching</p>
 
-        <h1 className="bs-title">Binary Search</h1>
+        <h1 className="bis-title">Binary Search</h1>
 
-        <div className="bs-header">
-          <p className="bs-blurb">
+        <div className="bis-header">
+          <p className="bis-blurb">
             Halves the search range every step on a sorted array.
           </p>
 
-          <div className="bs-complexity">
+          <div className="bis-complexity">
             <div>
-              <div className="bs-complexity-label">time</div>
-              <div className="bs-time-value">O(log n)</div>
+              <div className="bis-complexity-label">time</div>
+              <div className="bis-time-value">O(log n)</div>
             </div>
 
             <div>
-              <div className="bs-complexity-label">space</div>
-              <div className="bs-space-value">O(1)</div>
+              <div className="bis-complexity-label">space</div>
+              <div className="bis-space-value">O(1)</div>
             </div>
           </div>
         </div>
 
-        <div className="bs-grid">
-          <div className="bs-stage">
-            <div className="bs-boxs">
+        <div className="bis-grid">
+          <div className="bis-stage">
+            <div className="bis-boxs">
               {current.array.map((value, i) => {
                 const isCurrent = i === current.currentIndex;
                 const isFound = current.found && isCurrent;
 
                 return (
-                  <div key={i} className="bs-box-wrapper">
-                    <div className="bs-index">{i}</div>
+                  <div key={i} className="bis-box-wrapper">
+                    <div className="bis-index">{i}</div>
 
                     <motion.div
-                      className={`bs-box ${i < current.left || i > current.right ? "dull-box" : ""}`}
+                      className={`bis-box ${i < current.left || i > current.right ? "dull-box" : ""}`}
                       animate={{
                         borderColor: isFound ? "#b4ff39" : isCurrent ? "#ff6a3d" : "#262629",
                         color: isFound ? "#b4ff39" : isCurrent ? "#ff6a3d" : "#f3f2ed",
@@ -248,29 +248,29 @@ const BinarySearch = () => {
                 );
               })}
             </div>
-            <p className="bs-status">{current.description}</p>
+            <p className="bis-status">{current.description}</p>
           </div>
 
-          <div className="bs-code-panel">
-            <div className="bs-code-header">
-              <div className="bs-dummy-btns">
-                <span className="bs-red-btn"></span>
-                <span className="bs-yellow-btn"></span>
-                <span className="bs-green-btn"></span>
-                <span className="bs-filename">binarySearch.cpp</span>
+          <div className="bis-code-panel">
+            <div className="bis-code-header">
+              <div className="bis-dummy-btns">
+                <span className="bis-red-btn"></span>
+                <span className="bis-yellow-btn"></span>
+                <span className="bis-green-btn"></span>
+                <span className="bis-filename">binarySearch.cpp</span>
               </div>
 
-              <span className="bs-header-complexity">O(log n)</span>
+              <span className="bis-header-complexity">O(log n)</span>
             </div>
 
-            <pre className="bs-code-block">
+            <pre className="bis-code-block">
               {CodeLines.map((line, i) => {
                 return (
                   <div
                     key={i}
-                    className={`bs-code-line ${current.codeLine === i + 1 ? "bs-code-line-active" : ""}`}
+                    className={`bis-code-line ${current.codeLine === i + 1 ? "bis-code-line-active" : ""}`}
                   >
-                    <span className="bs-line-no">{i + 1}</span>
+                    <span className="bis-line-no">{i + 1}</span>
                     {line}
                   </div>
                 );
@@ -279,38 +279,38 @@ const BinarySearch = () => {
           </div>
         </div>
 
-        <div className="bs-controls">
-          <button className="bs-icon-btn" onClick={reset}>
+        <div className="bis-controls">
+          <button className="bis-icon-btn" onClick={reset}>
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-ccw-icon lucide-rotate-ccw"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" /></svg>
           </button>
 
           <button
-            className="bs-icon-btn"
+            className="bis-icon-btn"
             onClick={stepBack}
             disabled={index === 0}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-skip-back-icon lucide-skip-back"><path d="M17.971 4.285A2 2 0 0 1 21 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432z" /><path d="M3 20V4" /></svg>
           </button>
 
-          <button className="bs-play-btn" onClick={togglePlay}>
+          <button className="bis-play-btn" onClick={togglePlay}>
             {playing ? <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0a0a0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pause-icon lucide-pause"><rect x="14" y="3" width="5" height="18" rx="1" /><rect x="5" y="3" width="5" height="18" rx="1" /></svg> : <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0a0a0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play-icon lucide-play"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></svg>}
           </button>
 
           <button
-            className="bs-icon-btn"
+            className="bis-icon-btn"
             onClick={stepForward}
             disabled={index === steps.length - 1}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-skip-forward-icon lucide-skip-forward"><path d="M21 4v16" /><path d="M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z" /></svg>
           </button>
 
-          <button className="bs-shuffle-btn" onClick={shuffle}>
+          <button className="bis-shuffle-btn" onClick={shuffle}>
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shuffle-icon lucide-shuffle"><path d="m18 14 4 4-4 4" /><path d="m18 2 4 4-4 4" /><path d="M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22" /><path d="M2 6h1.972a4 4 0 0 1 3.6 2.2" /><path d="M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45" /></svg>
             New array
           </button>
 
           <input
-            className="bs-input"
+            className="bis-input"
             type="number"
             value={target}
             onChange={(e) => {
@@ -319,7 +319,7 @@ const BinarySearch = () => {
             }}
           />
 
-          <div className="bs-speed">
+          <div className="bis-speed">
             <span>SPEED</span>
 
             <input
@@ -331,12 +331,12 @@ const BinarySearch = () => {
             />
           </div>
 
-          <span className="bs-steps">
+          <span className="bis-steps">
             {index + 1} / {steps.length}
           </span>
         </div>
 
-        <div className="bs-stats">
+        <div className="bis-stats">
           <span>
             comparisons: <b>{current.comparisons}</b>
           </span>

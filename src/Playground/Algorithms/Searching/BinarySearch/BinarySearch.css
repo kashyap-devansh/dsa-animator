@@ -1,7 +1,3 @@
-@import url("https://api.fontshare.com/v2/css?f[]=space-grotesk@300,400,500,700,900&display=swap");
-@import url("https://api.fontshare.com/v2/css?f[]=jetbrains-mono@300,400,500,700,900&display=swap");
-@import url("https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap");
-
 .binary-search-wrapper {
   width: 100%;
   display: flex;
@@ -16,7 +12,7 @@
   width: 70%;
 }
 
-.bs-eyebrow {
+.biseyebrow {
   font-family: "JetBrains Mono", monospace;
   font-size: 0.8rem;
   letter-spacing: 0.2rem;
@@ -26,7 +22,7 @@
   text-transform: uppercase;
 }
 
-.bs-title {
+.bistitle {
   font-size: clamp(2rem, 3.8vw, 3.8rem);
   font-weight: 400;
   line-height: -1.05;
@@ -37,13 +33,13 @@
   margin-top: 0;
 }
 
-.bs-header {
+.bisheader {
   display: flex;
   justify-content: space-between;
   margin-bottom: 2.2rem;
 }
 
-.bs-blurb {
+.bisblurb {
   font-family: "Satoshi";
   font-size: 1.05rem;
   color: #7a7a80;
@@ -51,7 +47,7 @@
   margin-top: 0;
 }
 
-.bs-complexity {
+.biscomplexity {
   display: flex;
   gap: 28px;
   font-family: "JetBrains Mono", monospace;
@@ -59,29 +55,29 @@
   color: #7a7a80;
 }
 
-.bs-complexity-label {
+.biscomplexity-label {
   font-size: 0.75rem;
   letter-spacing: 0.2em;
   margin-bottom: 6px;
   text-transform: uppercase;
 }
 
-.bs-time-value {
+.bistime-value {
   color: #ff6a3d;
 }
 
-.bs-space-value {
+.bisspace-value {
   color: #7c8cff;
 }
 
-.bs-grid {
+.bisgrid {
   display: grid;
   grid-template-columns: 1.35fr 1fr;
   gap: 24px;
   align-items: stretch;
 }
 
-.bs-stage {
+.bisstage {
   height: 20rem;
   background: #141416;
   border: 1px solid #262629;
@@ -92,7 +88,7 @@
   justify-content: center;
 }
 
-.bs-boxs {
+.bisboxs {
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -100,20 +96,20 @@
   flex-wrap: wrap;
 }
 
-.bs-box-wrapper {
+.bisbox-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.bs-index {
+.bisindex {
   margin-bottom: 4px;
   font-size: 0.6rem;
   font-family: "JetBrains Mono", monospace;
   color: #7a7a80;
 }
 
-.bs-box {
+.bisbox {
   width: 44px;
   height: 44px;
   display: flex;
@@ -135,7 +131,7 @@
   opacity: 0.35;
 }
 
-.bs-status {
+.bisstatus {
   font-family: "JetBrains Mono", monospace;
   font-size: 12px;
   color: #7a7a80;
@@ -145,7 +141,7 @@
   padding-top: 16px;
 }
 
-.bs-code-panel {
+.biscode-panel {
   background: #141416;
   border: 1px solid #262629;
   border-radius: 16px;
@@ -154,7 +150,7 @@
   flex-direction: column;
 }
 
-.bs-code-header {
+.biscode-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -162,47 +158,47 @@
   border-bottom: 1px solid #262629;
 }
 
-.bs-dummy-btns {
+.bisdummy-btns {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.bs-red-btn,
-.bs-yellow-btn,
-.bs-green-btn {
+.bisred-btn,
+.bisyellow-btn,
+.bisgreen-btn {
   width: 10px;
   height: 10px;
   border-radius: 50%;
   display: inline-block;
 }
 
-.bs-red-btn {
+.bisred-btn {
   background-color: #ff5f56;
 }
 
-.bs-yellow-btn {
+.bisyellow-btn {
   background-color: #ffbd2e;
 }
 
-.bs-green-btn {
+.bisgreen-btn {
   background-color: #27c93f;
 }
 
-.bs-filename {
+.bisfilename {
   font-family: "JetBrains Mono", monospace;
   font-size: 12px;
   color: #7a7a80;
   margin-left: 8px;
 }
 
-.bs-header-complexity {
+.bisheader-complexity {
   color: #ff6a3d;
   font-family: "JetBrains Mono", monospace;
   font-size: 0.8rem;
 }
 
-.bs-code-block {
+.biscode-block {
   margin: 0;
   padding: 16px 0;
   font-family: "JetBrains Mono", monospace;
@@ -212,19 +208,19 @@
   flex: 1;
 }
 
-.bs-code-line {
+.biscode-line {
   padding: 1px 20px;
   white-space: pre;
   border-left: 2px solid transparent;
   color: #f3f2ed;
 }
 
-.bs-code-line-active {
+.biscode-line-active {
   background: rgba(255, 106, 61, 0.1);
   border-left-color: #ff6a3d;
 }
 
-.bs-line-no {
+.bisline-no {
   display: inline-block;
   width: 20px;
   color: #4a4a4f;
@@ -232,7 +228,7 @@
   margin-right: 4px;
 }
 
-.bs-controls {
+.biscontrols {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -240,7 +236,7 @@
   margin-top: 24px;
 }
 
-.bs-icon-btn {
+.bisicon-btn {
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -254,17 +250,17 @@
   transition: border-color 0.2s, color 0.2s;
 }
 
-.bs-icon-btn:hover:not(:disabled) {
+.bisicon-btn:hover:not(:disabled) {
   color: #f3f2ed;
   border-color: rgba(243, 242, 237, 0.3);
 }
 
-.bs-icon-btn:disabled {
+.bisicon-btn:disabled {
   opacity: 0.3;
   cursor: not-allowed;
 }
 
-.bs-play-btn {
+.bisplay-btn {
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -279,11 +275,11 @@
   transition: opacity 0.2s;
 }
 
-.bs-play-btn:hover {
+.bisplay-btn:hover {
   opacity: 0.9;
 }
 
-.bs-shuffle-btn {
+.bisshuffle-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -299,12 +295,12 @@
   transition: border-color 0.2s, color 0.2s;
 }
 
-.bs-shuffle-btn:hover {
+.bisshuffle-btn:hover {
   color: #f3f2ed;
   border-color: rgba(243, 242, 237, 0.3);
 }
 
-.bs-input {
+.bisinput {
   height: 36px;
   width: 3.5rem;
   border-radius: 999px;
@@ -314,22 +310,22 @@
   border: solid #262629;
 }
 
-.bs-input:focus {
+.bisinput:focus {
   border-color: #ff6a3d;
   outline: none
 }
 
-.bs-input::-webkit-outer-spin-button,
-.bs-input::-webkit-inner-spin-button {
+.bisinput::-webkit-outer-spin-button,
+.bisinput::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-.bs-input[type="number"] {
+.bisinput[type="number"] {
   appearance: textfield;
 }
 
-.bs-speed {
+.bisspeed {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -339,12 +335,12 @@
   margin-left: auto;
 }
 
-.bs-speed input[type="range"] {
+.bisspeed input[type="range"] {
   accent-color: #ff6a3d;
   width: 130px;
 }
 
-.bs-stats {
+.bisstats {
   display: flex;
   gap: 24px;
   margin-top: 18px;
@@ -353,27 +349,27 @@
   color: #7a7a80;
 }
 
-.bs-stats b {
+.bisstats b {
   color: #f3f2ed;
   font-size: 15px;
 }
 
-.bs-steps {
+.bissteps {
   color: #7a7a80;
 }
 
-.bs-keyword {
+.biskeyword {
   color: #ff6a3d;
 }
 
-.bs-number {
+.bisnumber {
   color: #7c8cff;
 }
 
-.bs-symbol {
+.bissymbol {
   color: #7a7a80;
 }
 
-.bs-type {
+.bistype {
   color: #56b6c2;
 }

@@ -1,0 +1,23 @@
+.loading-screen {
+  background-color: #111315;
+  width: 100%;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-text {
+  font-family: "Satoshi";
+  font-size: 4rem;
+  color: #f3f2ed;
+}
+
+.loading-bar {
+  background-color: white;
+  opacity: 0.5;
+  width: 30rem;
+  height: 4px;
+  border-radius: 999px;
+}
