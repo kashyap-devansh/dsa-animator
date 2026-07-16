@@ -1,6 +1,7 @@
 import "./PlaygroundHero.css";
 import Sorting from "../Algorithms/Sorting/Sorting.jsx";
 import Searching from "../Algorithms/Searching/Searching.jsx";
+import LinkedList from "../Structures/LinkedList/LinkedList.jsx";
 
 const Playground = () => {
   return (
@@ -23,6 +24,7 @@ const Playground = () => {
 
         <Sorting />
         <Searching />
+        <LinkedList />
       </div>
     </section>
   );

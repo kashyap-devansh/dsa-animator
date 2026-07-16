@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 
 import LoadingScreen from "./components/LoadingScreen/LoadingScreen.jsx";
 
 import Playground from "./Playground/PlaygroundHero/PlaygroundHero";
 import Sorting from "./Playground/Algorithms/Sorting/Sorting";
 import Searching from "./Playground/Algorithms/Searching/Searching.jsx";
+import LinkedList from "./Playground/Structures/LinkedList/LinkedList.jsx";
 
 import Navbar from "./components/Navbar/Navbar";
 import Hero from "./components/Hero/Hero";
@@ -75,6 +76,17 @@ const App = () => {
           </>
         }
       />
+      <Route
+        path="/playground/linkedList/:slug"
+        element={
+          <>
+            <Navbar />
+            <LinkedList />
+            <Footer />
+          </>
+        }
+      />
+
     </Routes>
   );
 }
