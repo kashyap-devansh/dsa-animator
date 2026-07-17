@@ -94,6 +94,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
+  margin-bottom: 1rem;
 }
 
 .linked-list {
@@ -134,13 +135,18 @@
   margin-top: 8px;
 }
 
-.head {
+.head,
+.new-node-heading {
   color: #ff6a3d;
   font-family: "JetBrains Mono";
   font-size: 0.7rem;
   margin-top: -1rem;
   width: 44px;
   text-align: center;
+}
+
+.new-node-heading {
+  font-size: 0.8rem;
 }
 
 .null {
@@ -150,6 +156,16 @@
   margin-top: 0.5rem;
   font-size: 12px;
   font-weight: 600;
+}
+
+.new-node {
+  border-color: #ff6a3d;
+  color: #ff6a3d;
+  margin-left: 0.5rem;
+}
+
+.new-node .data {
+  padding-bottom: 5px;
 }
 
 .iah-status {

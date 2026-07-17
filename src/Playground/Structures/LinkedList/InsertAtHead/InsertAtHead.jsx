@@ -90,6 +90,8 @@ const InsertAtHead = () => {
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState(5);
 
+  const [connected, setConnected] = useState(false);
+  const [newNode, setNewNode] = useState(null);
   const [nodes, setNodes] = useState([
     {
       id: 1,
@@ -100,6 +102,26 @@ const InsertAtHead = () => {
       value: 20,
     }
   ]);
+
+  const steps = linkedListSteps(
+    newNode ? newNode.value : "",
+    nodes.map(node => node.value)
+  );
+
+  const current = steps[index];
+
+  const insertNode = () => {
+    if (inputValue === "" || isNaN(Number(inputValue))) return;
+
+    setNewNode({
+      id: Date.now(),
+      value: Number(inputValue),
+    });
+
+    setInputValue("");
+    setIndex(0);
+    setPlaying(false)
+  };
 
   const reset = () => {
     setPlaying(false);
@@ -118,22 +140,43 @@ const InsertAtHead = () => {
 
   const togglePlay = () => {
     if (index === steps.length - 1) setIndex(0);
+
+    if (!newNode) {
+      setNewNode({
+        id: Date.now(),
+        value: inputValue === "" || isNaN(Number(inputValue)) ? 0 : Number(inputValue),
+      });
+    }
     setPlaying(!playing);
   };
 
-  const insertNode = () => {
-    if (inputValue === "" || isNaN(Number(inputValue))) return;
+  useEffect(() => {
+    if (current.phase === "done" && newNode) {
+      setNodes(prev => [
+        { id: newNode.id, value: newNode.value },
+        ...prev,
+      ]);
 
-    setNodes((prev) => [
-      {
-        id: Date.now(),
-        value: Number(inputValue),
-      },
-      ...prev,
-    ]);
+      setNewNode(null);
+      setIndex(0);
+      setPlaying(false);
+    }
+  }, [current.phase]);
 
-    setInputValue("");
-  };
+  useEffect(() => {
+    if (!playing) return;
+
+    const timer = setTimeout(() => {
+      if (index < steps.length - 1) {
+        setIndex(prev => prev + 1);
+      } else {
+        setPlaying(false);
+      }
+    }, SpeedDelay[speed]);
+
+    return () => clearTimeout(timer);
+  }, [playing, index, speed, steps.length]);
+
   return (
     <div className="insert-at-head-wrapper">
       <div className="insert-at-head">
@@ -162,16 +205,34 @@ const InsertAtHead = () => {
             <div className="linked-list-container">
               <div className="linked-list">
                 {
-                  nodes.map((node, index) => (
+                  newNode && (current.phase === "created" || current.phase === "linked") && (
+                    <div className="node-wrapper">
+                      <span className="head">NEW</span>
+
+                      <div className="node-row">
+                        <div className="node">
+                          <div className="data">{newNode.value}</div>
+                        </div>
+                        {
+                          (current.phase === "linked") && (
+                            <span className="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-move-right-icon lucide-move-right"><path d="M18 8L22 12L18 16" /><path d="M2 12H22" /></svg></span>
+                          )
+                        }
+                      </div>
+                    </div>
+                  )
+                }
+                {
+                  current.list.map((value, index) => (
                     <div
                       className="node-wrapper"
-                      key={node.id}
+                      key={index}
                     >
                       {index === 0 ? <span className="head">HEAD</span> : null}
 
                       <div className="node-row">
                         <div className="node">
-                          <div className="data">{node.value}</div>
+                          <div className="data">{value}</div>
                         </div>
                         <span className="arrow"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-move-right-icon lucide-move-right"><path d="M18 8L22 12L18 16" /><path d="M2 12H22" /></svg> </span>
                       </div>
@@ -257,7 +318,7 @@ const InsertAtHead = () => {
           </span>
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 
