@@ -1,17 +1,18 @@
 import { Link, useParams } from "react-router-dom";
 import LinkedListData from "./LinkedListData";
+import InsertAtHead from "./InsertAtHead/InsertAtHead";
 import "./LinkedList.css";
 
 const LinkedList = () => {
   const { slug } = useParams();
 
   if (slug === "insert-at-head") {
-    return <InserAtHead />;
+    return <InsertAtHead />;
   }
 
   return (
     <div className="linkedList">
-      <p className="linkedList-eyebrow">SORTING</p>
+      <p className="linkedList-eyebrow">Linked List</p>
 
       <div className="linkedList-grid">
         {
