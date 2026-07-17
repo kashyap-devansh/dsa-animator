@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import "./InsertAtHead.css";
 
 function linkedListSteps(input, existingList = []) {
@@ -90,7 +89,6 @@ const InsertAtHead = () => {
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState(5);
 
-  const [connected, setConnected] = useState(false);
   const [newNode, setNewNode] = useState(null);
   const [nodes, setNodes] = useState([
     {
@@ -110,27 +108,34 @@ const InsertAtHead = () => {
 
   const current = steps[index];
 
-  const insertNode = () => {
-    if (inputValue === "" || isNaN(Number(inputValue))) return;
-
-    setNewNode({
-      id: Date.now(),
-      value: Number(inputValue),
-    });
-
-    setInputValue("");
-    setIndex(0);
-    setPlaying(false)
-  };
-
   const reset = () => {
     setPlaying(false);
     setIndex(0);
+    setNewNode(null);
+    setInputValue("");
+    setNodes([
+      {
+        id: 1,
+        value: 10,
+      },
+      {
+        id: 2,
+        value: 20,
+      }
+    ]);
   };
 
   const stepForward = () => {
     setPlaying(false);
-    if (index < steps.length - 1) setIndex(index + 1);
+    if (index < steps.length - 1) {
+      if (!newNode) {
+        setNewNode({
+          id: Date.now(),
+          value: inputValue === "" || isNaN(Number(inputValue)) ? Math.floor(Math.random() * 99) : Number(inputValue),
+        });
+      }
+      setIndex(index + 1);
+    }
   };
 
   const stepBack = () => {
@@ -144,7 +149,7 @@ const InsertAtHead = () => {
     if (!newNode) {
       setNewNode({
         id: Date.now(),
-        value: inputValue === "" || isNaN(Number(inputValue)) ? 0 : Number(inputValue),
+        value: inputValue === "" || isNaN(Number(inputValue)) ? Math.floor(Math.random() * 99) : Number(inputValue),
       });
     }
     setPlaying(!playing);
@@ -210,12 +215,19 @@ const InsertAtHead = () => {
                       <span className="head">NEW</span>
 
                       <div className="node-row">
-                        <div className="node">
+                        <div
+                          className="node"
+                          style={{
+                            marginRight: current.phase !== "linked" ? "24px" : "0px",
+                            color: current.phase === "linked" ? "#b4ff39" : "#ff6a3d",
+                            borderColor: current.phase === "linked" ? "#b4ff39" : "#ff6a3d"
+                          }}
+                        >
                           <div className="data">{newNode.value}</div>
                         </div>
                         {
                           (current.phase === "linked") && (
-                            <span className="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-move-right-icon lucide-move-right"><path d="M18 8L22 12L18 16" /><path d="M2 12H22" /></svg></span>
+                            <span className="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#b4ff39" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-move-right-icon lucide-move-right"><path d="M18 8L22 12L18 16" /><path d="M2 12H22" /></svg></span>
                           )
                         }
                       </div>
@@ -242,7 +254,7 @@ const InsertAtHead = () => {
                 <div className="null node">NULL</div>
               </div>
             </div>
-            <p className="iah-status"></p>
+            <p className="iah-status">{current.description}</p>
           </div>
 
           <div className="iah-code-panel">
@@ -260,7 +272,7 @@ const InsertAtHead = () => {
               {CodeLines.map((line, i) => (
                 <div
                   key={i}
-                  className="iah-code-line"
+                  className={`iah-code-line ${current.codeLine === i + 1 ? "iah-code-line-active" : ""}`}
                 >
                   <span className="iah-line-no">{i + 1}</span>
                   {line}
@@ -292,16 +304,14 @@ const InsertAtHead = () => {
           </button>
 
           <input
+            className="bis-input"
             type="number"
-            className="iah-input"
             placeholder="value"
             value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
+            onChange={(e) => {
+              setInputValue(Number(e.target.value))
+            }}
           />
-
-          <button className="iah-shuffle-btn" onClick={insertNode}>
-            Insert
-          </button>
 
           <div className="iah-speed">
             <span>SPEED</span>
@@ -309,6 +319,7 @@ const InsertAtHead = () => {
           </div>
 
           <span className="iah-steps">
+            {index + 1} / {steps.length}
           </span>
         </div>
 

@@ -337,6 +337,11 @@
   border-color: rgba(243, 242, 237, 0.3);
 }
 
+.iah-speed input[type="range"] {
+  accent-color: #ff6a3d;
+  width: 130px;
+}
+
 .iah-speed {
   display: flex;
   align-items: center;
