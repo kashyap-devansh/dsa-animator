@@ -1,6 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import LinkedListData from "./LinkedListData";
 import InsertAtHead from "./InsertAtHead/InsertAtHead";
+import InsertAtTail from "./InsertAtTail/InsertAtTail";
 import "./LinkedList.css";
 
 const LinkedList = () => {
@@ -8,6 +9,10 @@ const LinkedList = () => {
 
   if (slug === "insert-at-head") {
     return <InsertAtHead />;
+  }
+
+  if (slug === "insert-at-tail") {
+    return <InsertAtTail />;
   }
 
   return (
