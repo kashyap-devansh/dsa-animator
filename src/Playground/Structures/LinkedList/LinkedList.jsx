@@ -3,6 +3,7 @@ import LinkedListData from "./LinkedListData";
 import InsertAtHead from "./InsertAtHead/InsertAtHead";
 import InsertAtTail from "./InsertAtTail/InsertAtTail";
 import InsertAtPosition from "./InsertAtPosition/InsertAtPosition.jsx";
+import DeleteFromHead from "./DeleteFromHead/DeleteFromHead.jsx";
 import "./LinkedList.css";
 
 const LinkedList = () => {
@@ -18,6 +19,10 @@ const LinkedList = () => {
 
   if (slug === "insert-at-position") {
     return <InsertAtPosition />
+  }
+
+  if (slug === "delete-from-head") {
+    return <DeleteFromHead />
   }
 
   return (
