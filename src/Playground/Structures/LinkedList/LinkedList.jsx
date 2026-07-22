@@ -4,6 +4,7 @@ import InsertAtHead from "./InsertAtHead/InsertAtHead";
 import InsertAtTail from "./InsertAtTail/InsertAtTail";
 import InsertAtPosition from "./InsertAtPosition/InsertAtPosition.jsx";
 import DeleteFromHead from "./DeleteFromHead/DeleteFromHead.jsx";
+import DeleteFromTail from "./DeleteFromTail/DeleteFromTail.jsx";
 import "./LinkedList.css";
 
 const LinkedList = () => {
@@ -23,6 +24,10 @@ const LinkedList = () => {
 
   if (slug === "delete-from-head") {
     return <DeleteFromHead />
+  }
+
+  if (slug === "delete-from-tail") {
+    return <DeleteFromTail />
   }
 
   return (

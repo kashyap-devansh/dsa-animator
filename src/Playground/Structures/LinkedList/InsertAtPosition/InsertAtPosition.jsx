@@ -293,11 +293,11 @@ const InsertAtPosition = () => {
     <div className="insert-at-position-wrapper">
       <div className="insert-at-position">
         <p className="iap-eyebrow">linked list</p>
-        <h1 className="iap-title">Insert At Tail</h1>
+        <h1 className="iap-title">Insert At Position</h1>
 
         <div className="iap-header">
           <p className="iap-blurb">
-            Traverse to the last node, then connect the new node at the end.
+            Traverse to the desired position, then connect the new node in between.
           </p>
 
           <div className="iap-complexity">
