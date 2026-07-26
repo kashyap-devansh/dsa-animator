@@ -41,20 +41,6 @@ const LinkedListData = [
     slug: "delete-from-position",
     active: true,
   },
-  {
-    title: "Delete by Key",
-    complexity: "O(n)",
-    description: "Finds and removes the first node containing the given key.",
-    slug: "delete-by-key",
-    active: true,
-  },
-  {
-    title: "Search Node",
-    complexity: "O(n)",
-    description: "Traverses the linked list to locate a node with the given value.",
-    slug: "search-node",
-    active: true,
-  },
 ];
 
 export default LinkedListData;
