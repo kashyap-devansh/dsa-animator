@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import "../InsertAtPosition/InsertAtPosition.css";
+import "./DeleteFromPosition.css";
 
 function linkedListSteps(position = null, existingList = []) {
   const list = [...existingList];
@@ -76,117 +76,117 @@ function linkedListSteps(position = null, existingList = []) {
 
 const CodeLines = [
   <>
-    <span className="iap-type">void</span> deleteFromPosition
-    <span className="iap-symbol">(</span>
-    <span className="iap-type">Node*&nbsp;</span> head
-    <span className="iap-symbol">,</span>{" "}
-    <span className="iap-type">int</span> position
-    <span className="iap-symbol">)</span>{" "}
-    <span className="iap-symbol">{"{"}</span>
+    <span className="dfp-type">void</span> deleteFromPosition
+    <span className="dfp-symbol">(</span>
+    <span className="dfp-type">Node*&nbsp;</span> head
+    <span className="dfp-symbol">,</span>{" "}
+    <span className="dfp-type">int</span> position
+    <span className="dfp-symbol">)</span>{" "}
+    <span className="dfp-symbol">{"{"}</span>
   </>,
 
   <>
     &nbsp;&nbsp;
-    <span className="iap-keyword">if</span>{" "}
-    <span className="iap-symbol">(</span>position{" "}
-    <span className="iap-symbol">==</span>{" "}
-    <span className="iap-number">0</span>
-    <span className="iap-symbol">)</span>{" "}
-    <span className="iap-symbol">{"{"}</span>
+    <span className="dfp-keyword">if</span>{" "}
+    <span className="dfp-symbol">(</span>position{" "}
+    <span className="dfp-symbol">==</span>{" "}
+    <span className="dfp-number">0</span>
+    <span className="dfp-symbol">)</span>{" "}
+    <span className="dfp-symbol">{"{"}</span>
   </>,
 
   <>
     &nbsp;&nbsp;&nbsp;&nbsp;
-    <span className="iap-type">Node*</span> temp{" "}
-    <span className="iap-symbol">=</span> head
-    <span className="iap-symbol">;</span>
+    <span className="dfp-type">Node*</span> temp{" "}
+    <span className="dfp-symbol">=</span> head
+    <span className="dfp-symbol">;</span>
   </>,
 
   <>
     &nbsp;&nbsp;&nbsp;&nbsp;
-    head <span className="iap-symbol">=</span> head
-    <span className="iap-symbol">-&gt;</span>next
-    <span className="iap-symbol">;</span>
+    head <span className="dfp-symbol">=</span> head
+    <span className="dfp-symbol">-&gt;</span>next
+    <span className="dfp-symbol">;</span>
   </>,
 
   <>
     &nbsp;&nbsp;&nbsp;&nbsp;
-    <span className="iap-keyword">delete</span> temp
-    <span className="iap-symbol">;</span>
+    <span className="dfp-keyword">delete</span> temp
+    <span className="dfp-symbol">;</span>
   </>,
 
   <>
     &nbsp;&nbsp;&nbsp;&nbsp;
-    <span className="iap-keyword">return</span>
-    <span className="iap-symbol">;</span>
+    <span className="dfp-keyword">return</span>
+    <span className="dfp-symbol">;</span>
   </>,
 
   <>
     &nbsp;&nbsp;
-    <span className="iap-symbol">{"}"}</span>
+    <span className="dfp-symbol">{"}"}</span>
   </>,
 
   <>
     &nbsp;&nbsp;
-    <span className="iap-type">Node*</span> temp{" "}
-    <span className="iap-symbol">=</span> head
-    <span className="iap-symbol">;</span>
+    <span className="dfp-type">Node*</span> temp{" "}
+    <span className="dfp-symbol">=</span> head
+    <span className="dfp-symbol">;</span>
   </>,
 
   <>
     &nbsp;&nbsp;
-    <span className="iap-keyword">for</span>{" "}
-    <span className="iap-symbol">(</span>
-    <span className="iap-type">int</span> i{" "}
-    <span className="iap-symbol">=</span> 0;
-    {" "}i <span className="iap-symbol">&lt;</span> position - 1;
-    {" "}i<span className="iap-symbol">++</span>
-    <span className="iap-symbol">)</span>{" "}
-    <span className="iap-symbol">{"{"}</span>
+    <span className="dfp-keyword">for</span>{" "}
+    <span className="dfp-symbol">(</span>
+    <span className="dfp-type">int</span> i{" "}
+    <span className="dfp-symbol">=</span> 0;
+    {" "}i <span className="dfp-symbol">&lt;</span> position - 1;
+    {" "}i<span className="dfp-symbol">++</span>
+    <span className="dfp-symbol">)</span>{" "}
+    <span className="dfp-symbol">{"{"}</span>
   </>,
 
   <>
     &nbsp;&nbsp;&nbsp;&nbsp;
-    temp <span className="iap-symbol">=</span> temp
-    <span className="iap-symbol">-&gt;</span>next
-    <span className="iap-symbol">;</span>
+    temp <span className="dfp-symbol">=</span> temp
+    <span className="dfp-symbol">-&gt;</span>next
+    <span className="dfp-symbol">;</span>
   </>,
 
   <>
     &nbsp;&nbsp;
-    <span className="iap-symbol">{"}"}</span>
+    <span className="dfp-symbol">{"}"}</span>
   </>,
 
   <>
     &nbsp;&nbsp;
-    <span className="iap-type">Node*</span> nodeToDelete{" "}
-    <span className="iap-symbol">=</span> temp
-    <span className="iap-symbol">-&gt;</span>next
-    <span className="iap-symbol">;</span>
+    <span className="dfp-type">Node*</span> nodeToDelete{" "}
+    <span className="dfp-symbol">=</span> temp
+    <span className="dfp-symbol">-&gt;</span>next
+    <span className="dfp-symbol">;</span>
   </>,
 
   <>
     &nbsp;&nbsp;
-    temp<span className="iap-symbol">-&gt;</span>next{" "}
-    <span className="iap-symbol">=</span>{" "}
-    nodeToDelete<span className="iap-symbol">-&gt;</span>next
-    <span className="iap-symbol">;</span>
+    temp<span className="dfp-symbol">-&gt;</span>next{" "}
+    <span className="dfp-symbol">=</span>{" "}
+    nodeToDelete<span className="dfp-symbol">-&gt;</span>next
+    <span className="dfp-symbol">;</span>
   </>,
 
   <>
     &nbsp;&nbsp;
-    <span className="iap-keyword">delete</span> nodeToDelete
-    <span className="iap-symbol">;</span>
+    <span className="dfp-keyword">delete</span> nodeToDelete
+    <span className="dfp-symbol">;</span>
   </>,
 
   <>
     &nbsp;&nbsp;
-    <span className="iap-keyword">return</span>
-    <span className="iap-symbol">;</span>
+    <span className="dfp-keyword">return</span>
+    <span className="dfp-symbol">;</span>
   </>,
 
   <>
-    <span className="iap-symbol">{"}"}</span>
+    <span className="dfp-symbol">{"}"}</span>
   </>,
 ];
 
@@ -204,7 +204,6 @@ const SpeedDelay = {
 };
 
 const DeleteFromPosition = () => {
-  const [inputValue, setInputValue] = useState("");
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState(5);
@@ -252,7 +251,6 @@ const DeleteFromPosition = () => {
   const reset = () => {
     setPlaying(false);
     setIndex(0);
-    setInputValue("");
     setNodes([
       {
         id: 1,
@@ -339,30 +337,30 @@ const DeleteFromPosition = () => {
   }, [playing, index, speed, steps.length]);
 
   return (
-    <div className="insert-at-position-wrapper">
-      <div className="insert-at-position">
-        <p className="iap-eyebrow">linked list</p>
-        <h1 className="iap-title">Insert At Position</h1>
+    <div className="delete-from-position-wrapper">
+      <div className="delete-from-position">
+        <p className="dfp-eyebrow">linked list</p>
+        <h1 className="dfp-title">Delete From Position</h1>
 
-        <div className="iap-header">
-          <p className="iap-blurb">
-            Traverse to the desired position, then connect the new node in between.
+        <div className="dfp-header">
+          <p className="dfp-blurb">
+            Traverse to the desired position, then adjust the links to bypass the node and delete it.
           </p>
 
-          <div className="iap-complexity">
+          <div className="dfp-complexity">
             <div>
-              <div className="iap-complexity-label">time</div>
-              <div className="iap-time-value">O(n)</div>
+              <div className="dfp-complexity-label">time</div>
+              <div className="dfp-time-value">O(n)</div>
             </div>
             <div>
-              <div className="iap-complexity-label">space</div>
-              <div className="iap-space-value">O(1)</div>
+              <div className="dfp-complexity-label">space</div>
+              <div className="dfp-space-value">O(1)</div>
             </div>
           </div>
         </div>
 
-        <div className="iap-grid">
-          <div className="iap-stage">
+        <div className="dfp-grid">
+          <div className="dfp-stage">
             <div className="linked-list-container">
               <div className="linked-list">
                 {
@@ -380,8 +378,9 @@ const DeleteFromPosition = () => {
                             <div
                               className="node"
                               style={{
-                                color: current.phase === "traversing" && current.active === index ? "#ff6a3d" : undefined,
-                                borderColor: current.phase === "traversing" && current.active === index ? "#ff6a3d" : undefined,
+                                color: (current.phase === "done") && index === prevPosition ? "#b4ff39" : current.phase === "traversing" && current.active === index ? "#ff6a3d" : undefined,
+                                borderColor: (current.phase === "done") && index === prevPosition ? "#b4ff39" : current.phase === "traversing" && current.active === index ? "#ff6a3d" : undefined,
+                                transform: current.phase === "linking" && index === prevPosition + 1 ? "translateY(-100px)" : ""
                               }}
                             >
                               <div className="data">{value}</div>
@@ -393,6 +392,17 @@ const DeleteFromPosition = () => {
                               }}
                             > <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-move-right-icon lucide-move-right"><path d="M18 8L22 12L18 16" /><path d="M2 12H22" /></svg> </span>
                           </div>
+
+                          {
+                            current.active === index && (current.phase === "deleting" || current.phase === "traversing" || current.phase === "deleted") && (
+                              <span
+                                className="head"
+                                style={{
+                                  transform: "translateY(30px)"
+                                }}
+                              >TEMP</span>
+                            )
+                          }
                         </div>
                       </Fragment>
                     );
@@ -401,28 +411,28 @@ const DeleteFromPosition = () => {
                 <div className="null node">NULL</div>
               </div>
             </div>
-            <p className="iap-status">{current.description}</p>
+            <p className="dfp-status">{current.description}</p>
           </div>
 
-          <div className="iap-code-panel">
-            <div className="iap-code-header">
-              <div className="iap-dummy-btns">
-                <span className="iap-red-btn"></span>
-                <span className="iap-yellow-btn"></span>
-                <span className="iap-green-btn"></span>
-                <span className="iap-filename">insert_at_tail.cpp</span>
+          <div className="dfp-code-panel">
+            <div className="dfp-code-header">
+              <div className="dfp-dummy-btns">
+                <span className="dfp-red-btn"></span>
+                <span className="dfp-yellow-btn"></span>
+                <span className="dfp-green-btn"></span>
+                <span className="dfp-filename">delete_from_position.cpp</span>
               </div>
-              <span className="iap-header-complexity">O(n)</span>
+              <span className="dfp-header-complexity">O(n)</span>
             </div>
 
-            <pre className="iap-code-block">
+            <pre className="dfp-code-block">
               {
                 CodeLines.map((line, i) => (
                   <div
                     key={i}
-                    className={`iap-code-line ${current.codeLine === i + 1 ? "iap-code-line-active" : ""}`}
+                    className={`dfp-code-line ${current.codeLine === i + 1 ? "dfp-code-line-active" : ""}`}
                   >
-                    <span className="iap-line-no">{i + 1}</span>
+                    <span className="dfp-line-no">{i + 1}</span>
                     {line}
                   </div>
                 ))
@@ -431,9 +441,9 @@ const DeleteFromPosition = () => {
           </div>
         </div>
 
-        <div className="iap-controls">
+        <div className="dfp-controls">
           <button
-            className="iap-icon-btn"
+            className="dfp-icon-btn"
             onClick={reset}
             style={{
               transform: "translateY(-70px)"
@@ -443,7 +453,7 @@ const DeleteFromPosition = () => {
           </button>
 
           <button
-            className="iap-icon-btn"
+            className="dfp-icon-btn"
             onClick={stepBack}
             disabled={index === 0}
             style={{
@@ -454,7 +464,7 @@ const DeleteFromPosition = () => {
           </button>
 
           <button
-            className="iap-play-btn"
+            className="dfp-play-btn"
             onClick={togglePlay}
             style={{
               transform: "translateY(-70px)"
@@ -468,7 +478,7 @@ const DeleteFromPosition = () => {
           </button>
 
           <button
-            className="iap-icon-btn"
+            className="dfp-icon-btn"
             onClick={stepForward}
             disabled={false}
             style={{
@@ -491,18 +501,18 @@ const DeleteFromPosition = () => {
             }}
           />
 
-          <div className="iap-speed">
+          <div className="dfp-speed">
             <span>SPEED</span>
             <input type="range" min="1" max="10" value={speed} onChange={(e) => setSpeed(Number(e.target.value))} />
           </div>
 
-          <span className="iap-steps">
+          <span className="dfp-steps">
             {index + 1} / {steps.length}
           </span>
         </div>
 
         <div
-          className="iap-stats"
+          className="dfp-stats"
           style={{
             transform: "translateY(-70px)"
           }}
