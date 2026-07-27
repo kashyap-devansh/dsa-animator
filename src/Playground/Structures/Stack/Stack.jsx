@@ -11,10 +11,10 @@ const Stack = () => {
   }
 
   return (
-    <div className="stack">
-      <p className="stack-eyebrow">Linked List</p>
+    <div className="stack-ui">
+      <p className="stack-ui-eyebrow">Linked List</p>
 
-      <div className="stack-grid">
+      <div className="stack-ui-grid">
         {
           StackData.map((item) => (
             <Link

@@ -19,15 +19,15 @@ function stackSteps(input, existingStack = []) {
 
   save(1, stack.length ? "Current Stack." : "Stack is empty", "idle");
 
-  save(5, `Create new element with value ${input}`, "created");
+  save(2, `Create new element with value ${input}`, "created");
 
-  save(6, `Push ${input} onto the top of the stack`, "linked");
+  save(3, `Push ${input} onto the top of the stack`, "linked");
 
-  stack.unshift(input);
+  stack.push(input);
 
-  save(6, `${input} is now the top element`, "placed", stack.length - 1);
+  save(4, `${input} is now the top element`, "placed", stack.length - 1);
 
-  save(7, "Push operation completed.", "done");
+  save(5, "Push operation completed.", "done");
 
   return steps;
 }
@@ -112,7 +112,24 @@ const Push = () => {
     {
       id: 1,
       value: 10,
-    }]);
+    },
+    {
+      id: 2,
+      value: 20,
+    },
+    {
+      id: 3,
+      value: 30,
+    },
+    {
+      id: 4,
+      value: 40,
+    },
+    {
+      id: 5,
+      value: 50,
+    },
+  ]);
 
   const steps = stackSteps(newElement ? newElement.value : "", elements.map(element => element.value));
 
@@ -127,18 +144,29 @@ const Push = () => {
       {
         id: 1,
         value: 10,
-      }
+      },
+      {
+        id: 2,
+        value: 20,
+      },
+      {
+        id: 3,
+        value: 30,
+      },
+      {
+        id: 4,
+        value: 40,
+      },
+      {
+        id: 5,
+        value: 50,
+      },
     ])
   };
 
   const stepForward = () => {
     setPlaying(false);
     if (index < steps.length - 1) {
-      if (elements.length >= 5) {
-        reset();
-        return;
-      }
-
       if (!newElement) {
         setNewElement({
           id: Date.now(),
@@ -156,11 +184,6 @@ const Push = () => {
 
   const togglePlay = () => {
     if (index === steps.length - 1) setIndex(0);
-
-    if (elements.length >= 5) {
-      reset();
-      return;
-    }
 
     if (!newElement) {
       setNewElement({
@@ -216,7 +239,7 @@ const Push = () => {
               <div className="p-time-value">O(1)</div>
             </div>
             <div>
-              <div className="p-complexity-label">space</div>
+              <div className="p-complexity-label"></div>
               <div className="p-space-value">O(1)</div>
             </div>
           </div>
@@ -226,7 +249,15 @@ const Push = () => {
           <div className="p-stage">
             <div className="stack-container">
               <div className="stack">
-
+                {
+                  newElement && (current.phase === "created" || current.phase === "linked") && (
+                    <div className="element-wrapper">
+                      <div className="element">
+                        <div className="data">{newElement.value}</div>
+                      </div>
+                    </div>
+                  )
+                }
                 {
                   current.stack.map((value, index) => (
                     <div
@@ -241,6 +272,7 @@ const Push = () => {
                 }
               </div>
             </div>
+
             <p className="p-status">{current.description}</p>
           </div>
 
@@ -293,11 +325,11 @@ const Push = () => {
 
           <input
             className="p-input"
-            type="text"
+            type="number"
             placeholder="value"
             value={inputValue}
             onChange={(e) => {
-              setInputValue(Number(e.target.value))
+              setInputValue(e.target.value)
             }}
           />
 

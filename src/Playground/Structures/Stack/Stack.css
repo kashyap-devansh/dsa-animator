@@ -1,9 +1,9 @@
-.stack {
+.stack-ui {
   width: 100%;
   margin-bottom: 3.5rem;
 }
 
-.stack-eyebrow {
+.stack-ui-eyebrow {
   width: 100%;
   padding-bottom: 16px;
   margin-bottom: 24px;
@@ -17,7 +17,7 @@
   text-transform: uppercase;
 }
 
-.stack-grid {
+.stack-ui-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 15px;
