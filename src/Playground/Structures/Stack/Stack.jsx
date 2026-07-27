@@ -1,9 +1,14 @@
 import { Link, useParams } from "react-router-dom";
 import StackData from "./Stack.js";
+import Push from "./Push/Push.jsx";
 import "./Stack.css";
 
 const Stack = () => {
   const { slug } = useParams();
+
+  if (slug === "push") {
+    return <Push />
+  }
 
   return (
     <div className="stack">
