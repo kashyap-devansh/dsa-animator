@@ -1,6 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import StackData from "./Stack.js";
 import Push from "./Push/Push.jsx";
+import Pop from "./Pop/Pop.jsx";
 import "./Stack.css";
 
 const Stack = () => {
@@ -8,6 +9,10 @@ const Stack = () => {
 
   if (slug === "push") {
     return <Push />
+  }
+
+  if (slug === "pop") {
+    return <Pop />
   }
 
   return (

@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
-import "./Push.css";
+import "./Pop.css";
 
-function stackSteps(input, existingStack = []) {
+function stackSteps(existingStack = []) {
   const stack = [...existingStack];
   const steps = [];
 
   function save(codeLine, description, phase, active = -1) {
     steps.push({
       stack: [...stack],
-      value: input,
       phase,
       codeLine,
       description,
@@ -19,25 +18,28 @@ function stackSteps(input, existingStack = []) {
 
   save(1, stack.length ? "Current Stack." : "Stack is empty", "idle");
 
-  save(5, `Create new element with value ${input}`, "created");
+  if (!stack.length) {
+    save(2, "Stack Underflow. Nothing to pop.", "done");
+    return steps;
+  }
 
-  save(6, `Push ${input} onto the top of the stack`, "linked");
+  save(5, `Top element is ${stack[0]}`, "created", 0);
 
-  stack.unshift(input);
+  save(6, `Pop ${stack[0]} from the top of the stack`, "linked", 0);
 
-  save(6, `${input} is now the top element`, "placed", stack.length - 1);
+  const removed = stack.shift();
 
-  save(7, "Push operation completed.", "done");
+  save(6, stack.length ? `${stack[0]} is now the top element` : "Stack is now empty", "placed", stack.length ? 0 : -1);
+
+  save(7, `Pop operation completed. Removed ${removed}.`, "done");
 
   return steps;
 }
 
 const CodeLines = [
   <>
-    <span className="dfp-type">void</span> push
-    <span className="dfp-symbol">(</span>
-    <span className="dfp-type">int</span> value
-    <span className="dfp-symbol">)</span>{" "}
+    <span className="dfp-type">int</span> pop
+    <span className="dfp-symbol">()</span>{" "}
     <span className="dfp-symbol">{"{"}</span>
   </>,
 
@@ -45,7 +47,7 @@ const CodeLines = [
     &nbsp;&nbsp;
     <span className="dfp-keyword">if</span>{" "}
     <span className="dfp-symbol">(</span>
-    top <span className="dfp-symbol">==</span> MAX - 1
+    top <span className="dfp-symbol">==</span> -1
     <span className="dfp-symbol">)</span>{" "}
     <span className="dfp-symbol">{"{"}</span>
   </>,
@@ -54,32 +56,34 @@ const CodeLines = [
     &nbsp;&nbsp;&nbsp;&nbsp;
     <span className="dfp-function">cout</span>
     <span className="dfp-symbol"> &lt;&lt; </span>
-    <span className="dfp-string">"Stack Overflow"</span>
+    <span className="dfp-string">"Stack Underflow"</span>
     <span className="dfp-symbol">;</span>
   </>,
 
   <>
     &nbsp;&nbsp;&nbsp;&nbsp;
-    <span className="dfp-keyword">return</span>
+    <span className="dfp-keyword">return</span>{" "}
+    <span className="dfp-number">-1</span>
     <span className="dfp-symbol">;</span>
   </>,
 
   <>
     &nbsp;&nbsp;
-    top<span className="dfp-symbol">++;</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;
-    stack<span className="dfp-symbol">[</span>top
-    <span className="dfp-symbol">]</span>{" "}
-    <span className="dfp-symbol">=</span> value
+    <span className="dfp-type">int</span> value{" "}
+    <span className="dfp-symbol">=</span> stack
+    <span className="dfp-symbol">[</span>top
+    <span className="dfp-symbol">]</span>
     <span className="dfp-symbol">;</span>
   </>,
 
   <>
     &nbsp;&nbsp;
-    <span className="dfp-keyword">return</span>
+    top<span className="dfp-symbol">--;</span>
+  </>,
+
+  <>
+    &nbsp;&nbsp;
+    <span className="dfp-keyword">return</span> value
     <span className="dfp-symbol">;</span>
   </>,
 
@@ -101,49 +105,71 @@ const SpeedDelay = {
   10: 90,
 };
 
-const Push = () => {
-  const [inputValue, setInputValue] = useState("");
+const Pop = () => {
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState(5);
 
-  const [newElement, setNewElement] = useState(null);
   const [elements, setElements] = useState([
     {
       id: 1,
       value: 10,
-    }]);
+    },
+    {
+      id: 2,
+      value: 20,
+    },
+    {
+      id: 3,
+      value: 30,
+    },
+    {
+      id: 4,
+      value: 40,
+    },
+    {
+      id: 5,
+      value: 50,
+    },
+  ]);
 
-  const steps = stackSteps(newElement ? newElement.value : "", elements.map(element => element.value));
+  const steps = stackSteps(elements.map(element => element.value));
 
   const current = steps[index];
 
   const reset = () => {
     setPlaying(false);
     setIndex(0);
-    setNewElement(null);
-    setInputValue("");
     setElements([
       {
         id: 1,
         value: 10,
-      }
+      },
+      {
+        id: 2,
+        value: 20,
+      },
+      {
+        id: 3,
+        value: 30,
+      },
+      {
+        id: 4,
+        value: 40,
+      },
+      {
+        id: 5,
+        value: 50,
+      },
     ])
   };
 
   const stepForward = () => {
     setPlaying(false);
     if (index < steps.length - 1) {
-      if (elements.length >= 5) {
+      if (elements.length === 0) {
         reset();
         return;
-      }
-
-      if (!newElement) {
-        setNewElement({
-          id: Date.now(),
-          value: inputValue === "" || isNaN(Number(inputValue)) ? Math.floor(Math.random() * 99) : Number(inputValue),
-        });
       }
       setIndex(index + 1);
     }
@@ -157,32 +183,20 @@ const Push = () => {
   const togglePlay = () => {
     if (index === steps.length - 1) setIndex(0);
 
-    if (elements.length >= 5) {
+    if (elements.length === 0) {
       reset();
       return;
-    }
-
-    if (!newElement) {
-      setNewElement({
-        id: Date.now(),
-        value: inputValue === "" || isNaN(Number(inputValue)) ? Math.floor(Math.random() * 99) : Number(inputValue),
-      });
     }
     setPlaying(!playing);
   };
 
   useEffect(() => {
-    if (current.phase === "done" && newElement) {
-      setElements(prev => [
-        { id: newElement.id, value: newElement.value },
-        ...prev,
-      ]);
+    if (current.phase !== "done") return;
+    setElements(prev => prev.slice(1));
 
-      setNewElement(null);
-      setIndex(0);
-      setPlaying(false);
-    }
-  }, [current.phase, newElement]);
+    setIndex(0);
+    setPlaying(false);
+  }, [current]);
 
   useEffect(() => {
     if (!playing) return;
@@ -203,11 +217,11 @@ const Push = () => {
     <div className="push-wrapper">
       <div className="push">
         <p className="p-eyebrow">stack</p>
-        <h1 className="p-title">Push</h1>
+        <h1 className="p-title">Pop</h1>
 
         <div className="p-header">
           <p className="i-blurb">
-            Every new element is added to the top of the stack.
+            Each pop operation removes the top element from the stack.
           </p>
 
           <div className="p-complexity">
@@ -250,7 +264,7 @@ const Push = () => {
                 <span className="p-red-btn"></span>
                 <span className="p-yellow-btn"></span>
                 <span className="p-green-btn"></span>
-                <span className="p-filename">push.cpp</span>
+                <span className="p-filename">pop.cpp</span>
               </div>
               <span className="p-header-complexity">O(1)</span>
             </div>
@@ -291,16 +305,6 @@ const Push = () => {
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 4v16" /><path d="M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z" /></svg>
           </button>
 
-          <input
-            className="p-input"
-            type="text"
-            placeholder="value"
-            value={inputValue}
-            onChange={(e) => {
-              setInputValue(Number(e.target.value))
-            }}
-          />
-
           <div className="p-speed">
             <span>SPEED</span>
             <input type="range" min="1" max="10" value={speed} onChange={(e) => setSpeed(Number(e.target.value))} />
@@ -321,4 +325,4 @@ const Push = () => {
   )
 }
 
-export default Push;
+export default Pop;
