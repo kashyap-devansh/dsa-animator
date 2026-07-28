@@ -8,6 +8,7 @@ import Sorting from "./Playground/Algorithms/Sorting/Sorting";
 import Searching from "./Playground/Algorithms/Searching/Searching.jsx";
 import LinkedList from "./Playground/Structures/LinkedList/LinkedList.jsx";
 import Stack from "./Playground/Structures/Stack/Stack.jsx";
+import Queue from "./Playground/Structures/Queue/Queue.jsx";
 
 import Navbar from "./components/Navbar/Navbar";
 import Hero from "./components/Hero/Hero";
@@ -94,6 +95,17 @@ const App = () => {
           <>
             <Navbar />
             <Stack />
+            <Footer />
+          </>
+        }
+      />
+
+      <Route
+        path="/playground/queue/:slug"
+        element={
+          <>
+            <Navbar />
+            <Queue />
             <Footer />
           </>
         }

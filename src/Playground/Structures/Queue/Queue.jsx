@@ -1,31 +1,26 @@
+import QueueData from "./QueueData.js"
 import { Link, useParams } from "react-router-dom";
-import StackData from "./Stack.js";
-import Push from "./Push/Push.jsx";
-import Pop from "./Pop/Pop.jsx";
-import "./Stack.css";
+import Enqueue from "./Enqueue/Enqueue.jsx";
+import "./Queue.css";
 
-const Stack = () => {
+const Queue = () => {
   const { slug } = useParams();
 
-  if (slug === "push") {
-    return <Push />
-  }
-
-  if (slug === "pop") {
-    return <Pop />
+  if (slug === "enqueue") {
+    return <Enqueue />;
   }
 
   return (
-    <div className="stack-ui">
-      <p className="stack-ui-eyebrow">Stack</p>
+    <div className="queue-ui">
+      <p className="queue-ui-eyebrow">Queue</p>
 
-      <div className="stack-ui-grid">
+      <div className="queue-ui-grid">
         {
-          StackData.map((item) => (
+          QueueData.map((item) => (
             <Link
               key={item.slug}
-              to={`/playground/stack/${item.slug}`}
-              className={`stack-card ${item.active ? "active" : "locked"}`}
+              to={`/playground/queue/${item.slug}`}
+              className={`queue-card ${item.active ? "active" : "locked"}`}
               onClick={(e) => !item.active && e.preventDefault()}
             >
               <div className="card-top">
@@ -46,4 +41,4 @@ const Stack = () => {
   );
 };
 
-export default Stack;
+export default Queue;

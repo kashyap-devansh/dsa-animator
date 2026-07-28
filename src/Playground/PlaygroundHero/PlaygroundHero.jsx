@@ -3,6 +3,7 @@ import Sorting from "../Algorithms/Sorting/Sorting.jsx";
 import Searching from "../Algorithms/Searching/Searching.jsx";
 import LinkedList from "../Structures/LinkedList/LinkedList.jsx";
 import Stack from "../Structures/Stack/Stack.jsx";
+import Queue from "../Structures/Queue/Queue.jsx";
 
 const Playground = () => {
   return (
@@ -27,6 +28,7 @@ const Playground = () => {
         <Searching />
         <LinkedList />
         <Stack />
+        <Queue />
       </div>
     </section>
   );
