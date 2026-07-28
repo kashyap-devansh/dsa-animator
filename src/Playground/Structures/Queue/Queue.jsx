@@ -1,6 +1,7 @@
 import QueueData from "./QueueData.js"
 import { Link, useParams } from "react-router-dom";
 import Enqueue from "./Enqueue/Enqueue.jsx";
+import Dequeue from "./Dequeue/Dequeue.jsx";
 import "./Queue.css";
 
 const Queue = () => {
@@ -8,6 +9,10 @@ const Queue = () => {
 
   if (slug === "enqueue") {
     return <Enqueue />;
+  }
+
+  if (slug === "dequeue") {
+    return <Dequeue />;
   }
 
   return (

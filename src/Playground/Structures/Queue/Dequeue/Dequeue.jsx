@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
-import "./Enqueue.css";
+import "../Enqueue/Enqueue.css";
 
-function queueSteps(input, existingQueue = []) {
+function queueSteps(existingQueue = []) {
   const queue = [...existingQueue];
   const steps = [];
 
   function save(codeLine, description, phase, active = -1) {
     steps.push({
       queue: [...queue],
-      value: input,
+      value: queue[0] ?? null,
       phase,
       codeLine,
       description,
@@ -19,15 +19,21 @@ function queueSteps(input, existingQueue = []) {
 
   save(1, queue.length ? "Current Queue." : "Queue is empty", "idle");
 
-  save(5, `Create new element with value ${input}`, "created");
+  if (queue.length === 0) {
+    save(2, "Queue Underflow", "underflow");
+    save(3, "Dequeue operation cannot be performed.", "done");
+    return steps;
+  }
 
-  save(6, `Enqueue ${input} at the rear of the queue`, "linked");
+  save(5, `Remove front element ${queue[0]}`, "created", 0);
 
-  queue.push(input);
+  save(6, `Dequeue ${queue[0]} from the front of the queue`, "linked", 0);
 
-  save(6, `${input} is now the rear element`, "placed", queue.length - 1);
+  const removed = queue.shift();
 
-  save(7, "Enqueue operation completed.", "done");
+  save(6, `${removed} has been removed from the queue`, "placed");
+
+  save(7, "Dequeue operation completed.", "done");
 
   return steps;
 }
@@ -101,13 +107,12 @@ const SpeedDelay = {
   10: 90,
 };
 
-const Enqueue = () => {
+const Dequeue = () => {
   const [inputValue, setInputValue] = useState("");
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState(5);
 
-  const [newElement, setNewElement] = useState(null);
   const [elements, setElements] = useState([
     {
       id: 1,
@@ -116,17 +121,48 @@ const Enqueue = () => {
     {
       id: 2,
       value: 20,
+    },
+    {
+      id: 3,
+      value: 30,
+    },
+    {
+      id: 4,
+      value: 40,
+    },
+    {
+      id: 5,
+      value: 50,
+    },
+    {
+      id: 6,
+      value: 60,
+    },
+    {
+      id: 7,
+      value: 70,
+    },
+    {
+      id: 8,
+      value: 80,
+    },
+    {
+      id: 9,
+      value: 90,
+    },
+    {
+      id: 10,
+      value: 100,
     }
   ]);
 
-  const steps = queueSteps(newElement ? newElement.value : "", elements.map(element => element.value));
+  const steps = queueSteps(elements.map(element => element.value));
 
   const current = steps[index];
 
   const reset = () => {
     setPlaying(false);
     setIndex(0);
-    setNewElement(null);
     setInputValue("");
     setElements([
       {
@@ -136,6 +172,38 @@ const Enqueue = () => {
       {
         id: 2,
         value: 20,
+      },
+      {
+        id: 3,
+        value: 30,
+      },
+      {
+        id: 4,
+        value: 40,
+      },
+      {
+        id: 5,
+        value: 50,
+      },
+      {
+        id: 6,
+        value: 60,
+      },
+      {
+        id: 7,
+        value: 70,
+      },
+      {
+        id: 8,
+        value: 80,
+      },
+      {
+        id: 9,
+        value: 90,
+      },
+      {
+        id: 10,
+        value: 100,
       }
     ])
   };
@@ -143,17 +211,11 @@ const Enqueue = () => {
   const stepForward = () => {
     setPlaying(false);
     if (index < steps.length - 1) {
-      if (elements.length >= 10) {
+      if (elements.length < 1) {
         reset();
         return;
       }
 
-      if (!newElement) {
-        setNewElement({
-          id: Date.now(),
-          value: inputValue === "" || isNaN(Number(inputValue)) ? Math.floor(Math.random() * 99) : Number(inputValue),
-        });
-      }
       setIndex(index + 1);
     }
   };
@@ -166,32 +228,25 @@ const Enqueue = () => {
   const togglePlay = () => {
     if (index === steps.length - 1) setIndex(0);
 
-    if (elements.length >= 10) {
+    if (elements.length < 1) {
       reset();
       return;
     }
 
-    if (!newElement) {
-      setNewElement({
-        id: Date.now(),
-        value: inputValue === "" || isNaN(Number(inputValue)) ? Math.floor(Math.random() * 99) : Number(inputValue),
-      });
-    }
     setPlaying(!playing);
   };
 
   useEffect(() => {
-    if (current.phase === "done" && newElement) {
-      setElements(prev => [
-        ...prev,
-        { id: newElement.id, value: newElement.value },
-      ]);
+    if (current.phase !== "done") return;
+    setElements(prev => prev.slice(1));
 
-      setNewElement(null);
-      setIndex(0);
-      setPlaying(false);
-    }
-  }, [current.phase, newElement]);
+    setIndex(0);
+    setPlaying(false);
+
+
+    setIndex(0);
+    setPlaying(false);
+  }, [current.phase]);
 
   useEffect(() => {
     if (!playing) return;
@@ -332,4 +387,4 @@ const Enqueue = () => {
   )
 }
 
-export default Enqueue;
+export default Dequeue;
