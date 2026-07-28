@@ -113,7 +113,7 @@
   padding-bottom: 15px;
 }
 
-.element-wrapper {
+.p-element-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -121,7 +121,7 @@
   animation: element-in 0.35s ease;
 }
 
-.element {
+.p-element {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -139,12 +139,12 @@
   color: #f3f2ed;
 }
 
-.stack .element-wrapper:first-child .element {
+.stack .p-element-wrapper:first-child .p-element {
   border-color: #ff6a3d;
   background: rgba(255, 106, 61, 0.08);
 }
 
-.stack .element-wrapper:first-child .data {
+.stack .p-element-wrapper:first-child .data {
   color: #ff6a3d;
 }
 

@@ -293,12 +293,12 @@ const Dequeue = () => {
                 {
                   current.queue.map((value, index) => (
                     <div
-                      className="element-wrapper"
+                      className="queue-element-wrapper"
                       key={index}
                     >
                       {index === 0 ? <span className="front">FRONT</span> : null}
 
-                      <div className="element">
+                      <div className="queue-element">
                         <div className="data">{value}</div>
                       </div>
 

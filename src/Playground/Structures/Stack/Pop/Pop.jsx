@@ -244,10 +244,10 @@ const Pop = () => {
                 {
                   current.stack.map((value, index) => (
                     <div
-                      className="element-wrapper"
+                      className="p-element-wrapper"
                       key={index}
                     >
-                      <div className="element">
+                      <div className="p-element">
                         <div className="data">{value}</div>
                       </div>
                     </div>
