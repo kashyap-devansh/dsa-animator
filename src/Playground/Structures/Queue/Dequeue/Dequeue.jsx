@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "../Enqueue/Enqueue.css";
+import "./Dequeue.css";
 
 function queueSteps(existingQueue = []) {
   const queue = [...existingQueue];
@@ -40,57 +40,57 @@ function queueSteps(existingQueue = []) {
 
 const CodeLines = [
   <>
-    <span className="dfen-type">void</span> enqueue
-    <span className="dfen-symbol">(</span>
-    <span className="dfen-type">int</span> value
-    <span className="dfen-symbol">)</span>{" "}
-    <span className="dfen-symbol">{"{"}</span>
+    <span className="dfde-type">void</span> enqueue
+    <span className="dfde-symbol">(</span>
+    <span className="dfde-type">int</span> value
+    <span className="dfde-symbol">)</span>{" "}
+    <span className="dfde-symbol">{"{"}</span>
   </>,
 
   <>
     &nbsp;&nbsp;
-    <span className="dfen-keyword">if</span>{" "}
-    <span className="dfen-symbol">(</span>
-    rear <span className="dfen-symbol">==</span> MAX - 1
-    <span className="dfen-symbol">)</span>{" "}
-    <span className="dfen-symbol">{"{"}</span>
+    <span className="dfde-keyword">if</span>{" "}
+    <span className="dfde-symbol">(</span>
+    rear <span className="dfde-symbol">==</span> MAX - 1
+    <span className="dfde-symbol">)</span>{" "}
+    <span className="dfde-symbol">{"{"}</span>
   </>,
 
   <>
     &nbsp;&nbsp;&nbsp;&nbsp;
-    <span className="dfen-function">cout</span>
-    <span className="dfen-symbol"> &lt;&lt; </span>
-    <span className="dfen-string">"Queue Overflow"</span>
-    <span className="dfen-symbol">;</span>
+    <span className="dfde-function">cout</span>
+    <span className="dfde-symbol"> &lt;&lt; </span>
+    <span className="dfde-string">"Queue Overflow"</span>
+    <span className="dfde-symbol">;</span>
   </>,
 
   <>
     &nbsp;&nbsp;&nbsp;&nbsp;
-    <span className="dfen-keyword">return</span>
-    <span className="dfen-symbol">;</span>
+    <span className="dfde-keyword">return</span>
+    <span className="dfde-symbol">;</span>
   </>,
 
   <>
     &nbsp;&nbsp;
-    rear<span className="dfen-symbol">++;</span>
+    rear<span className="dfde-symbol">++;</span>
   </>,
 
   <>
     &nbsp;&nbsp;
-    queue<span className="dfen-symbol">[</span>rear
-    <span className="dfen-symbol">]</span>{" "}
-    <span className="dfen-symbol">=</span> value
-    <span className="dfen-symbol">;</span>
+    queue<span className="dfde-symbol">[</span>rear
+    <span className="dfde-symbol">]</span>{" "}
+    <span className="dfde-symbol">=</span> value
+    <span className="dfde-symbol">;</span>
   </>,
 
   <>
     &nbsp;&nbsp;
-    <span className="dfen-keyword">return</span>
-    <span className="dfen-symbol">;</span>
+    <span className="dfde-keyword">return</span>
+    <span className="dfde-symbol">;</span>
   </>,
 
   <>
-    <span className="dfen-symbol">{"}"}</span>
+    <span className="dfde-symbol">{"}"}</span>
   </>
 ];
 
@@ -264,30 +264,30 @@ const Dequeue = () => {
   }, [playing, index, speed, steps.length]);
 
   return (
-    <div className="enqueue-wrapper">
-      <div className="enqueue">
-        <p className="en-eyebrow">queue</p>
-        <h1 className="en-title">Enqueue</h1>
+    <div className="dequeue-wrapper">
+      <div className="dequeue">
+        <p className="de-eyebrow">queue</p>
+        <h1 className="de-title">Enqueue</h1>
 
-        <div className="en-header">
+        <div className="de-header">
           <p className="i-blurb">
             Every new element is added to the rear (end) of the queue.
           </p>
 
-          <div className="en-complexity">
+          <div className="de-complexity">
             <div>
-              <div className="en-complexity-label">time</div>
-              <div className="en-time-value">O(1)</div>
+              <div className="de-complexity-label">time</div>
+              <div className="de-time-value">O(1)</div>
             </div>
             <div>
-              <div className="en-complexity-label">space</div>
-              <div className="en-space-value">O(1)</div>
+              <div className="de-complexity-label">space</div>
+              <div className="de-space-value">O(1)</div>
             </div>
           </div>
         </div>
 
-        <div className="en-grid">
-          <div className="en-stage">
+        <div className="de-grid">
+          <div className="de-stage">
             <div className="queue-container">
               <div className="queue">
                 {
@@ -297,37 +297,40 @@ const Dequeue = () => {
                       key={index}
                     >
                       {index === 0 ? <span className="front">FRONT</span> : null}
-                      {index === current.queue.length - 1 ? <span className="front rear">REAR</span> : null}
 
                       <div className="element">
                         <div className="data">{value}</div>
                       </div>
+
+                      {index === current.queue.length - 1 && (
+                        <span className="front de-rear">REAR</span>
+                      )}
                     </div>
                   ))
                 }
               </div>
             </div>
-            <p className="en-status">{current.description}</p>
+            <p className="de-status">{current.description}</p>
           </div>
 
-          <div className="en-code-panel">
-            <div className="en-code-header">
-              <div className="en-dummy-btns">
-                <span className="en-red-btn"></span>
-                <span className="en-yellow-btn"></span>
-                <span className="en-green-btn"></span>
-                <span className="en-filename">push.cpp</span>
+          <div className="de-code-panel">
+            <div className="de-code-header">
+              <div className="de-dummy-btns">
+                <span className="de-red-btn"></span>
+                <span className="de-yellow-btn"></span>
+                <span className="de-grede-btn"></span>
+                <span className="de-filename">dequeue.cpp</span>
               </div>
-              <span className="en-header-complexity">O(1)</span>
+              <span className="de-header-complexity">O(1)</span>
             </div>
 
-            <pre className="en-code-block">
+            <pre className="de-code-block">
               {
                 CodeLines.map((line, i) => (
                   <div key={i}
-                    className={`en-code-line ${current.codeLine === i + 1 ? "en-code-line-active" : ""}`}
+                    className={`de-code-line ${current.codeLine === i + 1 ? "de-code-line-active" : ""}`}
                   >
-                    <span className="en-line-no">{i + 1}</span>
+                    <span className="de-line-no">{i + 1}</span>
                     {line}
                   </div>
                 ))
@@ -336,16 +339,16 @@ const Dequeue = () => {
           </div>
         </div>
 
-        <div className="en-controls">
-          <button className="en-icon-btn" onClick={reset}>
+        <div className="de-controls">
+          <button className="de-icon-btn" onClick={reset}>
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" /></svg>
           </button>
 
-          <button className="en-icon-btn" onClick={stepBack} disabled={index === 0}>
+          <button className="de-icon-btn" onClick={stepBack} disabled={index === 0}>
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.971 4.285A2 2 0 0 1 21 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432z" /><path d="M3 20V4" /></svg>
           </button>
 
-          <button className="en-play-btn" onClick={togglePlay}>
+          <button className="de-play-btn" onClick={togglePlay}>
             {playing ? (
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0a0a0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="14" y="3" width="5" height="18" rx="1" /><rect x="5" y="3" width="5" height="18" rx="1" /></svg>
             ) : (
@@ -353,12 +356,12 @@ const Dequeue = () => {
             )}
           </button>
 
-          <button className="en-icon-btn" onClick={stepForward} disabled={false}>
+          <button className="de-icon-btn" onClick={stepForward} disabled={false}>
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 4v16" /><path d="M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z" /></svg>
           </button>
 
           <input
-            className="en-input"
+            className="de-input"
             type="text"
             placeholder="value"
             value={inputValue}
@@ -367,17 +370,17 @@ const Dequeue = () => {
             }}
           />
 
-          <div className="en-speed">
+          <div className="de-speed">
             <span>SPEED</span>
             <input type="range" min="1" max="10" value={speed} onChange={(e) => setSpeed(Number(e.target.value))} />
           </div>
 
-          <span className="en-steps">
+          <span className="de-steps">
             {index + 1} / {steps.length}
           </span>
         </div>
 
-        <div className="en-stats">
+        <div className="de-stats">
           <span>
             elements: <b>{elements.length}</b>
           </span>

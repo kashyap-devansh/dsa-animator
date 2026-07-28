@@ -242,11 +242,10 @@ const Enqueue = () => {
                       key={index}
                     >
                       {index === 0 ? <span className="front">FRONT</span> : null}
-                      {index === current.queue.length - 1 ? <span className="front rear">REAR</span> : null}
-
                       <div className="element">
                         <div className="data">{value}</div>
                       </div>
+                      {index === current.queue.length - 1 ? <span className="en-rear">REAR</span> : null}
                     </div>
                   ))
                 }
@@ -261,7 +260,7 @@ const Enqueue = () => {
                 <span className="en-red-btn"></span>
                 <span className="en-yellow-btn"></span>
                 <span className="en-green-btn"></span>
-                <span className="en-filename">push.cpp</span>
+                <span className="en-filename">enqueue.cpp</span>
               </div>
               <span className="en-header-complexity">O(1)</span>
             </div>
