@@ -303,7 +303,7 @@ const Dequeue = () => {
                       </div>
 
                       {index === current.queue.length - 1 && (
-                        <span className="front de-rear">REAR</span>
+                        <span className="front rear">REAR</span>
                       )}
                     </div>
                   ))
