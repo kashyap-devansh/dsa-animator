@@ -1,14 +1,16 @@
 .hero {
   position: relative;
+  min-height: 100dvh;
   height: 100dvh;
   overflow: hidden;
+  overflow-x: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
   background: #0a0a0b;
 }
 
-.hero__content {
+.hero_content {
   position: relative;
   z-index: 2;
 }
@@ -24,7 +26,7 @@
   z-index: 1;
 }
 
-.hero__grid {
+.hero_grid {
   position: absolute;
   inset: 0;
   z-index: 0;
@@ -33,7 +35,7 @@
   opacity: 0.7;
 }
 
-.hero__grid::after {
+.hero_grid::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -42,14 +44,14 @@
   mix-blend-mode: overlay;
 }
 
-.hero__content {
+.hero_content {
   position: relative;
   z-index: 2;
   width: min(950px, 90%);
   text-align: center;
 }
 
-.hero__tag {
+.hero_tag {
   display: inline-block;
   margin-bottom: 1.5rem;
   color: #ff6a3d;
@@ -60,7 +62,7 @@
   font-family: "JetBrains Mono", monospace;
 }
 
-.hero__title:not(.cursor) {
+.hero_title:not(.cursor) {
   margin: 0;
   color: #f3f2ed;
   font-size: clamp(3.5rem, 9vw, 7rem);
@@ -68,6 +70,7 @@
   line-height: 0.95;
   letter-spacing: -0.0167rem;
   font-family: "Space Grotesk";
+  text-wrap: balance;
 }
 
 .typing::after {
@@ -87,7 +90,7 @@
   }
 }
 
-.hero__description {
+.hero_description {
   max-width: 600px;
   margin: 2rem auto 0;
   color: rgba(255, 255, 255, 0.5);
@@ -95,6 +98,7 @@
   font-family: "Satoshi";
   font-weight: 500;
   line-height: 1.8;
+  text-wrap: pretty;
 }
 
 .scroll,
@@ -117,7 +121,7 @@
   font-size: 1rem;
 }
 
-.hero__bars {
+.hero_bars {
   position: absolute;
   inset: 0;
   display: flex;
@@ -131,10 +135,151 @@
   mix-blend-mode: luminosity;
 }
 
-.hero__bar {
+.hero_bar {
   flex: 1;
   max-width: 11px;
   min-width: 7px;
   border-radius: 2px 2px 0 0;
   background: #262629;
+}
+
+/* Large tablets / small laptops */
+@media (max-width: 1024px) {
+  .hero_bars {
+    padding: 0 32px;
+  }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+  .hero_content {
+    width: 92%;
+  }
+
+  .hero_tag {
+    font-size: 0.72rem;
+    margin-bottom: 1.1rem;
+    letter-spacing: 0.16em;
+  }
+
+  .hero_description {
+    font-size: 1.02rem;
+    margin-top: 1.6rem;
+    line-height: 1.7;
+  }
+
+  .hero_bars {
+    padding: 0 18px;
+    gap: 3px;
+  }
+
+  .hero_bar {
+    max-width: 8px;
+    min-width: 5px;
+  }
+
+  .scroll {
+    bottom: 3rem;
+    font-size: 0.68rem;
+  }
+
+  .scroll-arrow {
+    bottom: 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Phones */
+@media (max-width: 480px) {
+  .hero_content {
+    width: 100%;
+    padding-inline: 1.25rem;
+    box-sizing: border-box;
+  }
+
+  .hero_tag {
+    font-size: 0.65rem;
+    margin-bottom: 0.9rem;
+    letter-spacing: 0.12em;
+  }
+
+  .hero_title:not(.cursor) {
+    font-size: clamp(2.5rem, 12vw, 3.5rem);
+    letter-spacing: -0.01rem;
+  }
+
+  .hero_description {
+    max-width: 100%;
+    font-size: 0.95rem;
+    margin-top: 1.25rem;
+    line-height: 1.6;
+  }
+
+  .hero_bars {
+    padding: 0 10px;
+    gap: 2px;
+    opacity: 0.55;
+  }
+
+  .hero_bar {
+    max-width: 6px;
+    min-width: 3px;
+    border-radius: 1.5px 1.5px 0 0;
+  }
+
+  .scroll {
+    bottom: 2.4rem;
+    font-size: 0.6rem;
+    letter-spacing: 1.5px;
+  }
+
+  .scroll-arrow {
+    bottom: 1.1rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 340px) {
+  .hero_title:not(.cursor) {
+    font-size: clamp(2.1rem, 13vw, 3rem);
+  }
+
+  .hero_description {
+    font-size: 0.88rem;
+  }
+}
+
+/* Short viewports — landscape phones, small laptops with browser chrome */
+@media (max-height: 480px) and (orientation: landscape) {
+  .hero_tag {
+    margin-bottom: 0.6rem;
+  }
+
+  .hero_title:not(.cursor) {
+    font-size: clamp(1.8rem, 7vw, 2.75rem);
+  }
+
+  .hero_description {
+    margin-top: 0.9rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  .hero_bars {
+    display: none;
+  }
+
+  .scroll,
+  .scroll-arrow {
+    display: none;
+  }
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .typing::after {
+    animation: none;
+    opacity: 1;
+  }
 }

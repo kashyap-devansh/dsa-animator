@@ -59,7 +59,7 @@ function SortBars() {
   }, []);
 
   return (
-    <div className="hero__bars">
+    <div className="hero_bars">
       {
         values.map((value, index) => (
           <motion.div
@@ -76,7 +76,7 @@ function SortBars() {
               duration: 0.12,
               ease: "easeInOut",
             }}
-            className="hero__bar"
+            className="hero_bar"
           />
         ))
       }
@@ -119,20 +119,20 @@ const Hero = () => {
 
   return (
     <section className="hero">
-      <div className="hero__grid" />
+      <div className="hero_grid" />
 
       <SortBars />
 
-      <div className="hero__content">
-        <span className="hero__tag">
+      <div className="hero_content">
+        <span className="hero_tag">
           O(1) TO O(n²) — VISUALIZED
         </span>
 
-        <h1 className="hero__title">
+        <h1 className="hero_title">
           <span className="typing">{text}</span>
         </h1>
 
-        <p className="hero__description">
+        <p className="hero_description">
           A precision lab for sorting, searching, tree and graph algorithms —
           every comparison, swap and traversal rendered frame by frame.
         </p>

@@ -19,23 +19,47 @@ function Navbar() {
   }, []);
 
   return (
-    <header className={
-      `navbar ${scrolled ? "scrolled" : ""}`
-    }>
+    <header
+      className={
+        `navbar ${scrolled ? "scrolled" : ""}`
+      }
+    >
       <div className="navbar-container">
         <div className="logo">
           DSA<span>/</span>ANIMATOR
         </div>
+
+        <input
+          type="checkbox"
+          id="nav-toggle"
+          className="nav-toggle-checkbox"
+        />
+
+        <label
+          htmlFor="nav-toggle"
+          className="nav-toggle"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </label>
 
         <nav>
           <a href="/">Visualizers</a>
           <a href="/">Gallery</a>
           <a href="/">Manifesto</a>
           <a href="/">Notes</a>
+
+          <button
+            className="launch-btn mobile-launch-btn"
+            onClick={() => navigate("/playground")}
+          >
+            Launch App
+          </button>
         </nav>
 
         <button
-          className="launch-btn"
+          className="launch-btn desktop-btn"
           onClick={() => navigate("/playground")}
         >
           Launch App
