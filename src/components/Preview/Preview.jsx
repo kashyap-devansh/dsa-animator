@@ -53,6 +53,7 @@ const Preview = () => {
                   key={index}
                   className={`preview-item ${active === index ? "active" : ""}`}
                   onMouseEnter={() => setActive(index)}
+                  onClick={() => setActive(index)}
                 >
                   <h2>{project.title}</h2>
 

@@ -114,3 +114,287 @@
   font-family: "Satoshi";
   font-weight: 500;
 }
+
+/* Large Tablets */
+@media (max-width: 1200px) {
+
+  .preview {
+    width: min(1400px, 94%);
+  }
+
+  .preview-grid {
+    grid-template-columns: 42% 54%;
+    gap: 32px;
+  }
+
+  .preview-card {
+    width: 100%;
+    max-width: 42rem;
+    height: 23rem;
+    padding: 1.75rem;
+  }
+
+  .preview-content {
+    margin-top: 140px;
+  }
+
+  .preview-content h2 {
+    font-size: 2rem;
+  }
+
+  .preview-content p {
+    font-size: 1rem;
+  }
+
+}
+
+@media (max-width: 992px) {
+
+  .preview {
+    width: 92%;
+    margin: 110px auto;
+  }
+
+  .preview-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .preview-card {
+    order: -1;
+    position: sticky;
+    top: 90px;
+    width: 100%;
+    max-width: none;
+    height: auto;
+    min-height: 18rem;
+    padding: 1.6rem;
+    z-index: 5;
+  }
+
+  .preview h2 {
+    font-size: 2rem;
+  }
+
+  .preview-content {
+    margin-top: 24px;
+  }
+
+  .preview-content h2 {
+    font-size: 1.9rem;
+  }
+
+  .preview-content p {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .preview-item {
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+    transition: padding-left .35s ease, background-color .35s ease;
+  }
+
+  .preview-item:hover h2 {
+    transform: none;
+  }
+
+  .preview-item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 3px;
+    height: 0;
+    background: #ff6a3d;
+    border-radius: 2px;
+    transform: translateY(-50%);
+    transition: height .35s ease;
+    pointer-events: none;
+  }
+
+  .preview-item.active {
+    padding-left: 16px;
+    background: linear-gradient(90deg, rgba(255, 106, 61, 0.07), transparent 70%);
+  }
+
+  .preview-item.active::before {
+    height: 55%;
+  }
+
+  .preview-item:active {
+    background: rgba(255, 106, 61, 0.09);
+  }
+
+  .preview-item:active h2 {
+    transform: scale(0.97);
+    color: #f3f2ed;
+  }
+
+}
+
+/* Kills the desktop hover on any touch device, regardless of screen
+   width (covers touch laptops/tablets that are wider than 992px) */
+@media (hover: none) {
+  .preview-item:hover h2 {
+    transform: none;
+  }
+}
+
+/* Phones */
+@media (max-width: 768px) {
+
+  .preview {
+    width: 92%;
+    margin: 90px auto;
+  }
+
+  .preview-header {
+    margin-bottom: 48px;
+  }
+
+  .preview-grid {
+    gap: 22px;
+  }
+
+  .preview h2 {
+    font-size: 1.7rem;
+    margin: 18px 0;
+  }
+
+  .preview-item {
+    padding: .35rem 0;
+  }
+
+  .preview-card {
+    top: 78px;
+    min-height: 15rem;
+    padding: 1.4rem;
+    border-radius: 20px;
+  }
+
+  .preview-complexity {
+    font-size: .75rem;
+  }
+
+  .preview-content {
+    margin-top: 18px;
+  }
+
+  .preview-content h2 {
+    font-size: 1.65rem;
+  }
+
+  .preview-content p {
+    font-size: .95rem;
+    line-height: 1.65;
+  }
+
+}
+
+/* Small Phones */
+@media (max-width: 480px) {
+
+  .preview {
+    width: 94%;
+    margin: 72px auto;
+  }
+
+  .preview-header {
+    margin-bottom: 36px;
+  }
+
+  .preview-eyebrow {
+    font-size: .55rem;
+    letter-spacing: .22em;
+  }
+
+  .preview h2 {
+    font-size: 1.35rem;
+    margin: 16px 0;
+  }
+
+  .preview span {
+    font-size: .7rem;
+  }
+
+  .preview-card {
+    top: 66px;
+    min-height: 13rem;
+    padding: 1.2rem;
+    border-radius: 18px;
+  }
+
+  .preview-complexity {
+    font-size: .7rem;
+  }
+
+  .preview-content {
+    margin-top: 14px;
+  }
+
+  .preview-content h2 {
+    font-size: 1.45rem;
+    margin-bottom: .75rem;
+  }
+
+  .preview-content p {
+    font-size: .9rem;
+    line-height: 1.6;
+  }
+
+}
+
+/* Very Small Phones */
+@media (max-width: 340px) {
+
+  .preview h2 {
+    font-size: 1.15rem;
+  }
+
+  .preview-card {
+    top: 60px;
+    min-height: 12rem;
+    padding: 1rem;
+  }
+
+  .preview-content {
+    margin-top: 10px;
+  }
+
+  .preview-content h2 {
+    font-size: 1.25rem;
+  }
+
+  .preview-content p {
+    font-size: .85rem;
+    line-height: 1.5;
+  }
+
+}
+
+/* Landscape Phones — short viewport, don't let the sticky card
+   eat the whole screen */
+@media (max-height: 500px) and (orientation: landscape) {
+
+  .preview-card {
+    position: relative;
+    top: 0;
+    min-height: 0;
+  }
+
+  .preview-content {
+    margin-top: 12px;
+  }
+
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+  .preview-item,
+  .preview h2 {
+    transition: none;
+  }
+
+}
