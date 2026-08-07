@@ -3,6 +3,7 @@
   color: #f3f2ed;
   padding: 90px 0 50px;
   border-top: 1px solid #262629;
+  overflow: hidden;
 }
 
 .footer-container {
@@ -97,4 +98,329 @@
 
 .footer-bottom a:hover {
   color: #f3f2ed;
+}
+
+/* ==========================================
+   Large Tablets
+========================================== */
+
+@media (max-width: 1200px) {
+
+  .footer {
+    overflow: hidden;
+    padding: 80px 0 45px;
+  }
+
+  .footer-container {
+    width: min(1400px, 92%);
+  }
+
+  .footer-top {
+    gap: 4rem;
+  }
+
+  .footer-brand {
+    width: 280px;
+  }
+
+}
+
+
+/* ==========================================
+   Tablets
+========================================== */
+
+@media (max-width: 992px) {
+
+  .footer {
+    overflow: hidden;
+    padding: 70px 0 40px;
+  }
+
+  .footer-container {
+    width: 92%;
+  }
+
+  .footer-top {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .footer-brand {
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .footer-brand p {
+    max-width: 460px;
+    line-height: 1.6;
+  }
+
+  .footer-links {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem;
+    width: 100%;
+  }
+
+  .footer-column {
+    min-width: 0;
+  }
+
+  .footer-divider {
+    margin: 50px 0 30px;
+  }
+
+  .footer-bottom {
+    margin-top: 0;
+  }
+
+}
+
+
+/* ==========================================
+   Phones
+========================================== */
+
+@media (max-width: 768px) {
+
+  .footer {
+    overflow: hidden;
+    padding: 56px 0 32px;
+  }
+
+  .footer-container {
+    width: 92%;
+  }
+
+  .footer-top {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .footer-brand {
+    width: 100%;
+    max-width: none;
+  }
+
+  .footer-brand h2 {
+    font-size: 1rem;
+    letter-spacing: 3px;
+    margin-bottom: .6rem;
+  }
+
+  .footer-brand p {
+    font-size: .92rem;
+    line-height: 1.7;
+    max-width: none;
+  }
+
+  /* Navigation */
+
+  .footer-links {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 2rem;
+    row-gap: 2rem;
+    width: 100%;
+  }
+
+  .footer-column {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .footer-column h4 {
+    font-size: .68rem;
+    margin-bottom: .9rem;
+  }
+
+  .footer-column a {
+    font-size: .9rem;
+    margin-bottom: .7rem;
+  }
+
+  /* CONNECT */
+
+  .footer-column:last-child {
+    grid-column: 1 / -1;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 1rem;
+    margin-top: .75rem;
+  }
+
+  .footer-column:last-child h4 {
+    width: 100%;
+    text-align: center;
+    margin-bottom: .4rem;
+  }
+
+  .footer-column:last-child a {
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .footer-divider {
+    margin: 40px 0 24px;
+  }
+
+  .footer-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .6rem;
+    text-align: center;
+    margin-top: 0;
+  }
+
+}
+
+
+/* ==========================================
+   Small Phones
+========================================== */
+
+@media (max-width: 480px) {
+
+  .footer {
+    overflow: hidden;
+    padding: 48px 0 26px;
+  }
+
+  .footer-container {
+    width: 94%;
+  }
+
+  .footer-brand h2 {
+    font-size: .95rem;
+    letter-spacing: 2px;
+  }
+
+  .footer-brand p {
+    font-size: .88rem;
+  }
+
+  .footer-links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 1.5rem;
+    row-gap: 1.75rem;
+  }
+
+  .footer-column h4 {
+    font-size: .65rem;
+    margin-bottom: .75rem;
+  }
+
+  .footer-column a {
+    font-size: .84rem;
+    margin-bottom: .6rem;
+  }
+
+  /* CONNECT */
+
+  .footer-column:last-child {
+    gap: .85rem;
+    margin-top: .5rem;
+  }
+
+  .footer-column:last-child h4 {
+    text-align: center;
+  }
+
+  .footer-column:last-child a {
+    font-size: .82rem;
+    margin: 0;
+  }
+
+  .footer-divider {
+    margin: 36px 0 20px;
+  }
+
+  .footer-bottom p,
+  .footer-bottom a {
+    font-size: .72rem;
+    letter-spacing: .5px;
+  }
+
+}
+
+
+/* ==========================================
+   Very Small Phones
+========================================== */
+
+@media (max-width: 340px) {
+
+  .footer {
+    padding: 42px 0 22px;
+  }
+
+  .footer-container {
+    width: 94%;
+  }
+
+  .footer-links {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .footer-column:last-child {
+    grid-column: auto;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: .6rem;
+  }
+
+  .footer-column:last-child h4 {
+    width: 100%;
+    text-align: center;
+  }
+
+  .footer-column:last-child a {
+    font-size: .78rem;
+    margin: 0;
+  }
+
+  .footer-brand h2 {
+    font-size: .9rem;
+  }
+
+  .footer-brand p {
+    font-size: .82rem;
+  }
+
+  .footer-bottom p,
+  .footer-bottom a {
+    font-size: .68rem;
+  }
+
+}
+
+
+/* ==========================================
+   Landscape Phones
+========================================== */
+
+@media (max-height: 500px) and (orientation: landscape) {
+
+  .footer {
+    padding: 42px 0 24px;
+  }
+
 }
