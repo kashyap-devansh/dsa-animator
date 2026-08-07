@@ -33,3 +33,124 @@
     transform: translateX(-50%);
   }
 }
+
+/* =========================
+   Large Tablets
+========================= */
+@media (max-width: 1200px) {
+
+  .slowMarquee {
+    padding: 2rem 0;
+    padding-bottom: 7rem;
+  }
+
+  .item-slow {
+    font-size: 3.6rem;
+    margin-right: 70px;
+  }
+
+}
+
+/* =========================
+   Tablets
+========================= */
+@media (max-width: 992px) {
+
+  .slowMarquee {
+    padding: 1.8rem 0;
+    padding-bottom: 6rem;
+  }
+
+  .item-slow {
+    font-size: 3rem;
+    margin-right: 60px;
+    letter-spacing: -.08rem;
+  }
+
+}
+
+/* =========================
+   Phones
+========================= */
+@media (max-width: 768px) {
+
+  .slowMarquee {
+    padding: 1.5rem 0;
+    padding-bottom: 5rem;
+  }
+
+  .item-slow {
+    font-size: 2.3rem;
+    margin-right: 48px;
+    letter-spacing: -.06rem;
+  }
+
+  .track-slow {
+    animation: scroll 80s linear infinite;
+  }
+
+}
+
+/* =========================
+   Small Phones
+========================= */
+@media (max-width: 480px) {
+
+  .slowMarquee {
+    padding: 1.2rem 0;
+    padding-bottom: 4rem;
+  }
+
+  .item-slow {
+    font-size: 1.8rem;
+    margin-right: 36px;
+    letter-spacing: -.04rem;
+  }
+
+  .track-slow {
+    animation: scroll 80s linear infinite;
+  }
+
+}
+
+/* =========================
+   Very Small Phones
+========================= */
+@media (max-width: 340px) {
+
+  .item-slow {
+    font-size: 1.5rem;
+    margin-right: 28px;
+  }
+
+  .track-slow {
+    animation: scroll 80s linear infinite;
+  }
+
+}
+
+/* =========================
+   Landscape Phones
+========================= */
+@media (max-height: 500px) and (orientation: landscape) {
+
+  .slowMarquee {
+    padding-bottom: 2.5rem;
+  }
+
+  .track-slow {
+    animation: scroll 80s linear infinite;
+  }
+
+}
+
+/* =========================
+   Reduced Motion
+========================= */
+@media (prefers-reduced-motion: reduce) {
+
+  .track-slow {
+    animation: none;
+  }
+
+}

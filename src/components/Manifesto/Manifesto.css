@@ -23,3 +23,99 @@
   margin-bottom: 0.8rem;
   color: #262626;
 }
+
+/* =========================
+   Large Tablets
+========================= */
+@media (max-width: 1200px) {
+
+  .manifesto {
+    width: min(1400px, 94%);
+  }
+
+  .manifesto h1 {
+    font-size: 3.4rem;
+  }
+
+}
+
+/* =========================
+   Tablets
+========================= */
+@media (max-width: 992px) {
+
+  .manifesto {
+    width: 92%;
+    margin: 110px auto;
+  }
+
+  .manifesto-eyebrow {
+    margin-bottom: 1.8rem;
+  }
+
+  .manifesto h1 {
+    font-size: 2.8rem;
+    line-height: 1.1;
+  }
+
+}
+
+/* =========================
+   Phones
+========================= */
+@media (max-width: 768px) {
+
+  .manifesto {
+    width: 92%;
+    margin: 90px auto;
+  }
+
+  .manifesto-eyebrow {
+    font-size: .58rem;
+    letter-spacing: .24em;
+    margin-bottom: 1.4rem;
+  }
+
+  .manifesto h1 {
+    font-size: 2.2rem;
+    line-height: 1.15;
+    margin-bottom: .7rem;
+  }
+
+}
+
+/* =========================
+   Small Phones
+========================= */
+@media (max-width: 480px) {
+
+  .manifesto {
+    width: 94%;
+    margin: 72px auto;
+  }
+
+  .manifesto-eyebrow {
+    font-size: .55rem;
+    letter-spacing: .22em;
+    margin-bottom: 1.2rem;
+  }
+
+  .manifesto h1 {
+    font-size: 1.8rem;
+    line-height: 1.2;
+    margin-bottom: .6rem;
+  }
+
+}
+
+/* =========================
+   Very Small Phones
+========================= */
+@media (max-width: 340px) {
+
+  .manifesto h1 {
+    font-size: 1.5rem;
+    line-height: 1.25;
+  }
+
+}
