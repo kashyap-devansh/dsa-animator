@@ -318,3 +318,327 @@
 .sss-type {
   color: #56b6c2;
 }
+
+
+/* ===================================================
+   Large Tablets
+=================================================== */
+
+@media (max-width:1200px) {
+
+  .selection-sort {
+    width: 85%;
+  }
+
+  .sss-grid {
+    gap: 20px;
+  }
+
+}
+
+
+/* ===================================================
+   Tablets
+=================================================== */
+
+@media (max-width:992px) {
+
+  .selection-sort-wrapper {
+    margin-top: 6rem;
+  }
+
+  .selection-sort {
+    width: 92%;
+    padding: 36px 0 64px;
+  }
+
+  .sss-header {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .sss-complexity {
+    gap: 2rem;
+  }
+
+  /* stack animation + code */
+
+  .sss-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .sss-stage,
+  .sss-code-panel {
+    width: 100%;
+  }
+
+  .sss-stage {
+    min-height: 360px;
+  }
+
+}
+
+
+/* ===================================================
+   Phones
+=================================================== */
+
+@media (max-width:768px) {
+
+  .selection-sort-wrapper {
+    margin-top: 5rem;
+  }
+
+  .selection-sort {
+    width: 94%;
+    padding: 28px 0 56px;
+    min-height: auto;
+  }
+
+  .sss-eyebrow {
+    font-size: .65rem;
+  }
+
+  .sss-title {
+    font-size: 2.2rem;
+    line-height: 1.1;
+  }
+
+  .sss-blurb {
+    font-size: .95rem;
+    line-height: 1.6;
+  }
+
+  .sss-header {
+    gap: 1.2rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .sss-complexity {
+    gap: 1.5rem;
+    font-size: .8rem;
+    flex-wrap: wrap;
+  }
+
+  .sss-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  /* Animation takes full width */
+
+  .sss-stage {
+    width: 100%;
+    min-height: 330px;
+    padding: 24px;
+  }
+
+  .sss-bars {
+    min-height: 210px;
+  }
+
+  /* Code below animation */
+
+  .sss-code-panel {
+    width: 100%;
+  }
+
+  .sss-code-block {
+    font-size: 11px;
+  }
+
+  .sss-code-line {
+    padding: 2px 16px;
+  }
+
+  /* Controls */
+
+  .sss-controls {
+
+    justify-content: center;
+
+    row-gap: 16px;
+    column-gap: 12px;
+
+  }
+
+  .sss-speed {
+
+    width: 100%;
+
+    justify-content: center;
+
+    margin-left: 0;
+
+  }
+
+  .sss-speed input {
+
+    width: 180px;
+
+  }
+
+  .sss-stats {
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 18px;
+
+    text-align: center;
+
+  }
+
+}
+
+
+/* ===================================================
+   Small Phones
+=================================================== */
+
+@media (max-width:480px) {
+
+  .selection-sort {
+    width: 95%;
+  }
+
+  .sss-title {
+    font-size: 1.8rem;
+  }
+
+  .sss-blurb {
+    font-size: .9rem;
+  }
+
+  .sss-stage {
+    padding: 18px;
+    min-height: 300px;
+  }
+
+  .sss-bars {
+    gap: 3px;
+    min-height: 180px;
+  }
+
+  .sss-bar {
+    max-width: 26px;
+  }
+
+  .sss-status {
+    font-size: 11px;
+  }
+
+  .sss-code-header {
+    padding: 10px 14px;
+  }
+
+  .sss-code-block {
+    font-size: 10px;
+  }
+
+  .sss-code-line {
+    padding: 2px 14px;
+  }
+
+  /* controls */
+
+  .sss-controls {
+    gap: 10px;
+  }
+
+  .sss-play-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .sss-icon-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .sss-shuffle-btn {
+    height: 34px;
+    padding: 0 14px;
+    font-size: 11px;
+  }
+
+  .sss-speed {
+    font-size: 12px;
+  }
+
+  .sss-speed input {
+    width: 140px;
+  }
+
+  .sss-stats {
+    gap: 14px;
+  }
+
+}
+
+
+/* ===================================================
+   Very Small Phones
+=================================================== */
+
+@media (max-width:340px) {
+
+  .sss-title {
+    font-size: 1.55rem;
+  }
+
+  .sss-stage {
+    min-height: 260px;
+    padding: 16px;
+  }
+
+  .sss-bars {
+    min-height: 150px;
+  }
+
+  .sss-bar {
+    max-width: 20px;
+  }
+
+  .sss-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .sss-speed {
+    width: 100%;
+  }
+
+  .sss-speed input {
+    width: 100%;
+  }
+
+  .sss-stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+}
+
+
+/* ===================================================
+   Landscape Phones
+=================================================== */
+
+@media (max-height:500px) and (orientation:landscape) {
+
+  .selection-sort {
+    width: 94%;
+  }
+
+  .sss-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sss-stage {
+    min-height: 280px;
+  }
+
+}

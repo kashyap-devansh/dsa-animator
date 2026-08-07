@@ -318,3 +318,326 @@
 .bs-type {
   color: #56b6c2;
 }
+
+/* ===================================================
+   Large Tablets
+=================================================== */
+
+@media (max-width:1200px) {
+
+  .bubble-sort {
+    width: 85%;
+  }
+
+  .bs-grid {
+    gap: 20px;
+  }
+
+}
+
+
+/* ===================================================
+   Tablets
+=================================================== */
+
+@media (max-width:992px) {
+
+  .bubble-sort-wrapper {
+    margin-top: 6rem;
+  }
+
+  .bubble-sort {
+    width: 92%;
+    padding: 36px 0 64px;
+  }
+
+  .bs-header {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .bs-complexity {
+    gap: 2rem;
+  }
+
+  /* stack animation + code */
+
+  .bs-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .bs-stage,
+  .bs-code-panel {
+    width: 100%;
+  }
+
+  .bs-stage {
+    min-height: 360px;
+  }
+
+}
+
+
+/* ===================================================
+   Phones
+=================================================== */
+
+@media (max-width:768px) {
+
+  .bubble-sort-wrapper {
+    margin-top: 5rem;
+  }
+
+  .bubble-sort {
+    width: 94%;
+    padding: 28px 0 56px;
+    min-height: auto;
+  }
+
+  .bs-eyebrow {
+    font-size: .65rem;
+  }
+
+  .bs-title {
+    font-size: 2.2rem;
+    line-height: 1.1;
+  }
+
+  .bs-blurb {
+    font-size: .95rem;
+    line-height: 1.6;
+  }
+
+  .bs-header {
+    gap: 1.2rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .bs-complexity {
+    gap: 1.5rem;
+    font-size: .8rem;
+    flex-wrap: wrap;
+  }
+
+  .bs-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  /* Animation takes full width */
+
+  .bs-stage {
+    width: 100%;
+    min-height: 330px;
+    padding: 24px;
+  }
+
+  .bs-bars {
+    min-height: 210px;
+  }
+
+  /* Code below animation */
+
+  .bs-code-panel {
+    width: 100%;
+  }
+
+  .bs-code-block {
+    font-size: 11px;
+  }
+
+  .bs-code-line {
+    padding: 2px 16px;
+  }
+
+  /* Controls */
+
+  .bs-controls {
+
+    justify-content: center;
+
+    row-gap: 16px;
+    column-gap: 12px;
+
+  }
+
+  .bs-speed {
+
+    width: 100%;
+
+    justify-content: center;
+
+    margin-left: 0;
+
+  }
+
+  .bs-speed input {
+
+    width: 180px;
+
+  }
+
+  .bs-stats {
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 18px;
+
+    text-align: center;
+
+  }
+
+}
+
+
+/* ===================================================
+   Small Phones
+=================================================== */
+
+@media (max-width:480px) {
+
+  .bubble-sort {
+    width: 95%;
+  }
+
+  .bs-title {
+    font-size: 1.8rem;
+  }
+
+  .bs-blurb {
+    font-size: .9rem;
+  }
+
+  .bs-stage {
+    padding: 18px;
+    min-height: 300px;
+  }
+
+  .bs-bars {
+    gap: 3px;
+    min-height: 180px;
+  }
+
+  .bs-bar {
+    max-width: 26px;
+  }
+
+  .bs-status {
+    font-size: 11px;
+  }
+
+  .bs-code-header {
+    padding: 10px 14px;
+  }
+
+  .bs-code-block {
+    font-size: 10px;
+  }
+
+  .bs-code-line {
+    padding: 2px 14px;
+  }
+
+  /* controls */
+
+  .bs-controls {
+    gap: 10px;
+  }
+
+  .bs-play-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .bs-icon-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .bs-shuffle-btn {
+    height: 34px;
+    padding: 0 14px;
+    font-size: 11px;
+  }
+
+  .bs-speed {
+    font-size: 12px;
+  }
+
+  .bs-speed input {
+    width: 140px;
+  }
+
+  .bs-stats {
+    gap: 14px;
+  }
+
+}
+
+
+/* ===================================================
+   Very Small Phones
+=================================================== */
+
+@media (max-width:340px) {
+
+  .bs-title {
+    font-size: 1.55rem;
+  }
+
+  .bs-stage {
+    min-height: 260px;
+    padding: 16px;
+  }
+
+  .bs-bars {
+    min-height: 150px;
+  }
+
+  .bs-bar {
+    max-width: 20px;
+  }
+
+  .bs-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .bs-speed {
+    width: 100%;
+  }
+
+  .bs-speed input {
+    width: 100%;
+  }
+
+  .bs-stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+}
+
+
+/* ===================================================
+   Landscape Phones
+=================================================== */
+
+@media (max-height:500px) and (orientation:landscape) {
+
+  .bubble-sort {
+    width: 94%;
+  }
+
+  .bs-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .bs-stage {
+    min-height: 280px;
+  }
+
+}

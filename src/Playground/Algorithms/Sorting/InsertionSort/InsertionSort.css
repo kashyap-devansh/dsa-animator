@@ -318,3 +318,327 @@
 .is-type {
   color: #56b6c2;
 }
+
+
+/* ===================================================
+   Large Tablets
+=================================================== */
+
+@media (max-width:1200px) {
+
+  .bubble-sort {
+    width: 85%;
+  }
+
+  .is-grid {
+    gap: 20px;
+  }
+
+}
+
+
+/* ===================================================
+   Tablets
+=================================================== */
+
+@media (max-width:992px) {
+
+  .bubble-sort-wrapper {
+    margin-top: 6rem;
+  }
+
+  .bubble-sort {
+    width: 92%;
+    padding: 36px 0 64px;
+  }
+
+  .is-header {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .is-complexity {
+    gap: 2rem;
+  }
+
+  /* stack animation + code */
+
+  .is-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .is-stage,
+  .is-code-panel {
+    width: 100%;
+  }
+
+  .is-stage {
+    min-height: 360px;
+  }
+
+}
+
+
+/* ===================================================
+   Phones
+=================================================== */
+
+@media (max-width:768px) {
+
+  .bubble-sort-wrapper {
+    margin-top: 5rem;
+  }
+
+  .bubble-sort {
+    width: 94%;
+    padding: 28px 0 56px;
+    min-height: auto;
+  }
+
+  .is-eyebrow {
+    font-size: .65rem;
+  }
+
+  .is-title {
+    font-size: 2.2rem;
+    line-height: 1.1;
+  }
+
+  .is-blurb {
+    font-size: .95rem;
+    line-height: 1.6;
+  }
+
+  .is-header {
+    gap: 1.2rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .is-complexity {
+    gap: 1.5rem;
+    font-size: .8rem;
+    flex-wrap: wrap;
+  }
+
+  .is-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  /* Animation takes full width */
+
+  .is-stage {
+    width: 100%;
+    min-height: 330px;
+    padding: 24px;
+  }
+
+  .is-bars {
+    min-height: 210px;
+  }
+
+  /* Code below animation */
+
+  .is-code-panel {
+    width: 100%;
+  }
+
+  .is-code-block {
+    font-size: 11px;
+  }
+
+  .is-code-line {
+    padding: 2px 16px;
+  }
+
+  /* Controls */
+
+  .is-controls {
+
+    justify-content: center;
+
+    row-gap: 16px;
+    column-gap: 12px;
+
+  }
+
+  .is-speed {
+
+    width: 100%;
+
+    justify-content: center;
+
+    margin-left: 0;
+
+  }
+
+  .is-speed input {
+
+    width: 180px;
+
+  }
+
+  .is-stats {
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 18px;
+
+    text-align: center;
+
+  }
+
+}
+
+
+/* ===================================================
+   Small Phones
+=================================================== */
+
+@media (max-width:480px) {
+
+  .bubble-sort {
+    width: 95%;
+  }
+
+  .is-title {
+    font-size: 1.8rem;
+  }
+
+  .is-blurb {
+    font-size: .9rem;
+  }
+
+  .is-stage {
+    padding: 18px;
+    min-height: 300px;
+  }
+
+  .is-bars {
+    gap: 3px;
+    min-height: 180px;
+  }
+
+  .is-bar {
+    max-width: 26px;
+  }
+
+  .is-status {
+    font-size: 11px;
+  }
+
+  .is-code-header {
+    padding: 10px 14px;
+  }
+
+  .is-code-block {
+    font-size: 10px;
+  }
+
+  .is-code-line {
+    padding: 2px 14px;
+  }
+
+  /* controls */
+
+  .is-controls {
+    gap: 10px;
+  }
+
+  .is-play-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .is-icon-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .is-shuffle-btn {
+    height: 34px;
+    padding: 0 14px;
+    font-size: 11px;
+  }
+
+  .is-speed {
+    font-size: 12px;
+  }
+
+  .is-speed input {
+    width: 140px;
+  }
+
+  .is-stats {
+    gap: 14px;
+  }
+
+}
+
+
+/* ===================================================
+   Very Small Phones
+=================================================== */
+
+@media (max-width:340px) {
+
+  .is-title {
+    font-size: 1.55rem;
+  }
+
+  .is-stage {
+    min-height: 260px;
+    padding: 16px;
+  }
+
+  .is-bars {
+    min-height: 150px;
+  }
+
+  .is-bar {
+    max-width: 20px;
+  }
+
+  .is-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .is-speed {
+    width: 100%;
+  }
+
+  .is-speed input {
+    width: 100%;
+  }
+
+  .is-stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+}
+
+
+/* ===================================================
+   Landscape Phones
+=================================================== */
+
+@media (max-height:500px) and (orientation:landscape) {
+
+  .bubble-sort {
+    width: 94%;
+  }
+
+  .is-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .is-stage {
+    min-height: 280px;
+  }
+
+}
