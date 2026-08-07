@@ -86,3 +86,214 @@
   color: #ff6a3d;
   transform: translate(6px, -6px);
 }
+
+/* =========================
+   Large Tablets
+========================= */
+@media (max-width: 1200px) {
+
+  .notes {
+    width: min(1400px, 94%);
+  }
+
+  .notes-item h2 {
+    font-size: 2rem;
+  }
+
+}
+
+/* =========================
+   Tablets
+========================= */
+@media (max-width: 992px) {
+
+  .notes {
+    width: 92%;
+    margin: 110px auto;
+  }
+
+  .notes-header {
+    margin-bottom: 56px;
+  }
+
+  .notes-item {
+    height: 5.8rem;
+  }
+
+  .notes-topic {
+    width: 7rem;
+    font-size: .65rem;
+  }
+
+  .notes-item h2 {
+    font-size: 1.8rem;
+  }
+
+  .notes-number {
+    width: 60px;
+    font-size: .75rem;
+  }
+
+  .notes-arrow {
+    font-size: 1.3rem;
+  }
+
+}
+
+/* =========================
+   Phones
+========================= */
+@media (max-width: 768px) {
+
+  .notes {
+    width: 92%;
+    margin: 90px auto;
+  }
+
+  .notes-header {
+    margin-bottom: 48px;
+  }
+
+  .notes-item {
+    height: auto;
+    min-height: 5rem;
+    padding: 1rem 0;
+    gap: 1rem;
+  }
+
+  .notes-topic {
+    width: 5.5rem;
+    font-size: .6rem;
+    flex-shrink: 0;
+  }
+
+  .notes-item h2 {
+    font-size: 1.45rem;
+    line-height: 1.25;
+  }
+
+  .notes-number {
+    width: 42px;
+    font-size: .7rem;
+    text-align: right;
+  }
+
+  .notes-arrow {
+    font-size: 1.15rem;
+  }
+
+}
+
+/* =========================
+   Small Phones
+========================= */
+@media (max-width: 480px) {
+
+  .notes {
+    width: 94%;
+    margin: 72px auto;
+  }
+
+  .notes-header {
+    margin-bottom: 36px;
+  }
+
+  .notes-eyebrow {
+    font-size: .55rem;
+    letter-spacing: .22em;
+  }
+
+  .notes-item {
+    min-height: 4.6rem;
+    gap: .75rem;
+  }
+
+  .notes-topic {
+    width: 4.5rem;
+    font-size: .55rem;
+  }
+
+  .notes-item h2 {
+    font-size: 1.15rem;
+    line-height: 1.3;
+  }
+
+  .notes-number {
+    width: 34px;
+    font-size: .65rem;
+  }
+
+  .notes-arrow {
+    font-size: 1rem;
+  }
+
+  /* Smaller hover movement for touch devices */
+  .notes-item:hover .notes-arrow {
+    transform: translate(3px, -3px);
+  }
+
+}
+
+/* =========================
+   Very Small Phones
+========================= */
+@media (max-width: 340px) {
+
+  .notes-topic {
+    width: 4rem;
+    font-size: .5rem;
+  }
+
+  .notes-item h2 {
+    font-size: 1rem;
+  }
+
+  .notes-number {
+    width: 28px;
+    font-size: .6rem;
+  }
+
+  .notes-arrow {
+    font-size: .9rem;
+  }
+
+}
+
+/* =========================
+   Landscape Phones
+========================= */
+@media (max-height: 500px) and (orientation: landscape) {
+
+  .notes {
+    margin: 60px auto;
+  }
+
+}
+
+/* =========================
+   Touch Devices
+========================= */
+@media (hover: none) {
+
+  .notes-item:hover h2 {
+    color: #f3f2ed;
+  }
+
+  .notes-item:hover .notes-arrow {
+    color: #f3f2ed;
+    transform: none;
+  }
+
+}
+
+/* =========================
+   Reduced Motion
+========================= */
+@media (prefers-reduced-motion: reduce) {
+
+  .notes-item h2,
+  .notes-arrow {
+    transition: none;
+  }
+
+}
