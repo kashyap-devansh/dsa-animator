@@ -373,3 +373,351 @@
 .bis-type {
   color: #56b6c2;
 }
+
+/* ===================================================
+   Large Tablets
+=================================================== */
+
+@media (max-width:1200px) {
+
+  .binary-search {
+    width: 85%;
+  }
+
+  .bis-grid {
+    gap: 20px;
+  }
+
+}
+
+
+/* ===================================================
+   Tablets
+=================================================== */
+
+@media (max-width:992px) {
+
+  .binary-search-wrapper {
+    margin-top: 6rem;
+  }
+
+  .binary-search {
+    width: 92%;
+    padding: 36px 0 64px;
+  }
+
+  .bis-header {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .bis-complexity {
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  /* Animation above, code below */
+
+  .bis-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .bis-stage,
+  .bis-code-panel {
+    width: 100%;
+  }
+
+  .bis-stage {
+    min-height: 360px;
+    height: auto;
+  }
+
+}
+
+
+/* ===================================================
+   Phones
+=================================================== */
+
+@media (max-width:768px) {
+
+  .binary-search-wrapper {
+    margin-top: 5rem;
+  }
+
+  .binary-search {
+    width: 94%;
+    padding: 28px 0 56px;
+    min-height: auto;
+  }
+
+  .bis-eyebrow {
+    font-size: .65rem;
+  }
+
+  .bis-title {
+    font-size: 2.2rem;
+    line-height: 1.1;
+  }
+
+  .bis-blurb {
+    font-size: .95rem;
+    line-height: 1.6;
+  }
+
+  .bis-header {
+    gap: 1.2rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .bis-complexity {
+    gap: 1.5rem;
+    font-size: .8rem;
+    flex-wrap: wrap;
+  }
+
+  .bis-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  /* Stage */
+
+  .bis-stage {
+    width: 100%;
+    min-height: 320px;
+    height: auto;
+    padding: 24px;
+  }
+
+  /* Boxes */
+
+  .bis-boxs {
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .bis-box {
+    width: 38px;
+    height: 38px;
+    font-size: 14px;
+  }
+
+  .bis-index {
+    font-size: .55rem;
+  }
+
+  /* Status */
+
+  .bis-status {
+    margin-top: 2rem;
+    margin-bottom: 0;
+  }
+
+  /* Code */
+
+  .bis-code-panel {
+    width: 100%;
+  }
+
+  .bis-code-block {
+    font-size: 11px;
+  }
+
+  .bis-code-line {
+    padding: 2px 16px;
+  }
+
+  /* Controls */
+
+  .bis-controls {
+    justify-content: center;
+    row-gap: 16px;
+    column-gap: 12px;
+  }
+
+  .bis-input {
+    width: 4rem;
+  }
+
+  .bis-speed {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
+  }
+
+  .bis-speed input {
+    width: 180px;
+  }
+
+  .bis-stats {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 18px;
+    text-align: center;
+  }
+
+}
+
+
+/* ===================================================
+   Small Phones
+=================================================== */
+
+@media (max-width:480px) {
+
+  .binary-search {
+    width: 95%;
+  }
+
+  .bis-title {
+    font-size: 1.8rem;
+  }
+
+  .bis-blurb {
+    font-size: .9rem;
+  }
+
+  .bis-stage {
+    padding: 18px;
+    min-height: 290px;
+  }
+
+  .bis-boxs {
+    gap: 6px;
+  }
+
+  .bis-box {
+    width: 34px;
+    height: 34px;
+    font-size: 13px;
+  }
+
+  .bis-index {
+    font-size: .5rem;
+  }
+
+  .bis-status {
+    font-size: 11px;
+  }
+
+  .bis-code-header {
+    padding: 10px 14px;
+  }
+
+  .bis-code-block {
+    font-size: 10px;
+  }
+
+  .bis-code-line {
+    padding: 2px 14px;
+  }
+
+  /* Controls */
+
+  .bis-controls {
+    gap: 10px;
+  }
+
+  .bis-play-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .bis-icon-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .bis-shuffle-btn {
+    height: 34px;
+    padding: 0 14px;
+    font-size: 11px;
+  }
+
+  .bis-input {
+    width: 3.4rem;
+    height: 34px;
+  }
+
+  .bis-speed {
+    font-size: 12px;
+  }
+
+  .bis-speed input {
+    width: 140px;
+  }
+
+  .bis-stats {
+    gap: 14px;
+  }
+
+}
+
+
+/* ===================================================
+   Very Small Phones
+=================================================== */
+
+@media (max-width:340px) {
+
+  .bis-title {
+    font-size: 1.55rem;
+  }
+
+  .bis-stage {
+    min-height: 250px;
+    padding: 16px;
+  }
+
+  .bis-boxs {
+    gap: 4px;
+  }
+
+  .bis-box {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+  }
+
+  .bis-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .bis-speed {
+    width: 100%;
+  }
+
+  .bis-speed input {
+    width: 100%;
+  }
+
+  .bis-stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+}
+
+
+/* ===================================================
+   Landscape Phones
+=================================================== */
+
+@media (max-height:500px) and (orientation:landscape) {
+
+  .binary-search {
+    width: 94%;
+  }
+
+  .bis-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .bis-stage {
+    min-height: 280px;
+  }
+
+}

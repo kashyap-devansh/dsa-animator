@@ -366,3 +366,351 @@
 .ls-type {
   color: #56b6c2;
 }
+
+/* ===================================================
+   Large Tablets
+=================================================== */
+
+@media (max-width:1200px) {
+
+  .linear-search {
+    width: 85%;
+  }
+
+  .ls-grid {
+    gap: 20px;
+  }
+
+}
+
+
+/* ===================================================
+   Tablets
+=================================================== */
+
+@media (max-width:992px) {
+
+  .linear-search-wrapper {
+    margin-top: 6rem;
+  }
+
+  .linear-search {
+    width: 92%;
+    padding: 36px 0 64px;
+  }
+
+  .ls-header {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .ls-complexity {
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  /* Animation above, code below */
+
+  .ls-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .ls-stage,
+  .ls-code-panel {
+    width: 100%;
+  }
+
+  .ls-stage {
+    min-height: 360px;
+    height: auto;
+  }
+
+}
+
+
+/* ===================================================
+   Phones
+=================================================== */
+
+@media (max-width:768px) {
+
+  .linear-search-wrapper {
+    margin-top: 5rem;
+  }
+
+  .linear-search {
+    width: 94%;
+    padding: 28px 0 56px;
+    min-height: auto;
+  }
+
+  .ls-eyebrow {
+    font-size: .65rem;
+  }
+
+  .ls-title {
+    font-size: 2.2rem;
+    line-height: 1.1;
+  }
+
+  .ls-blurb {
+    font-size: .95rem;
+    line-height: 1.6;
+  }
+
+  .ls-header {
+    gap: 1.2rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .ls-complexity {
+    gap: 1.5rem;
+    font-size: .8rem;
+    flex-wrap: wrap;
+  }
+
+  .ls-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  /* Stage */
+
+  .ls-stage {
+    width: 100%;
+    min-height: 320px;
+    height: auto;
+    padding: 24px;
+  }
+
+  /* Boxes */
+
+  .ls-boxs {
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .ls-box {
+    width: 38px;
+    height: 38px;
+    font-size: 14px;
+  }
+
+  .ls-index {
+    font-size: .55rem;
+  }
+
+  /* Status */
+
+  .ls-status {
+    margin-top: 2rem;
+    margin-bottom: 0;
+  }
+
+  /* Code */
+
+  .ls-code-panel {
+    width: 100%;
+  }
+
+  .ls-code-block {
+    font-size: 11px;
+  }
+
+  .ls-code-line {
+    padding: 2px 16px;
+  }
+
+  /* Controls */
+
+  .ls-controls {
+    justify-content: center;
+    row-gap: 16px;
+    column-gap: 12px;
+  }
+
+  .ls-input {
+    width: 4rem;
+  }
+
+  .ls-speed {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
+  }
+
+  .ls-speed input {
+    width: 180px;
+  }
+
+  .ls-stats {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 18px;
+    text-align: center;
+  }
+
+}
+
+
+/* ===================================================
+   Small Phones
+=================================================== */
+
+@media (max-width:480px) {
+
+  .linear-search {
+    width: 95%;
+  }
+
+  .ls-title {
+    font-size: 1.8rem;
+  }
+
+  .ls-blurb {
+    font-size: .9rem;
+  }
+
+  .ls-stage {
+    padding: 18px;
+    min-height: 290px;
+  }
+
+  .ls-boxs {
+    gap: 6px;
+  }
+
+  .ls-box {
+    width: 34px;
+    height: 34px;
+    font-size: 13px;
+  }
+
+  .ls-index {
+    font-size: .5rem;
+  }
+
+  .ls-status {
+    font-size: 11px;
+  }
+
+  .ls-code-header {
+    padding: 10px 14px;
+  }
+
+  .ls-code-block {
+    font-size: 10px;
+  }
+
+  .ls-code-line {
+    padding: 2px 14px;
+  }
+
+  /* Controls */
+
+  .ls-controls {
+    gap: 10px;
+  }
+
+  .ls-play-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .ls-icon-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .ls-shuffle-btn {
+    height: 34px;
+    padding: 0 14px;
+    font-size: 11px;
+  }
+
+  .ls-input {
+    width: 3.4rem;
+    height: 34px;
+  }
+
+  .ls-speed {
+    font-size: 12px;
+  }
+
+  .ls-speed input {
+    width: 140px;
+  }
+
+  .ls-stats {
+    gap: 14px;
+  }
+
+}
+
+
+/* ===================================================
+   Very Small Phones
+=================================================== */
+
+@media (max-width:340px) {
+
+  .ls-title {
+    font-size: 1.55rem;
+  }
+
+  .ls-stage {
+    min-height: 250px;
+    padding: 16px;
+  }
+
+  .ls-boxs {
+    gap: 4px;
+  }
+
+  .ls-box {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+  }
+
+  .ls-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ls-speed {
+    width: 100%;
+  }
+
+  .ls-speed input {
+    width: 100%;
+  }
+
+  .ls-stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+}
+
+
+/* ===================================================
+   Landscape Phones
+=================================================== */
+
+@media (max-height:500px) and (orientation:landscape) {
+
+  .linear-search {
+    width: 94%;
+  }
+
+  .ls-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ls-stage {
+    min-height: 280px;
+  }
+
+}
