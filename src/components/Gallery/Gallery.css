@@ -123,3 +123,240 @@
 .gallery-btn:hover::after {
   transform: scaleY(1);
 }
+
+/* =========================
+   Large Tablets
+========================= */
+@media (max-width: 1200px) {
+
+  .gallery {
+    width: min(1400px, 94%);
+  }
+
+  .gallery-card {
+    width: 100%;
+    max-width: 52rem;
+    height: 18rem;
+    padding: 3rem;
+  }
+
+  .gallery-card h1 {
+    font-size: 3.4rem;
+  }
+
+}
+
+/* =========================
+   Tablets
+========================= */
+@media (max-width: 992px) {
+
+  .gallery {
+    width: 92%;
+    margin: 110px auto;
+  }
+
+  .gallery-header {
+    margin-bottom: 56px;
+  }
+
+  .gallery-card {
+    position: sticky;
+    top: 90px;
+    z-index: 10;
+    width: 100%;
+    height: auto;
+    min-height: 16rem;
+    padding: 2.4rem;
+    top: 90px;
+    border-radius: 22px;
+    margin-bottom: 20px;
+  }
+
+  .gallery-btn {
+    flex-direction: auto;
+  }
+
+  .gallery-card-header {
+    margin-bottom: 2rem;
+  }
+
+  .gallery-card h1 {
+    font-size: 2.8rem;
+    margin-bottom: 2rem;
+  }
+
+  .gallery-btn {
+    width: 6.5rem;
+    height: 2.9rem;
+    font-size: .75rem;
+  }
+
+}
+
+/* =========================
+   Phones
+========================= */
+@media (max-width: 768px) {
+
+  .gallery {
+    width: 92%;
+    margin: 90px auto;
+  }
+
+  .gallery-header {
+    margin-bottom: 48px;
+  }
+
+  .gallery-card {
+    position: sticky;
+    top: 78px;
+    z-index: 10;
+
+    min-height: 15rem;
+    padding: 1.8rem;
+
+    display: flex;
+    flex-direction: column;
+  }
+
+  .gallery-btn {
+    margin-top: auto;
+  }
+
+  .gallery-card-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .gallery-number,
+  .gallery-complexity {
+    font-size: .72rem;
+  }
+
+  .gallery-card h1 {
+    font-size: 2.2rem;
+    margin-bottom: 1.75rem;
+    line-height: 1.1;
+  }
+
+  .gallery-btn {
+    width: 6rem;
+    height: 2.7rem;
+    font-size: .72rem;
+  }
+
+}
+
+/* =========================
+   Small Phones
+========================= */
+@media (max-width: 480px) {
+
+  .gallery {
+    width: 94%;
+    margin: 72px auto;
+  }
+
+  .gallery-header {
+    margin-bottom: 36px;
+  }
+
+  .gallery-eyebrow {
+    font-size: .55rem;
+    letter-spacing: .22em;
+  }
+
+  .gallery-card {
+    position: sticky;
+    top: 66px;
+    z-index: 10;
+
+    min-height: 14rem;
+    padding: 1.4rem;
+
+    display: flex;
+    flex-direction: column;
+  }
+
+  .gallery-btn {
+    margin-top: auto;
+  }
+
+  .gallery-card-header {
+    margin-bottom: 1.25rem;
+  }
+
+  .gallery-number,
+  .gallery-complexity {
+    font-size: .68rem;
+  }
+
+  .gallery-card h1 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .gallery-btn {
+    width: 5.5rem;
+    height: 2.5rem;
+    font-size: .68rem;
+  }
+
+}
+
+/* =========================
+   Very Small Phones
+========================= */
+@media (max-width: 340px) {
+
+  .gallery-card {
+    position: sticky;
+    top: 60px;
+    z-index: 10;
+
+    min-height: 13rem;
+    padding: 1.2rem;
+
+    display: flex;
+    flex-direction: column;
+  }
+
+  .gallery-btn {
+    margin-top: auto;
+  }
+
+  .gallery-card h1 {
+    font-size: 1.5rem;
+  }
+
+  .gallery-btn {
+    width: 5rem;
+    height: 2.3rem;
+    font-size: .65rem;
+  }
+
+}
+
+/* =========================
+   Landscape Phones
+========================= */
+@media (max-height: 500px) and (orientation: landscape) {
+
+  .gallery-card {
+    position: relative;
+    top: 0;
+  }
+
+}
+
+/* =========================
+   Reduced Motion
+========================= */
+@media (prefers-reduced-motion: reduce) {
+
+  .gallery-btn,
+  .gallery-btn::after {
+    transition: none;
+  }
+
+}
