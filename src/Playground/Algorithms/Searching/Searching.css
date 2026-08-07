@@ -105,3 +105,204 @@
 .searching-card.locked .description {
   color: #5F5F64;
 }
+
+/* ==========================================
+   Large Tablets
+========================================== */
+
+@media (max-width: 1200px) {
+
+  .searching {
+    margin-bottom: 3rem;
+  }
+
+  .searching-grid {
+    gap: 14px;
+  }
+
+}
+
+
+/* ==========================================
+   Tablets
+========================================== */
+
+@media (max-width: 992px) {
+
+  .searching {
+    margin-bottom: 2.75rem;
+  }
+
+  .searching-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .searching-card {
+    padding: 22px;
+  }
+
+  .searching-card h2 {
+    font-size: 1.1rem;
+  }
+
+}
+
+
+/* ==========================================
+   Phones
+========================================== */
+
+@media (max-width: 768px) {
+
+  .searching {
+    margin-bottom: 2.5rem;
+  }
+
+  .searching-eyebrow {
+    font-size: .65rem;
+    letter-spacing: .18rem;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+  }
+
+  .searching-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .searching-card {
+    padding: 20px;
+    border-radius: 14px;
+  }
+
+  .searching-card .card-top {
+    margin-bottom: 1.4rem;
+  }
+
+  .searching-card .complexity {
+    font-size: .62rem;
+  }
+
+  .searching-card h2 {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+  }
+
+  .searching .description {
+    font-size: .9rem;
+    line-height: 1.6;
+  }
+
+  .searching-card.active:hover .arrow {
+    transform: none;
+  }
+
+}
+
+
+/* ==========================================
+   Small Phones
+========================================== */
+
+@media (max-width: 480px) {
+
+  .searching {
+    margin-bottom: 2rem;
+  }
+
+  .searching-eyebrow {
+    font-size: .58rem;
+    letter-spacing: .15rem;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+  }
+
+  .searching-card {
+    padding: 18px;
+    border-radius: 12px;
+  }
+
+  .searching-card .card-top {
+    margin-bottom: 1.2rem;
+  }
+
+  .searching-card h2 {
+    font-size: 1rem;
+  }
+
+  .searching .description {
+    font-size: .85rem;
+    line-height: 1.55;
+  }
+
+  .searching-card .arrow {
+    font-size: .95rem;
+  }
+
+}
+
+
+/* ==========================================
+   Very Small Phones
+========================================== */
+
+@media (max-width: 340px) {
+
+  .searching-card {
+    padding: 16px;
+  }
+
+  .searching-card h2 {
+    font-size: .95rem;
+  }
+
+  .searching .description {
+    font-size: .8rem;
+  }
+
+  .searching-card .complexity {
+    font-size: .58rem;
+  }
+
+}
+
+
+/* ==========================================
+   Landscape Phones
+========================================== */
+
+@media (max-height: 500px) and (orientation: landscape) {
+
+  .searching-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+
+/* ==========================================
+   Touch Devices
+========================================== */
+
+@media (hover: none) {
+
+  .searching-card.active:hover .arrow {
+    transform: none;
+    color: #7a7a80;
+  }
+
+}
+
+
+/* ==========================================
+   Reduced Motion
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .searching-card .arrow {
+    transition: none;
+  }
+
+}

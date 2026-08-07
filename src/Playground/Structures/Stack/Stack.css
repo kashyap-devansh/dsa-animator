@@ -105,3 +105,204 @@
 .stack-card.locked .description {
   color: #5F5F64;
 }
+
+/* ==========================================
+   Large Tablets
+========================================== */
+
+@media (max-width: 1200px) {
+
+  .stack-ui {
+    margin-bottom: 3rem;
+  }
+
+  .stack-ui-grid {
+    gap: 14px;
+  }
+
+}
+
+
+/* ==========================================
+   Tablets
+========================================== */
+
+@media (max-width: 992px) {
+
+  .stack-ui {
+    margin-bottom: 2.75rem;
+  }
+
+  .stack-ui-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .stack-ui-card {
+    padding: 22px;
+  }
+
+  .stack-ui-card h2 {
+    font-size: 1.1rem;
+  }
+
+}
+
+
+/* ==========================================
+   Phones
+========================================== */
+
+@media (max-width: 768px) {
+
+  .stack-ui {
+    margin-bottom: 2.5rem;
+  }
+
+  .stack-ui-eyebrow {
+    font-size: .65rem;
+    letter-spacing: .18rem;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+  }
+
+  .stack-ui-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .stack-ui-card {
+    padding: 20px;
+    border-radius: 14px;
+  }
+
+  .stack-ui-card .card-top {
+    margin-bottom: 1.4rem;
+  }
+
+  .stack-ui-card .complexity {
+    font-size: .62rem;
+  }
+
+  .stack-ui-card h2 {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+  }
+
+  .stack-ui .description {
+    font-size: .9rem;
+    line-height: 1.6;
+  }
+
+  .stack-ui-card.active:hover .arrow {
+    transform: none;
+  }
+
+}
+
+
+/* ==========================================
+   Small Phones
+========================================== */
+
+@media (max-width: 480px) {
+
+  .stack-ui {
+    margin-bottom: 2rem;
+  }
+
+  .stack-ui-eyebrow {
+    font-size: .58rem;
+    letter-spacing: .15rem;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+  }
+
+  .stack-ui-card {
+    padding: 18px;
+    border-radius: 12px;
+  }
+
+  .stack-ui-card .card-top {
+    margin-bottom: 1.2rem;
+  }
+
+  .stack-ui-card h2 {
+    font-size: 1rem;
+  }
+
+  .stack-ui .description {
+    font-size: .85rem;
+    line-height: 1.55;
+  }
+
+  .stack-ui-card .arrow {
+    font-size: .95rem;
+  }
+
+}
+
+
+/* ==========================================
+   Very Small Phones
+========================================== */
+
+@media (max-width: 340px) {
+
+  .stack-ui-card {
+    padding: 16px;
+  }
+
+  .stack-ui-card h2 {
+    font-size: .95rem;
+  }
+
+  .stack-ui .description {
+    font-size: .8rem;
+  }
+
+  .stack-ui-card .complexity {
+    font-size: .58rem;
+  }
+
+}
+
+
+/* ==========================================
+   Landscape Phones
+========================================== */
+
+@media (max-height: 500px) and (orientation: landscape) {
+
+  .stack-ui-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+
+/* ==========================================
+   Touch Devices
+========================================== */
+
+@media (hover: none) {
+
+  .stack-ui-card.active:hover .arrow {
+    transform: none;
+    color: #7a7a80;
+  }
+
+}
+
+
+/* ==========================================
+   Reduced Motion
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .stack-ui-card .arrow {
+    transition: none;
+  }
+
+}
