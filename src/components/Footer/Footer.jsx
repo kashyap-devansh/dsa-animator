@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./Footer.css";
 
 const Footer = () => {
@@ -24,27 +25,28 @@ const Footer = () => {
             <div className="footer-column">
               <h4>VISUALIZERS</h4>
 
-              <a href="/">Sorting</a>
-              <a href="/">Searching & Trees</a>
-              <a href="/">Graphs</a>
-              <a href="/">Dynamic Programming</a>
+              <Link to="/playground">Sorting</Link>
+              <Link to="/playground">Searching & Trees</Link>
+              <Link href="/playground">Graphs</Link>
+              <Link href="/playground">Dynamic Programming</Link>
             </div>
 
             <div className="footer-column">
               <h4>LAB</h4>
 
-              <a href="/">Gallery</a>
-              <a href="/">Notes</a>
-              <a href="/">Manifesto</a>
-              <a href="/">Changelog</a>
+              <a href="/#gallery">Gallery</a>
+              <Link to="/notes">Notes</Link>
+              <a href="/#manifesto">Manifesto</a>
+              <a href="/#visualizers">Visualizers</a>
             </div>
 
             <div className="footer-column">
               <h4>CONNECT</h4>
 
-              <a href="/">GitHub</a>
-              <a href="/">Discord</a>
-              <a href="/">Twitter / X</a>
+              <a href="https://github.com/kashyap-devansh">GitHub</a>
+              <a href="mailto:devansh14007@gmail.com">Gmail</a>
+              <a href="https://instagram.com/x.__devansh__.x">Instagram</a>
+              <a href="tel:+919315858470">Phone Number</a>
             </div>
 
           </div>
@@ -56,9 +58,7 @@ const Footer = () => {
         <div className="footer-bottom">
           <p>© 2026 DSA Animator. All frames rendered.</p>
 
-          <a href="mailto:hello@dsaanimator.dev">
-            hello@dsaanimator.dev
-          </a>
+          <p>Made by <span>Devansh Kashyap</span></p>
         </div>
 
       </div>
