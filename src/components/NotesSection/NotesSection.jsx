@@ -90,9 +90,7 @@ function PageThumb({ note, active, onClick }) {
 }
 
 const Notes = () => {
-  const [currentPageIndex, setCurrentPageIndex] = useState(
-    NotesData.length - 1
-  );
+  const [currentPageIndex, setCurrentPageIndex] = useState(0);
 
   const currentNote = NotesData[currentPageIndex];
 
