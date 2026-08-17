@@ -1,30 +1,36 @@
+import { useNavigate } from "react-router-dom";
 import "./Gallery.css";
 
 const GalleryElements = [
   {
-    title: "Quicksort Chamber",
-    tag: "Sorting",
-    complexity: "O(n log n)",
+    title: "Bubble Sort",
+    tag: "sorting",
+    complexity: "O(n²)",
+    slug: "bubble-sort",
   },
   {
-    title: "Dijkstra Pathfinder",
-    tag: "Graphs",
-    complexity: "O((V+E) log V)",
-  },
-  {
-    title: "AVL Balancer",
-    tag: "Trees",
+    title: "Binary Search",
+    tag: "searching",
     complexity: "O(log n)",
+    slug: "binary-search",
   },
   {
-    title: "Knapsack Grid",
-    tag: "Dynamic Programming",
-    complexity: "O(n·W)",
+    title: "Insert At Head",
+    tag: "linkedList",
+    complexity: "O(1)",
+    slug: "insert-at-head",
+  },
+  {
+    title: "Enqueue",
+    tag: "queue",
+    complexity: "O(1)",
+    slug: "enqueue",
   },
 
 ]
 
 const Gallery = () => {
+  const navigate = useNavigate();
   return (
     <div
       className="gallery-wrapper"
@@ -55,7 +61,10 @@ const Gallery = () => {
 
               <h1>{item.title}</h1>
 
-              <button className="gallery-btn">
+              <button
+                className="gallery-btn"
+                onClick={() => navigate(`/playground/${item.tag}/${item.slug}`)}
+              >
                 View Case
               </button>
             </div>
