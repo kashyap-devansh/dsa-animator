@@ -213,14 +213,9 @@ const BubbleSort = () => {
                   <motion.div
                     key={i}
                     className="bs-bar"
-                    animate={{
+                    style={{
                       height: `${(value / max) * 230 + 6}px`,
                       backgroundColor: color,
-                    }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 260,
-                      damping: 26,
                     }}
                   />
                 );

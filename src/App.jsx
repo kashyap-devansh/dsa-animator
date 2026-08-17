@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import LoadingScreen from "./components/LoadingScreen/LoadingScreen.jsx";
+import NotesSection from "./components/NotesSection/NotesSection.jsx";
 
 import Playground from "./Playground/PlaygroundHero/PlaygroundHero";
 import Sorting from "./Playground/Algorithms/Sorting/Sorting";
@@ -110,6 +111,18 @@ const App = () => {
           </>
         }
       />
+
+      <Route
+        path="/notes"
+        element={
+          <>
+            <Navbar />
+            <NotesSection />
+            <Footer />
+          </>
+        }
+      />
+
     </Routes>
   );
 }

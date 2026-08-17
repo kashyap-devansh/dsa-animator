@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 
 function Navbar() {
@@ -48,7 +48,7 @@ function Navbar() {
           <a href="/">Visualizers</a>
           <a href="/">Gallery</a>
           <a href="/">Manifesto</a>
-          <a href="/">Notes</a>
+          <Link to="/notes">Notes</Link>
 
           <button
             className="launch-btn mobile-launch-btn"

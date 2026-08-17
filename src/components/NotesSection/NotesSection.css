@@ -1,0 +1,555 @@
+.notes {
+  position: relative;
+  min-height: 60dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5rem 3rem 4.5rem;
+  box-sizing: border-box;
+  background: #0a0a0b;
+}
+
+.notes_grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: radial-gradient(rgba(243, 242, 237, 0.14) 1px,
+      transparent 1px);
+  background-size: 7px 7px;
+  opacity: 0.7;
+}
+
+.notes_grid::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+}
+
+.notes_layout {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  align-items: start;
+  gap: 2.5rem;
+  width: 100%;
+  max-width: 1680px;
+  margin: 0 auto;
+}
+
+.notes_stage {
+  position: relative;
+  min-width: 0;
+  min-height: 670px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  padding: 2rem;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  background: rgba(8, 8, 9, 0.45);
+}
+
+.page {
+  position: relative;
+  width: min(550px, 100%);
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
+  padding: 2.75rem 2.5rem 3.25rem;
+  box-sizing: border-box;
+  background: #f1ead9;
+  border-radius: 3px;
+  box-shadow:
+    0 35px 70px -25px rgba(0, 0, 0, 0.65),
+    0 3px 0 rgba(0, 0, 0, 0.15);
+}
+
+.page_tape {
+  position: absolute;
+  top: -0.85rem;
+  z-index: 4;
+  width: 4.5rem;
+  height: 1.9rem;
+  background: linear-gradient(to bottom,
+      rgba(255, 106, 61, 0.55),
+      rgba(216, 88, 48, 0.42));
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+}
+
+.page_tape-left {
+  left: 2rem;
+  transform: rotate(-5deg);
+}
+
+.page_tape-right {
+  right: 2.5rem;
+  transform: rotate(4deg);
+}
+
+.page_rules {
+  position: absolute;
+  top: 6.5rem;
+  right: 2.5rem;
+  bottom: 2.5rem;
+  left: 2.5rem;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(to bottom,
+      transparent,
+      transparent 33px,
+      rgba(10, 10, 11, 0.08) 34px);
+}
+
+.page_content {
+  position: relative;
+  z-index: 2;
+}
+
+.page_eyebrow {
+  display: block;
+  margin-bottom: 0.6rem;
+  color: #ff6a3d;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.page_title {
+  display: inline-block;
+  margin: 0 0 1.7rem;
+  padding-bottom: 0.3rem;
+  color: #17140f;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.85rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  border-bottom: 3px solid #ff6a3d;
+}
+
+.page_body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+}
+
+.page_body p {
+  margin: 0;
+  padding: 0.42rem 0;
+  color: #24211b;
+  font-family: "Satoshi", sans-serif;
+  font-size: 0.98rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.note_idea {
+  color: #3a352b;
+}
+
+.note_step {
+  position: relative;
+  display: block;
+}
+
+.note_marker {
+  margin-right: 0.4rem;
+  color: #ff6a3d;
+  font-weight: 700;
+}
+
+.note_step_text {
+  display: inline;
+}
+
+.note_code {
+  display: inline-block;
+  margin: 0 0.35rem;
+  padding: 0.05rem 0.45rem;
+  color: #17140f;
+  background: rgba(10, 10, 11, 0.03);
+  border: 1px solid #24211b;
+  border-radius: 3px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.note_annotation {
+  position: absolute;
+  top: -0.15rem;
+  left: 82%;
+  display: flex;
+  flex-direction: column;
+  color: #d1481f;
+  font-family: "Satoshi", sans-serif;
+  font-size: 0.7rem;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.25;
+  white-space: nowrap;
+  transform: rotate(-2deg);
+}
+
+.note_annotation_line {
+  display: block;
+}
+
+.note_star {
+  margin-left: 0.4rem;
+  color: #ff6a3d;
+}
+
+.note_strike {
+  color: rgba(36, 33, 27, 0.4);
+  text-decoration: line-through;
+  text-decoration-color: rgba(36, 33, 27, 0.4);
+}
+
+.page_footer {
+  display: block;
+  margin-top: 1.5rem;
+  color: rgba(36, 33, 27, 0.55);
+  font-family: "Satoshi", sans-serif;
+  font-size: 0.82rem;
+  font-style: italic;
+  text-align: right;
+}
+
+.notes_pagination {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+}
+
+.page_arrow {
+  padding: 0.2rem 0.3rem;
+  color: rgba(255, 255, 255, 0.7);
+  background: none;
+  border: none;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.page_arrow:hover {
+  color: #ff6a3d;
+}
+
+.notes_open_pdf {
+  position: absolute;
+  right: 1.5rem;
+  bottom: 1.5rem;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+
+  padding: 0.45rem 0.75rem;
+
+  color: #ff6a3d;
+  background: rgba(255, 106, 61, 0.08);
+
+  border: 1px solid rgba(255, 106, 61, 0.3);
+  border-radius: 5px;
+
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+
+  text-decoration: none;
+
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.notes_open_pdf:hover {
+  color: #0a0a0b;
+  background: #ff6a3d;
+  border-color: #ff6a3d;
+}
+
+.page_count {
+  color: rgba(255, 255, 255, 0.5);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+.notes_sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 0.15rem;
+}
+
+.notes_sidebar_label {
+  color: rgba(255, 255, 255, 0.4);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.notes_sidebar_list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 670px;
+  overflow-y: auto;
+  padding-right: 0.2rem;
+}
+
+.notes_sidebar_list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.notes_sidebar_list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+.thumb {
+  all: unset;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+  min-height: 125px;
+  padding: 0.65rem;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.thumb::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 60px;
+  margin-bottom: 0.15rem;
+  background:
+    repeating-linear-gradient(to bottom,
+      transparent,
+      transparent 9px,
+      rgba(10, 10, 11, 0.08) 10px),
+    #f1ead9;
+  border-radius: 2px;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.25),
+    inset 0 0 0 1px rgba(10, 10, 11, 0.08);
+}
+
+.thumb:hover {
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.thumb-active {
+  background: rgba(255, 106, 61, 0.07);
+  border-color: #ff6a3d;
+}
+
+.thumb_title {
+  display: block;
+  color: #f3f2ed;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+.thumb_meta {
+  display: block;
+  color: rgba(255, 255, 255, 0.38);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.notes_meta {
+  position: absolute;
+  right: 0;
+  bottom: 1.5rem;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 3rem;
+  color: rgba(255, 255, 255, 0.3);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 1200px) {
+  .notes {
+    padding: 4rem 2rem;
+  }
+
+  .notes_layout {
+    grid-template-columns: minmax(0, 1fr) 220px;
+    gap: 2rem;
+  }
+
+  .notes_stage {
+    min-height: 620px;
+  }
+
+  .page {
+    width: min(500px, 100%);
+  }
+
+  .thumb {
+    min-height: 115px;
+  }
+}
+
+@media (max-width: 900px) {
+  .notes {
+    padding: 4rem 1.5rem;
+  }
+
+  .notes_layout {
+    grid-template-columns: 1fr;
+  }
+
+  .notes_stage {
+    min-height: 620px;
+  }
+
+  .notes_sidebar {
+    padding-top: 0;
+  }
+
+  .notes_sidebar_list {
+    flex-direction: row;
+    max-height: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 0.5rem;
+  }
+
+  .thumb {
+    min-width: 170px;
+    max-width: 170px;
+  }
+
+  .notes_meta {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .notes {
+    min-height: 100dvh;
+    padding: 3rem 1rem 4rem;
+  }
+
+  .notes_stage {
+    min-height: 580px;
+    padding: 1.25rem;
+    border-radius: 10px;
+  }
+
+  .page {
+    width: min(460px, 100%);
+    padding: 2.25rem 1.75rem 2.5rem;
+  }
+
+  .page_rules {
+    right: 1.75rem;
+    left: 1.75rem;
+  }
+
+  .page_title {
+    font-size: 1.5rem;
+  }
+
+  .page_body p {
+    font-size: 0.9rem;
+  }
+
+  .note_annotation {
+    position: static;
+    display: block;
+    margin-top: 0.15rem;
+    white-space: normal;
+    transform: none;
+  }
+
+  .notes_meta {
+    bottom: 0.8rem;
+    flex-direction: column;
+    gap: 0.35rem;
+    align-items: center;
+    padding: 0 1rem;
+    font-size: 0.56rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 400px) {
+  .notes_stage {
+    min-height: 520px;
+    padding: 1rem;
+  }
+
+  .page {
+    padding: 2rem 1.35rem 2.25rem;
+  }
+
+  .page_tape {
+    width: 3.4rem;
+    height: 1.5rem;
+  }
+
+  .page_tape-left {
+    left: 1.25rem;
+  }
+
+  .page_tape-right {
+    right: 1.25rem;
+  }
+
+  .page_title {
+    font-size: 1.3rem;
+  }
+
+  .page_body p {
+    font-size: 0.84rem;
+  }
+
+  .page_rules {
+    top: 5.8rem;
+    right: 1.35rem;
+    left: 1.35rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page {
+    transition: none !important;
+  }
+}
