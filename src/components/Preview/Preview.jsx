@@ -35,10 +35,13 @@ const PROJECTS = [
 ];
 
 const Preview = () => {
-  const [active, setActive] = useState(1);
+  const [active, setActive] = useState(0);
 
   return (
-    <div className="preview-wrapper">
+    <div
+      className="preview-wrapper"
+      id="visualizers"
+    >
       <section className="preview">
         <div className="preview-header">
           <span className="preview-eyebrow">THE LIBRARY</span>

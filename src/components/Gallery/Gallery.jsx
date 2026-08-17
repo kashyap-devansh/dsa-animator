@@ -26,7 +26,10 @@ const GalleryElements = [
 
 const Gallery = () => {
   return (
-    <div className="gallery-wrapper">
+    <div
+      className="gallery-wrapper"
+      id="gallery"
+    >
       <div className="gallery">
         <div className="gallery-header">
           <span className="gallery-eyebrow">THE GALLERY</span>

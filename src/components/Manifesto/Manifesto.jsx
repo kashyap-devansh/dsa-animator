@@ -20,7 +20,11 @@ function Manifesto() {
   const color8 = useTransform(scrollYProgress, [0.70, 0.85], ["#262626", "#f3f2ed"]);
 
   return (
-    <div ref={ref} className="manifesto">
+    <div
+      ref={ref}
+      className="manifesto"
+      id="manifesto"
+    >
       <span className="manifesto-eyebrow">THE MANIFESTO</span>
 
       <motion.h1 style={{ color: color1 }}>

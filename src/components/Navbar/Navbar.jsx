@@ -45,9 +45,9 @@ function Navbar() {
         </label>
 
         <nav>
-          <a href="/">Visualizers</a>
-          <a href="/">Gallery</a>
-          <a href="/">Manifesto</a>
+          <a href="/#visualizers">Visualizers</a>
+          <a href="/#gallery">Gallery</a>
+          <a href="/#manifesto">Manifesto</a>
           <Link to="/notes">Notes</Link>
 
           <button
