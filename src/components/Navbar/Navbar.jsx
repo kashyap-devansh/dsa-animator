@@ -25,9 +25,12 @@ function Navbar() {
       }
     >
       <div className="navbar-container">
-        <div className="logo">
+        <Link
+          className="logo"
+          to="/"
+        >
           DSA<span>/</span>ANIMATOR
-        </div>
+        </Link>
 
         <input
           type="checkbox"
