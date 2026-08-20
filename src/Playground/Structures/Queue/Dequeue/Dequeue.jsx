@@ -267,7 +267,7 @@ const Dequeue = () => {
     <div className="dequeue-wrapper">
       <div className="dequeue">
         <p className="de-eyebrow">queue</p>
-        <h1 className="de-title">Enqueue</h1>
+        <h1 className="de-title">Dequeue</h1>
 
         <div className="de-header">
           <p className="i-blurb">
