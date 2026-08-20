@@ -26,7 +26,7 @@ const SortingData = [{
   complexity: "O(n log n)",
   description: "Divides to single elements, then merges soreted halves back.",
   slug: "merge-sort",
-  active: false,
+  active: true,
 
 },
 {

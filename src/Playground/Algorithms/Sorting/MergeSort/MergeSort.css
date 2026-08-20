@@ -1,0 +1,644 @@
+.merge-sort-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 7.6rem;
+}
+
+.merge-sort {
+  font-family: "Satoshi", "Inter";
+  min-height: 85dvh;
+  padding: 48px clamp(20px, 2vw, 64px) 80px;
+  width: 70%;
+}
+
+.ms-eyebrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.2rem;
+  color: #ff6a3d;
+  line-height: 0.8rem;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.ms-title {
+  font-size: clamp(2rem, 3.8vw, 3.8rem);
+  font-weight: 400;
+  line-height: -1.05;
+  font-family: "Space Grotesk";
+  margin-top: 0;
+  color: white;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.ms-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2.2rem;
+}
+
+.ms-blurb {
+  font-family: "Satoshi";
+  font-size: 1.05rem;
+  color: #7a7a80;
+  font-weight: 500;
+  margin-top: 0;
+}
+
+.ms-complexity {
+  display: flex;
+  gap: 28px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.9rem;
+  color: #7a7a80;
+}
+
+.ms-complexity-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.ms-time-value {
+  color: #ff6a3d;
+}
+
+.ms-space-value {
+  color: #7c8cff;
+}
+
+.ms-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.ms-stage {
+  background: #141416;
+  border: 1px solid #262629;
+  border-radius: 16px;
+  padding: 32px;
+  min-height: 380px;
+  display: flex;
+  flex-direction: column;
+}
+
+.ms-bars {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px;
+  min-height: 260px;
+}
+
+.ms-bar {
+  width: 100%;
+  max-width: 40px;
+  border-radius: 3px 3px 0 0;
+}
+
+.ms-status {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+  border-top: 1px solid #262629;
+  margin: 20px 0 0;
+  padding-top: 16px;
+}
+
+.ms-code-panel {
+  background: #141416;
+  border: 1px solid #262629;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.ms-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid #262629;
+}
+
+.ms-dummy-btns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ms-red-btn,
+.ms-yellow-btn,
+.ms-green-btn {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.ms-red-btn {
+  background-color: #ff5f56;
+}
+
+.ms-yellow-btn {
+  background-color: #ffbd2e;
+}
+
+.ms-green-btn {
+  background-color: #27c93f;
+}
+
+.ms-filename {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+  margin-left: 8px;
+}
+
+.ms-header-complexity {
+  color: #7c8cff;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+}
+
+.ms-code-block {
+  margin: 0;
+  padding: 16px 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12.5px;
+  line-height: 1.9;
+  overflow-x: auto;
+  flex: 1;
+}
+
+.ms-code-line {
+  padding: 1px 20px;
+  white-space: pre;
+  border-left: 2px solid transparent;
+  color: #f3f2ed;
+}
+
+.ms-code-line-active {
+  background: rgba(255, 106, 61, 0.1);
+  border-left-color: #ff6a3d;
+}
+
+.ms-line-no {
+  display: inline-block;
+  width: 20px;
+  color: #4a4a4f;
+  user-select: none;
+  margin-right: 4px;
+}
+
+.ms-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.ms-icon-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #262629;
+  background: transparent;
+  color: #7a7a80;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.ms-icon-btn:hover:not(:disabled) {
+  color: #f3f2ed;
+  border-color: rgba(243, 242, 237, 0.3);
+}
+
+.ms-icon-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.ms-play-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: #ff6a3d;
+  color: #0a0a0b;
+  cursor: pointer;
+  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.ms-play-btn:hover {
+  opacity: 0.9;
+}
+
+.ms-shuffle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  border: 1px solid #262629;
+  background: transparent;
+  color: #7a7a80;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  padding: 0 16px;
+  height: 36px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.ms-shuffle-btn:hover {
+  color: #f3f2ed;
+  border-color: rgba(243, 242, 237, 0.3);
+}
+
+.ms-speed {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  color: #7a7a80;
+  margin-left: auto;
+}
+
+.ms-speed input[type="range"] {
+  accent-color: #ff6a3d;
+  width: 130px;
+}
+
+.ms-stats {
+  display: flex;
+  gap: 24px;
+  margin-top: 18px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+}
+
+.ms-stats b {
+  color: #f3f2ed;
+  font-size: 15px;
+}
+
+.ms-steps {
+  color: #7a7a80;
+}
+
+.ms-keyword {
+  color: #ff6a3d;
+}
+
+.ms-number {
+  color: #7c8cff;
+}
+
+.ms-symbol {
+  color: #7a7a80;
+}
+
+.ms-type {
+  color: #56b6c2;
+}
+
+
+/* ===================================================
+   Large Tablets
+=================================================== */
+
+@media (max-width:1200px) {
+
+  .merge-sort {
+    width: 85%;
+  }
+
+  .ms-grid {
+    gap: 20px;
+  }
+
+}
+
+
+/* ===================================================
+   Tablets
+=================================================== */
+
+@media (max-width:992px) {
+
+  .merge-sort-wrapper {
+    margin-top: 6rem;
+  }
+
+  .merge-sort {
+    width: 92%;
+    padding: 36px 0 64px;
+  }
+
+  .ms-header {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .ms-complexity {
+    gap: 2rem;
+  }
+
+  /* stack animation + code */
+
+  .ms-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .ms-stage,
+  .ms-code-panel {
+    width: 100%;
+  }
+
+  .ms-stage {
+    min-height: 360px;
+  }
+
+}
+
+
+/* ===================================================
+   Phones
+=================================================== */
+
+@media (max-width:768px) {
+
+  .merge-sort-wrapper {
+    margin-top: 5rem;
+  }
+
+  .merge-sort {
+    width: 94%;
+    padding: 28px 0 56px;
+    min-height: auto;
+  }
+
+  .ms-eyebrow {
+    font-size: .65rem;
+  }
+
+  .ms-title {
+    font-size: 2.2rem;
+    line-height: 1.1;
+  }
+
+  .ms-blurb {
+    font-size: .95rem;
+    line-height: 1.6;
+  }
+
+  .ms-header {
+    gap: 1.2rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .ms-complexity {
+    gap: 1.5rem;
+    font-size: .8rem;
+    flex-wrap: wrap;
+  }
+
+  .ms-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  /* Animation takes full width */
+
+  .ms-stage {
+    width: 100%;
+    min-height: 330px;
+    padding: 24px;
+  }
+
+  .ms-bars {
+    min-height: 210px;
+  }
+
+  /* Code below animation */
+
+  .ms-code-panel {
+    width: 100%;
+  }
+
+  .ms-code-block {
+    font-size: 11px;
+  }
+
+  .ms-code-line {
+    padding: 2px 16px;
+  }
+
+  /* Controls */
+
+  .ms-controls {
+
+    justify-content: center;
+
+    row-gap: 16px;
+    column-gap: 12px;
+
+  }
+
+  .ms-speed {
+
+    width: 100%;
+
+    justify-content: center;
+
+    margin-left: 0;
+
+  }
+
+  .ms-speed input {
+
+    width: 180px;
+
+  }
+
+  .ms-stats {
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 18px;
+
+    text-align: center;
+
+  }
+
+}
+
+
+/* ===================================================
+   Small Phones
+=================================================== */
+
+@media (max-width:480px) {
+
+  .merge-sort {
+    width: 95%;
+  }
+
+  .ms-title {
+    font-size: 1.8rem;
+  }
+
+  .ms-blurb {
+    font-size: .9rem;
+  }
+
+  .ms-stage {
+    padding: 18px;
+    min-height: 300px;
+  }
+
+  .ms-bars {
+    gap: 3px;
+    min-height: 180px;
+  }
+
+  .ms-bar {
+    max-width: 26px;
+  }
+
+  .ms-status {
+    font-size: 11px;
+  }
+
+  .ms-code-header {
+    padding: 10px 14px;
+  }
+
+  .ms-code-block {
+    font-size: 10px;
+  }
+
+  .ms-code-line {
+    padding: 2px 14px;
+  }
+
+  /* controls */
+
+  .ms-controls {
+    gap: 10px;
+  }
+
+  .ms-play-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .ms-icon-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .ms-shuffle-btn {
+    height: 34px;
+    padding: 0 14px;
+    font-size: 11px;
+  }
+
+  .ms-speed {
+    font-size: 12px;
+  }
+
+  .ms-speed input {
+    width: 140px;
+  }
+
+  .ms-stats {
+    gap: 14px;
+  }
+
+}
+
+
+/* ===================================================
+   Very Small Phones
+=================================================== */
+
+@media (max-width:340px) {
+
+  .ms-title {
+    font-size: 1.55rem;
+  }
+
+  .ms-stage {
+    min-height: 260px;
+    padding: 16px;
+  }
+
+  .ms-bars {
+    min-height: 150px;
+  }
+
+  .ms-bar {
+    max-width: 20px;
+  }
+
+  .ms-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ms-speed {
+    width: 100%;
+  }
+
+  .ms-speed input {
+    width: 100%;
+  }
+
+  .ms-stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+}
+
+
+/* ===================================================
+   Landscape Phones
+=================================================== */
+
+@media (max-height:500px) and (orientation:landscape) {
+
+  .merge-sort {
+    width: 94%;
+  }
+
+  .ms-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ms-stage {
+    min-height: 280px;
+  }
+
+}

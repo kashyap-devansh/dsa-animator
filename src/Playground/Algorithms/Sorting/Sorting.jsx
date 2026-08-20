@@ -3,6 +3,7 @@ import SortingData from "./SortingData.js";
 import BubbleSort from "./BubbleSort/BubbleSort.jsx";
 import SelectionSort from "./SelectionSort/SelectionSort.jsx";
 import InsertionSort from "./InsertionSort/InsertionSort.jsx";
+import MergeSort from "./MergeSort/MergeSort.jsx";
 import "./Sorting.css";
 
 const Sorting = () => {
@@ -16,6 +17,9 @@ const Sorting = () => {
   }
   else if (slug === "insertion-sort") {
     return <InsertionSort />
+  }
+  else if (slug === "merge-sort") {
+    return <MergeSort />
   }
 
   return (
