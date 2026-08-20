@@ -296,7 +296,7 @@ const MergeSort = () => {
                     key={i}
                     className="ms-bar"
                     style={{
-                      height: `${(value / max) * 230 + 6}px`,
+                      height: `${(value / max) * 400 + 6}px`,
                       backgroundColor: color,
                     }}
                   />
