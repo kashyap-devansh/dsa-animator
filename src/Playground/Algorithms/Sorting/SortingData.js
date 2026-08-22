@@ -34,7 +34,7 @@ const SortingData = [{
   complexity: "O(n log n)",
   description: "Partitons around a pivot, then recurses on both sides.",
   slug: "quick-sort",
-  active: false,
+  active: true,
 
 },
 ]

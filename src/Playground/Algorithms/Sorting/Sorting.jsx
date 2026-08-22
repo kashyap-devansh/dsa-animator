@@ -4,6 +4,7 @@ import BubbleSort from "./BubbleSort/BubbleSort.jsx";
 import SelectionSort from "./SelectionSort/SelectionSort.jsx";
 import InsertionSort from "./InsertionSort/InsertionSort.jsx";
 import MergeSort from "./MergeSort/MergeSort.jsx";
+import QuickSort from "./QuickSort/QuickSort.jsx";
 import "./Sorting.css";
 
 const Sorting = () => {
@@ -20,6 +21,9 @@ const Sorting = () => {
   }
   else if (slug === "merge-sort") {
     return <MergeSort />
+  }
+  else if (slug === "quick-sort") {
+    return <QuickSort />
   }
 
   return (
