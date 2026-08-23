@@ -87,19 +87,23 @@
   flex-direction: column;
 }
 
-.ms-bars {
+.ms-tree-wrap {
   flex: 1;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
-  gap: 4px;
+  overflow-x: auto;
   min-height: 260px;
+  padding: 4px 0;
 }
 
-.ms-bar {
-  width: 100%;
-  max-width: 40px;
-  border-radius: 3px 3px 0 0;
+.ms-tree-svg {
+  display: block;
+}
+
+.ms-tree-value {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 15px;
 }
 
 .ms-status {
@@ -434,7 +438,7 @@
     padding: 24px;
   }
 
-  .ms-bars {
+  .ms-tree-wrap {
     min-height: 210px;
   }
 
@@ -517,13 +521,8 @@
     min-height: 300px;
   }
 
-  .ms-bars {
-    gap: 3px;
+  .ms-tree-wrap {
     min-height: 180px;
-  }
-
-  .ms-bar {
-    max-width: 26px;
   }
 
   .ms-status {
@@ -594,12 +593,8 @@
     padding: 16px;
   }
 
-  .ms-bars {
+  .ms-tree-wrap {
     min-height: 150px;
-  }
-
-  .ms-bar {
-    max-width: 20px;
   }
 
   .ms-controls {
