@@ -1,0 +1,780 @@
+.radix-sort-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 7.6rem;
+}
+
+.radix-sort {
+  font-family: "Satoshi", "Inter";
+  min-height: 85dvh;
+  padding: 48px clamp(20px, 2vw, 64px) 80px;
+  width: 70%;
+}
+
+.rs-eyebrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.2rem;
+  color: #ff6a3d;
+  line-height: 0.8rem;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.rs-title {
+  font-size: clamp(2rem, 3.8vw, 3.8rem);
+  font-weight: 400;
+  line-height: -1.05;
+  font-family: "Space Grotesk";
+  margin-top: 0;
+  color: white;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.rs-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2.2rem;
+}
+
+.rs-blurb {
+  font-family: "Satoshi";
+  font-size: 1.05rem;
+  color: #7a7a80;
+  font-weight: 500;
+  margin-top: 0;
+}
+
+.rs-complexity {
+  display: flex;
+  gap: 28px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.9rem;
+  color: #7a7a80;
+}
+
+.rs-complexity-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.rs-time-value {
+  color: #ff6a3d;
+}
+
+.rs-space-value {
+  color: #7c8cff;
+}
+
+.rs-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.rs-stage {
+  background: #141416;
+  border: 1px solid #262629;
+  border-radius: 16px;
+  padding: 32px;
+  min-height: 380px;
+  display: flex;
+  flex-direction: column;
+}
+
+.rs-stage-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: auto;
+  min-height: 260px;
+  padding: 4px 0;
+}
+
+.rs-pass-tracker {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.rs-pass-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  border: 1px solid #33333a;
+  padding: 5px 12px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: #4a4a4f;
+  transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease;
+}
+
+.rs-pass-index {
+  font-weight: 600;
+}
+
+.rs-pass-label {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.rs-pass-pending {
+  border-color: #262629;
+  color: #4a4a4f;
+}
+
+.rs-pass-active {
+  border-color: #ff6a3d;
+  color: #ff6a3d;
+  background: rgba(255, 106, 61, 0.08);
+}
+
+.rs-pass-done {
+  border-color: #b4ff39;
+  color: #b4ff39;
+  background: rgba(180, 255, 57, 0.08);
+}
+
+.rs-pass-arrow {
+  color: #33333a;
+  font-size: 12px;
+}
+
+.rs-pass-history {
+  margin-top: 20px;
+  border-top: 1px solid #262629;
+  padding-top: 16px;
+}
+
+.rs-pass-history-title {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #4a4a4f;
+  margin: 0 0 10px;
+}
+
+.rs-pass-history-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rs-pass-history-row {
+  display: flex;
+  gap: 14px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  flex-wrap: wrap;
+}
+
+.rs-pass-history-label {
+  color: #ff6a3d;
+  white-space: nowrap;
+  min-width: 130px;
+}
+
+.rs-pass-history-values {
+  color: #7a7a80;
+}
+
+.rs-stage-svg {
+  display: block;
+}
+
+.rs-cell-rect {
+  transition: stroke 0.25s ease, fill 0.35s ease, stroke-width 0.25s ease;
+}
+
+.rs-cell-value {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 15px;
+  transition: fill 0.25s ease;
+}
+
+.rs-digit-badge {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  fill: #ff6a3d;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  transition: opacity 0.2s ease;
+}
+
+.rs-bucket-label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  fill: #7a7a80;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.rs-pointer {
+  transition: transform 0.3s cubic-bezier(.4, 0, .2, 1);
+}
+
+.rs-marker {
+  transition: transform 0.4s cubic-bezier(.4, 0, .2, 1), opacity 0.3s ease;
+}
+
+.rs-marker-value {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.rs-place {
+  color: #4a4a4f;
+}
+
+.rs-status {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+  border-top: 1px solid #262629;
+  margin: 20px 0 0;
+  padding-top: 16px;
+}
+
+.rs-code-panel {
+  background: #141416;
+  border: 1px solid #262629;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.rs-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid #262629;
+}
+
+.rs-dummy-btns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rs-red-btn,
+.rs-yellow-btn,
+.rs-green-btn {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.rs-red-btn {
+  background-color: #ff5f56;
+}
+
+.rs-yellow-btn {
+  background-color: #ffbd2e;
+}
+
+.rs-green-btn {
+  background-color: #27c93f;
+}
+
+.rs-filename {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+  margin-left: 8px;
+}
+
+.rs-header-complexity {
+  color: #7c8cff;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+}
+
+.rs-code-block {
+  margin: 0;
+  padding: 16px 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12.5px;
+  line-height: 1.9;
+  overflow-x: auto;
+  flex: 1;
+}
+
+.rs-code-line {
+  padding: 1px 20px;
+  white-space: pre;
+  border-left: 2px solid transparent;
+  color: #f3f2ed;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.rs-code-line-active {
+  background: rgba(255, 106, 61, 0.1);
+  border-left-color: #ff6a3d;
+}
+
+.rs-line-no {
+  display: inline-block;
+  width: 20px;
+  color: #4a4a4f;
+  user-select: none;
+  margin-right: 4px;
+}
+
+.rs-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.rs-icon-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #262629;
+  background: transparent;
+  color: #7a7a80;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.rs-icon-btn:hover:not(:disabled) {
+  color: #f3f2ed;
+  border-color: rgba(243, 242, 237, 0.3);
+}
+
+.rs-icon-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.rs-play-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: #ff6a3d;
+  color: #0a0a0b;
+  cursor: pointer;
+  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.rs-play-btn:hover {
+  opacity: 0.9;
+}
+
+.rs-shuffle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  border: 1px solid #262629;
+  background: transparent;
+  color: #7a7a80;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  padding: 0 16px;
+  height: 36px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.rs-shuffle-btn:hover {
+  color: #f3f2ed;
+  border-color: rgba(243, 242, 237, 0.3);
+}
+
+.rs-speed {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  color: #7a7a80;
+  margin-left: auto;
+}
+
+.rs-speed input[type="range"] {
+  accent-color: #ff6a3d;
+  width: 130px;
+}
+
+.rs-stats {
+  display: flex;
+  gap: 24px;
+  margin-top: 18px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+}
+
+.rs-stats b {
+  color: #f3f2ed;
+  font-size: 15px;
+}
+
+.rs-steps {
+  color: #7a7a80;
+}
+
+.rs-keyword {
+  color: #ff6a3d;
+}
+
+.rs-number {
+  color: #7c8cff;
+}
+
+.rs-symbol {
+  color: #7a7a80;
+}
+
+.rs-type {
+  color: #56b6c2;
+}
+
+
+/* ===================================================
+   Large Tablets
+=================================================== */
+
+@media (max-width:1200px) {
+
+  .radix-sort {
+    width: 85%;
+  }
+
+  .rs-grid {
+    gap: 20px;
+  }
+
+}
+
+
+/* ===================================================
+   Tablets
+=================================================== */
+
+@media (max-width:992px) {
+
+  .radix-sort-wrapper {
+    margin-top: 6rem;
+  }
+
+  .radix-sort {
+    width: 92%;
+    padding: 36px 0 64px;
+  }
+
+  .rs-header {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .rs-complexity {
+    gap: 2rem;
+  }
+
+  /* stack animation + code */
+
+  .rs-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .rs-stage,
+  .rs-code-panel {
+    width: 100%;
+  }
+
+  .rs-stage {
+    min-height: 360px;
+  }
+
+}
+
+
+/* ===================================================
+   Phones
+=================================================== */
+
+@media (max-width:768px) {
+
+  .radix-sort-wrapper {
+    margin-top: 5rem;
+  }
+
+  .radix-sort {
+    width: 94%;
+    padding: 28px 0 56px;
+    min-height: auto;
+  }
+
+  .rs-eyebrow {
+    font-size: .65rem;
+  }
+
+  .rs-title {
+    font-size: 2.2rem;
+    line-height: 1.1;
+  }
+
+  .rs-blurb {
+    font-size: .95rem;
+    line-height: 1.6;
+  }
+
+  .rs-header {
+    gap: 1.2rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .rs-complexity {
+    gap: 1.5rem;
+    font-size: .8rem;
+    flex-wrap: wrap;
+  }
+
+  .rs-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  /* Animation takes full width */
+
+  .rs-stage {
+    width: 100%;
+    min-height: 330px;
+    padding: 24px;
+  }
+
+  .rs-stage-wrap {
+    min-height: 210px;
+  }
+
+  /* Code below animation */
+
+  .rs-code-panel {
+    width: 100%;
+  }
+
+  .rs-code-block {
+    font-size: 11px;
+  }
+
+  .rs-code-line {
+    padding: 2px 16px;
+  }
+
+  /* Controls */
+
+  .rs-controls {
+
+    justify-content: center;
+
+    row-gap: 16px;
+    column-gap: 12px;
+
+  }
+
+  .rs-speed {
+
+    width: 100%;
+
+    justify-content: center;
+
+    margin-left: 0;
+
+  }
+
+  .rs-speed input {
+
+    width: 180px;
+
+  }
+
+  .rs-stats {
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 18px;
+
+    text-align: center;
+
+  }
+
+  .rs-pass-history-row {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .rs-pass-history-label {
+    min-width: 0;
+  }
+
+}
+
+
+/* ===================================================
+   Small Phones
+=================================================== */
+
+@media (max-width:480px) {
+
+  .radix-sort {
+    width: 95%;
+  }
+
+  .rs-title {
+    font-size: 1.8rem;
+  }
+
+  .rs-blurb {
+    font-size: .9rem;
+  }
+
+  .rs-stage {
+    padding: 18px;
+    min-height: 300px;
+  }
+
+  .rs-stage-wrap {
+    min-height: 180px;
+  }
+
+  .rs-status {
+    font-size: 11px;
+  }
+
+  .rs-code-header {
+    padding: 10px 14px;
+  }
+
+  .rs-code-block {
+    font-size: 10px;
+  }
+
+  .rs-code-line {
+    padding: 2px 14px;
+  }
+
+  /* controls */
+
+  .rs-controls {
+    gap: 10px;
+  }
+
+  .rs-play-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .rs-icon-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .rs-shuffle-btn {
+    height: 34px;
+    padding: 0 14px;
+    font-size: 11px;
+  }
+
+  .rs-speed {
+    font-size: 12px;
+  }
+
+  .rs-speed input {
+    width: 140px;
+  }
+
+  .rs-stats {
+    gap: 14px;
+  }
+
+}
+
+
+/* ===================================================
+   Very Small Phones
+=================================================== */
+
+@media (max-width:340px) {
+
+  .rs-title {
+    font-size: 1.55rem;
+  }
+
+  .rs-stage {
+    min-height: 260px;
+    padding: 16px;
+  }
+
+  .rs-stage-wrap {
+    min-height: 150px;
+  }
+
+  .rs-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .rs-speed {
+    width: 100%;
+  }
+
+  .rs-speed input {
+    width: 100%;
+  }
+
+  .rs-stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+}
+
+
+/* ===================================================
+   Landscape Phones
+=================================================== */
+
+@media (max-height:500px) and (orientation:landscape) {
+
+  .radix-sort {
+    width: 94%;
+  }
+
+  .rs-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .rs-stage {
+    min-height: 280px;
+  }
+
+}

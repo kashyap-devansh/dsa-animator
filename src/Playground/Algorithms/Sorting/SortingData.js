@@ -37,6 +37,13 @@ const SortingData = [{
   active: true,
 
 },
+{
+  title: "Radix Sort",
+  complexity: "O(d(n + k))",
+  description: "Sorts numbers digit by digit, from least to most significant, using a stable counting sort at each pass",
+  slug: "radix-sort",
+  active: true,
+},
 ]
 
 export default SortingData;
