@@ -1,0 +1,308 @@
+.recursion {
+  width: 100%;
+  margin-bottom: 3.5rem;
+}
+
+.recursion-eyebrow {
+  width: 100%;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #262629;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.2rem;
+  color: #7a7a80;
+  line-height: 0.8rem;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.recursion-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+
+.recursion-card {
+  padding: 24px;
+  border-radius: 15px;
+  text-decoration: none;
+}
+
+.recursion-card.active {
+  background-color: #141417;
+  border: 1px solid #262629;
+}
+
+.recursion-card.locked {
+  cursor: not-allowed;
+  border: 1px solid #26262990;
+}
+
+.recursion-card .card-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.8rem;
+}
+
+.recursion-card .complexity {
+  font-family: "JetBrains Mono", monospace;
+  font-size: .65rem;
+}
+
+.recursion-card.active .complexity {
+  color: #ff6a3d;
+}
+
+.recursion-card.locked .complexity {
+  color: #7a7a80;
+}
+
+.recursion-card .arrow {
+  display: inline-block;
+  color: #7a7a80;
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 200;
+  transition:
+    color 0.3s ease,
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.recursion-card.active:hover .arrow {
+  color: #f3f2ed;
+  transform: translate(6px, -6px);
+}
+
+.recursion-card h2 {
+  font-family: "Space Grotesk";
+  margin-bottom: 8px;
+  font-weight: 400;
+  font-size: 1.2rem;
+}
+
+.recursion-card.active h2 {
+  color: #f3f2ed;
+}
+
+.recursion-card.locked h2 {
+  color: #B8B5AF;
+}
+
+.recursion .description {
+  font-family: "Satoshi";
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0;
+}
+
+.recursion-card.active .description {
+  color: #7a7a80;
+
+}
+
+.recursion-card.locked .description {
+  color: #5F5F64;
+}
+
+/* ==========================================
+   Large Tablets
+========================================== */
+
+@media (max-width: 1200px) {
+
+  .recursion {
+    margin-bottom: 3rem;
+  }
+
+  .recursion-grid {
+    gap: 14px;
+  }
+
+}
+
+
+/* ==========================================
+   Tablets
+========================================== */
+
+@media (max-width: 992px) {
+
+  .recursion {
+    margin-bottom: 2.75rem;
+  }
+
+  .recursion-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .recursion-card {
+    padding: 22px;
+  }
+
+  .recursion-card h2 {
+    font-size: 1.1rem;
+  }
+
+}
+
+
+/* ==========================================
+   Phones
+========================================== */
+
+@media (max-width: 768px) {
+
+  .recursion {
+    margin-bottom: 2.5rem;
+  }
+
+  .recursion-eyebrow {
+    font-size: .65rem;
+    letter-spacing: .18rem;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+  }
+
+  .recursion-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .recursion-card {
+    padding: 20px;
+    border-radius: 14px;
+  }
+
+  .recursion-card .card-top {
+    margin-bottom: 1.4rem;
+  }
+
+  .recursion-card .complexity {
+    font-size: .62rem;
+  }
+
+  .recursion-card h2 {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+  }
+
+  .recursion .description {
+    font-size: .9rem;
+    line-height: 1.6;
+  }
+
+  .recursion-card.active:hover .arrow {
+    transform: none;
+  }
+
+}
+
+
+/* ==========================================
+   Small Phones
+========================================== */
+
+@media (max-width: 480px) {
+
+  .recursion {
+    margin-bottom: 2rem;
+  }
+
+  .recursion-eyebrow {
+    font-size: .58rem;
+    letter-spacing: .15rem;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+  }
+
+  .recursion-card {
+    padding: 18px;
+    border-radius: 12px;
+  }
+
+  .recursion-card .card-top {
+    margin-bottom: 1.2rem;
+  }
+
+  .recursion-card h2 {
+    font-size: 1rem;
+  }
+
+  .recursion .description {
+    font-size: .85rem;
+    line-height: 1.55;
+  }
+
+  .recursion-card .arrow {
+    font-size: .95rem;
+  }
+
+}
+
+
+/* ==========================================
+   Very Small Phones
+========================================== */
+
+@media (max-width: 340px) {
+
+  .recursion-card {
+    padding: 16px;
+  }
+
+  .recursion-card h2 {
+    font-size: .95rem;
+  }
+
+  .recursion .description {
+    font-size: .8rem;
+  }
+
+  .recursion-card .complexity {
+    font-size: .58rem;
+  }
+
+}
+
+
+/* ==========================================
+   Landscape Phones
+========================================== */
+
+@media (max-height: 500px) and (orientation: landscape) {
+
+  .recursion-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+
+/* ==========================================
+   Touch Devices
+========================================== */
+
+@media (hover: none) {
+
+  .recursion-card.active:hover .arrow {
+    transform: none;
+    color: #7a7a80;
+  }
+
+}
+
+
+/* ==========================================
+   Reduced Motion
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .recursion-card .arrow {
+    transition: none;
+  }
+
+}

@@ -4,6 +4,7 @@ import Searching from "../Algorithms/Searching/Searching.jsx";
 import LinkedList from "../Structures/LinkedList/LinkedList.jsx";
 import Stack from "../Structures/Stack/Stack.jsx";
 import Queue from "../Structures/Queue/Queue.jsx";
+import Recursion from "../Recursion/Recursion.jsx";
 
 const Playground = () => {
   return (
@@ -29,6 +30,7 @@ const Playground = () => {
         <LinkedList />
         <Stack />
         <Queue />
+        <Recursion />
       </div>
     </section>
   );
