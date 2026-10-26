@@ -1,0 +1,588 @@
+.bst-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 7.6rem;
+}
+
+.bst {
+  font-family: "Satoshi", "Inter";
+  min-height: 85dvh;
+  padding: 48px clamp(20px, 2vw, 64px) 80px;
+  width: 70%;
+}
+
+.bt-eyebrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.2rem;
+  color: #ff6a3d;
+  line-height: 0.8rem;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.bt-title {
+  font-size: clamp(2rem, 3.8vw, 3.8rem);
+  font-weight: 400;
+  line-height: -1.05;
+  font-family: "Space Grotesk";
+  margin-top: 0;
+  color: white;
+  margin-bottom: 0;
+}
+
+.bt-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2.2rem;
+}
+
+.bt-blurb {
+  font-family: "Satoshi";
+  font-size: 1.05rem;
+  color: #7a7a80;
+  font-weight: 500;
+  margin-top: 0;
+  max-width: 46ch;
+}
+
+.bt-complexity {
+  display: flex;
+  gap: 28px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.9rem;
+  color: #7a7a80;
+}
+
+.bt-complexity-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.bt-time-value {
+  color: #ff6a3d;
+}
+
+.bt-worst-value {
+  color: #ffbd2e;
+}
+
+.bt-space-value {
+  color: #7c8cff;
+}
+
+.bt-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.bt-stage {
+  background: #141416;
+  border: 1px solid #262629;
+  border-radius: 16px;
+  padding: 32px;
+  min-height: 380px;
+  display: flex;
+  flex-direction: column;
+}
+
+.bt-tree {
+  flex: 1;
+  width: 100%;
+  min-height: 260px;
+}
+
+.bt-status {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+  border-top: 1px solid #262629;
+  margin: 20px 0 0;
+  padding-top: 16px;
+}
+
+.bt-code-panel {
+  background: #141416;
+  border: 1px solid #262629;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.bt-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid #262629;
+}
+
+.bt-dummy-btns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bt-red-btn,
+.bt-yellow-btn,
+.bt-green-btn {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.bt-red-btn {
+  background-color: #ff5f56;
+}
+
+.bt-yellow-btn {
+  background-color: #ffbd2e;
+}
+
+.bt-green-btn {
+  background-color: #27c93f;
+}
+
+.bt-filename {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+  margin-left: 8px;
+}
+
+.bt-header-complexity {
+  color: #ff6a3d;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+}
+
+.bt-code-block {
+  margin: 0;
+  padding: 16px 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12.5px;
+  line-height: 1.9;
+  overflow-x: auto;
+  flex: 1;
+}
+
+.bt-code-line {
+  padding: 1px 20px;
+  white-space: pre;
+  border-left: 2px solid transparent;
+  color: #f3f2ed;
+}
+
+.bt-code-line-active {
+  background: rgba(255, 106, 61, 0.1);
+  border-left-color: #ff6a3d;
+}
+
+.bt-line-no {
+  display: inline-block;
+  width: 20px;
+  color: #4a4a4f;
+  user-select: none;
+  margin-right: 4px;
+}
+
+.bt-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.bt-icon-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #262629;
+  background: transparent;
+  color: #7a7a80;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.bt-icon-btn:hover:not(:disabled) {
+  color: #f3f2ed;
+  border-color: rgba(243, 242, 237, 0.3);
+}
+
+.bt-icon-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.bt-play-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: #ff6a3d;
+  color: #f3f2ed;
+  cursor: pointer;
+  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.bt-play-btn:hover {
+  opacity: 0.9;
+}
+
+.bt-shuffle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  border: 1px solid #262629;
+  background: transparent;
+  color: #7a7a80;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  padding: 0 16px;
+  height: 36px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.bt-shuffle-btn:hover {
+  color: #f3f2ed;
+  border-color: rgba(243, 242, 237, 0.3);
+}
+
+.bt-speed {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  color: #7a7a80;
+  margin-left: auto;
+}
+
+.bt-speed input[type="range"] {
+  accent-color: #ff6a3d;
+  width: 130px;
+}
+
+.bt-stats {
+  display: flex;
+  gap: 24px;
+  margin-top: 18px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+}
+
+.bt-stats b {
+  color: #f3f2ed;
+  font-size: 15px;
+}
+
+.bt-steps {
+  color: #7a7a80;
+}
+
+.bt-keyword {
+  color: #ff6a3d;
+}
+
+.bt-number {
+  color: #7c8cff;
+}
+
+.bt-symbol {
+  color: #7a7a80;
+}
+
+.bt-type {
+  color: #56b6c2;
+}
+
+/* ===================================================
+   Large Tablets
+=================================================== */
+
+@media (max-width: 1200px) {
+  .bst {
+    width: 85%;
+  }
+
+  .bt-grid {
+    gap: 20px;
+  }
+}
+
+/* ===================================================
+   Tablets
+=================================================== */
+
+@media (max-width: 992px) {
+  .bst-wrapper {
+    margin-top: 6rem;
+  }
+
+  .bst {
+    width: 92%;
+    padding: 36px 0 64px;
+  }
+
+  .bt-header {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .bt-complexity {
+    gap: 2rem;
+  }
+
+  .bt-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .bt-stage,
+  .bt-code-panel {
+    width: 100%;
+  }
+
+  .bt-stage {
+    min-height: 360px;
+  }
+}
+
+/* ===================================================
+   Phones
+=================================================== */
+
+@media (max-width: 768px) {
+  .bst-wrapper {
+    margin-top: 5rem;
+  }
+
+  .bst {
+    width: 94%;
+    padding: 28px 0 56px;
+    min-height: auto;
+  }
+
+  .bt-eyebrow {
+    font-size: 0.65rem;
+  }
+
+  .bt-title {
+    font-size: 2.2rem;
+    line-height: 1.1;
+  }
+
+  .bt-blurb {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .bt-header {
+    gap: 1.2rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .bt-complexity {
+    gap: 1.5rem;
+    font-size: 0.8rem;
+    flex-wrap: wrap;
+  }
+
+  .bt-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .bt-stage {
+    width: 100%;
+    min-height: 330px;
+    padding: 24px;
+  }
+
+  .bt-tree {
+    min-height: 210px;
+  }
+
+  .bt-code-panel {
+    width: 100%;
+  }
+
+  .bt-code-block {
+    font-size: 11px;
+  }
+
+  .bt-code-line {
+    padding: 2px 16px;
+  }
+
+  .bt-controls {
+    justify-content: center;
+    row-gap: 16px;
+    column-gap: 12px;
+  }
+
+  .bt-speed {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
+  }
+
+  .bt-speed input {
+    width: 180px;
+  }
+
+  .bt-stats {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 18px;
+    text-align: center;
+  }
+}
+
+/* ===================================================
+   Small Phones
+=================================================== */
+
+@media (max-width: 480px) {
+  .bst {
+    width: 95%;
+  }
+
+  .bt-title {
+    font-size: 1.8rem;
+  }
+
+  .bt-blurb {
+    font-size: 0.9rem;
+  }
+
+  .bt-stage {
+    padding: 18px;
+    min-height: 300px;
+  }
+
+  .bt-tree {
+    min-height: 180px;
+  }
+
+  .bt-status {
+    font-size: 11px;
+  }
+
+  .bt-code-header {
+    padding: 10px 14px;
+  }
+
+  .bt-code-block {
+    font-size: 10px;
+  }
+
+  .bt-code-line {
+    padding: 2px 14px;
+  }
+
+  .bt-controls {
+    gap: 10px;
+  }
+
+  .bt-play-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .bt-icon-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .bt-shuffle-btn {
+    height: 34px;
+    padding: 0 14px;
+    font-size: 11px;
+  }
+
+  .bt-speed {
+    font-size: 12px;
+  }
+
+  .bt-speed input {
+    width: 140px;
+  }
+
+  .bt-stats {
+    gap: 14px;
+  }
+}
+
+/* ===================================================
+   Very Small Phones
+=================================================== */
+
+@media (max-width: 340px) {
+  .bt-title {
+    font-size: 1.55rem;
+  }
+
+  .bt-stage {
+    min-height: 260px;
+    padding: 16px;
+  }
+
+  .bt-tree {
+    min-height: 150px;
+  }
+
+  .bt-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .bt-speed {
+    width: 100%;
+  }
+
+  .bt-speed input {
+    width: 100%;
+  }
+
+  .bt-stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+/* ===================================================
+   Landscape Phones
+=================================================== */
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .bst {
+    width: 94%;
+  }
+
+  .bt-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .bt-stage {
+    min-height: 280px;
+  }
+}

@@ -1,15 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { randomArray } from "../../../shared/randomArray";
+import { usePlayback } from "../../../shared/usePlayback";
+import { ResetIcon, StepBackIcon, PlayIcon, PauseIcon, StepForwardIcon, ShuffleIcon } from "../../../shared/icons";
 import "./QuickSort.css";
-
-function randomArray(size = 16) {
-  const arr = [];
-
-  for (let i = 0; i < size; i++) {
-    arr.push(Math.floor(Math.random() * 90) + 10);
-  }
-
-  return arr;
-}
 
 const CodeMeanings = {
   1: "Sort the subarray from index l to r.",
@@ -400,19 +393,6 @@ const CodeLines = [
   <><span className="qs-symbol">{"}"}</span></>,
 ];
 
-const SpeedDelay = {
-  1: 1400,
-  2: 1100,
-  3: 850,
-  4: 650,
-  5: 500,
-  6: 380,
-  7: 280,
-  8: 200,
-  9: 140,
-  10: 90,
-};
-
 const fmt = (v) => (v === null || v === undefined || v === -1 ? "–" : v);
 
 const PARTITION_PHASES = [
@@ -428,66 +408,19 @@ const PARTITION_PHASES = [
 
 const QuickSort = () => {
   const [seed, setSeed] = useState(randomArray());
-  const [index, setIndex] = useState(0);
-  const [playing, setPlaying] = useState(false);
-  const [speed, setSpeed] = useState(5);
   const [beginnerMode, setBeginnerMode] = useState(true);
   const [recursionOpen, setRecursionOpen] = useState(false);
 
   const steps = quickSortSteps(seed);
+  const { index, playing, speed, setSpeed, reset, stepForward, stepBack, togglePlay } = usePlayback(steps.length);
   const current = steps[index];
   const max = Math.max(...current.array);
   const isDone = index === steps.length - 1;
   const n = current.array.length;
 
-  useEffect(() => {
-    if (!playing || index >= steps.length - 1) {
-      if (index >= steps.length - 1) {
-        setPlaying(false);
-      }
-      return;
-    }
-
-    const timer = setTimeout(
-      () => setIndex((i) => i + 1),
-      SpeedDelay[speed]
-    );
-
-    return () => clearTimeout(timer);
-  }, [playing, index, speed, steps.length]);
-
-  const reset = () => {
-    setPlaying(false);
-    setIndex(0);
-  };
-
   const shuffle = () => {
     setSeed(randomArray());
     reset();
-  };
-
-  const stepForward = () => {
-    setPlaying(false);
-
-    if (index < steps.length - 1) {
-      setIndex(index + 1);
-    }
-  };
-
-  const stepBack = () => {
-    setPlaying(false);
-
-    if (index > 0) {
-      setIndex(index - 1);
-    }
-  };
-
-  const togglePlay = () => {
-    if (index === steps.length - 1) {
-      setIndex(0);
-    }
-
-    setPlaying(!playing);
   };
 
   const markerMap = {};
@@ -718,7 +651,7 @@ const QuickSort = () => {
 
         <div className="qs-controls">
           <button className="qs-icon-btn" onClick={reset}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" /></svg>
+            <ResetIcon />
           </button>
 
           <button
@@ -726,11 +659,11 @@ const QuickSort = () => {
             onClick={stepBack}
             disabled={index === 0}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.971 4.285A2 2 0 0 1 21 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432z" /><path d="M3 20V4" /></svg>
+            <StepBackIcon />
           </button>
 
           <button className="qs-play-btn" onClick={togglePlay}>
-            {playing ? <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0a0a0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="14" y="3" width="5" height="18" rx="1" /><rect x="5" y="3" width="5" height="18" rx="1" /></svg> : <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0a0a0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></svg>}
+            {playing ? <PauseIcon /> : <PlayIcon />}
           </button>
 
           <button
@@ -738,11 +671,11 @@ const QuickSort = () => {
             onClick={stepForward}
             disabled={index === steps.length - 1}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 4v16" /><path d="M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z" /></svg>
+            <StepForwardIcon />
           </button>
 
           <button className="qs-shuffle-btn" onClick={shuffle}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m18 14 4 4-4 4" /><path d="m18 2 4 4-4 4" /><path d="M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22" /><path d="M2 6h1.972a4 4 0 0 1 3.6 2.2" /><path d="M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45" /></svg>
+            <ShuffleIcon />
             Shuffle
           </button>
 

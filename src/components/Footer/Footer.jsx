@@ -27,8 +27,8 @@ const Footer = () => {
 
               <Link to="/playground">Sorting</Link>
               <Link to="/playground">Searching & Trees</Link>
-              <Link href="/playground">Graphs</Link>
-              <Link href="/playground">Dynamic Programming</Link>
+              <Link to="/playground">Graphs</Link>
+              <Link to="/playground">Dynamic Programming</Link>
             </div>
 
             <div className="footer-column">

@@ -1,3 +1,4 @@
+import MarqueeTrack from "../shared/MarqueeTrack";
 import "./SlowMarquee.css";
 
 const items = [
@@ -14,17 +15,12 @@ const items = [
 
 const SlowMarquee = () => {
   return (
-    <div className="slowMarquee">
-      <div className="track-slow">
-        {
-          [...items, ...items].map((item, index) => (
-            <span key={index} className="item-slow">
-              {item}
-            </span>
-          ))
-        }
-      </div>
-    </div>
+    <MarqueeTrack
+      items={items}
+      wrapperClass="slowMarquee"
+      trackClass="track-slow"
+      itemClass="item-slow"
+    />
   );
 }
 

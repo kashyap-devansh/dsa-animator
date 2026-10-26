@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useAutoAdvance } from "../../../shared/useAutoAdvance";
+import { ResetIcon, StepBackIcon, PlayIcon, PauseIcon, StepForwardIcon, MoveRightIcon } from "../../../shared/icons";
 import "./InsertAtHead.css";
 
 function linkedListSteps(input, existingList = []) {
@@ -69,19 +71,6 @@ const CodeLines = [
     <span className="iah-symbol">{"}"}</span>
   </>,
 ];
-
-const SpeedDelay = {
-  1: 1400,
-  2: 1100,
-  3: 850,
-  4: 650,
-  5: 500,
-  6: 380,
-  7: 280,
-  8: 200,
-  9: 140,
-  10: 90,
-};
 
 const InsertAtHead = () => {
   const [inputValue, setInputValue] = useState("");
@@ -168,19 +157,7 @@ const InsertAtHead = () => {
     }
   }, [current.phase]);
 
-  useEffect(() => {
-    if (!playing) return;
-
-    const timer = setTimeout(() => {
-      if (index < steps.length - 1) {
-        setIndex(prev => prev + 1);
-      } else {
-        setPlaying(false);
-      }
-    }, SpeedDelay[speed]);
-
-    return () => clearTimeout(timer);
-  }, [playing, index, speed, steps.length]);
+  useAutoAdvance({ playing, index, setIndex, setPlaying, speed, stepsLength: steps.length });
 
   return (
     <div className="insert-at-head-wrapper">
@@ -227,7 +204,7 @@ const InsertAtHead = () => {
                         </div>
                         {
                           (current.phase === "linked") && (
-                            <span className="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#b4ff39" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-move-right-icon lucide-move-right"><path d="M18 8L22 12L18 16" /><path d="M2 12H22" /></svg></span>
+                            <span className="arrow"><MoveRightIcon color="#b4ff39" /></span>
                           )
                         }
                       </div>
@@ -246,7 +223,7 @@ const InsertAtHead = () => {
                         <div className="node">
                           <div className="data">{value}</div>
                         </div>
-                        <span className="arrow"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-move-right-icon lucide-move-right"><path d="M18 8L22 12L18 16" /><path d="M2 12H22" /></svg> </span>
+                        <span className="arrow"> <MoveRightIcon /> </span>
                       </div>
                     </div>
                   ))
@@ -284,23 +261,19 @@ const InsertAtHead = () => {
 
         <div className="iah-controls">
           <button className="iah-icon-btn" onClick={reset}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" /></svg>
+            <ResetIcon />
           </button>
 
           <button className="iah-icon-btn" onClick={stepBack} disabled={index === 0}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.971 4.285A2 2 0 0 1 21 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432z" /><path d="M3 20V4" /></svg>
+            <StepBackIcon />
           </button>
 
           <button className="iah-play-btn" onClick={togglePlay}>
-            {playing ? (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0a0a0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="14" y="3" width="5" height="18" rx="1" /><rect x="5" y="3" width="5" height="18" rx="1" /></svg>
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0a0a0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></svg>
-            )}
+            {playing ? <PauseIcon /> : <PlayIcon />}
           </button>
 
           <button className="iah-icon-btn" onClick={stepForward} disabled={false}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 4v16" /><path d="M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z" /></svg>
+            <StepForwardIcon />
           </button>
 
           <input

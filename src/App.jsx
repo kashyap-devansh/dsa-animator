@@ -23,6 +23,16 @@ import Notes from "./components/Notes/Notes";
 import CTA from "./components/CTA/CTA";
 import Footer from "./components/Footer/Footer";
 
+function Page({ children }) {
+  return (
+    <>
+      <Navbar />
+      {children}
+      <Footer />
+    </>
+  );
+}
+
 function LandingPage() {
   const [loading, setLoading] = useState(!sessionStorage.getItem("loaderShown"));
 
@@ -53,87 +63,14 @@ const App = () => {
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
-      <Route path="/playground" element={
-        <>
-          <Navbar />
-          <Playground />
-          <Footer />
-        </>
-      } />
-      <Route
-        path="/playground/sorting/:slug"
-        element={
-          <>
-            <Navbar />
-            <Sorting />
-            <Footer />
-          </>
-        }
-      />
-      <Route
-        path="/playground/searching/:slug"
-        element={
-          <>
-            <Navbar />
-            <Searching />
-            <Footer />
-          </>
-        }
-      />
-      <Route
-        path="/playground/linkedList/:slug"
-        element={
-          <>
-            <Navbar />
-            <LinkedList />
-            <Footer />
-          </>
-        }
-      />
-
-      <Route
-        path="/playground/stack/:slug"
-        element={
-          <>
-            <Navbar />
-            <Stack />
-            <Footer />
-          </>
-        }
-      />
-
-      <Route
-        path="/playground/queue/:slug"
-        element={
-          <>
-            <Navbar />
-            <Queue />
-            <Footer />
-          </>
-        }
-      />
-
-      <Route
-        path="/playground/recursion/:slug"
-        element={
-          <>
-            <Navbar />
-            <Recursion />
-            <Footer />
-          </>
-        }
-      />
-
-      <Route
-        path="/notes"
-        element={
-          <>
-            <Navbar />
-            <NotesSection />
-            <Footer />
-          </>
-        }
-      />
+      <Route path="/playground" element={<Page><Playground /></Page>} />
+      <Route path="/playground/sorting/:slug" element={<Page><Sorting /></Page>} />
+      <Route path="/playground/searching/:slug" element={<Page><Searching /></Page>} />
+      <Route path="/playground/linkedList/:slug" element={<Page><LinkedList /></Page>} />
+      <Route path="/playground/stack/:slug" element={<Page><Stack /></Page>} />
+      <Route path="/playground/queue/:slug" element={<Page><Queue /></Page>} />
+      <Route path="/playground/recursion/:slug" element={<Page><Recursion /></Page>} />
+      <Route path="/notes" element={<Page><NotesSection /></Page>} />
 
     </Routes>
   );

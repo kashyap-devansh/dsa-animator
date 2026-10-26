@@ -1,6 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import "./Notes.css";
 
+const NOTES_PREVIEW = [
+  { topic: "Foundations", title: "Big O, actually visualized", number: "#01" },
+  { topic: "Recursion", title: "Watching the call stack breathe", number: "#02" },
+  { topic: "Trees", title: "Why AVL rotations feels like Magic", number: "#03" },
+  { topic: "Graphs", title: "BFS vs DFS: a frontiers's tale", number: "#04" },
+  { topic: "Dynamic Programming", title: "From recursion tree to memo table", number: "#05" },
+];
+
 const Notes = () => {
   const navigate = useNavigate();
   return (
@@ -14,55 +22,18 @@ const Notes = () => {
             frames
           </h1>
 
-          <div
-            className="notes-item"
-            onClick={() => navigate(`/notes`)}
-          >
-            <span className="notes-topic">Foundations</span>
-            <h2>Big O, actually visualized</h2>
-            <span className="notes-number">#01</span>
-            <span className="notes-arrow"> ↗ </span>
-          </div>
-
-          <div
-            className="notes-item"
-            onClick={() => navigate(`/notes`)}
-          >
-            <span className="notes-topic">Recursion</span>
-            <h2>Watching the call stack breathe</h2>
-            <span className="notes-number">#02</span>
-            <span className="notes-arrow"> ↗ </span>
-          </div>
-
-          <div
-            className="notes-item"
-            onClick={() => navigate(`/notes`)}
-          >
-            <span className="notes-topic">Trees</span>
-            <h2>Why AVL rotations feels like Magic</h2>
-            <span className="notes-number">#03</span>
-            <span className="notes-arrow"> ↗ </span>
-          </div>
-
-          <div
-            className="notes-item"
-            onClick={() => navigate(`/notes`)}
-          >
-            <span className="notes-topic">Graphs</span>
-            <h2>BFS vs DFS: a frontiers's tale</h2>
-            <span className="notes-number">#04</span>
-            <span className="notes-arrow"> ↗ </span>
-          </div>
-
-          <div
-            className="notes-item"
-            onClick={() => navigate(`/notes`)}
-          >
-            <span className="notes-topic">Dynamic Programming</span>
-            <h2>From recursion tree to memo table</h2>
-            <span className="notes-number">#01</span>
-            <span className="notes-arrow"> ↗ </span>
-          </div>
+          {NOTES_PREVIEW.map((note) => (
+            <div
+              key={note.number}
+              className="notes-item"
+              onClick={() => navigate(`/notes`)}
+            >
+              <span className="notes-topic">{note.topic}</span>
+              <h2>{note.title}</h2>
+              <span className="notes-number">{note.number}</span>
+              <span className="notes-arrow"> ↗ </span>
+            </div>
+          ))}
 
         </div>
       </div>
