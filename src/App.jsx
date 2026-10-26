@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react";
 
 import LoadingScreen from "./components/LoadingScreen/LoadingScreen.jsx";
 import NotesSection from "./components/NotesSection/NotesSection.jsx";
@@ -61,6 +62,7 @@ function LandingPage() {
 
 const App = () => {
   return (
+    <>
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/playground" element={<Page><Playground /></Page>} />
@@ -73,6 +75,9 @@ const App = () => {
       <Route path="/notes" element={<Page><NotesSection /></Page>} />
 
     </Routes>
+
+    <Analytics />
+    </>
   );
 }
 
