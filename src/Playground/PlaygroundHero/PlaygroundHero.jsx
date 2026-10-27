@@ -1,4 +1,5 @@
 import "./PlaygroundHero.css";
+import AlgorithmSearch from "../shared/AlgorithmSearch.jsx";
 import Sorting from "../Algorithms/Sorting/Sorting.jsx";
 import Searching from "../Algorithms/Searching/Searching.jsx";
 import LinkedList from "../Structures/LinkedList/LinkedList.jsx";
@@ -24,6 +25,8 @@ const Playground = () => {
           Real code, real execution — step forward, step back, or press play.
           Pick one below.
         </p>
+
+        <AlgorithmSearch />
 
         <Sorting />
         <Searching />

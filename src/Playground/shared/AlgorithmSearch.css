@@ -1,0 +1,191 @@
+.algo-search {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  margin-bottom: 3.5rem;
+}
+
+.algo-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  background-color: #141417;
+  border: 1px solid #262629;
+  border-radius: 10px;
+  transition: border-color 0.25s ease;
+}
+
+.algo-search-bar:focus-within,
+.algo-search-bar.expanded {
+  border-color: #ff6a3d;
+}
+
+.algo-search-prompt {
+  color: #ff6a3d;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.algo-search-bar svg {
+  color: #7a7a80;
+  flex-shrink: 0;
+}
+
+.algo-search-bar input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: #f3f2ed;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.85rem;
+}
+
+.algo-search-bar input::placeholder {
+  color: #5f5f64;
+}
+
+.algo-search-cursor {
+  width: 7px;
+  height: 14px;
+  background-color: #ff6a3d;
+  flex-shrink: 0;
+  animation: algo-search-blink 1s step-end infinite;
+}
+
+@keyframes algo-search-blink {
+  0%, 50% { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+
+.algo-search-results {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  background-color: #141417;
+  border: 1px solid #262629;
+  border-radius: 10px;
+  padding: 6px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.algo-search-empty {
+  margin: 0;
+  padding: 14px 12px;
+  color: #5f5f64;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+}
+
+.algo-search-result {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+}
+
+.algo-search-result + .algo-search-result {
+  margin-top: 2px;
+}
+
+.algo-search-result.highlighted {
+  background-color: #1b1b1f;
+}
+
+.algo-search-result.locked {
+  cursor: not-allowed;
+}
+
+.result-category {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #7a7a80;
+  flex-shrink: 0;
+  width: 84px;
+}
+
+.algo-search-result.locked .result-category {
+  color: #5f5f64;
+}
+
+.result-title {
+  flex: 1;
+  font-family: "Space Grotesk";
+  font-size: 0.95rem;
+  color: #f3f2ed;
+}
+
+.algo-search-result.locked .result-title {
+  color: #b8b5af;
+}
+
+.result-complexity {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.7rem;
+  color: #ff6a3d;
+  flex-shrink: 0;
+}
+
+.algo-search-result.locked .result-complexity {
+  color: #7a7a80;
+}
+
+.algo-search-result.locked svg {
+  flex-shrink: 0;
+}
+
+/* ==========================================
+   Phones
+========================================== */
+
+@media (max-width: 768px) {
+
+  .algo-search {
+    max-width: none;
+    margin-bottom: 3rem;
+  }
+
+  .algo-search-bar {
+    padding: 12px 14px;
+  }
+
+  .algo-search-bar input {
+    font-size: 0.8rem;
+  }
+
+  .result-category {
+    width: 64px;
+    font-size: 0.58rem;
+  }
+
+  .result-title {
+    font-size: 0.88rem;
+  }
+
+}
+
+/* ==========================================
+   Reduced Motion
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .algo-search-cursor {
+    animation: none;
+  }
+
+}
