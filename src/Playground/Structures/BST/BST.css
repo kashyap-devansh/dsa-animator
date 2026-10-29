@@ -1,588 +1,308 @@
-.bst-wrapper {
+.bst-ui {
   width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-top: 7.6rem;
+  margin-bottom: 3.5rem;
 }
 
-.bst {
-  font-family: "Satoshi", "Inter";
-  min-height: 85dvh;
-  padding: 48px clamp(20px, 2vw, 64px) 80px;
-  width: 70%;
-}
-
-.bt-eyebrow {
+.bst-ui-eyebrow {
+  width: 100%;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #262629;
   font-family: "JetBrains Mono", monospace;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   letter-spacing: 0.2rem;
-  color: #ff6a3d;
+  color: #7a7a80;
   line-height: 0.8rem;
   font-weight: 400;
   text-transform: uppercase;
 }
 
-.bt-title {
-  font-size: clamp(2rem, 3.8vw, 3.8rem);
-  font-weight: 400;
-  line-height: -1.05;
+.bst-ui-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+
+.bst-ui-card {
+  padding: 24px;
+  border-radius: 15px;
+  text-decoration: none;
+}
+
+.bst-ui-card.active {
+  background-color: #141417;
+  border: 1px solid #262629;
+}
+
+.bst-ui-card.locked {
+  cursor: not-allowed;
+  border: 1px solid #26262990;
+}
+
+.bst-ui-card .card-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.8rem;
+}
+
+.bst-ui-card .complexity {
+  font-family: "JetBrains Mono", monospace;
+  font-size: .65rem;
+}
+
+.bst-ui-card.active .complexity {
+  color: #ff6a3d;
+}
+
+.bst-ui-card.locked .complexity {
+  color: #7a7a80;
+}
+
+.bst-ui-card .arrow {
+  display: inline-block;
+  color: #7a7a80;
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 200;
+  transition:
+    color 0.3s ease,
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.bst-ui-card.active:hover .arrow {
+  color: #f3f2ed;
+  transform: translate(6px, -6px);
+}
+
+.bst-ui-card h2 {
   font-family: "Space Grotesk";
-  margin-top: 0;
-  color: white;
+  margin-bottom: 8px;
+  font-weight: 400;
+  font-size: 1.2rem;
+}
+
+.bst-ui-card.active h2 {
+  color: #f3f2ed;
+}
+
+.bst-ui-card.locked h2 {
+  color: #B8B5AF;
+}
+
+.bst-ui .description {
+  font-family: "Satoshi";
+  font-size: 0.9rem;
+  font-weight: 500;
   margin-bottom: 0;
 }
 
-.bt-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 2.2rem;
-}
-
-.bt-blurb {
-  font-family: "Satoshi";
-  font-size: 1.05rem;
+.bst-ui-card.active .description {
   color: #7a7a80;
-  font-weight: 500;
-  margin-top: 0;
-  max-width: 46ch;
+
 }
 
-.bt-complexity {
-  display: flex;
-  gap: 28px;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.9rem;
-  color: #7a7a80;
+.bst-ui-card.locked .description {
+  color: #5F5F64;
 }
 
-.bt-complexity-label {
-  font-size: 0.75rem;
-  letter-spacing: 0.2em;
-  margin-bottom: 6px;
-  text-transform: uppercase;
-}
-
-.bt-time-value {
-  color: #ff6a3d;
-}
-
-.bt-worst-value {
-  color: #ffbd2e;
-}
-
-.bt-space-value {
-  color: #7c8cff;
-}
-
-.bt-grid {
-  display: grid;
-  grid-template-columns: 1.35fr 1fr;
-  gap: 24px;
-  align-items: stretch;
-}
-
-.bt-stage {
-  background: #141416;
-  border: 1px solid #262629;
-  border-radius: 16px;
-  padding: 32px;
-  min-height: 380px;
-  display: flex;
-  flex-direction: column;
-}
-
-.bt-tree {
-  flex: 1;
-  width: 100%;
-  min-height: 260px;
-}
-
-.bt-status {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 12px;
-  color: #7a7a80;
-  border-top: 1px solid #262629;
-  margin: 20px 0 0;
-  padding-top: 16px;
-}
-
-.bt-code-panel {
-  background: #141416;
-  border: 1px solid #262629;
-  border-radius: 16px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.bt-code-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 20px;
-  border-bottom: 1px solid #262629;
-}
-
-.bt-dummy-btns {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.bt-red-btn,
-.bt-yellow-btn,
-.bt-green-btn {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.bt-red-btn {
-  background-color: #ff5f56;
-}
-
-.bt-yellow-btn {
-  background-color: #ffbd2e;
-}
-
-.bt-green-btn {
-  background-color: #27c93f;
-}
-
-.bt-filename {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 12px;
-  color: #7a7a80;
-  margin-left: 8px;
-}
-
-.bt-header-complexity {
-  color: #ff6a3d;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.8rem;
-}
-
-.bt-code-block {
-  margin: 0;
-  padding: 16px 0;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 12.5px;
-  line-height: 1.9;
-  overflow-x: auto;
-  flex: 1;
-}
-
-.bt-code-line {
-  padding: 1px 20px;
-  white-space: pre;
-  border-left: 2px solid transparent;
-  color: #f3f2ed;
-}
-
-.bt-code-line-active {
-  background: rgba(255, 106, 61, 0.1);
-  border-left-color: #ff6a3d;
-}
-
-.bt-line-no {
-  display: inline-block;
-  width: 20px;
-  color: #4a4a4f;
-  user-select: none;
-  margin-right: 4px;
-}
-
-.bt-controls {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
-  margin-top: 24px;
-}
-
-.bt-icon-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1px solid #262629;
-  background: transparent;
-  color: #7a7a80;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: border-color 0.2s, color 0.2s;
-}
-
-.bt-icon-btn:hover:not(:disabled) {
-  color: #f3f2ed;
-  border-color: rgba(243, 242, 237, 0.3);
-}
-
-.bt-icon-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.bt-play-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: none;
-  background: #ff6a3d;
-  color: #f3f2ed;
-  cursor: pointer;
-  font-size: 15px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.2s;
-}
-
-.bt-play-btn:hover {
-  opacity: 0.9;
-}
-
-.bt-shuffle-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  border-radius: 999px;
-  border: 1px solid #262629;
-  background: transparent;
-  color: #7a7a80;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 12px;
-  padding: 0 16px;
-  height: 36px;
-  cursor: pointer;
-  transition: border-color 0.2s, color 0.2s;
-}
-
-.bt-shuffle-btn:hover {
-  color: #f3f2ed;
-  border-color: rgba(243, 242, 237, 0.3);
-}
-
-.bt-speed {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 14px;
-  color: #7a7a80;
-  margin-left: auto;
-}
-
-.bt-speed input[type="range"] {
-  accent-color: #ff6a3d;
-  width: 130px;
-}
-
-.bt-stats {
-  display: flex;
-  gap: 24px;
-  margin-top: 18px;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 12px;
-  color: #7a7a80;
-}
-
-.bt-stats b {
-  color: #f3f2ed;
-  font-size: 15px;
-}
-
-.bt-steps {
-  color: #7a7a80;
-}
-
-.bt-keyword {
-  color: #ff6a3d;
-}
-
-.bt-number {
-  color: #7c8cff;
-}
-
-.bt-symbol {
-  color: #7a7a80;
-}
-
-.bt-type {
-  color: #56b6c2;
-}
-
-/* ===================================================
+/* ==========================================
    Large Tablets
-=================================================== */
+========================================== */
 
 @media (max-width: 1200px) {
-  .bst {
-    width: 85%;
+
+  .bst-ui {
+    margin-bottom: 3rem;
   }
 
-  .bt-grid {
-    gap: 20px;
+  .bst-ui-grid {
+    gap: 14px;
   }
+
 }
 
-/* ===================================================
+
+/* ==========================================
    Tablets
-=================================================== */
+========================================== */
 
 @media (max-width: 992px) {
-  .bst-wrapper {
-    margin-top: 6rem;
+
+  .bst-ui {
+    margin-bottom: 2.75rem;
   }
 
-  .bst {
-    width: 92%;
-    padding: 36px 0 64px;
+  .bst-ui-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
   }
 
-  .bt-header {
-    flex-direction: column;
-    gap: 1.5rem;
+  .bst-ui-card {
+    padding: 22px;
   }
 
-  .bt-complexity {
-    gap: 2rem;
+  .bst-ui-card h2 {
+    font-size: 1.1rem;
   }
 
-  .bt-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-
-  .bt-stage,
-  .bt-code-panel {
-    width: 100%;
-  }
-
-  .bt-stage {
-    min-height: 360px;
-  }
 }
 
-/* ===================================================
+
+/* ==========================================
    Phones
-=================================================== */
+========================================== */
 
 @media (max-width: 768px) {
-  .bst-wrapper {
-    margin-top: 5rem;
+
+  .bst-ui {
+    margin-bottom: 2.5rem;
   }
 
-  .bst {
-    width: 94%;
-    padding: 28px 0 56px;
-    min-height: auto;
+  .bst-ui-eyebrow {
+    font-size: .65rem;
+    letter-spacing: .18rem;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
   }
 
-  .bt-eyebrow {
-    font-size: 0.65rem;
+  .bst-ui-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
   }
 
-  .bt-title {
-    font-size: 2.2rem;
-    line-height: 1.1;
+  .bst-ui-card {
+    padding: 20px;
+    border-radius: 14px;
   }
 
-  .bt-blurb {
-    font-size: 0.95rem;
+  .bst-ui-card .card-top {
+    margin-bottom: 1.4rem;
+  }
+
+  .bst-ui-card .complexity {
+    font-size: .62rem;
+  }
+
+  .bst-ui-card h2 {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+  }
+
+  .bst-ui .description {
+    font-size: .9rem;
     line-height: 1.6;
   }
 
-  .bt-header {
-    gap: 1.2rem;
-    margin-bottom: 1.8rem;
+  .bst-ui-card.active:hover .arrow {
+    transform: none;
   }
 
-  .bt-complexity {
-    gap: 1.5rem;
-    font-size: 0.8rem;
-    flex-wrap: wrap;
-  }
-
-  .bt-grid {
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
-
-  .bt-stage {
-    width: 100%;
-    min-height: 330px;
-    padding: 24px;
-  }
-
-  .bt-tree {
-    min-height: 210px;
-  }
-
-  .bt-code-panel {
-    width: 100%;
-  }
-
-  .bt-code-block {
-    font-size: 11px;
-  }
-
-  .bt-code-line {
-    padding: 2px 16px;
-  }
-
-  .bt-controls {
-    justify-content: center;
-    row-gap: 16px;
-    column-gap: 12px;
-  }
-
-  .bt-speed {
-    width: 100%;
-    justify-content: center;
-    margin-left: 0;
-  }
-
-  .bt-speed input {
-    width: 180px;
-  }
-
-  .bt-stats {
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 18px;
-    text-align: center;
-  }
 }
 
-/* ===================================================
+
+/* ==========================================
    Small Phones
-=================================================== */
+========================================== */
 
 @media (max-width: 480px) {
-  .bst {
-    width: 95%;
+
+  .bst-ui {
+    margin-bottom: 2rem;
   }
 
-  .bt-title {
-    font-size: 1.8rem;
+  .bst-ui-eyebrow {
+    font-size: .58rem;
+    letter-spacing: .15rem;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
   }
 
-  .bt-blurb {
-    font-size: 0.9rem;
-  }
-
-  .bt-stage {
+  .bst-ui-card {
     padding: 18px;
-    min-height: 300px;
+    border-radius: 12px;
   }
 
-  .bt-tree {
-    min-height: 180px;
+  .bst-ui-card .card-top {
+    margin-bottom: 1.2rem;
   }
 
-  .bt-status {
-    font-size: 11px;
+  .bst-ui-card h2 {
+    font-size: 1rem;
   }
 
-  .bt-code-header {
-    padding: 10px 14px;
+  .bst-ui .description {
+    font-size: .85rem;
+    line-height: 1.55;
   }
 
-  .bt-code-block {
-    font-size: 10px;
+  .bst-ui-card .arrow {
+    font-size: .95rem;
   }
 
-  .bt-code-line {
-    padding: 2px 14px;
-  }
-
-  .bt-controls {
-    gap: 10px;
-  }
-
-  .bt-play-btn {
-    width: 40px;
-    height: 40px;
-  }
-
-  .bt-icon-btn {
-    width: 30px;
-    height: 30px;
-  }
-
-  .bt-shuffle-btn {
-    height: 34px;
-    padding: 0 14px;
-    font-size: 11px;
-  }
-
-  .bt-speed {
-    font-size: 12px;
-  }
-
-  .bt-speed input {
-    width: 140px;
-  }
-
-  .bt-stats {
-    gap: 14px;
-  }
 }
 
-/* ===================================================
+
+/* ==========================================
    Very Small Phones
-=================================================== */
+========================================== */
 
 @media (max-width: 340px) {
-  .bt-title {
-    font-size: 1.55rem;
-  }
 
-  .bt-stage {
-    min-height: 260px;
+  .bst-ui-card {
     padding: 16px;
   }
 
-  .bt-tree {
-    min-height: 150px;
+  .bst-ui-card h2 {
+    font-size: .95rem;
   }
 
-  .bt-controls {
-    flex-direction: column;
-    align-items: center;
+  .bst-ui .description {
+    font-size: .8rem;
   }
 
-  .bt-speed {
-    width: 100%;
+  .bst-ui-card .complexity {
+    font-size: .58rem;
   }
 
-  .bt-speed input {
-    width: 100%;
-  }
-
-  .bt-stats {
-    flex-direction: column;
-    gap: 10px;
-  }
 }
 
-/* ===================================================
+
+/* ==========================================
    Landscape Phones
-=================================================== */
+========================================== */
 
 @media (max-height: 500px) and (orientation: landscape) {
-  .bst {
-    width: 94%;
+
+  .bst-ui-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .bt-grid {
-    grid-template-columns: 1fr 1fr;
+}
+
+
+/* ==========================================
+   Touch Devices
+========================================== */
+
+@media (hover: none) {
+
+  .bst-ui-card.active:hover .arrow {
+    transform: none;
+    color: #7a7a80;
   }
 
-  .bt-stage {
-    min-height: 280px;
+}
+
+
+/* ==========================================
+   Reduced Motion
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .bst-ui-card .arrow {
+    transition: none;
   }
+
 }

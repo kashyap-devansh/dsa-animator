@@ -1,0 +1,308 @@
+.avl-ui {
+  width: 100%;
+  margin-bottom: 3.5rem;
+}
+
+.avl-ui-eyebrow {
+  width: 100%;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #262629;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.2rem;
+  color: #7a7a80;
+  line-height: 0.8rem;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.avl-ui-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+
+.avl-ui-card {
+  padding: 24px;
+  border-radius: 15px;
+  text-decoration: none;
+}
+
+.avl-ui-card.active {
+  background-color: #141417;
+  border: 1px solid #262629;
+}
+
+.avl-ui-card.locked {
+  cursor: not-allowed;
+  border: 1px solid #26262990;
+}
+
+.avl-ui-card .card-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.8rem;
+}
+
+.avl-ui-card .complexity {
+  font-family: "JetBrains Mono", monospace;
+  font-size: .65rem;
+}
+
+.avl-ui-card.active .complexity {
+  color: #ff6a3d;
+}
+
+.avl-ui-card.locked .complexity {
+  color: #7a7a80;
+}
+
+.avl-ui-card .arrow {
+  display: inline-block;
+  color: #7a7a80;
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 200;
+  transition:
+    color 0.3s ease,
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.avl-ui-card.active:hover .arrow {
+  color: #f3f2ed;
+  transform: translate(6px, -6px);
+}
+
+.avl-ui-card h2 {
+  font-family: "Space Grotesk";
+  margin-bottom: 8px;
+  font-weight: 400;
+  font-size: 1.2rem;
+}
+
+.avl-ui-card.active h2 {
+  color: #f3f2ed;
+}
+
+.avl-ui-card.locked h2 {
+  color: #B8B5AF;
+}
+
+.avl-ui .description {
+  font-family: "Satoshi";
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0;
+}
+
+.avl-ui-card.active .description {
+  color: #7a7a80;
+
+}
+
+.avl-ui-card.locked .description {
+  color: #5F5F64;
+}
+
+/* ==========================================
+   Large Tablets
+========================================== */
+
+@media (max-width: 1200px) {
+
+  .avl-ui {
+    margin-bottom: 3rem;
+  }
+
+  .avl-ui-grid {
+    gap: 14px;
+  }
+
+}
+
+
+/* ==========================================
+   Tablets
+========================================== */
+
+@media (max-width: 992px) {
+
+  .avl-ui {
+    margin-bottom: 2.75rem;
+  }
+
+  .avl-ui-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .avl-ui-card {
+    padding: 22px;
+  }
+
+  .avl-ui-card h2 {
+    font-size: 1.1rem;
+  }
+
+}
+
+
+/* ==========================================
+   Phones
+========================================== */
+
+@media (max-width: 768px) {
+
+  .avl-ui {
+    margin-bottom: 2.5rem;
+  }
+
+  .avl-ui-eyebrow {
+    font-size: .65rem;
+    letter-spacing: .18rem;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+  }
+
+  .avl-ui-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .avl-ui-card {
+    padding: 20px;
+    border-radius: 14px;
+  }
+
+  .avl-ui-card .card-top {
+    margin-bottom: 1.4rem;
+  }
+
+  .avl-ui-card .complexity {
+    font-size: .62rem;
+  }
+
+  .avl-ui-card h2 {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+  }
+
+  .avl-ui .description {
+    font-size: .9rem;
+    line-height: 1.6;
+  }
+
+  .avl-ui-card.active:hover .arrow {
+    transform: none;
+  }
+
+}
+
+
+/* ==========================================
+   Small Phones
+========================================== */
+
+@media (max-width: 480px) {
+
+  .avl-ui {
+    margin-bottom: 2rem;
+  }
+
+  .avl-ui-eyebrow {
+    font-size: .58rem;
+    letter-spacing: .15rem;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+  }
+
+  .avl-ui-card {
+    padding: 18px;
+    border-radius: 12px;
+  }
+
+  .avl-ui-card .card-top {
+    margin-bottom: 1.2rem;
+  }
+
+  .avl-ui-card h2 {
+    font-size: 1rem;
+  }
+
+  .avl-ui .description {
+    font-size: .85rem;
+    line-height: 1.55;
+  }
+
+  .avl-ui-card .arrow {
+    font-size: .95rem;
+  }
+
+}
+
+
+/* ==========================================
+   Very Small Phones
+========================================== */
+
+@media (max-width: 340px) {
+
+  .avl-ui-card {
+    padding: 16px;
+  }
+
+  .avl-ui-card h2 {
+    font-size: .95rem;
+  }
+
+  .avl-ui .description {
+    font-size: .8rem;
+  }
+
+  .avl-ui-card .complexity {
+    font-size: .58rem;
+  }
+
+}
+
+
+/* ==========================================
+   Landscape Phones
+========================================== */
+
+@media (max-height: 500px) and (orientation: landscape) {
+
+  .avl-ui-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+
+/* ==========================================
+   Touch Devices
+========================================== */
+
+@media (hover: none) {
+
+  .avl-ui-card.active:hover .arrow {
+    transform: none;
+    color: #7a7a80;
+  }
+
+}
+
+
+/* ==========================================
+   Reduced Motion
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .avl-ui-card .arrow {
+    transition: none;
+  }
+
+}

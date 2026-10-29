@@ -13,6 +13,8 @@ import ArrayStructure from "./Playground/Structures/Array/Array.jsx";
 import LinkedList from "./Playground/Structures/LinkedList/LinkedList.jsx";
 import Stack from "./Playground/Structures/Stack/Stack.jsx";
 import Queue from "./Playground/Structures/Queue/Queue.jsx";
+import BST from "./Playground/Structures/BST/BST.jsx";
+import AVL from "./Playground/Structures/AVL/AVL.jsx";
 import Recursion from "./Playground/Recursion/Recursion.jsx";
 
 import Navbar from "./components/Navbar/Navbar";
@@ -75,6 +77,8 @@ const App = () => {
       <Route path="/playground/linkedList/:slug" element={<Page><LinkedList /></Page>} />
       <Route path="/playground/stack/:slug" element={<Page><Stack /></Page>} />
       <Route path="/playground/queue/:slug" element={<Page><Queue /></Page>} />
+      <Route path="/playground/bst/:slug" element={<Page><BST /></Page>} />
+      <Route path="/playground/avl/:slug" element={<Page><AVL /></Page>} />
       <Route path="/playground/recursion/:slug" element={<Page><Recursion /></Page>} />
       <Route path="/notes" element={<Page><NotesSection /></Page>} />
 

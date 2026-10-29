@@ -7,6 +7,8 @@ import ArrayStructure from "../Structures/Array/Array.jsx";
 import LinkedList from "../Structures/LinkedList/LinkedList.jsx";
 import Stack from "../Structures/Stack/Stack.jsx";
 import Queue from "../Structures/Queue/Queue.jsx";
+import BST from "../Structures/BST/BST.jsx";
+import AVL from "../Structures/AVL/AVL.jsx";
 import Recursion from "../Recursion/Recursion.jsx";
 
 const Playground = () => {
@@ -37,6 +39,8 @@ const Playground = () => {
         <LinkedList />
         <Stack />
         <Queue />
+        <BST />
+        <AVL />
         <Recursion />
       </div>
     </section>

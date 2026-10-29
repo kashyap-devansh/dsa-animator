@@ -5,6 +5,8 @@ import ArrayData from "../Structures/Array/ArrayData.js";
 import LinkedListData from "../Structures/LinkedList/LinkedListData.js";
 import StackData from "../Structures/Stack/Stack.js";
 import QueueData from "../Structures/Queue/QueueData.js";
+import BSTData from "../Structures/BST/BSTData.js";
+import AVLData from "../Structures/AVL/AVLData.js";
 import RecursionData from "../Recursion/RecursionData.js";
 
 const categories = [
@@ -15,6 +17,8 @@ const categories = [
   { label: "Linked List", basePath: "/playground/linkedList", data: LinkedListData },
   { label: "Stack", basePath: "/playground/stack", data: StackData },
   { label: "Queue", basePath: "/playground/queue", data: QueueData },
+  { label: "Binary Search Tree", basePath: "/playground/bst", data: BSTData },
+  { label: "AVL Tree", basePath: "/playground/avl", data: AVLData },
   { label: "Recursion", basePath: "/playground/recursion", data: RecursionData },
 ];
 

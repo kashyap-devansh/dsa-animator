@@ -5,6 +5,9 @@ import LinearSearch from "./LinearSearch/LinearSearch";
 import BinarySearch from "./BinarySearch/BinarySearch";
 import InterpolationSearch from "./InterpolationSearch/InterpolationSearch";
 import MedianSearch from "./MedianSearch/MedianSearch";
+import JumpSearch from "./JumpSearch/JumpSearch";
+import ExponentialSearch from "./ExponentialSearch/ExponentialSearch";
+import FibonacciSearch from "./FibonacciSearch/FibonacciSearch";
 import "./Searching.css";
 
 const Searching = () => {
@@ -21,6 +24,15 @@ const Searching = () => {
   }
   if (slug === "median-search") {
     return <MedianSearch />;
+  }
+  if (slug === "jump-search") {
+    return <JumpSearch />;
+  }
+  if (slug === "exponential-search") {
+    return <ExponentialSearch />;
+  }
+  if (slug === "fibonacci-search") {
+    return <FibonacciSearch />;
   }
 
   return (

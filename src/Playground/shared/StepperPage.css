@@ -1,0 +1,839 @@
+.sp-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 7.6rem;
+}
+
+.sp-page {
+  font-family: "Satoshi", "Inter";
+  min-height: 85dvh;
+  padding: 48px clamp(20px, 2vw, 64px) 80px;
+  width: 70%;
+}
+
+.sp-eyebrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.2rem;
+  color: #ff6a3d;
+  line-height: 0.8rem;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.sp-title {
+  font-size: clamp(2rem, 3.8vw, 3.8rem);
+  font-weight: 400;
+  font-family: "Space Grotesk";
+  margin-top: 0;
+  color: white;
+  margin-bottom: 0;
+}
+
+.sp-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 2.2rem;
+}
+
+.sp-blurb {
+  font-family: "Satoshi";
+  font-size: 1.05rem;
+  color: #7a7a80;
+  font-weight: 500;
+  margin-top: 0;
+  max-width: 60%;
+}
+
+.sp-complexity {
+  display: flex;
+  gap: 28px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.9rem;
+  color: #7a7a80;
+}
+
+.sp-complexity-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.sp-time-value {
+  color: #ff6a3d;
+}
+
+.sp-worst-value {
+  color: #ff5f56;
+}
+
+.sp-space-value {
+  color: #7c8cff;
+}
+
+/* ---------- toolbar ---------- */
+
+.sp-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px 24px;
+  margin-bottom: 20px;
+}
+
+.sp-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.sp-segment-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sp-segment {
+  display: inline-flex;
+  padding: 3px;
+  border: 1px solid #262629;
+  border-radius: 999px;
+}
+
+.sp-segment-btn {
+  height: 28px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: #7a7a80;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.sp-segment-btn:hover {
+  color: #f3f2ed;
+}
+
+.sp-segment-active {
+  background: rgba(255, 106, 61, 0.12);
+  color: #ff6a3d;
+}
+
+.sp-segment-active:hover {
+  color: #ff6a3d;
+}
+
+.sp-toolbar-label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #7a7a80;
+  margin-right: 6px;
+}
+
+.sp-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid #262629;
+  background: transparent;
+  color: #7a7a80;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  line-height: 34px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.sp-chip b {
+  color: #f3f2ed;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.sp-chip span {
+  font-size: 11px;
+}
+
+.sp-chip:hover {
+  border-color: rgba(243, 242, 237, 0.3);
+}
+
+.sp-chip-active {
+  border-color: #ff6a3d;
+  background: rgba(255, 106, 61, 0.08);
+}
+
+.sp-chip-active b {
+  color: #ff6a3d;
+}
+
+/* ---------- stage ---------- */
+
+.sp-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.sp-stage {
+  min-height: 26rem;
+  background: #141416;
+  border: 1px solid #262629;
+  border-radius: 16px;
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sp-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-top: 12px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  color: #7a7a80;
+}
+
+.sp-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sp-legend i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid;
+}
+
+.sp-legend em {
+  font-style: normal;
+  color: #f3f2ed;
+}
+
+.sp-status {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+  border-top: 1px solid #262629;
+  margin: 14px 0 0;
+  padding-top: 14px;
+  min-height: 1.6em;
+}
+
+.sp-done {
+  color: #b4ff39;
+}
+
+/* ---------- code panel ---------- */
+
+.sp-code-panel {
+  background: #141416;
+  border: 1px solid #262629;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.sp-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid #262629;
+}
+
+.sp-dummy-btns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sp-red-btn,
+.sp-yellow-btn,
+.sp-green-btn {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.sp-red-btn {
+  background-color: #ff5f56;
+}
+
+.sp-yellow-btn {
+  background-color: #ffbd2e;
+}
+
+.sp-green-btn {
+  background-color: #27c93f;
+}
+
+.sp-filename {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+  margin-left: 8px;
+}
+
+.sp-header-complexity {
+  color: #ff6a3d;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+}
+
+.sp-code-block {
+  margin: 0;
+  padding: 14px 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  line-height: 1.75;
+  overflow-x: auto;
+  flex: 1;
+}
+
+.sp-code-line {
+  padding: 1px 20px;
+  white-space: pre;
+  border-left: 2px solid transparent;
+  color: #f3f2ed;
+}
+
+.sp-code-line-active {
+  background: rgba(255, 106, 61, 0.1);
+  border-left-color: #ff6a3d;
+}
+
+.sp-line-no {
+  display: inline-block;
+  width: 22px;
+  color: #4a4a4f;
+  user-select: none;
+  margin-right: 4px;
+}
+
+.sp-keyword {
+  color: #ff6a3d;
+}
+
+.sp-symbol {
+  color: #7a7a80;
+}
+
+.sp-type {
+  color: #56b6c2;
+}
+
+.sp-number {
+  color: #7c8cff;
+}
+
+.sp-comment {
+  color: #4f4f55;
+  font-style: italic;
+}
+
+/* ---------- controls ---------- */
+
+.sp-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.sp-icon-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #262629;
+  background: transparent;
+  color: #7a7a80;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.sp-icon-btn:hover:not(:disabled) {
+  color: #f3f2ed;
+  border-color: rgba(243, 242, 237, 0.3);
+}
+
+.sp-icon-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.sp-play-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: #ff6a3d;
+  color: #f3f2ed;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.sp-play-btn:hover {
+  opacity: 0.9;
+}
+
+.sp-shuffle-btn,
+.sp-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  border: 1px solid #262629;
+  background: transparent;
+  color: #7a7a80;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  padding: 0 16px;
+  height: 36px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.sp-shuffle-btn:hover,
+.sp-action-btn:hover {
+  color: #f3f2ed;
+  border-color: rgba(243, 242, 237, 0.3);
+}
+
+.sp-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sp-action-btn {
+  border-color: rgba(255, 106, 61, 0.5);
+  color: #ff6a3d;
+}
+
+.sp-input {
+  height: 36px;
+  width: 3.5rem;
+  border-radius: 999px;
+  padding: 0 0.8rem;
+  color: #f3f2ed;
+  background: #141416;
+  border: solid #262629;
+}
+
+.sp-input:focus {
+  border-color: #ff6a3d;
+  outline: none;
+}
+
+.sp-input::-webkit-outer-spin-button,
+.sp-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.sp-input[type="number"] {
+  appearance: textfield;
+}
+
+.sp-speed {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  color: #7a7a80;
+  margin-left: auto;
+}
+
+.sp-speed input[type="range"] {
+  accent-color: #ff6a3d;
+  width: 130px;
+}
+
+.sp-steps {
+  color: #7a7a80;
+}
+
+.sp-stats {
+  display: flex;
+  gap: 24px;
+  margin-top: 18px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+}
+
+.sp-stats b {
+  color: #f3f2ed;
+  font-size: 15px;
+}
+
+/* ---------- variables strip ---------- */
+
+.sp-vars {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 18px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+}
+
+.sp-vars b {
+  color: #f3f2ed;
+  font-weight: 500;
+}
+
+.sp-var-orange b {
+  color: #ff6a3d;
+}
+
+.sp-var-blue b {
+  color: #7c8cff;
+}
+
+.sp-var-lime b {
+  color: #b4ff39;
+}
+
+.sp-var-cyan b {
+  color: #56b6c2;
+}
+
+.sp-input-label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+}
+
+/* ===================================================
+   Large Tablets
+=================================================== */
+
+@media (max-width: 1200px) {
+
+  .sp-page {
+    width: 85%;
+  }
+
+  .sp-grid {
+    gap: 20px;
+  }
+
+}
+
+/* ===================================================
+   Tablets
+=================================================== */
+
+@media (max-width: 992px) {
+
+  .sp-wrapper {
+    margin-top: 6rem;
+  }
+
+  .sp-page {
+    width: 92%;
+    padding: 36px 0 64px;
+  }
+
+  .sp-header {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .sp-blurb {
+    max-width: 100%;
+  }
+
+  .sp-complexity {
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .sp-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .sp-stage {
+    min-height: 360px;
+  }
+
+}
+
+/* ===================================================
+   Phones
+=================================================== */
+
+@media (max-width: 768px) {
+
+  .sp-wrapper {
+    margin-top: 5rem;
+  }
+
+  .sp-page {
+    width: 94%;
+    padding: 28px 0 56px;
+    min-height: auto;
+  }
+
+  .sp-eyebrow {
+    font-size: .65rem;
+  }
+
+  .sp-title {
+    font-size: 2.2rem;
+    line-height: 1.1;
+  }
+
+  .sp-blurb {
+    font-size: .95rem;
+    line-height: 1.6;
+  }
+
+  .sp-header {
+    gap: 1.2rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .sp-complexity {
+    gap: 1.5rem;
+    font-size: .8rem;
+  }
+
+  .sp-toolbar-label {
+    width: 100%;
+  }
+
+  .sp-segment-group {
+    flex-wrap: wrap;
+  }
+
+  .sp-stage {
+    min-height: 320px;
+    padding: 20px;
+  }
+
+  .sp-code-block {
+    font-size: 11px;
+  }
+
+  .sp-code-line {
+    padding: 2px 16px;
+  }
+
+  .sp-controls {
+    justify-content: center;
+    row-gap: 16px;
+    column-gap: 12px;
+  }
+
+  .sp-speed {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
+  }
+
+  .sp-speed input {
+    width: 180px;
+  }
+
+  .sp-stats {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 18px;
+    text-align: center;
+  }
+
+}
+
+/* ===================================================
+   Small Phones
+=================================================== */
+
+@media (max-width: 480px) {
+
+  .sp-page {
+    width: 95%;
+  }
+
+  .sp-title {
+    font-size: 1.8rem;
+  }
+
+  .sp-blurb {
+    font-size: .9rem;
+  }
+
+  .sp-chip {
+    height: 32px;
+    line-height: 30px;
+    padding: 0 12px;
+  }
+
+  .sp-chip span {
+    display: none;
+  }
+
+  .sp-stage {
+    padding: 16px;
+    min-height: 290px;
+  }
+
+  .sp-legend {
+    font-size: 9.5px;
+  }
+
+  .sp-status {
+    font-size: 11px;
+  }
+
+  .sp-code-header {
+    padding: 10px 14px;
+  }
+
+  .sp-code-block {
+    font-size: 10px;
+  }
+
+  .sp-code-line {
+    padding: 2px 14px;
+  }
+
+  .sp-controls {
+    gap: 10px;
+  }
+
+  .sp-play-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .sp-icon-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .sp-shuffle-btn,
+  .sp-action-btn {
+    height: 34px;
+    padding: 0 14px;
+    font-size: 11px;
+  }
+
+  .sp-input {
+    width: 3.4rem;
+    height: 34px;
+  }
+
+  .sp-speed {
+    font-size: 12px;
+  }
+
+  .sp-speed input {
+    width: 140px;
+  }
+
+  .sp-stats {
+    gap: 14px;
+  }
+
+}
+
+/* ===================================================
+   Very Small Phones
+=================================================== */
+
+@media (max-width: 340px) {
+
+  .sp-title {
+    font-size: 1.55rem;
+  }
+
+  .sp-stage {
+    min-height: 260px;
+    padding: 14px;
+  }
+
+  .sp-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .sp-speed,
+  .sp-speed input {
+    width: 100%;
+  }
+
+  .sp-stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+}
+
+/* ===================================================
+   Landscape Phones
+=================================================== */
+
+@media (max-height: 500px) and (orientation: landscape) {
+
+  .sp-page {
+    width: 94%;
+  }
+
+  .sp-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sp-stage {
+    min-height: 280px;
+  }
+
+}
+
+/* ===================================================
+   Reduced Motion
+=================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .sp-chip,
+  .sp-icon-btn,
+  .sp-shuffle-btn,
+  .sp-action-btn {
+    transition: none;
+  }
+
+}

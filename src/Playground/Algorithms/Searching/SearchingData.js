@@ -18,7 +18,7 @@ const SearchingData = [
     complexity: "O(√n)",
     description: "Jumps ahead by fixed steps, then performs a linear scan.",
     slug: "jump-search",
-    active: false,
+    active: true,
   },
   {
     title: "Interpolation Search",
@@ -39,14 +39,14 @@ const SearchingData = [
     complexity: "O(log n)",
     description: "Expands the search range exponentially before binary search.",
     slug: "exponential-search",
-    active: false,
+    active: true,
   },
   {
     title: "Fibonacci Search",
     complexity: "O(log n)",
     description: "Uses Fibonacci numbers to divide the search space efficiently.",
     slug: "fibonacci-search",
-    active: false,
+    active: true,
   },
 ];
 

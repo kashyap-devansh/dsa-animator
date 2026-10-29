@@ -1,0 +1,185 @@
+/* Stage visuals shared by the recursion pages (page chrome: shared/StepperPage.css) */
+
+.rc-stage {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 16rem;
+}
+
+/* ---------- call stack ---------- */
+
+.rc-stack {
+  width: min(100%, 22rem);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rc-frame {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 8px;
+  border: 1px solid #262629;
+  background: #1c1c1f;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12.5px;
+  color: #f3f2ed;
+  transition: border-color 0.25s, background 0.25s;
+}
+
+.rc-frame-note {
+  color: #7a7a80;
+  font-size: 11.5px;
+}
+
+.rc-frame-active {
+  border-color: #ff6a3d;
+  background: rgba(255, 106, 61, 0.08);
+}
+
+.rc-frame-base .rc-frame-note,
+.rc-frame-returning .rc-frame-note {
+  color: #b4ff39;
+}
+
+.rc-frame-base,
+.rc-frame-returning {
+  border-color: #b4ff39;
+  background: rgba(180, 255, 57, 0.06);
+}
+
+.rc-stack-floor {
+  width: min(100%, 22rem);
+  padding-top: 8px;
+  border-top: 2px solid #262629;
+  text-align: center;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #4a4a4f;
+}
+
+.rc-result {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
+  color: #7a7a80;
+}
+
+.rc-result b {
+  color: #b4ff39;
+  font-weight: 500;
+}
+
+/* ---------- output chips (permutations) ---------- */
+
+.rc-output {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  max-width: 100%;
+}
+
+.rc-output span {
+  padding: 3px 9px;
+  border-radius: 6px;
+  border: 1px solid #262629;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  color: #7a7a80;
+}
+
+.rc-output .rc-output-latest {
+  border-color: #b4ff39;
+  color: #b4ff39;
+}
+
+.rc-output-empty {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: #4a4a4f;
+}
+
+/* ---------- chessboard (n-queens) ---------- */
+
+.rc-board {
+  display: grid;
+  width: min(100%, 20rem);
+  aspect-ratio: 1;
+  border: 1px solid #262629;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.rc-square {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #161618;
+  color: #f3f2ed;
+  font-size: clamp(14px, 3.2vw, 26px);
+  line-height: 1;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.rc-square-dark {
+  background: #1f1f23;
+}
+
+.rc-square-row {
+  box-shadow: inset 0 0 0 999px rgba(124, 140, 255, 0.05);
+}
+
+.rc-square-trying {
+  box-shadow: inset 0 0 0 2px #ff6a3d;
+  background: rgba(255, 106, 61, 0.12);
+}
+
+.rc-square-attacked {
+  box-shadow: inset 0 0 0 2px #ff5f56;
+  background: rgba(255, 95, 86, 0.14);
+}
+
+.rc-queen {
+  width: 58%;
+  height: 58%;
+}
+
+.rc-queen-attacker {
+  color: #ff5f56;
+}
+
+.rc-queen-solved {
+  color: #b4ff39;
+}
+
+.rc-queen-ghost {
+  color: rgba(255, 106, 61, 0.55);
+}
+
+/* ---------- tree stages (fibonacci, subset sum) ---------- */
+
+.rc-tree {
+  width: 100%;
+  flex: 1;
+  display: flex;
+}
+
+.rc-tree .tr-canvas {
+  min-height: 13rem;
+}
+
+.rc-tree .tr-svg {
+  max-height: 20rem;
+}
