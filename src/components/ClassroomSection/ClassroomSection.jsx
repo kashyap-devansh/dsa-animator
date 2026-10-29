@@ -21,7 +21,7 @@ const KEYS = [
 const TEACHERS = [
   { title: "Present mode", text: "One key goes fullscreen, hides the site chrome and scales the stage to fit the projector." },
   { title: "Pen & laser pointer", text: "Circle the pivot, underline the swap, point at the line of code — right on top of the animation." },
-  { title: "Drive it from the keyboard", text: "Space to play, arrows to step, R to reset. Pause on the exact frame you want to talk about." },
+  { title: "Lessons, quizzes & clickers", text: "Every syllabus unit is a ready lecture. A presentation clicker advances it; timed class quizzes check the room." },
 ];
 
 const STUDENTS = [
@@ -172,7 +172,10 @@ const ClassroomSection = () => (
           </div>
 
           <div className="cls-ctas">
-            <Link to="/playground/sorting/quick-sort" className="cls-btn cls-btn-primary">
+            <Link to="/classroom" className="cls-btn cls-btn-primary">
+              Plan a lecture
+            </Link>
+            <Link to="/playground/sorting/quick-sort" className="cls-btn">
               Try present mode
             </Link>
             <Link to="/notes" className="cls-btn">

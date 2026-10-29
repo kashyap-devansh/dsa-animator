@@ -7,6 +7,10 @@ import NotesHub from "./Notes/NotesHub.jsx";
 import NoteArticle from "./Notes/NoteArticle.jsx";
 import Classroom from "./components/Classroom/Classroom.jsx";
 import CommandPalette from "./components/CommandPalette/CommandPalette.jsx";
+import TeachPage from "./Classroom/TeachPage.jsx";
+import LessonCover from "./Classroom/LessonCover.jsx";
+import ClassQuiz from "./Classroom/ClassQuiz.jsx";
+import LessonBar from "./Classroom/LessonBar.jsx";
 
 import Playground from "./Playground/PlaygroundHero/PlaygroundHero";
 import Sorting from "./Playground/Algorithms/Sorting/Sorting";
@@ -91,9 +95,13 @@ const App = () => {
       <Route path="/playground/recursion/:slug" element={<Lesson><Recursion /></Lesson>} />
       <Route path="/notes" element={<Page><NotesHub /></Page>} />
       <Route path="/notes/:slug" element={<Lesson><NoteArticle /></Lesson>} />
+      <Route path="/classroom" element={<Page><TeachPage /></Page>} />
+      <Route path="/lesson" element={<Lesson><LessonCover /></Lesson>} />
+      <Route path="/quiz/:slug" element={<Lesson><ClassQuiz /></Lesson>} />
 
     </Routes>
 
+    <LessonBar />
     <CommandPalette />
     <Analytics />
     </>

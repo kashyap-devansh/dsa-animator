@@ -279,3 +279,30 @@ body.is-presenting [data-present-fit] {
     transition: none;
   }
 }
+
+/* ---------- projector light mode ----------
+   Inverting the whole stage keeps every hand-built visualizer consistent;
+   hue-rotate brings the accent colours back to their own hues. */
+
+html:has(body.projector-light),
+body.projector-light {
+  background: #f5f5f4;
+}
+
+body.projector-light .navbar,
+body.projector-light .footer {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+body.projector-light .page-main {
+  display: flow-root;
+  min-height: 100vh;
+  background: #0a0a0b;
+  filter: invert(1) hue-rotate(180deg) contrast(1.05);
+}
+
+/* paper and photos should not be inverted */
+body.projector-light .page-main .page,
+body.projector-light .page-main img {
+  filter: invert(1) hue-rotate(180deg);
+}

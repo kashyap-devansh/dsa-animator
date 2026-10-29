@@ -17,6 +17,8 @@ const SHORTCUTS = [
   ["←", "Step back"],
   ["R", "Reset"],
   ["F", "Present mode"],
+  ["T", "Projector light mode"],
+  ["PgDn / N", "Next lesson item"],
   ["P", "Pen"],
   ["L", "Laser pointer"],
   ["1 – 4", "Pen colour"],
@@ -58,6 +60,7 @@ const ExitIcon = () => <Icon><path d="M9 4H5a1 1 0 0 0-1 1v4M15 4h4a1 1 0 0 1 1 
 const PenIcon = () => <Icon><path d="M4 20l4-1L19 8a2.1 2.1 0 0 0-3-3L5 16l-1 4z" /><path d="M14 7l3 3" /></Icon>;
 const LaserIcon = () => <Icon><circle cx="12" cy="12" r="3" /><path d="M12 3v3M12 18v3M3 12h3M18 12h3" /></Icon>;
 const ClearIcon = () => <Icon><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13" /></Icon>;
+const SunIcon = () => <Icon><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></Icon>;
 const KeysIcon = () => <Icon><rect x="2.5" y="6" width="19" height="12" rx="2" /><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10" /></Icon>;
 
 /* ---------- drawing layer ---------- */
@@ -266,6 +269,7 @@ const Classroom = () => {
   const [tool, setTool] = useState(null);
   const [color, setColor] = useState(INKS[0]);
   const [help, setHelp] = useState(false);
+  const [light, setLight] = useState(() => document.body.classList.contains("projector-light"));
   const [idle, setIdle] = useState(false);
   const [hint, setHint] = useState(false);
   const { canvasRef, handlers, clear, undo } = useInk(tool, color);
@@ -352,6 +356,7 @@ const Classroom = () => {
       else if (k === "ArrowLeft" && controls) press(controls.back);
       else if ((k === "r" || k === "R") && controls) press(controls.reset);
       else if (k === "f" || k === "F") togglePresent();
+      else if (k === "t" || k === "T") setLight((on) => !on);
       else if (k === "p" || k === "P") setTool((t) => (t === "pen" ? null : "pen"));
       else if (k === "l" || k === "L") setTool((t) => (t === "laser" ? null : "laser"));
       else if (k === "c" || k === "C") clear();
@@ -376,6 +381,13 @@ const Classroom = () => {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [togglePresent, clear, undo, help, tool, presenting]);
+
+  // High-contrast light stage for projectors that wash out dark themes.
+  useEffect(() => {
+    document.body.classList.toggle("projector-light", light);
+  }, [light]);
+
+  useEffect(() => () => document.body.classList.remove("projector-light"), []);
 
   useEffect(() => {
     document.body.classList.toggle("is-lasering", tool === "laser");
@@ -426,6 +438,10 @@ const Classroom = () => {
 
         <DockButton label="Clear ink" keyHint="C" onClick={clear}>
           <ClearIcon />
+        </DockButton>
+
+        <DockButton label={light ? "Dark stage" : "Projector light"} keyHint="T" active={light} onClick={() => setLight((on) => !on)}>
+          <SunIcon />
         </DockButton>
 
         <span className="cr-sep" />

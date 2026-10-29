@@ -51,7 +51,7 @@ function Navbar() {
         <nav>
           <Link to="/playground">Playground</Link>
           <Link to="/notes">Notes</Link>
-          <a href="/#classroom">For classrooms</a>
+          <Link to="/classroom">For faculty</Link>
           <a href="/#gallery">Gallery</a>
 
           <button
