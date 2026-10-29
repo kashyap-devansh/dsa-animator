@@ -7,6 +7,8 @@ import InsertionSort from "./InsertionSort/InsertionSort.jsx";
 import MergeSort from "./MergeSort/MergeSort.jsx";
 import QuickSort from "./QuickSort/QuickSort.jsx";
 import RadixSort from "./RadixSort/RadixSort.jsx";
+import BucketSort from "./BucketSort/BucketSort.jsx";
+import CountSort from "./CountSort/CountSort.jsx";
 import "./Sorting.css";
 
 const Sorting = () => {
@@ -29,6 +31,12 @@ const Sorting = () => {
   }
   else if (slug === "radix-sort") {
     return <RadixSort />
+  }
+  else if (slug === "bucket-sort") {
+    return <BucketSort />
+  }
+  else if (slug === "count-sort") {
+    return <CountSort />
   }
 
   return (

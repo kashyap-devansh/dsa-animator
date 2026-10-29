@@ -1,0 +1,699 @@
+.median-search-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 7.6rem;
+}
+
+.median-search {
+  font-family: "Satoshi", "Inter";
+  min-height: 85dvh;
+  padding: 48px clamp(20px, 2vw, 64px) 80px;
+  width: 70%;
+}
+
+.mds-eyebrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.2rem;
+  color: #ff6a3d;
+  line-height: 0.8rem;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.mds-title {
+  font-size: clamp(2rem, 3.8vw, 3.8rem);
+  font-weight: 400;
+  line-height: -1.05;
+  font-family: "Space Grotesk";
+  margin-top: 0;
+  color: white;
+  margin-bottom: 0;
+}
+
+.mds-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2.2rem;
+}
+
+.mds-blurb {
+  font-family: "Satoshi";
+  font-size: 1.05rem;
+  color: #7a7a80;
+  font-weight: 500;
+  margin-top: 0;
+  max-width: 60%;
+}
+
+.mds-complexity {
+  display: flex;
+  gap: 28px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.9rem;
+  color: #7a7a80;
+}
+
+.mds-complexity-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.mds-time-value {
+  color: #ff6a3d;
+}
+
+.mds-space-value {
+  color: #7c8cff;
+}
+
+.mds-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.mds-stage {
+  height: 20rem;
+  background: #141416;
+  border: 1px solid #262629;
+  border-radius: 16px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+}
+
+.mds-vars {
+  display: flex;
+  gap: 20px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+}
+
+.mds-vars b {
+  color: #4a4a4f;
+  margin-right: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.mds-boxs {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.mds-box-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mds-index {
+  margin-bottom: 4px;
+  font-size: 0.6rem;
+  font-family: "JetBrains Mono", monospace;
+  color: #7a7a80;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.mds-k-marker {
+  color: #b4ff39;
+  font-weight: 700;
+}
+
+.mds-box {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #1c1c1f;
+  border: 1px solid #262629;
+  border-radius: 8px;
+  color: #f3f2ed;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.mds-status {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+  border-top: 1px solid #262629;
+  padding-top: 16px;
+}
+
+.mds-code-panel {
+  background: #141416;
+  border: 1px solid #262629;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.mds-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid #262629;
+}
+
+.mds-dummy-btns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mds-red-btn,
+.mds-yellow-btn,
+.mds-green-btn {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.mds-red-btn {
+  background-color: #ff5f56;
+}
+
+.mds-yellow-btn {
+  background-color: #ffbd2e;
+}
+
+.mds-green-btn {
+  background-color: #27c93f;
+}
+
+.mds-filename {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+  margin-left: 8px;
+}
+
+.mds-header-complexity {
+  color: #ff6a3d;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+}
+
+.mds-code-block {
+  margin: 0;
+  padding: 16px 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12.5px;
+  line-height: 1.9;
+  overflow-x: auto;
+  flex: 1;
+}
+
+.mds-code-line {
+  padding: 1px 20px;
+  white-space: pre;
+  border-left: 2px solid transparent;
+  color: #f3f2ed;
+}
+
+.mds-code-line-active {
+  background: rgba(255, 106, 61, 0.1);
+  border-left-color: #ff6a3d;
+}
+
+.mds-line-no {
+  display: inline-block;
+  width: 20px;
+  color: #4a4a4f;
+  user-select: none;
+  margin-right: 4px;
+}
+
+.mds-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.mds-icon-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #262629;
+  background: transparent;
+  color: #7a7a80;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.mds-icon-btn:hover:not(:disabled) {
+  color: #f3f2ed;
+  border-color: rgba(243, 242, 237, 0.3);
+}
+
+.mds-icon-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.mds-play-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: #ff6a3d;
+  color: #f3f2ed;
+  cursor: pointer;
+  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.mds-play-btn:hover {
+  opacity: 0.9;
+}
+
+.mds-shuffle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  border: 1px solid #262629;
+  background: transparent;
+  color: #7a7a80;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  padding: 0 16px;
+  height: 36px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.mds-shuffle-btn:hover {
+  color: #f3f2ed;
+  border-color: rgba(243, 242, 237, 0.3);
+}
+
+.mds-speed {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  color: #7a7a80;
+  margin-left: auto;
+}
+
+.mds-speed input[type="range"] {
+  accent-color: #ff6a3d;
+  width: 130px;
+}
+
+.mds-stats {
+  display: flex;
+  gap: 24px;
+  margin-top: 18px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+}
+
+.mds-stats b {
+  color: #f3f2ed;
+  font-size: 15px;
+}
+
+.mds-steps {
+  color: #7a7a80;
+}
+
+.mds-keyword {
+  color: #ff6a3d;
+}
+
+.mds-number {
+  color: #7c8cff;
+}
+
+.mds-symbol {
+  color: #7a7a80;
+}
+
+.mds-type {
+  color: #56b6c2;
+}
+
+/* ===================================================
+   Large Tablets
+=================================================== */
+
+@media (max-width:1200px) {
+
+  .median-search {
+    width: 85%;
+  }
+
+  .mds-grid {
+    gap: 20px;
+  }
+
+}
+
+
+/* ===================================================
+   Tablets
+=================================================== */
+
+@media (max-width:992px) {
+
+  .median-search-wrapper {
+    margin-top: 6rem;
+  }
+
+  .median-search {
+    width: 92%;
+    padding: 36px 0 64px;
+  }
+
+  .mds-header {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .mds-blurb {
+    max-width: 100%;
+  }
+
+  .mds-complexity {
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .mds-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .mds-stage,
+  .mds-code-panel {
+    width: 100%;
+  }
+
+  .mds-stage {
+    min-height: 360px;
+    height: auto;
+  }
+
+}
+
+
+/* ===================================================
+   Phones
+=================================================== */
+
+@media (max-width:768px) {
+
+  .median-search-wrapper {
+    margin-top: 5rem;
+  }
+
+  .median-search {
+    width: 94%;
+    padding: 28px 0 56px;
+    min-height: auto;
+  }
+
+  .mds-eyebrow {
+    font-size: .65rem;
+  }
+
+  .mds-title {
+    font-size: 2.2rem;
+    line-height: 1.1;
+  }
+
+  .mds-blurb {
+    max-width: 100%;
+    font-size: .95rem;
+    line-height: 1.6;
+  }
+
+  .mds-header {
+    gap: 1.2rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .mds-complexity {
+    gap: 1.5rem;
+    font-size: .8rem;
+    flex-wrap: wrap;
+  }
+
+  .mds-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .mds-stage {
+    width: 100%;
+    min-height: 320px;
+    height: auto;
+    padding: 24px;
+  }
+
+  .mds-vars {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .mds-boxs {
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .mds-box {
+    width: 38px;
+    height: 38px;
+    font-size: 14px;
+  }
+
+  .mds-index {
+    font-size: .55rem;
+  }
+
+  .mds-status {
+    margin-top: 0;
+  }
+
+  .mds-code-panel {
+    width: 100%;
+  }
+
+  .mds-code-block {
+    font-size: 11px;
+  }
+
+  .mds-code-line {
+    padding: 2px 16px;
+  }
+
+  .mds-controls {
+    justify-content: center;
+    row-gap: 16px;
+    column-gap: 12px;
+  }
+
+  .mds-speed {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
+  }
+
+  .mds-speed input {
+    width: 180px;
+  }
+
+  .mds-stats {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 18px;
+    text-align: center;
+  }
+
+}
+
+
+/* ===================================================
+   Small Phones
+=================================================== */
+
+@media (max-width:480px) {
+
+  .median-search {
+    width: 95%;
+  }
+
+  .mds-title {
+    font-size: 1.8rem;
+  }
+
+  .mds-blurb {
+    font-size: .9rem;
+  }
+
+  .mds-stage {
+    padding: 18px;
+    min-height: 290px;
+  }
+
+  .mds-boxs {
+    gap: 6px;
+  }
+
+  .mds-box {
+    width: 34px;
+    height: 34px;
+    font-size: 13px;
+  }
+
+  .mds-index {
+    font-size: .5rem;
+  }
+
+  .mds-status {
+    font-size: 11px;
+  }
+
+  .mds-code-header {
+    padding: 10px 14px;
+  }
+
+  .mds-code-block {
+    font-size: 10px;
+  }
+
+  .mds-code-line {
+    padding: 2px 14px;
+  }
+
+  .mds-controls {
+    gap: 10px;
+  }
+
+  .mds-play-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .mds-icon-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .mds-shuffle-btn {
+    height: 34px;
+    padding: 0 14px;
+    font-size: 11px;
+  }
+
+  .mds-speed {
+    font-size: 12px;
+  }
+
+  .mds-speed input {
+    width: 140px;
+  }
+
+  .mds-stats {
+    gap: 14px;
+  }
+
+}
+
+
+/* ===================================================
+   Very Small Phones
+=================================================== */
+
+@media (max-width:340px) {
+
+  .mds-title {
+    font-size: 1.55rem;
+  }
+
+  .mds-stage {
+    min-height: 250px;
+    padding: 16px;
+  }
+
+  .mds-boxs {
+    gap: 4px;
+  }
+
+  .mds-box {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+  }
+
+  .mds-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .mds-speed {
+    width: 100%;
+  }
+
+  .mds-speed input {
+    width: 100%;
+  }
+
+  .mds-stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+}
+
+
+/* ===================================================
+   Landscape Phones
+=================================================== */
+
+@media (max-height:500px) and (orientation:landscape) {
+
+  .median-search {
+    width: 94%;
+  }
+
+  .mds-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .mds-stage {
+    min-height: 280px;
+  }
+
+}

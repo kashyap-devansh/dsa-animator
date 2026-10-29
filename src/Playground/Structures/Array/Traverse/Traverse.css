@@ -1,0 +1,698 @@
+.array-traverse-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 7.6rem;
+}
+
+.array-traverse {
+  font-family: "Satoshi", "Inter";
+  min-height: 85dvh;
+  padding: 48px clamp(20px, 2vw, 64px) 80px;
+  width: 70%;
+}
+
+.atr-eyebrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.2rem;
+  color: #ff6a3d;
+  line-height: 0.8rem;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.atr-title {
+  font-size: clamp(2rem, 3.8vw, 3.8rem);
+  font-weight: 400;
+  line-height: -1.05;
+  font-family: "Space Grotesk";
+  margin-top: 0;
+  color: white;
+  margin-bottom: 0;
+}
+
+.atr-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2.2rem;
+}
+
+.atr-blurb {
+  font-family: "Satoshi";
+  font-size: 1.05rem;
+  color: #7a7a80;
+  font-weight: 500;
+  margin-top: 0;
+  max-width: 60%;
+}
+
+.atr-complexity {
+  display: flex;
+  gap: 28px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.9rem;
+  color: #7a7a80;
+}
+
+.atr-complexity-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.atr-time-value {
+  color: #ff6a3d;
+}
+
+.atr-space-value {
+  color: #7c8cff;
+}
+
+.atr-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.atr-stage {
+  height: 20rem;
+  background: #141416;
+  border: 1px solid #262629;
+  border-radius: 16px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.atr-boxs {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.atr-box-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.atr-index {
+  margin-bottom: 4px;
+  font-size: 0.6rem;
+  font-family: "JetBrains Mono", monospace;
+  color: #7a7a80;
+}
+
+.atr-box {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #1c1c1f;
+  border: 1px solid #262629;
+  border-radius: 8px;
+  color: #f3f2ed;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.atr-current {
+  border-color: #ff6a3d;
+  color: #ff6a3d;
+  background: rgba(255, 106, 61, 0.08);
+}
+
+.atr-visited {
+  border-color: #b4ff39;
+  color: #b4ff39;
+}
+
+.atr-trail {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: #4a4a4f;
+  text-align: center;
+  margin-top: 1.2rem;
+  margin-bottom: 0;
+}
+
+.atr-status {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+  border-top: 1px solid #262629;
+  margin-top: 1.2rem;
+  margin-bottom: -4.6rem;
+  padding-top: 16px;
+}
+
+.atr-code-panel {
+  background: #141416;
+  border: 1px solid #262629;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.atr-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid #262629;
+}
+
+.atr-dummy-btns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.atr-red-btn,
+.atr-yellow-btn,
+.atr-green-btn {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.atr-red-btn {
+  background-color: #ff5f56;
+}
+
+.atr-yellow-btn {
+  background-color: #ffbd2e;
+}
+
+.atr-green-btn {
+  background-color: #27c93f;
+}
+
+.atr-filename {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+  margin-left: 8px;
+}
+
+.atr-header-complexity {
+  color: #ff6a3d;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+}
+
+.atr-code-block {
+  margin: 0;
+  padding: 16px 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12.5px;
+  line-height: 1.9;
+  overflow-x: auto;
+  flex: 1;
+}
+
+.atr-code-line {
+  padding: 1px 20px;
+  white-space: pre;
+  border-left: 2px solid transparent;
+  color: #f3f2ed;
+}
+
+.atr-code-line-active {
+  background: rgba(255, 106, 61, 0.1);
+  border-left-color: #ff6a3d;
+}
+
+.atr-line-no {
+  display: inline-block;
+  width: 20px;
+  color: #4a4a4f;
+  user-select: none;
+  margin-right: 4px;
+}
+
+.atr-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.atr-icon-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #262629;
+  background: transparent;
+  color: #7a7a80;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.atr-icon-btn:hover:not(:disabled) {
+  color: #f3f2ed;
+  border-color: rgba(243, 242, 237, 0.3);
+}
+
+.atr-icon-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.atr-play-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: #ff6a3d;
+  color: #f3f2ed;
+  cursor: pointer;
+  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.atr-play-btn:hover {
+  opacity: 0.9;
+}
+
+.atr-shuffle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  border: 1px solid #262629;
+  background: transparent;
+  color: #7a7a80;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  padding: 0 16px;
+  height: 36px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.atr-shuffle-btn:hover {
+  color: #f3f2ed;
+  border-color: rgba(243, 242, 237, 0.3);
+}
+
+.atr-speed {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  color: #7a7a80;
+  margin-left: auto;
+}
+
+.atr-speed input[type="range"] {
+  accent-color: #ff6a3d;
+  width: 130px;
+}
+
+.atr-stats {
+  display: flex;
+  gap: 24px;
+  margin-top: 18px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+}
+
+.atr-stats b {
+  color: #f3f2ed;
+  font-size: 15px;
+}
+
+.atr-steps {
+  color: #7a7a80;
+}
+
+.atr-keyword {
+  color: #ff6a3d;
+}
+
+.atr-number {
+  color: #7c8cff;
+}
+
+.atr-symbol {
+  color: #7a7a80;
+}
+
+.atr-type {
+  color: #56b6c2;
+}
+
+.atr-function {
+  color: #7c8cff;
+}
+
+/* ===================================================
+   Large Tablets
+=================================================== */
+
+@media (max-width:1200px) {
+
+  .array-traverse {
+    width: 85%;
+  }
+
+  .atr-grid {
+    gap: 20px;
+  }
+
+}
+
+
+/* ===================================================
+   Tablets
+=================================================== */
+
+@media (max-width:992px) {
+
+  .array-traverse-wrapper {
+    margin-top: 6rem;
+  }
+
+  .array-traverse {
+    width: 92%;
+    padding: 36px 0 64px;
+  }
+
+  .atr-header {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .atr-blurb {
+    max-width: 100%;
+  }
+
+  .atr-complexity {
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .atr-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .atr-stage,
+  .atr-code-panel {
+    width: 100%;
+  }
+
+  .atr-stage {
+    min-height: 360px;
+    height: auto;
+  }
+
+}
+
+
+/* ===================================================
+   Phones
+=================================================== */
+
+@media (max-width:768px) {
+
+  .array-traverse-wrapper {
+    margin-top: 5rem;
+  }
+
+  .array-traverse {
+    width: 94%;
+    padding: 28px 0 56px;
+    min-height: auto;
+  }
+
+  .atr-eyebrow {
+    font-size: .65rem;
+  }
+
+  .atr-title {
+    font-size: 2.2rem;
+    line-height: 1.1;
+  }
+
+  .atr-blurb {
+    max-width: 100%;
+    font-size: .95rem;
+    line-height: 1.6;
+  }
+
+  .atr-header {
+    gap: 1.2rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .atr-complexity {
+    gap: 1.5rem;
+    font-size: .8rem;
+    flex-wrap: wrap;
+  }
+
+  .atr-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .atr-stage {
+    width: 100%;
+    min-height: 320px;
+    height: auto;
+    padding: 24px;
+  }
+
+  .atr-boxs {
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .atr-box {
+    width: 36px;
+    height: 36px;
+    font-size: 13px;
+  }
+
+  .atr-index {
+    font-size: .55rem;
+  }
+
+  .atr-status {
+    margin-top: 1.5rem;
+    margin-bottom: 0;
+  }
+
+  .atr-code-panel {
+    width: 100%;
+  }
+
+  .atr-code-block {
+    font-size: 11px;
+  }
+
+  .atr-code-line {
+    padding: 2px 16px;
+  }
+
+  .atr-controls {
+    justify-content: center;
+    row-gap: 16px;
+    column-gap: 12px;
+  }
+
+  .atr-speed {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
+  }
+
+  .atr-speed input {
+    width: 180px;
+  }
+
+  .atr-stats {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 18px;
+    text-align: center;
+  }
+
+}
+
+
+/* ===================================================
+   Small Phones
+=================================================== */
+
+@media (max-width:480px) {
+
+  .array-traverse {
+    width: 95%;
+  }
+
+  .atr-title {
+    font-size: 1.8rem;
+  }
+
+  .atr-blurb {
+    font-size: .9rem;
+  }
+
+  .atr-stage {
+    padding: 18px;
+    min-height: 290px;
+  }
+
+  .atr-boxs {
+    gap: 6px;
+  }
+
+  .atr-box {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+
+  .atr-index {
+    font-size: .5rem;
+  }
+
+  .atr-status {
+    font-size: 11px;
+  }
+
+  .atr-code-header {
+    padding: 10px 14px;
+  }
+
+  .atr-code-block {
+    font-size: 10px;
+  }
+
+  .atr-code-line {
+    padding: 2px 14px;
+  }
+
+  .atr-controls {
+    gap: 10px;
+  }
+
+  .atr-play-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .atr-icon-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .atr-shuffle-btn {
+    height: 34px;
+    padding: 0 14px;
+    font-size: 11px;
+  }
+
+  .atr-speed {
+    font-size: 12px;
+  }
+
+  .atr-speed input {
+    width: 140px;
+  }
+
+  .atr-stats {
+    gap: 14px;
+  }
+
+}
+
+
+/* ===================================================
+   Very Small Phones
+=================================================== */
+
+@media (max-width:340px) {
+
+  .atr-title {
+    font-size: 1.55rem;
+  }
+
+  .atr-stage {
+    min-height: 250px;
+    padding: 16px;
+  }
+
+  .atr-boxs {
+    gap: 4px;
+  }
+
+  .atr-box {
+    width: 26px;
+    height: 26px;
+    font-size: 10px;
+  }
+
+  .atr-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .atr-speed {
+    width: 100%;
+  }
+
+  .atr-speed input {
+    width: 100%;
+  }
+
+  .atr-stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+}
+
+
+/* ===================================================
+   Landscape Phones
+=================================================== */
+
+@media (max-height:500px) and (orientation:landscape) {
+
+  .array-traverse {
+    width: 94%;
+  }
+
+  .atr-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .atr-stage {
+    min-height: 280px;
+  }
+
+}

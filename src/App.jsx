@@ -8,6 +8,8 @@ import NotesSection from "./components/NotesSection/NotesSection.jsx";
 import Playground from "./Playground/PlaygroundHero/PlaygroundHero";
 import Sorting from "./Playground/Algorithms/Sorting/Sorting";
 import Searching from "./Playground/Algorithms/Searching/Searching.jsx";
+import Hashing from "./Playground/Algorithms/Hashing/Hashing.jsx";
+import ArrayStructure from "./Playground/Structures/Array/Array.jsx";
 import LinkedList from "./Playground/Structures/LinkedList/LinkedList.jsx";
 import Stack from "./Playground/Structures/Stack/Stack.jsx";
 import Queue from "./Playground/Structures/Queue/Queue.jsx";
@@ -68,6 +70,8 @@ const App = () => {
       <Route path="/playground" element={<Page><Playground /></Page>} />
       <Route path="/playground/sorting/:slug" element={<Page><Sorting /></Page>} />
       <Route path="/playground/searching/:slug" element={<Page><Searching /></Page>} />
+      <Route path="/playground/hashing/:slug" element={<Page><Hashing /></Page>} />
+      <Route path="/playground/array/:slug" element={<Page><ArrayStructure /></Page>} />
       <Route path="/playground/linkedList/:slug" element={<Page><LinkedList /></Page>} />
       <Route path="/playground/stack/:slug" element={<Page><Stack /></Page>} />
       <Route path="/playground/queue/:slug" element={<Page><Queue /></Page>} />

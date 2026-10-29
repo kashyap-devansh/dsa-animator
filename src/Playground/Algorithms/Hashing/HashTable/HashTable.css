@@ -1,0 +1,718 @@
+.hash-table-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 7.6rem;
+}
+
+.hash-table {
+  font-family: "Satoshi", "Inter";
+  min-height: 85dvh;
+  padding: 48px clamp(20px, 2vw, 64px) 80px;
+  width: 70%;
+}
+
+.hst-eyebrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.2rem;
+  color: #ff6a3d;
+  line-height: 0.8rem;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.hst-title {
+  font-size: clamp(2rem, 3.8vw, 3.8rem);
+  font-weight: 400;
+  line-height: -1.05;
+  font-family: "Space Grotesk";
+  margin-top: 0;
+  color: white;
+  margin-bottom: 0;
+}
+
+.hst-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2.2rem;
+}
+
+.hst-blurb {
+  font-family: "Satoshi";
+  font-size: 1.05rem;
+  color: #7a7a80;
+  font-weight: 500;
+  margin-top: 0;
+  max-width: 60%;
+}
+
+.hst-complexity {
+  display: flex;
+  gap: 28px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.9rem;
+  color: #7a7a80;
+}
+
+.hst-complexity-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.hst-time-value {
+  color: #ff6a3d;
+}
+
+.hst-space-value {
+  color: #7c8cff;
+}
+
+.hst-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.hst-stage {
+  height: 20rem;
+  background: #141416;
+  border: 1px solid #262629;
+  border-radius: 16px;
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hst-table-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+}
+
+.hst-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hst-row-index {
+  width: 18px;
+  text-align: right;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.7rem;
+  color: #7a7a80;
+}
+
+.hst-slot {
+  flex: 1;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  background: #1c1c1f;
+  border: 1px solid #262629;
+  border-radius: 8px;
+  color: #f3f2ed;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  transition: border-color 0.25s, background 0.25s, color 0.25s;
+}
+
+.hst-slot-empty {
+  color: #4a4a4f;
+}
+
+.hst-slot-active {
+  border-color: #ff6a3d;
+  background: rgba(255, 106, 61, 0.08);
+  color: #ff6a3d;
+}
+
+.hst-slot-placed {
+  border-color: #b4ff39;
+  background: rgba(180, 255, 57, 0.08);
+  color: #b4ff39;
+}
+
+.hst-slot-collision {
+  border-color: #ff5f56;
+  background: rgba(255, 95, 86, 0.1);
+  color: #ff5f56;
+}
+
+.hst-status {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+  border-top: 1px solid #262629;
+  margin-top: 1.6rem;
+  padding-top: 16px;
+}
+
+.hst-code-panel {
+  background: #141416;
+  border: 1px solid #262629;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.hst-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid #262629;
+}
+
+.hst-dummy-btns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hst-red-btn,
+.hst-yellow-btn,
+.hst-green-btn {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.hst-red-btn {
+  background-color: #ff5f56;
+}
+
+.hst-yellow-btn {
+  background-color: #ffbd2e;
+}
+
+.hst-green-btn {
+  background-color: #27c93f;
+}
+
+.hst-filename {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+  margin-left: 8px;
+}
+
+.hst-header-complexity {
+  color: #ff6a3d;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+}
+
+.hst-code-block {
+  margin: 0;
+  padding: 16px 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12.5px;
+  line-height: 1.9;
+  overflow-x: auto;
+  flex: 1;
+}
+
+.hst-code-line {
+  padding: 1px 20px;
+  white-space: pre;
+  border-left: 2px solid transparent;
+  color: #f3f2ed;
+}
+
+.hst-code-line-active {
+  background: rgba(255, 106, 61, 0.1);
+  border-left-color: #ff6a3d;
+}
+
+.hst-line-no {
+  display: inline-block;
+  width: 20px;
+  color: #4a4a4f;
+  user-select: none;
+  margin-right: 4px;
+}
+
+.hst-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.hst-icon-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #262629;
+  background: transparent;
+  color: #7a7a80;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.hst-icon-btn:hover:not(:disabled) {
+  color: #f3f2ed;
+  border-color: rgba(243, 242, 237, 0.3);
+}
+
+.hst-icon-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.hst-play-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: #ff6a3d;
+  color: #f3f2ed;
+  cursor: pointer;
+  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.hst-play-btn:hover {
+  opacity: 0.9;
+}
+
+.hst-shuffle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  border: 1px solid #262629;
+  background: transparent;
+  color: #7a7a80;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  padding: 0 16px;
+  height: 36px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.hst-shuffle-btn:hover {
+  color: #f3f2ed;
+  border-color: rgba(243, 242, 237, 0.3);
+}
+
+.hst-input {
+  height: 36px;
+  width: 3.5rem;
+  border-radius: 999px;
+  padding: 0 0.8rem;
+  color: #f3f2ed;
+  background: #141416;
+  border: solid #262629;
+}
+
+.hst-input:focus {
+  border-color: #ff6a3d;
+  outline: none;
+}
+
+.hst-input::-webkit-outer-spin-button,
+.hst-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.hst-input[type="number"] {
+  appearance: textfield;
+}
+
+.hst-speed {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  color: #7a7a80;
+  margin-left: auto;
+}
+
+.hst-speed input[type="range"] {
+  accent-color: #ff6a3d;
+  width: 130px;
+}
+
+.hst-stats {
+  display: flex;
+  gap: 24px;
+  margin-top: 18px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+}
+
+.hst-stats b {
+  color: #f3f2ed;
+  font-size: 15px;
+}
+
+.hst-steps {
+  color: #7a7a80;
+}
+
+.hst-keyword {
+  color: #ff6a3d;
+}
+
+.hst-symbol {
+  color: #7a7a80;
+}
+
+.hst-type {
+  color: #56b6c2;
+}
+
+.hst-function {
+  color: #7c8cff;
+}
+
+.hst-string {
+  color: #98c379;
+}
+
+/* ===================================================
+   Large Tablets
+=================================================== */
+
+@media (max-width:1200px) {
+
+  .hash-table {
+    width: 85%;
+  }
+
+  .hst-grid {
+    gap: 20px;
+  }
+
+}
+
+
+/* ===================================================
+   Tablets
+=================================================== */
+
+@media (max-width:992px) {
+
+  .hash-table-wrapper {
+    margin-top: 6rem;
+  }
+
+  .hash-table {
+    width: 92%;
+    padding: 36px 0 64px;
+  }
+
+  .hst-header {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .hst-blurb {
+    max-width: 100%;
+  }
+
+  .hst-complexity {
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .hst-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .hst-stage,
+  .hst-code-panel {
+    width: 100%;
+  }
+
+  .hst-stage {
+    min-height: 360px;
+    height: auto;
+  }
+
+}
+
+
+/* ===================================================
+   Phones
+=================================================== */
+
+@media (max-width:768px) {
+
+  .hash-table-wrapper {
+    margin-top: 5rem;
+  }
+
+  .hash-table {
+    width: 94%;
+    padding: 28px 0 56px;
+    min-height: auto;
+  }
+
+  .hst-eyebrow {
+    font-size: .65rem;
+  }
+
+  .hst-title {
+    font-size: 2.2rem;
+    line-height: 1.1;
+  }
+
+  .hst-blurb {
+    max-width: 100%;
+    font-size: .95rem;
+    line-height: 1.6;
+  }
+
+  .hst-header {
+    gap: 1.2rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .hst-complexity {
+    gap: 1.5rem;
+    font-size: .8rem;
+    flex-wrap: wrap;
+  }
+
+  .hst-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .hst-stage {
+    width: 100%;
+    min-height: 320px;
+    height: auto;
+    padding: 24px;
+  }
+
+  .hst-slot {
+    height: 30px;
+    font-size: 13px;
+  }
+
+  .hst-status {
+    margin-top: 1.4rem;
+  }
+
+  .hst-code-panel {
+    width: 100%;
+  }
+
+  .hst-code-block {
+    font-size: 11px;
+  }
+
+  .hst-code-line {
+    padding: 2px 16px;
+  }
+
+  .hst-controls {
+    justify-content: center;
+    row-gap: 16px;
+    column-gap: 12px;
+  }
+
+  .hst-input {
+    width: 4rem;
+  }
+
+  .hst-speed {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
+  }
+
+  .hst-speed input {
+    width: 180px;
+  }
+
+  .hst-stats {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 18px;
+    text-align: center;
+  }
+
+}
+
+
+/* ===================================================
+   Small Phones
+=================================================== */
+
+@media (max-width:480px) {
+
+  .hash-table {
+    width: 95%;
+  }
+
+  .hst-title {
+    font-size: 1.8rem;
+  }
+
+  .hst-blurb {
+    font-size: .9rem;
+  }
+
+  .hst-stage {
+    padding: 18px;
+    min-height: 290px;
+  }
+
+  .hst-row-index {
+    font-size: .6rem;
+  }
+
+  .hst-slot {
+    height: 28px;
+    font-size: 12px;
+    padding: 0 10px;
+  }
+
+  .hst-status {
+    font-size: 11px;
+  }
+
+  .hst-code-header {
+    padding: 10px 14px;
+  }
+
+  .hst-code-block {
+    font-size: 10px;
+  }
+
+  .hst-code-line {
+    padding: 2px 14px;
+  }
+
+  .hst-controls {
+    gap: 10px;
+  }
+
+  .hst-play-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .hst-icon-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .hst-shuffle-btn {
+    height: 34px;
+    padding: 0 14px;
+    font-size: 11px;
+  }
+
+  .hst-input {
+    width: 3.4rem;
+    height: 34px;
+  }
+
+  .hst-speed {
+    font-size: 12px;
+  }
+
+  .hst-speed input {
+    width: 140px;
+  }
+
+  .hst-stats {
+    gap: 14px;
+  }
+
+}
+
+
+/* ===================================================
+   Very Small Phones
+=================================================== */
+
+@media (max-width:340px) {
+
+  .hst-title {
+    font-size: 1.55rem;
+  }
+
+  .hst-stage {
+    min-height: 260px;
+    padding: 16px;
+  }
+
+  .hst-table-rows {
+    gap: 6px;
+  }
+
+  .hst-slot {
+    height: 26px;
+    font-size: 11px;
+  }
+
+  .hst-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hst-speed {
+    width: 100%;
+  }
+
+  .hst-speed input {
+    width: 100%;
+  }
+
+  .hst-stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+}
+
+
+/* ===================================================
+   Landscape Phones
+=================================================== */
+
+@media (max-height:500px) and (orientation:landscape) {
+
+  .hash-table {
+    width: 94%;
+  }
+
+  .hst-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .hst-stage {
+    min-height: 280px;
+  }
+
+}

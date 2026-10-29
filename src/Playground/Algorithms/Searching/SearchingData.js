@@ -25,7 +25,14 @@ const SearchingData = [
     complexity: "O(log log n)",
     description: "Estimates the target position in uniformly distributed data.",
     slug: "interpolation-search",
-    active: false,
+    active: true,
+  },
+  {
+    title: "Median Search",
+    complexity: "O(n)",
+    description: "Finds the median via QuickSelect, partitioning like Quick Sort but recursing into only one half.",
+    slug: "median-search",
+    active: true,
   },
   {
     title: "Exponential Search",

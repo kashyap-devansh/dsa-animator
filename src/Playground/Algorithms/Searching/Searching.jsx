@@ -3,6 +3,8 @@ import CategoryGrid from "../../shared/CategoryGrid";
 import SearchingData from "./SearchingData";
 import LinearSearch from "./LinearSearch/LinearSearch";
 import BinarySearch from "./BinarySearch/BinarySearch";
+import InterpolationSearch from "./InterpolationSearch/InterpolationSearch";
+import MedianSearch from "./MedianSearch/MedianSearch";
 import "./Searching.css";
 
 const Searching = () => {
@@ -13,6 +15,12 @@ const Searching = () => {
   }
   if (slug === "binary-search") {
     return <BinarySearch />;
+  }
+  if (slug === "interpolation-search") {
+    return <InterpolationSearch />;
+  }
+  if (slug === "median-search") {
+    return <MedianSearch />;
   }
 
   return (

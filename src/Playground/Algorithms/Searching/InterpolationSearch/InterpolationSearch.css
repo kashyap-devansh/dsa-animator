@@ -1,0 +1,701 @@
+.interpolation-search-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 7.6rem;
+}
+
+.interpolation-search {
+  font-family: "Satoshi", "Inter";
+  min-height: 85dvh;
+  padding: 48px clamp(20px, 2vw, 64px) 80px;
+  width: 70%;
+}
+
+.ips-eyebrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.2rem;
+  color: #ff6a3d;
+  line-height: 0.8rem;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.ips-title {
+  font-size: clamp(2rem, 3.8vw, 3.8rem);
+  font-weight: 400;
+  line-height: -1.05;
+  font-family: "Space Grotesk";
+  margin-top: 0;
+  color: white;
+  margin-bottom: 0;
+}
+
+.ips-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2.2rem;
+}
+
+.ips-blurb {
+  font-family: "Satoshi";
+  font-size: 1.05rem;
+  color: #7a7a80;
+  font-weight: 500;
+  margin-top: 0;
+}
+
+.ips-complexity {
+  display: flex;
+  gap: 28px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.9rem;
+  color: #7a7a80;
+}
+
+.ips-complexity-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.ips-time-value {
+  color: #ff6a3d;
+}
+
+.ips-space-value {
+  color: #7c8cff;
+}
+
+.ips-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.ips-stage {
+  height: 20rem;
+  background: #141416;
+  border: 1px solid #262629;
+  border-radius: 16px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ips-boxs {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ips-box-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ips-index {
+  margin-bottom: 4px;
+  font-size: 0.6rem;
+  font-family: "JetBrains Mono", monospace;
+  color: #7a7a80;
+}
+
+.ips-box {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #1c1c1f;
+  border: 1px solid #262629;
+  border-radius: 8px;
+  color: #f3f2ed;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.ips-status {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+  border-top: 1px solid #262629;
+  margin-top: 4rem;
+  margin-bottom: -4.6rem;
+  padding-top: 16px;
+}
+
+.ips-code-panel {
+  background: #141416;
+  border: 1px solid #262629;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.ips-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid #262629;
+}
+
+.ips-dummy-btns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ips-red-btn,
+.ips-yellow-btn,
+.ips-green-btn {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.ips-red-btn {
+  background-color: #ff5f56;
+}
+
+.ips-yellow-btn {
+  background-color: #ffbd2e;
+}
+
+.ips-green-btn {
+  background-color: #27c93f;
+}
+
+.ips-filename {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+  margin-left: 8px;
+}
+
+.ips-header-complexity {
+  color: #ff6a3d;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+}
+
+.ips-code-block {
+  margin: 0;
+  padding: 16px 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12.5px;
+  line-height: 1.9;
+  overflow-x: auto;
+  flex: 1;
+}
+
+.ips-code-line {
+  padding: 1px 20px;
+  white-space: pre;
+  border-left: 2px solid transparent;
+  color: #f3f2ed;
+}
+
+.ips-code-line-active {
+  background: rgba(255, 106, 61, 0.1);
+  border-left-color: #ff6a3d;
+}
+
+.ips-line-no {
+  display: inline-block;
+  width: 20px;
+  color: #4a4a4f;
+  user-select: none;
+  margin-right: 4px;
+}
+
+.ips-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.ips-icon-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #262629;
+  background: transparent;
+  color: #7a7a80;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.ips-icon-btn:hover:not(:disabled) {
+  color: #f3f2ed;
+  border-color: rgba(243, 242, 237, 0.3);
+}
+
+.ips-icon-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.ips-play-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: #ff6a3d;
+  color: #f3f2ed;
+  cursor: pointer;
+  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.ips-play-btn:hover {
+  opacity: 0.9;
+}
+
+.ips-shuffle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  border: 1px solid #262629;
+  background: transparent;
+  color: #7a7a80;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  padding: 0 16px;
+  height: 36px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.ips-shuffle-btn:hover {
+  color: #f3f2ed;
+  border-color: rgba(243, 242, 237, 0.3);
+}
+
+.ips-input {
+  height: 36px;
+  width: 3.5rem;
+  border-radius: 999px;
+  padding: 0 0.8rem;
+  color: #f3f2ed;
+  background: #141416;
+  border: solid #262629;
+}
+
+.ips-input:focus {
+  border-color: #ff6a3d;
+  outline: none
+}
+
+.ips-input::-webkit-outer-spin-button,
+.ips-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.ips-input[type="number"] {
+  appearance: textfield;
+}
+
+.ips-speed {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  color: #7a7a80;
+  margin-left: auto;
+}
+
+.ips-speed input[type="range"] {
+  accent-color: #ff6a3d;
+  width: 130px;
+}
+
+.ips-stats {
+  display: flex;
+  gap: 24px;
+  margin-top: 18px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+}
+
+.ips-stats b {
+  color: #f3f2ed;
+  font-size: 15px;
+}
+
+.ips-steps {
+  color: #7a7a80;
+}
+
+.ips-keyword {
+  color: #ff6a3d;
+}
+
+.ips-number {
+  color: #7c8cff;
+}
+
+.ips-symbol {
+  color: #7a7a80;
+}
+
+.ips-type {
+  color: #56b6c2;
+}
+
+/* ===================================================
+   Large Tablets
+=================================================== */
+
+@media (max-width:1200px) {
+
+  .interpolation-search {
+    width: 85%;
+  }
+
+  .ips-grid {
+    gap: 20px;
+  }
+
+}
+
+
+/* ===================================================
+   Tablets
+=================================================== */
+
+@media (max-width:992px) {
+
+  .interpolation-search-wrapper {
+    margin-top: 6rem;
+  }
+
+  .interpolation-search {
+    width: 92%;
+    padding: 36px 0 64px;
+  }
+
+  .ips-header {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .ips-complexity {
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .ips-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .ips-stage,
+  .ips-code-panel {
+    width: 100%;
+  }
+
+  .ips-stage {
+    min-height: 360px;
+    height: auto;
+  }
+
+}
+
+
+/* ===================================================
+   Phones
+=================================================== */
+
+@media (max-width:768px) {
+
+  .interpolation-search-wrapper {
+    margin-top: 5rem;
+  }
+
+  .interpolation-search {
+    width: 94%;
+    padding: 28px 0 56px;
+    min-height: auto;
+  }
+
+  .ips-eyebrow {
+    font-size: .65rem;
+  }
+
+  .ips-title {
+    font-size: 2.2rem;
+    line-height: 1.1;
+  }
+
+  .ips-blurb {
+    font-size: .95rem;
+    line-height: 1.6;
+  }
+
+  .ips-header {
+    gap: 1.2rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .ips-complexity {
+    gap: 1.5rem;
+    font-size: .8rem;
+    flex-wrap: wrap;
+  }
+
+  .ips-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .ips-stage {
+    width: 100%;
+    min-height: 320px;
+    height: auto;
+    padding: 24px;
+  }
+
+  .ips-boxs {
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .ips-box {
+    width: 38px;
+    height: 38px;
+    font-size: 14px;
+  }
+
+  .ips-index {
+    font-size: .55rem;
+  }
+
+  .ips-status {
+    margin-top: 2rem;
+    margin-bottom: 0;
+  }
+
+  .ips-code-panel {
+    width: 100%;
+  }
+
+  .ips-code-block {
+    font-size: 11px;
+  }
+
+  .ips-code-line {
+    padding: 2px 16px;
+  }
+
+  .ips-controls {
+    justify-content: center;
+    row-gap: 16px;
+    column-gap: 12px;
+  }
+
+  .ips-input {
+    width: 4rem;
+  }
+
+  .ips-speed {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
+  }
+
+  .ips-speed input {
+    width: 180px;
+  }
+
+  .ips-stats {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 18px;
+    text-align: center;
+  }
+
+}
+
+
+/* ===================================================
+   Small Phones
+=================================================== */
+
+@media (max-width:480px) {
+
+  .interpolation-search {
+    width: 95%;
+  }
+
+  .ips-title {
+    font-size: 1.8rem;
+  }
+
+  .ips-blurb {
+    font-size: .9rem;
+  }
+
+  .ips-stage {
+    padding: 18px;
+    min-height: 290px;
+  }
+
+  .ips-boxs {
+    gap: 6px;
+  }
+
+  .ips-box {
+    width: 34px;
+    height: 34px;
+    font-size: 13px;
+  }
+
+  .ips-index {
+    font-size: .5rem;
+  }
+
+  .ips-status {
+    font-size: 11px;
+  }
+
+  .ips-code-header {
+    padding: 10px 14px;
+  }
+
+  .ips-code-block {
+    font-size: 10px;
+  }
+
+  .ips-code-line {
+    padding: 2px 14px;
+  }
+
+  .ips-controls {
+    gap: 10px;
+  }
+
+  .ips-play-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .ips-icon-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .ips-shuffle-btn {
+    height: 34px;
+    padding: 0 14px;
+    font-size: 11px;
+  }
+
+  .ips-input {
+    width: 3.4rem;
+    height: 34px;
+  }
+
+  .ips-speed {
+    font-size: 12px;
+  }
+
+  .ips-speed input {
+    width: 140px;
+  }
+
+  .ips-stats {
+    gap: 14px;
+  }
+
+}
+
+
+/* ===================================================
+   Very Small Phones
+=================================================== */
+
+@media (max-width:340px) {
+
+  .ips-title {
+    font-size: 1.55rem;
+  }
+
+  .ips-stage {
+    min-height: 250px;
+    padding: 16px;
+  }
+
+  .ips-boxs {
+    gap: 4px;
+  }
+
+  .ips-box {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+  }
+
+  .ips-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ips-speed {
+    width: 100%;
+  }
+
+  .ips-speed input {
+    width: 100%;
+  }
+
+  .ips-stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+}
+
+
+/* ===================================================
+   Landscape Phones
+=================================================== */
+
+@media (max-height:500px) and (orientation:landscape) {
+
+  .interpolation-search {
+    width: 94%;
+  }
+
+  .ips-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ips-stage {
+    min-height: 280px;
+  }
+
+}

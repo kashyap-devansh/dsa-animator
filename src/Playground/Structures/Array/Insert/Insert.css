@@ -1,0 +1,707 @@
+.array-insert-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 7.6rem;
+}
+
+.array-insert {
+  font-family: "Satoshi", "Inter";
+  min-height: 85dvh;
+  padding: 48px clamp(20px, 2vw, 64px) 80px;
+  width: 70%;
+}
+
+.ai-eyebrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.2rem;
+  color: #ff6a3d;
+  line-height: 0.8rem;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.ai-title {
+  font-size: clamp(2rem, 3.8vw, 3.8rem);
+  font-weight: 400;
+  line-height: -1.05;
+  font-family: "Space Grotesk";
+  margin-top: 0;
+  color: white;
+  margin-bottom: 0;
+}
+
+.ai-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2.2rem;
+}
+
+.ai-blurb {
+  font-family: "Satoshi";
+  font-size: 1.05rem;
+  color: #7a7a80;
+  font-weight: 500;
+  margin-top: 0;
+  max-width: 60%;
+}
+
+.ai-complexity {
+  display: flex;
+  gap: 28px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.9rem;
+  color: #7a7a80;
+}
+
+.ai-complexity-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.ai-time-value {
+  color: #ff6a3d;
+}
+
+.ai-space-value {
+  color: #7c8cff;
+}
+
+.ai-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.ai-stage {
+  height: 20rem;
+  background: #141416;
+  border: 1px solid #262629;
+  border-radius: 16px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ai-boxs {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ai-box-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ai-index {
+  margin-bottom: 4px;
+  font-size: 0.6rem;
+  font-family: "JetBrains Mono", monospace;
+  color: #7a7a80;
+}
+
+.ai-box {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #1c1c1f;
+  border: 1px solid #262629;
+  border-radius: 8px;
+  color: #f3f2ed;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.ai-shift-from {
+  border-color: #ff6a3d;
+  color: #ff6a3d;
+}
+
+.ai-shift-to {
+  border-color: #7c8cff;
+  color: #7c8cff;
+}
+
+.ai-placed {
+  border-color: #b4ff39;
+  color: #b4ff39;
+  background: rgba(180, 255, 57, 0.08);
+}
+
+.ai-empty {
+  background: #121214;
+  border: 1px dashed #262629;
+  color: #3f3f44;
+}
+
+.ai-status {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+  border-top: 1px solid #262629;
+  margin-top: 4rem;
+  margin-bottom: -4.6rem;
+  padding-top: 16px;
+}
+
+.ai-code-panel {
+  background: #141416;
+  border: 1px solid #262629;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.ai-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid #262629;
+}
+
+.ai-dummy-btns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ai-red-btn,
+.ai-yellow-btn,
+.ai-green-btn {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.ai-red-btn {
+  background-color: #ff5f56;
+}
+
+.ai-yellow-btn {
+  background-color: #ffbd2e;
+}
+
+.ai-green-btn {
+  background-color: #27c93f;
+}
+
+.ai-filename {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+  margin-left: 8px;
+}
+
+.ai-header-complexity {
+  color: #ff6a3d;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+}
+
+.ai-code-block {
+  margin: 0;
+  padding: 16px 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12.5px;
+  line-height: 1.9;
+  overflow-x: auto;
+  flex: 1;
+}
+
+.ai-code-line {
+  padding: 1px 20px;
+  white-space: pre;
+  border-left: 2px solid transparent;
+  color: #f3f2ed;
+}
+
+.ai-code-line-active {
+  background: rgba(255, 106, 61, 0.1);
+  border-left-color: #ff6a3d;
+}
+
+.ai-line-no {
+  display: inline-block;
+  width: 20px;
+  color: #4a4a4f;
+  user-select: none;
+  margin-right: 4px;
+}
+
+.ai-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.ai-icon-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #262629;
+  background: transparent;
+  color: #7a7a80;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.ai-icon-btn:hover:not(:disabled) {
+  color: #f3f2ed;
+  border-color: rgba(243, 242, 237, 0.3);
+}
+
+.ai-icon-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.ai-play-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: #ff6a3d;
+  color: #f3f2ed;
+  cursor: pointer;
+  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.ai-play-btn:hover {
+  opacity: 0.9;
+}
+
+.ai-input {
+  height: 36px;
+  width: 3.5rem;
+  border-radius: 999px;
+  padding: 0 0.8rem;
+  color: #f3f2ed;
+  background: #141416;
+  border: solid #262629;
+}
+
+.ai-input:focus {
+  border-color: #ff6a3d;
+  outline: none;
+}
+
+.ai-input::-webkit-outer-spin-button,
+.ai-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.ai-input[type="number"] {
+  appearance: textfield;
+}
+
+.ai-speed {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  color: #7a7a80;
+  margin-left: auto;
+}
+
+.ai-speed input[type="range"] {
+  accent-color: #ff6a3d;
+  width: 130px;
+}
+
+.ai-stats {
+  display: flex;
+  gap: 24px;
+  margin-top: 18px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #7a7a80;
+}
+
+.ai-stats b {
+  color: #f3f2ed;
+  font-size: 15px;
+}
+
+.ai-steps {
+  color: #7a7a80;
+}
+
+.ai-keyword {
+  color: #ff6a3d;
+}
+
+.ai-number {
+  color: #7c8cff;
+}
+
+.ai-symbol {
+  color: #7a7a80;
+}
+
+.ai-type {
+  color: #56b6c2;
+}
+
+.ai-comment {
+  color: #5f5f64;
+}
+
+/* ===================================================
+   Large Tablets
+=================================================== */
+
+@media (max-width:1200px) {
+
+  .array-insert {
+    width: 85%;
+  }
+
+  .ai-grid {
+    gap: 20px;
+  }
+
+}
+
+
+/* ===================================================
+   Tablets
+=================================================== */
+
+@media (max-width:992px) {
+
+  .array-insert-wrapper {
+    margin-top: 6rem;
+  }
+
+  .array-insert {
+    width: 92%;
+    padding: 36px 0 64px;
+  }
+
+  .ai-header {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .ai-blurb {
+    max-width: 100%;
+  }
+
+  .ai-complexity {
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .ai-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .ai-stage,
+  .ai-code-panel {
+    width: 100%;
+  }
+
+  .ai-stage {
+    min-height: 360px;
+    height: auto;
+  }
+
+}
+
+
+/* ===================================================
+   Phones
+=================================================== */
+
+@media (max-width:768px) {
+
+  .array-insert-wrapper {
+    margin-top: 5rem;
+  }
+
+  .array-insert {
+    width: 94%;
+    padding: 28px 0 56px;
+    min-height: auto;
+  }
+
+  .ai-eyebrow {
+    font-size: .65rem;
+  }
+
+  .ai-title {
+    font-size: 2.2rem;
+    line-height: 1.1;
+  }
+
+  .ai-blurb {
+    max-width: 100%;
+    font-size: .95rem;
+    line-height: 1.6;
+  }
+
+  .ai-header {
+    gap: 1.2rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .ai-complexity {
+    gap: 1.5rem;
+    font-size: .8rem;
+    flex-wrap: wrap;
+  }
+
+  .ai-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .ai-stage {
+    width: 100%;
+    min-height: 320px;
+    height: auto;
+    padding: 24px;
+  }
+
+  .ai-boxs {
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .ai-box {
+    width: 38px;
+    height: 38px;
+    font-size: 14px;
+  }
+
+  .ai-index {
+    font-size: .55rem;
+  }
+
+  .ai-status {
+    margin-top: 2rem;
+    margin-bottom: 0;
+  }
+
+  .ai-code-panel {
+    width: 100%;
+  }
+
+  .ai-code-block {
+    font-size: 11px;
+  }
+
+  .ai-code-line {
+    padding: 2px 16px;
+  }
+
+  .ai-controls {
+    justify-content: center;
+    row-gap: 16px;
+    column-gap: 12px;
+  }
+
+  .ai-input {
+    width: 4rem;
+  }
+
+  .ai-speed {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
+  }
+
+  .ai-speed input {
+    width: 180px;
+  }
+
+  .ai-stats {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 18px;
+    text-align: center;
+  }
+
+}
+
+
+/* ===================================================
+   Small Phones
+=================================================== */
+
+@media (max-width:480px) {
+
+  .array-insert {
+    width: 95%;
+  }
+
+  .ai-title {
+    font-size: 1.8rem;
+  }
+
+  .ai-blurb {
+    font-size: .9rem;
+  }
+
+  .ai-stage {
+    padding: 18px;
+    min-height: 290px;
+  }
+
+  .ai-boxs {
+    gap: 6px;
+  }
+
+  .ai-box {
+    width: 34px;
+    height: 34px;
+    font-size: 13px;
+  }
+
+  .ai-index {
+    font-size: .5rem;
+  }
+
+  .ai-status {
+    font-size: 11px;
+  }
+
+  .ai-code-header {
+    padding: 10px 14px;
+  }
+
+  .ai-code-block {
+    font-size: 10px;
+  }
+
+  .ai-code-line {
+    padding: 2px 14px;
+  }
+
+  .ai-controls {
+    gap: 10px;
+  }
+
+  .ai-play-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .ai-icon-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .ai-input {
+    width: 3.4rem;
+    height: 34px;
+  }
+
+  .ai-speed {
+    font-size: 12px;
+  }
+
+  .ai-speed input {
+    width: 140px;
+  }
+
+  .ai-stats {
+    gap: 14px;
+  }
+
+}
+
+
+/* ===================================================
+   Very Small Phones
+=================================================== */
+
+@media (max-width:340px) {
+
+  .ai-title {
+    font-size: 1.55rem;
+  }
+
+  .ai-stage {
+    min-height: 250px;
+    padding: 16px;
+  }
+
+  .ai-boxs {
+    gap: 4px;
+  }
+
+  .ai-box {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+  }
+
+  .ai-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ai-speed {
+    width: 100%;
+  }
+
+  .ai-speed input {
+    width: 100%;
+  }
+
+  .ai-stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+}
+
+
+/* ===================================================
+   Landscape Phones
+=================================================== */
+
+@media (max-height:500px) and (orientation:landscape) {
+
+  .array-insert {
+    width: 94%;
+  }
+
+  .ai-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ai-stage {
+    min-height: 280px;
+  }
+
+}

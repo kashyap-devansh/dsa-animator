@@ -44,6 +44,20 @@ const SortingData = [{
   slug: "radix-sort",
   active: true,
 },
+{
+  title: "Bucket Sort",
+  complexity: "O(n + k)",
+  description: "Distributes values into buckets by range, sorts each bucket individually, then concatenates them back together.",
+  slug: "bucket-sort",
+  active: true,
+},
+{
+  title: "Count Sort",
+  complexity: "O(n + k)",
+  description: "Counts occurrences of each value, then uses prefix sums to place every element directly into its sorted position.",
+  slug: "count-sort",
+  active: true,
+},
 ]
 
 export default SortingData;
