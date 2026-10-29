@@ -101,7 +101,7 @@ const StepperPage = ({
         {toolbar && <div className="sp-toolbar">{toolbar}</div>}
 
         <div className="sp-grid">
-          <div className="sp-stage">
+          <div className={`sp-stage ${playing ? "sp-stage-live" : ""}`}>
             {stage}
 
             {legend && legend.length > 0 && (

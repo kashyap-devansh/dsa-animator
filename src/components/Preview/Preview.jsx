@@ -1,36 +1,45 @@
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { MiniSort, MiniBinarySearch, MiniTree, MiniList, MiniQueue } from "../MiniViz/MiniViz";
+import { Reveal } from "../shared/effects";
+import { trackPointer } from "../shared/pointer";
 import "./Preview.css";
 
 const PROJECTS = [
   {
     title: "Sorting Algorithms",
     complexity: "O(n log n) avg",
+    Viz: MiniSort,
     detail:
-      "Quicksort, merge sort, heap sort and bubble sort rendered bar by bar, with every comparison and swap traced in real time.",
+      "Bubble, selection, insertion, merge, quick, radix, bucket and counting sort rendered bar by bar, with every comparison and swap traced in real time.",
   },
   {
-    title: "Searching & Trees",
-    complexity: "O(log n) avg",
+    title: "Searching",
+    complexity: "O(log n)",
+    Viz: MiniBinarySearch,
     detail:
-      "Binary search, BSTs and AVL rotations shown as the tree rebalances itself, node by node, in front of you.",
+      "Linear, binary, jump, interpolation, exponential and Fibonacci search — watch the search window shrink with every probe.",
   },
   {
-    title: "Graph Traversal",
-    complexity: "O(V + E)",
+    title: "BST & AVL Trees",
+    complexity: "O(log n)",
+    Viz: MiniTree,
     detail:
-      "BFS and DFS sweep across nodes and edges, lighting the frontier as it expands outward through the graph.",
+      "Insert, search and delete in binary search trees, plus every AVL rotation — LL, RR, LR, RL — as the tree rebalances itself.",
   },
   {
-    title: "Dynamic Programming",
-    complexity: "O(n·m) table",
-    detail:
-      "Watch memoization tables fill cell by cell — knapsack, LCS and edit distance, no longer abstract recurrences.",
-  },
-  {
-    title: "Linked Structures",
+    title: "Linked Lists",
     complexity: "O(1) insert",
+    Viz: MiniList,
     detail:
-      "Stacks, queues and linked lists animate every pointer reassignment as nodes are pushed, popped and rewired.",
+      "Insert and delete at the head, tail or any position, with every pointer reassignment animated as nodes are rewired.",
+  },
+  {
+    title: "Stacks & Queues",
+    complexity: "O(1) push",
+    Viz: MiniQueue,
+    detail:
+      "Push, pop, enqueue and dequeue on LIFO and FIFO structures — plus hash tables with chaining and probing.",
   },
 ];
 
@@ -43,10 +52,10 @@ const Preview = () => {
       id="visualizers"
     >
       <section className="preview">
-        <div className="preview-header">
+        <Reveal className="preview-header">
           <span className="preview-eyebrow">THE LIBRARY</span>
           <h1>What you can visualize</h1>
-        </div>
+        </Reveal>
 
         <div className="preview-grid">
           <div className="preview-list">
@@ -66,10 +75,26 @@ const Preview = () => {
             }
           </div>
 
-          <div className="preview-card">
+          <div className="preview-card spotlight" onPointerMove={trackPointer}>
             <p className="preview-complexity">
-              {PROJECTS[active].complexity}
+              <span className="preview-live" /> live · {PROJECTS[active].complexity}
             </p>
+
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={active}
+                className="preview-stage"
+                initial={{ opacity: 0, scale: 0.97, filter: "blur(6px)" }}
+                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, scale: 0.98, filter: "blur(6px)" }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              >
+                {(() => {
+                  const Viz = PROJECTS[active].Viz;
+                  return <Viz />;
+                })()}
+              </motion.div>
+            </AnimatePresence>
 
             <div className="preview-content">
               <h2>{PROJECTS[active].title}</h2>

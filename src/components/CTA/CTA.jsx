@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Reveal } from "../shared/effects";
 import "./CTA.css";
 
 const CTA = () => {
@@ -34,17 +35,19 @@ const CTA = () => {
       </div>
 
       <div className="cta-content">
-        <p className="cta-eyebrow">READY WHEN YOU ARE</p>
+        <Reveal>
+          <p className="cta-eyebrow">READY WHEN YOU ARE</p>
 
-        <h1>
-          Stop reading
-          <br />
-          pseudocode.
-          <br />
-          Start watching
-          <br />
-          it run.
-        </h1>
+          <h1>
+            Stop reading
+            <br />
+            pseudocode.
+            <br />
+            Start watching
+            <br />
+            it run.
+          </h1>
+        </Reveal>
 
         <motion.button
           className="cta-btn"

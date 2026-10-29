@@ -243,6 +243,15 @@
   color: #b4ff39;
 }
 
+.sp-stage {
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.sp-stage-live {
+  border-color: rgba(255, 106, 61, 0.35);
+  box-shadow: 0 0 0 1px rgba(255, 106, 61, 0.08), 0 20px 60px -30px rgba(255, 106, 61, 0.45);
+}
+
 /* ---------- code panel ---------- */
 
 .sp-code-panel {

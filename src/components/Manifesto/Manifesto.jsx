@@ -48,7 +48,7 @@ function Manifesto() {
       </motion.h1>
 
       <motion.h1 style={{ color: color6 }}>
-        comparison, every sway, every
+        comparison, every swap, every
       </motion.h1>
 
       <motion.h1 style={{ color: color7 }}>

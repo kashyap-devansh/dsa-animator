@@ -314,3 +314,40 @@ nav a:hover::after {
     transition: none;
   }
 }
+
+/* search trigger (opens the ⌘K palette) */
+
+.nav-actions {
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-search {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 8px 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: #8f8f96;
+  font-family: "Satoshi", sans-serif;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.nav-search:hover {
+  color: #f3f2ed;
+  border-color: rgba(255, 106, 61, 0.5);
+}
+
+.nav-search kbd {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.64rem;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.07);
+  color: #a5a5ab;
+}

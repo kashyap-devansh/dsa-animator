@@ -1,5 +1,8 @@
 import "./PlaygroundHero.css";
 import AlgorithmSearch from "../shared/AlgorithmSearch.jsx";
+import { Reveal } from "../../components/shared/effects";
+import Showcase from "./Showcase.jsx";
+import CategoryNav from "./CategoryNav.jsx";
 import Sorting from "../Algorithms/Sorting/Sorting.jsx";
 import Searching from "../Algorithms/Searching/Searching.jsx";
 import Hashing from "../Algorithms/Hashing/Hashing.jsx";
@@ -15,22 +18,32 @@ const Playground = () => {
   return (
     <section className="playground">
       <div className="playground-content">
-        <p className="playground-eyebrow">
-          THE PLAYGROUND
-        </p>
+        <div className="playground-intro">
+          <Reveal className="playground-intro-text">
+            <p className="playground-eyebrow">
+              THE PLAYGROUND
+            </p>
 
-        <h1 className="playground-title">
-          Every structure. Every
-          <br />
-          algorithm. Rendered.
-        </h1>
+            <h1 className="playground-title">
+              Every structure. Every
+              <br />
+              algorithm. Rendered.
+            </h1>
 
-        <p className="playground-description">
-          Real code, real execution — step forward, step back, or press play.
-          Pick one below.
-        </p>
+            <p className="playground-description">
+              Real code, real execution — step forward, step back, or press play.
+              Pick one below.
+            </p>
 
-        <AlgorithmSearch />
+            <AlgorithmSearch />
+          </Reveal>
+
+          <Reveal delay={0.15} className="playground-intro-showcase">
+            <Showcase />
+          </Reveal>
+        </div>
+
+        <CategoryNav />
 
         <Sorting />
         <Searching />

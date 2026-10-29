@@ -19,11 +19,45 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom,
-      rgba(10, 10, 11, .60),
-      rgba(10, 10, 11, .82),
-      #0a0a0b);
+  /* Dark pool behind the copy, lighter at the edges so the bars read. */
+  background:
+    radial-gradient(ellipse 55% 45% at 50% 46%, rgba(10, 10, 11, .88), rgba(10, 10, 11, .55) 70%, rgba(10, 10, 11, .25)),
+    linear-gradient(to bottom, rgba(10, 10, 11, .5), transparent 30%, transparent 82%, #0a0a0b);
   z-index: 1;
+  pointer-events: none;
+}
+
+/* Brighter copy of the dot grid, revealed only around the cursor. */
+.hero_grid_lit {
+  z-index: 2;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 138, 95, 0.55) 1px, transparent 1px);
+  opacity: 0;
+  -webkit-mask-image: radial-gradient(220px circle at var(--mx, -500px) var(--my, -500px), #000, transparent 70%);
+  mask-image: radial-gradient(220px circle at var(--mx, -500px) var(--my, -500px), #000, transparent 70%);
+  transition: opacity 0.5s ease;
+}
+
+.hero_grid_lit::after {
+  display: none;
+}
+
+.hero:hover .hero_grid_lit {
+  opacity: 1;
+}
+
+.hero_spot {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 106, 61, 0.09), transparent 65%);
+}
+
+.hero:hover .hero_spot {
+  opacity: 1;
 }
 
 .hero_grid {
@@ -46,7 +80,7 @@
 
 .hero_content {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   width: min(950px, 90%);
   text-align: center;
 }
@@ -101,6 +135,88 @@
   text-wrap: pretty;
 }
 
+/* ---------- actions + stats ---------- */
+
+.hero_actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 2.4rem;
+}
+
+.hero_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 52px;
+  padding: 0 28px;
+  border-radius: 999px;
+  font-family: "Satoshi", "Inter", sans-serif;
+  font-size: 0.98rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hero_btn_primary {
+  background: #ff6a3d;
+  color: #0a0a0b;
+  box-shadow: 0 10px 40px -10px rgba(255, 106, 61, 0.7);
+}
+
+.hero_btn_primary:hover {
+  background: #ff7d55;
+  box-shadow: 0 14px 50px -8px rgba(255, 106, 61, 0.9);
+}
+
+.hero_btn_primary span {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.hero_btn_primary:hover span {
+  transform: translateX(4px);
+}
+
+.hero_btn_ghost {
+  border: 1px solid #2e2e33;
+  color: #f3f2ed;
+  background: rgba(20, 20, 22, 0.6);
+  backdrop-filter: blur(8px);
+}
+
+.hero_btn_ghost:hover {
+  border-color: rgba(243, 242, 237, 0.35);
+}
+
+.hero_stats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  margin: 2rem 0 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: #7a7a80;
+}
+
+.hero_stats b {
+  color: #f3f2ed;
+  font-weight: 500;
+  font-size: 0.95rem;
+  margin-right: 2px;
+}
+
+.hero_stats i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #ff6a3d;
+}
+
 .scroll,
 .scroll-arrow {
   position: absolute;
@@ -132,7 +248,6 @@
   z-index: 0;
   pointer-events: none;
   opacity: 0.9;
-  mix-blend-mode: luminosity;
 }
 
 .hero_bar {
@@ -191,6 +306,22 @@
 
 /* Phones */
 @media (max-width: 480px) {
+  .hero_btn {
+    height: 46px;
+    padding: 0 20px;
+    font-size: 0.9rem;
+  }
+
+  .hero_actions {
+    margin-top: 1.8rem;
+    gap: 10px;
+  }
+
+  .hero_stats {
+    font-size: 0.7rem;
+    margin-top: 1.5rem;
+  }
+
   .hero_content {
     width: 100%;
     padding-inline: 1.25rem;

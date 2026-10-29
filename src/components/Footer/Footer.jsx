@@ -25,19 +25,19 @@ const Footer = () => {
             <div className="footer-column">
               <h4>VISUALIZERS</h4>
 
-              <Link to="/playground">Sorting</Link>
-              <Link to="/playground">Searching & Trees</Link>
-              <Link to="/playground">Graphs</Link>
-              <Link to="/playground">Dynamic Programming</Link>
+              <Link to="/playground/sorting/bubble-sort">Sorting</Link>
+              <Link to="/playground/searching/binary-search">Searching</Link>
+              <Link to="/playground/avl/insertion">Trees</Link>
+              <Link to="/playground/recursion/n-queens">Recursion</Link>
             </div>
 
             <div className="footer-column">
-              <h4>LAB</h4>
+              <h4>LEARN</h4>
 
+              <Link to="/notes">Study notes</Link>
+              <a href="/notes#cheatsheet">Cheat sheet</a>
+              <a href="/#classroom">For classrooms</a>
               <a href="/#gallery">Gallery</a>
-              <Link to="/notes">Notes</Link>
-              <a href="/#manifesto">Manifesto</a>
-              <a href="/#visualizers">Visualizers</a>
             </div>
 
             <div className="footer-column">

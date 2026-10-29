@@ -60,7 +60,7 @@
   margin-bottom: 22px;
 }
 
-.preview span {
+.preview-item span {
   color: #ff6a3d;
   font-family: "JetBrains Mono", monospace;
   font-size: .8rem;
@@ -79,38 +79,73 @@
   box-sizing: border-box;
   top: 120px;
   width: 48rem;
-  height: 26rem;
+  height: 31rem;
   padding: 2rem 2rem;
   border: 1px solid #262629;
   border-radius: 24px;
   background: #141416;
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-stage {
+  flex: 1;
+  min-height: 0;
+  margin: 1rem 0 0.5rem;
+  padding: 1rem;
+  border-radius: 16px;
+  background:
+    radial-gradient(rgba(243, 242, 237, 0.05) 1px, transparent 1px) 0 0 / 10px 10px,
+    #0f0f11;
+  border: 1px solid #1f1f23;
+  display: flex;
+  overflow: hidden;
+}
+
+.preview-live {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 6px;
+  border-radius: 50%;
+  background: #b4ff39;
+  box-shadow: 0 0 10px #b4ff39;
+  vertical-align: middle;
+  animation: preview-live 1.6s ease-in-out infinite;
+}
+
+@keyframes preview-live {
+  50% {
+    opacity: 0.35;
+  }
 }
 
 .preview-complexity {
   color: #7a7a80;
   font-family: "JetBrains Mono", monospace;
-  margin-bottom: auto;
+  margin: 0;
   font-size: 0.8rem;
 }
 
 .preview-content {
-  margin-top: 180px;
+  margin-top: 0.5rem;
 }
 
 .preview-content h2 {
   font-size: 2.2rem;
   font-weight: 500;
-  margin-bottom: 1rem;
+  margin: 0.4rem 0 0.6rem;
   font-family: "Space Grotesk";
   color: #f3f2ed;
 }
 
 .preview-content p {
   color: #7a7a80;
-  max-width: 480px;
-  font-size: 1.1rem;
-  line-height: 1.8;
+  max-width: 560px;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin: 0;
   font-family: "Satoshi";
   font-weight: 500;
 }
@@ -130,12 +165,12 @@
   .preview-card {
     width: 100%;
     max-width: 42rem;
-    height: 23rem;
+    height: 29rem;
     padding: 1.75rem;
   }
 
   .preview-content {
-    margin-top: 140px;
+    margin-top: 0.5rem;
   }
 
   .preview-content h2 {
@@ -177,7 +212,12 @@
   }
 
   .preview-content {
-    margin-top: 24px;
+    margin-top: 12px;
+  }
+
+  .preview-stage {
+    flex: none;
+    height: 11rem;
   }
 
   .preview-content h2 {
@@ -314,7 +354,7 @@
     margin: 16px 0;
   }
 
-  .preview span {
+  .preview-item span {
     font-size: .7rem;
   }
 
@@ -330,7 +370,12 @@
   }
 
   .preview-content {
-    margin-top: 14px;
+    margin-top: 10px;
+  }
+
+  .preview-stage {
+    height: 9rem;
+    padding: 0.6rem;
   }
 
   .preview-content h2 {

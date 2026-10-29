@@ -2,16 +2,16 @@ import MarqueeTrack from "../shared/MarqueeTrack";
 import "./Marquee.css";
 
 const items = [
-  "GRAPH TRAVERSAL",
   "QUICKSORT",
   "MERGE SORT",
   "BINARY SEARCH",
-  "DIJKSTRA",
-  "BFS",
-  "DFS",
-  "AVL TREES",
-  "HEAPS",
-  "HASH MAPS",
+  "AVL ROTATIONS",
+  "N-QUEENS",
+  "HASH TABLES",
+  "RADIX SORT",
+  "TOWER OF HANOI",
+  "LINKED LISTS",
+  "BACKTRACKING",
 ];
 
 const Marquee = () => {

@@ -6,9 +6,9 @@ const items = [
   "stacks",
   "queues",
   "trees",
-  "graphs",
-  "heaps",
-  "hash",
+  "hashing",
+  "searching",
+  "sorting",
   "pointers",
   "recursion",
 ];

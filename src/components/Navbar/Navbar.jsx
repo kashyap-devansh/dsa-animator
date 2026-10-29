@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { openPalette } from "../CommandPalette/palette";
 import "./Navbar.css";
 
 function Navbar() {
@@ -48,10 +49,10 @@ function Navbar() {
         </label>
 
         <nav>
-          <a href="/#visualizers">Visualizers</a>
-          <a href="/#gallery">Gallery</a>
-          <a href="/#manifesto">Manifesto</a>
+          <Link to="/playground">Playground</Link>
           <Link to="/notes">Notes</Link>
+          <a href="/#classroom">For classrooms</a>
+          <a href="/#gallery">Gallery</a>
 
           <button
             className="launch-btn mobile-launch-btn"
@@ -61,12 +62,23 @@ function Navbar() {
           </button>
         </nav>
 
+        <div className="nav-actions desktop-btn">
+        <button type="button" className="nav-search" onClick={openPalette} aria-label="Search">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" />
+            <path d="M20 20l-3.5-3.5" />
+          </svg>
+          Search
+          <kbd>{navigator.platform?.startsWith("Mac") ? "⌘" : "Ctrl"} K</kbd>
+        </button>
+
         <button
-          className="launch-btn desktop-btn"
+          className="launch-btn"
           onClick={() => navigate("/playground")}
         >
           Launch App
         </button>
+        </div>
       </div>
     </header>
   );

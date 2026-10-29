@@ -9,7 +9,7 @@ import BSTData from "../Structures/BST/BSTData.js";
 import AVLData from "../Structures/AVL/AVLData.js";
 import RecursionData from "../Recursion/RecursionData.js";
 
-const categories = [
+export const categories = [
   { label: "Sorting", basePath: "/playground/sorting", data: SortingData },
   { label: "Searching", basePath: "/playground/searching", data: SearchingData },
   { label: "Hashing", basePath: "/playground/hashing", data: HashingData },

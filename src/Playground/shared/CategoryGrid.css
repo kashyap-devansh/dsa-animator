@@ -1,0 +1,23 @@
+/* Shared bits layered on every category section (per-category CSS keeps the rest). */
+
+.pg-section {
+  scroll-margin-top: 160px;
+}
+
+.pg-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pg-count {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: #ff6a3d;
+}
+
+.pg-count::before {
+  content: "// ";
+  color: #45454a;
+}

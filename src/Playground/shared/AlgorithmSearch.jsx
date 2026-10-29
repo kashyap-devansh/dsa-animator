@@ -1,10 +1,36 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useReducedMotion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import searchIndex from "./searchIndex.js";
 import { SearchIcon, LockIcon } from "./icons.jsx";
 import "./AlgorithmSearch.css";
 
 const MAX_RESULTS = 7;
+
+const EXAMPLES = ["bubble sort", "avl rotation", "n-queens", "binary search", "hash table", "permutations", "merge sort"];
+
+// Types and deletes example queries for the placeholder, like a live terminal.
+function useTypedExample() {
+  const reduced = useReducedMotion();
+  const [state, setState] = useState({ i: 0, text: "", deleting: false });
+
+  useEffect(() => {
+    if (reduced) return;
+    const word = EXAMPLES[state.i];
+    const done = !state.deleting && state.text === word;
+    const empty = state.deleting && state.text === "";
+
+    const timer = setTimeout(() => {
+      if (done) setState((s) => ({ ...s, deleting: true }));
+      else if (empty) setState((s) => ({ i: (s.i + 1) % EXAMPLES.length, text: "", deleting: false }));
+      else setState((s) => ({ ...s, text: s.deleting ? s.text.slice(0, -1) : word.slice(0, s.text.length + 1) }));
+    }, done ? 1600 : empty ? 300 : state.deleting ? 35 : 75);
+
+    return () => clearTimeout(timer);
+  }, [state, reduced]);
+
+  return reduced ? EXAMPLES[0] : state.text;
+}
 
 const AlgorithmSearch = () => {
   const navigate = useNavigate();
@@ -14,6 +40,7 @@ const AlgorithmSearch = () => {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [highlight, setHighlight] = useState(0);
+  const example = useTypedExample();
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -80,7 +107,7 @@ const AlgorithmSearch = () => {
           ref={inputRef}
           type="text"
           value={query}
-          placeholder="search.algorithm('bubble sort')"
+          placeholder={`search.algorithm('${example}')`}
           onChange={(e) => {
             setQuery(e.target.value);
             setOpen(true);

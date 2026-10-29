@@ -43,9 +43,10 @@
   position: sticky;
   top: 120px;
   width: 60rem;
-  height: 20rem;
+  height: 21rem;
   box-sizing: border-box;
-  padding: 3.5rem;
+  padding: 3rem 3.5rem;
+  transform-origin: 50% 0;
   border: 1px solid #262629;
   border-radius: 24px;
   background: #141416;
@@ -60,7 +61,34 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.gallery-card-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 2.5rem;
+  align-items: stretch;
+}
+
+.gallery-card-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.gallery-card-viz {
+  min-height: 0;
+  display: flex;
+  padding: 0.9rem;
+  border-radius: 16px;
+  border: 1px solid #1f1f23;
+  background:
+    radial-gradient(rgba(243, 242, 237, 0.05) 1px, transparent 1px) 0 0 / 10px 10px,
+    #0f0f11;
+  overflow: hidden;
 }
 
 .gallery-number {
@@ -79,7 +107,7 @@
 
 .gallery-card h1 {
   margin: 0;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
   font-family: "Space Grotesk";
   font-size: 4rem;
   font-weight: 400;
@@ -184,6 +212,15 @@
   .gallery-card h1 {
     font-size: 2.8rem;
     margin-bottom: 2rem;
+  }
+
+  .gallery-card-body {
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+  }
+
+  .gallery-card-viz {
+    height: 9rem;
   }
 
   .gallery-btn {
@@ -294,6 +331,11 @@
   .gallery-card h1 {
     font-size: 1.8rem;
     margin-bottom: 1.5rem;
+  }
+
+  .gallery-card-viz {
+    height: 7.5rem;
+    padding: 0.6rem;
   }
 
   .gallery-btn {

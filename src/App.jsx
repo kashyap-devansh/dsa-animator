@@ -3,7 +3,10 @@ import { Routes, Route } from "react-router-dom";
 import { Analytics } from "@vercel/analytics/react";
 
 import LoadingScreen from "./components/LoadingScreen/LoadingScreen.jsx";
-import NotesSection from "./components/NotesSection/NotesSection.jsx";
+import NotesHub from "./Notes/NotesHub.jsx";
+import NoteArticle from "./Notes/NoteArticle.jsx";
+import Classroom from "./components/Classroom/Classroom.jsx";
+import CommandPalette from "./components/CommandPalette/CommandPalette.jsx";
 
 import Playground from "./Playground/PlaygroundHero/PlaygroundHero";
 import Sorting from "./Playground/Algorithms/Sorting/Sorting";
@@ -25,18 +28,23 @@ import Gallery from "./components/Gallery/Gallery";
 import Manifesto from "./components/Manifesto/Manifesto";
 import SlowMarquee from "./components/SlowMarquee/SlowMarquee";
 import Notes from "./components/Notes/Notes";
+import ClassroomSection from "./components/ClassroomSection/ClassroomSection";
 import CTA from "./components/CTA/CTA";
 import Footer from "./components/Footer/Footer";
 
-function Page({ children }) {
+// `classroom` adds the teaching dock (present mode, pen, laser, keyboard control).
+function Page({ children, classroom = false }) {
   return (
     <>
       <Navbar />
-      {children}
+      <main className="page-main">{children}</main>
+      {classroom && <Classroom />}
       <Footer />
     </>
   );
 }
+
+const Lesson = ({ children }) => <Page classroom>{children}</Page>;
 
 function LandingPage() {
   const [loading, setLoading] = useState(!sessionStorage.getItem("loaderShown"));
@@ -49,6 +57,7 @@ function LandingPage() {
       <Preview />
       <Gallery />
       <Manifesto />
+      <ClassroomSection />
       <SlowMarquee />
       <Notes />
       <CTA />
@@ -70,20 +79,22 @@ const App = () => {
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/playground" element={<Page><Playground /></Page>} />
-      <Route path="/playground/sorting/:slug" element={<Page><Sorting /></Page>} />
-      <Route path="/playground/searching/:slug" element={<Page><Searching /></Page>} />
-      <Route path="/playground/hashing/:slug" element={<Page><Hashing /></Page>} />
-      <Route path="/playground/array/:slug" element={<Page><ArrayStructure /></Page>} />
-      <Route path="/playground/linkedList/:slug" element={<Page><LinkedList /></Page>} />
-      <Route path="/playground/stack/:slug" element={<Page><Stack /></Page>} />
-      <Route path="/playground/queue/:slug" element={<Page><Queue /></Page>} />
-      <Route path="/playground/bst/:slug" element={<Page><BST /></Page>} />
-      <Route path="/playground/avl/:slug" element={<Page><AVL /></Page>} />
-      <Route path="/playground/recursion/:slug" element={<Page><Recursion /></Page>} />
-      <Route path="/notes" element={<Page><NotesSection /></Page>} />
+      <Route path="/playground/sorting/:slug" element={<Lesson><Sorting /></Lesson>} />
+      <Route path="/playground/searching/:slug" element={<Lesson><Searching /></Lesson>} />
+      <Route path="/playground/hashing/:slug" element={<Lesson><Hashing /></Lesson>} />
+      <Route path="/playground/array/:slug" element={<Lesson><ArrayStructure /></Lesson>} />
+      <Route path="/playground/linkedList/:slug" element={<Lesson><LinkedList /></Lesson>} />
+      <Route path="/playground/stack/:slug" element={<Lesson><Stack /></Lesson>} />
+      <Route path="/playground/queue/:slug" element={<Lesson><Queue /></Lesson>} />
+      <Route path="/playground/bst/:slug" element={<Lesson><BST /></Lesson>} />
+      <Route path="/playground/avl/:slug" element={<Lesson><AVL /></Lesson>} />
+      <Route path="/playground/recursion/:slug" element={<Lesson><Recursion /></Lesson>} />
+      <Route path="/notes" element={<Page><NotesHub /></Page>} />
+      <Route path="/notes/:slug" element={<Lesson><NoteArticle /></Lesson>} />
 
     </Routes>
 
+    <CommandPalette />
     <Analytics />
     </>
   );
