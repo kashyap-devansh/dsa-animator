@@ -1,12 +1,7 @@
-:root {
-  background-color: #0a0a0b;
-}
-
 html {
   scroll-behavior: smooth;
 }
 
-::selection {
-  background: #ff6a3d;
-  color: #0a0a0b;
+body {
+  min-height: 100vh;
 }

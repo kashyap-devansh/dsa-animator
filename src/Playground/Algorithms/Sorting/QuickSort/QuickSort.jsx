@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { randomArray } from "../../../shared/randomArray";
 import { usePlayback } from "../../../shared/usePlayback";
-import { ResetIcon, StepBackIcon, PlayIcon, PauseIcon, StepForwardIcon, ShuffleIcon } from "../../../shared/icons";
-import "./QuickSort.css";
+import Lesson from "../../../../lesson/Lesson";
+import IsoArray from "../../../../iso/IsoArray";
+import { trackIds } from "../../../../iso/trackIds";
 
 const CodeMeanings = {
   1: "Sort the subarray from index l to r.",
@@ -313,407 +314,160 @@ function quickSortSteps(input) {
   return steps;
 }
 
-const CodeLines = [
-  <>
-    <span className="qs-type">void</span> quickSort<span className="qs-symbol">(</span><span className="qs-type">vector</span><span className="qs-symbol">&lt;</span><span className="qs-type">int</span><span className="qs-symbol">&gt;&amp;</span> arr<span className="qs-symbol">,</span> <span className="qs-type">int</span> l<span className="qs-symbol">,</span> <span className="qs-type">int</span> r<span className="qs-symbol">)</span> <span className="qs-symbol">{"{"}</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;<span className="qs-keyword">if</span> <span className="qs-symbol">(</span>l <span className="qs-symbol">&gt;=</span> r<span className="qs-symbol">)</span> <span className="qs-keyword">return</span><span className="qs-symbol">;</span>
-  </>,
-
-  <>&nbsp;</>,
-
-  <>
-    &nbsp;&nbsp;<span className="qs-type">int</span> p <span className="qs-symbol">=</span> partition<span className="qs-symbol">(</span>arr<span className="qs-symbol">,</span> l<span className="qs-symbol">,</span> r<span className="qs-symbol">)</span><span className="qs-symbol">;</span>
-  </>,
-
-  <>&nbsp;</>,
-
-  <>
-    &nbsp;&nbsp;quickSort<span className="qs-symbol">(</span>arr<span className="qs-symbol">,</span> l<span className="qs-symbol">,</span> p <span className="qs-symbol">-</span> <span className="qs-number">1</span><span className="qs-symbol">)</span><span className="qs-symbol">;</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;quickSort<span className="qs-symbol">(</span>arr<span className="qs-symbol">,</span> p <span className="qs-symbol">+</span> <span className="qs-number">1</span><span className="qs-symbol">,</span> r<span className="qs-symbol">)</span><span className="qs-symbol">;</span>
-  </>,
-
-  <><span className="qs-symbol">{"}"}</span></>,
-
-  <>&nbsp;</>,
-
-  <>
-    <span className="qs-type">int</span> partition<span className="qs-symbol">(</span><span className="qs-type">vector</span><span className="qs-symbol">&lt;</span><span className="qs-type">int</span><span className="qs-symbol">&gt;&amp;</span> arr<span className="qs-symbol">,</span> <span className="qs-type">int</span> l<span className="qs-symbol">,</span> <span className="qs-type">int</span> r<span className="qs-symbol">)</span> <span className="qs-symbol">{"{"}</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;<span className="qs-type">int</span> pivot <span className="qs-symbol">=</span> arr<span className="qs-symbol">[</span>r<span className="qs-symbol">]</span><span className="qs-symbol">;</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;<span className="qs-type">int</span> i <span className="qs-symbol">=</span> l <span className="qs-symbol">-</span> <span className="qs-number">1</span><span className="qs-symbol">;</span>
-  </>,
-
-  <>&nbsp;</>,
-
-  <>
-    &nbsp;&nbsp;<span className="qs-keyword">for</span> <span className="qs-symbol">(</span>
-    <span className="qs-type">int</span> j <span className="qs-symbol">=</span> l<span className="qs-symbol">;</span>
-    {" "}j <span className="qs-symbol">&lt;</span> r<span className="qs-symbol">;</span>
-    {" "}j<span className="qs-symbol">++</span><span className="qs-symbol">)</span> <span className="qs-symbol">{"{"}</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <span className="qs-keyword">if</span> <span className="qs-symbol">(</span>arr<span className="qs-symbol">[</span>j<span className="qs-symbol">]</span> <span className="qs-symbol">&lt;=</span> pivot<span className="qs-symbol">)</span> <span className="qs-symbol">{"{"}</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i<span className="qs-symbol">++</span><span className="qs-symbol">;</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;swap<span className="qs-symbol">(</span>arr<span className="qs-symbol">[</span>i<span className="qs-symbol">]</span><span className="qs-symbol">,</span> arr<span className="qs-symbol">[</span>j<span className="qs-symbol">]</span><span className="qs-symbol">)</span><span className="qs-symbol">;</span>
-  </>,
-
-  <>&nbsp;&nbsp;&nbsp;&nbsp;<span className="qs-symbol">{"}"}</span></>,
-
-  <>&nbsp;&nbsp;<span className="qs-symbol">{"}"}</span></>,
-
-  <>&nbsp;</>,
-
-  <>
-    &nbsp;&nbsp;swap<span className="qs-symbol">(</span>arr<span className="qs-symbol">[</span>i <span className="qs-symbol">+</span> <span className="qs-number">1</span><span className="qs-symbol">]</span><span className="qs-symbol">,</span> arr<span className="qs-symbol">[</span>r<span className="qs-symbol">]</span><span className="qs-symbol">)</span><span className="qs-symbol">;</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;<span className="qs-keyword">return</span> i <span className="qs-symbol">+</span> <span className="qs-number">1</span><span className="qs-symbol">;</span>
-  </>,
-
-  <><span className="qs-symbol">{"}"}</span></>,
+const CODE = [
+  "void quickSort(vector<int>& arr, int l, int r) {",
+  "  if (l >= r) return;",
+  "",
+  "  int p = partition(arr, l, r);",
+  "",
+  "  quickSort(arr, l, p - 1);",
+  "  quickSort(arr, p + 1, r);",
+  "}",
+  "",
+  "int partition(vector<int>& arr, int l, int r) {",
+  "  int pivot = arr[r];",
+  "  int i = l - 1;",
+  "",
+  "  for (int j = l; j < r; j++) {",
+  "    if (arr[j] <= pivot) {",
+  "      i++;",
+  "      swap(arr[i], arr[j]);",
+  "    }",
+  "  }",
+  "",
+  "  swap(arr[i + 1], arr[r]);",
+  "  return i + 1;",
+  "}",
 ];
 
-const fmt = (v) => (v === null || v === undefined || v === -1 ? "–" : v);
-
-const PARTITION_PHASES = [
-  "pivot",
-  "init-i",
-  "compare",
-  "advance-i",
-  "swap",
-  "skip",
-  "place-pivot",
-  "return-p",
-];
+const TAGS = {
+  start: "Idea",
+  call: "Recurse",
+  base: "Base case",
+  pivot: "Pivot",
+  "init-i": "Partition",
+  compare: "Compare",
+  "advance-i": "Partition",
+  swap: "Swap",
+  skip: "Partition",
+  "place-pivot": "Place",
+  "return-p": "Partition",
+  "partition-done": "Split",
+  "recurse-left": "Recurse",
+  "recurse-right": "Recurse",
+  "call-done": "Recurse",
+  done: "Sorted",
+};
 
 const QuickSort = () => {
-  const [seed, setSeed] = useState(randomArray());
-  const [beginnerMode, setBeginnerMode] = useState(true);
-  const [recursionOpen, setRecursionOpen] = useState(false);
+  const [seed, setSeed] = useState(() => randomArray(10));
+  const steps = useMemo(() => quickSortSteps(seed), [seed]);
+  const ids = useMemo(() => trackIds(steps.map((s) => s.array)), [steps]);
+  const playback = usePlayback(steps.length);
+  const { index, reset } = playback;
+  const s = steps[index];
+  const isDone = s.phase === "done";
 
-  const steps = quickSortSteps(seed);
-  const { index, playing, speed, setSpeed, reset, stepForward, stepBack, togglePlay } = usePlayback(steps.length);
-  const current = steps[index];
-  const max = Math.max(...current.array);
-  const isDone = index === steps.length - 1;
-  const n = current.array.length;
+  // Every pivot placed so far stays placed.
+  const placed = useMemo(() => {
+    const set = new Set();
+    for (let k = 0; k <= index; k++) {
+      if (steps[k].placed >= 0) set.add(steps[k].placed);
+      if (steps[k].phase === "base" && steps[k].l === steps[k].r) set.add(steps[k].l);
+    }
+    return set;
+  }, [steps, index]);
 
   const shuffle = () => {
-    setSeed(randomArray());
+    setSeed(randomArray(10));
     reset();
   };
 
-  const markerMap = {};
+  const partitioning = s.l !== null && s.r !== null && s.l <= s.r;
+  const inRange = (k) => partitioning && k >= s.l && k <= s.r;
+  // While i has just moved but the swap hasn't happened, cell i doesn't hold a small value yet.
+  const leftEnd = (s.i ?? (s.l ?? 0) - 1) - (s.phase === "advance-i" ? 1 : 0);
 
-  if (current.i !== null && current.i >= 0) {
-    markerMap[current.i] = markerMap[current.i] ? `${markerMap[current.i]},i` : "i";
-  }
+  const cells = s.array.map((value, k) => {
+    let tone = "idle";
+    let lift = 0;
+    if (isDone || placed.has(k)) tone = "sage";
+    else if (k === s.pivot) tone = "coral";
+    else if (s.swap.includes(k)) {
+      tone = "amber";
+      lift = 0.55;
+    } else if (s.compare.includes(k)) {
+      tone = "soft";
+      lift = 0.4;
+    } else if (inRange(k) && s.i !== null && k >= s.l && k <= leftEnd) tone = "soft";
+    else if (partitioning && !inRange(k)) tone = "ghost";
+    return { id: ids[index][k], value, tone, lift };
+  });
 
-  if (current.j !== null && current.j >= 0) {
-    markerMap[current.j] = markerMap[current.j] ? `${markerMap[current.j]},j` : "j";
-  }
+  const pointers = [];
+  if (s.i !== null && s.i >= 0) pointers.push({ index: s.i, text: "i", tone: "coral" });
+  if (s.j !== null) pointers.push({ index: s.j, text: "j" });
+  if (s.p !== null && s.p !== undefined) pointers.push({ index: s.p, text: "p", tone: "sage" });
 
-  const markers = Object.entries(markerMap).map(([idx, label]) => ({
-    idx: Number(idx),
-    label,
-  }));
+  const callouts = [];
+  if (s.phase === "pivot") callouts.push({ index: s.pivot, text: "the pivot" });
+  else if (s.compare.length) callouts.push({ index: s.compare[0], text: s.phase === "skip" ? `${s.array[s.j]} > ${s.pivotVal}: leave it` : `${s.array[s.j]} vs ${s.pivotVal}` });
+  else if (s.phase === "place-pivot") callouts.push({ index: s.placed, text: "in its final place", tone: "sage" });
+  else if (s.phase === "base" && s.l === s.r) callouts.push({ index: s.l, text: "one item: sorted", tone: "sage", small: true });
 
-  const isPartitionPhase = PARTITION_PHASES.includes(current.phase);
-
-  let brackets = [];
-
-  if (isPartitionPhase && current.l !== null && current.r !== null) {
-    const iVal = current.i !== null ? current.i : current.l - 1;
-
-    brackets = [
-      { start: current.l, end: iVal, label: "≤ pivot", cls: "qs-bracket-left" },
-      { start: iVal + 1, end: current.r - 1, label: "unprocessed", cls: "qs-bracket-mid" },
-      { start: current.r, end: current.r, label: "pivot", cls: "qs-bracket-pivot" },
-    ].filter((s) => s.end >= s.start);
-  }
+  const below = partitioning && !isDone ? s.array.slice(s.l, Math.max(s.l, leftEnd + 1)) : [];
+  if (s.phase === "advance-i") below.push(s.array[s.j]);
+  const above =
+    partitioning && s.j !== null
+      ? s.array.slice(leftEnd + 1, s.j + (s.phase === "skip" ? 1 : 0)).filter((_, k) => !(s.phase === "advance-i" && leftEnd + 1 + k === s.j))
+      : [];
 
   return (
-    <div className="quick-sort-wrapper">
-      <div className="quick-sort">
-        <p className="qs-eyebrow">sorting</p>
-
-        <h1 className="qs-title">Quick Sort</h1>
-
-        <div className="qs-header">
-          <p className="qs-blurb">
-            Picks a pivot, partitions the array around it, then recursively sorts each side.
-          </p>
-
-          <div className="qs-header-right">
-            <div className="qs-complexity">
-              <div>
-                <div className="qs-complexity-label">time</div>
-                <div className="qs-time-value">O(n log n)</div>
-              </div>
-
-              <div>
-                <div className="qs-complexity-label">space</div>
-                <div className="qs-space-value">O(log n)</div>
-              </div>
-            </div>
-
-            <button
-              className={`qs-mode-toggle ${beginnerMode ? "qs-mode-on" : ""}`}
-              onClick={() => setBeginnerMode(!beginnerMode)}
-            >
-              Beginner Mode: {beginnerMode ? "ON" : "OFF"}
-            </button>
-          </div>
-        </div>
-
-        <div className="qs-grid">
-          <div className="qs-stage">
-            <div className="qs-vars">
-              <span><b>l</b>{fmt(current.l)}</span>
-              <span><b>r</b>{fmt(current.r)}</span>
-              <span><b>i</b>{fmt(current.i)}</span>
-              <span><b>j</b>{fmt(current.j)}</span>
-              <span><b>pivot</b>{fmt(current.pivotVal)}</span>
-              <span><b>p</b>{fmt(current.p)}</span>
-            </div>
-
-            {beginnerMode && brackets.length > 0 && (
-              <div className="qs-partition-brackets">
-                {brackets.map((b, bi) => (
-                  <div
-                    key={bi}
-                    className={`qs-bracket ${b.cls}`}
-                    style={{
-                      left: `${(b.start / n) * 100}%`,
-                      width: `${((b.end - b.start + 1) / n) * 100}%`,
-                    }}
-                  >
-                    <span>{b.label}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            <div className="qs-bars-area">
-              {markers.length > 0 && (
-                <div className="qs-index-markers">
-                  {markers.map((m) => (
-                    <div
-                      key={m.idx}
-                      className="qs-index-marker"
-                      style={{ left: `${((m.idx + 0.5) / n) * 100}%` }}
-                    >
-                      <span className="qs-marker-label">{m.label}</span>
-                      <span className="qs-marker-arrow">↓</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              <div className="qs-bars">
-                {current.array.map((value, i) => {
-                  const inRange = i >= current.range[0] && i <= current.range[1];
-                  const isCompare = current.compare.includes(i);
-                  const isSwap = current.swap.includes(i);
-                  const isPivot = i === current.pivot;
-                  const isPlaced = i === current.placed;
-
-                  let color = "#3a3a3f";
-
-                  if (isDone) color = "#b4ff39";
-                  else if (isPlaced) color = "#b4ff39";
-                  else if (isPivot) color = "#7c8cff";
-                  else if (isSwap) color = "#ffbd2e";
-                  else if (isCompare) color = "#ff6a3d";
-                  else if (inRange) color = "#4a4a52";
-
-                  return (
-                    <div
-                      key={i}
-                      className="qs-bar"
-                      style={{
-                        height: `${(value / max) * 400 + 6}px`,
-                        backgroundColor: color,
-                      }}
-                    />
-                  );
-                })}
-              </div>
-            </div>
-
-            {!isDone && <p className="qs-status">{current.description}</p>}
-
-            {beginnerMode && !isDone && current.explanation && (
-              <p className="qs-explanation">{current.explanation}</p>
-            )}
-
-            {isDone && (
-              <div className="qs-completion">
-                <div className="qs-completion-title">Quick Sort Complete</div>
-                <p className="qs-completion-text">
-                  The array is sorted because every pivot has been placed in its final position, and each
-                  smaller subarray was recursively sorted.
-                </p>
-                <div className="qs-completion-stats">
-                  <span>comparisons: <b>{current.comparisons}</b></span>
-                  <span>swaps: <b>{current.swaps}</b></span>
-                  <span>partitions: <b>{current.partitions}</b></span>
-                  <span>max depth: <b>{current.maxDepth}</b></span>
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div className="qs-code-panel">
-            <div className="qs-code-header">
-              <div className="qs-dummy-btns">
-                <span className="qs-red-btn"></span>
-                <span className="qs-yellow-btn"></span>
-                <span className="qs-green-btn"></span>
-                <span className="qs-filename">quick_sort.cpp</span>
-              </div>
-
-              <span className="qs-header-complexity">O(n log n)</span>
-            </div>
-
-            <pre className="qs-code-block">
-              {CodeLines.map((line, i) => {
-                return (
-                  <div
-                    key={i}
-                    className={`qs-code-line ${current.codeLine === i + 1 ? "qs-code-line-active" : ""}`}
-                  >
-                    <span className="qs-line-no">{i + 1}</span>
-                    {line}
-                  </div>
-                );
-              })}
-            </pre>
-
-            {beginnerMode && current.codeMeaning && (
-              <div className="qs-code-meaning">
-                <span className="qs-code-meaning-label">Meaning</span>
-                <p>{current.codeMeaning}</p>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {beginnerMode && (
-          <div className="qs-recursion-panel">
-            <button className="qs-recursion-toggle" onClick={() => setRecursionOpen(!recursionOpen)}>
-              Recursion {recursionOpen ? "▾" : "▸"}
-            </button>
-
-            {recursionOpen && (
-              <div className="qs-recursion-tree">
-                {current.callTree.length === 0 && (
-                  <p className="qs-recursion-empty">Recursion hasn't started yet.</p>
-                )}
-
-                {current.callTree.map((node) => (
-                  <div
-                    key={node.id}
-                    className={`qs-recursion-node ${node.id === current.activeNodeId ? "qs-recursion-active" : ""
-                      } ${node.status === "done" ? "qs-recursion-done" : ""}`}
-                    style={{ paddingLeft: `${node.depth * 16 + 12}px` }}
-                  >
-                    QuickSort({node.l}, {node.r})
-                    {node.p !== null && (
-                      <span className="qs-recursion-p"> — Partition → p = {node.p}</span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
-        <div className="qs-controls">
-          <button className="qs-icon-btn" onClick={reset}>
-            <ResetIcon />
-          </button>
-
-          <button
-            className="qs-icon-btn"
-            onClick={stepBack}
-            disabled={index === 0}
-          >
-            <StepBackIcon />
-          </button>
-
-          <button className="qs-play-btn" onClick={togglePlay}>
-            {playing ? <PauseIcon /> : <PlayIcon />}
-          </button>
-
-          <button
-            className="qs-icon-btn"
-            onClick={stepForward}
-            disabled={index === steps.length - 1}
-          >
-            <StepForwardIcon />
-          </button>
-
-          <button className="qs-shuffle-btn" onClick={shuffle}>
-            <ShuffleIcon />
-            Shuffle
-          </button>
-
-          <div className="qs-speed">
-            <span>SPEED</span>
-
-            <input
-              type="range"
-              min="1"
-              max="10"
-              value={speed}
-              onChange={(e) => setSpeed(Number(e.target.value))}
-            />
-          </div>
-
-          <span className="qs-steps">
-            {index + 1} / {steps.length}
-          </span>
-        </div>
-
-        <div className="qs-legend">
-          <span className="qs-legend-item"><span className="qs-legend-dot" style={{ background: "#7c8cff" }}></span>Pivot</span>
-          <span className="qs-legend-item"><span className="qs-legend-dot" style={{ background: "#ff6a3d" }}></span>Comparing</span>
-          <span className="qs-legend-item"><span className="qs-legend-dot" style={{ background: "#ffbd2e" }}></span>Swapping</span>
-          <span className="qs-legend-item"><span className="qs-legend-dot" style={{ background: "#b4ff39" }}></span>Placed</span>
-          <span className="qs-legend-item"><span className="qs-legend-dot" style={{ background: "#4a4a52" }}></span>Active range</span>
-          <span className="qs-legend-item"><span className="qs-legend-badge">i</span>Left boundary</span>
-          <span className="qs-legend-item"><span className="qs-legend-badge">j</span>Scan pointer</span>
-        </div>
-
-        <div className="qs-stats">
-          <span>comparisons: <b>{current.comparisons}</b></span>
-          <span>swaps: <b>{current.swaps}</b></span>
-          <span>partitions: <b>{current.partitions}</b></span>
-          <span>max depth: <b>{current.maxDepth}</b></span>
-        </div>
-      </div>
-    </div>
+    <Lesson
+      steps={steps}
+      playback={playback}
+      onShuffle={shuffle}
+      complexity={[
+        { label: "time", value: "O(n log n)" },
+        { label: "worst", value: "O(n²)" },
+        { label: "space", value: "O(log n)" },
+      ]}
+      stage={<IsoArray cells={cells} slots={s.array.length} pointers={pointers} callouts={callouts} indexHighlight={s.compare} label="Quick sort array" />}
+      narration={{
+        tag: TAGS[s.phase],
+        title: s.description,
+        body: <p>{s.explanation}</p>,
+        notice: s.codeMeaning,
+        noticeLabel: `Line ${s.codeLine}`,
+      }}
+      code={{ lines: CODE, active: s.codeLine, file: "quick_sort.cpp" }}
+      panels={[
+        {
+          title: "Around the pivot",
+          rows: [
+            { label: "Pivot", value: s.pivotVal, tone: s.pivotVal !== null ? "coral" : undefined },
+            { label: "Smaller, on its left", value: s.pivotVal !== null ? below : [] },
+            { label: "Bigger, already seen", value: s.pivotVal !== null ? above : [] },
+          ],
+        },
+        {
+          title: "Work done",
+          rows: [
+            { label: "Comparisons", value: s.comparisons },
+            { label: "Swaps", value: s.swaps },
+            { label: "Partitions", value: s.partitions },
+            { label: "Deepest call", value: s.maxDepth },
+          ],
+        },
+      ]}
+      legend={[
+        { label: "Pivot", tone: "coral" },
+        { label: "Being compared / ≤ pivot", tone: "soft" },
+        { label: "Swapping", tone: "amber" },
+        { label: "In final place", tone: "sage" },
+        { label: "Outside this call", tone: "ghost" },
+      ]}
+    />
   );
 };
 

@@ -35,6 +35,7 @@ const Permutations = () => {
 
   return (
     <StepperPage
+      steps={steps}
       eyebrow="recursion"
       title="Permutations"
       blurb="Swap each remaining letter into position l, recurse to fill the rest, then swap it back — backtracking restores the string for the next choice."

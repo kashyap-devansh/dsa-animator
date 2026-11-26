@@ -1,700 +1,177 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { usePlayback } from "../../../shared/usePlayback";
-import { ResetIcon, StepBackIcon, PlayIcon, PauseIcon, StepForwardIcon, ShuffleIcon } from "../../../shared/icons";
-import "./CountSort.css";
+import Lesson from "../../../../lesson/Lesson";
+import { IsoRows, SLAB_D, ROW_GAP } from "../../../../iso/IsoArray";
 
-function randomArray(size = 10) {
-  const arr = [];
+const SIZE = 9;
+const randomSmall = () => Array.from({ length: SIZE }, () => Math.floor(Math.random() * 9) + 1);
 
-  for (let i = 0; i < size; i++) {
-    arr.push(Math.floor(Math.random() * 30));
-  }
-
-  return arr;
-}
-
-function countSortSteps(input) {
-  const arr = [...input];
-  const n = arr.length;
-  const steps = [];
-
-  let increments = 0;
-  let placements = 0;
-
-  function save(line, description, opts = {}) {
-    steps.push({
-      array: [...arr],
-      codeLine: line,
-      description,
-      activeIndex: opts.activeIndex ?? -1,
-      offset: opts.offset ?? -1,
-      outputIndex: opts.outputIndex ?? -1,
-      counts: opts.counts ? [...opts.counts] : null,
-      output: opts.output ? [...opts.output] : null,
-      min: opts.min ?? null,
-      max: opts.max ?? null,
-      increments,
-      placements,
-    });
-  }
-
-  save(1, "Started Count Sort");
-
-  const maxVal = Math.max(...arr);
-
-  save(3, `Find max value = ${maxVal}`, { max: maxVal });
-
-  const minVal = Math.min(...arr);
-
-  save(4, `Find min value = ${minVal}`, { max: maxVal, min: minVal });
-
-  const range = maxVal - minVal + 1;
-
-  save(5, `range = ${maxVal} - ${minVal} + 1 = ${range}`, { max: maxVal, min: minVal });
-
-  const count = new Array(range).fill(0);
-
-  save(7, `Initialize count[${range}] = {0}`, { max: maxVal, min: minVal, counts: count });
-
-  for (let i = 0; i < n; i++) {
-    save(10, `Check i < ${n}`, { max: maxVal, min: minVal, activeIndex: i, counts: count });
-
-    const offset = arr[i] - minVal;
-
-    count[offset]++;
-    increments++;
-
-    save(11, `arr[${i}] = ${arr[i]} → count[${offset}]++`, {
-      max: maxVal, min: minVal, activeIndex: i, offset, counts: count,
-    });
-  }
-
-  for (let i = 1; i < range; i++) {
-    save(13, `Check i < ${range} (prefix sum)`, { max: maxVal, min: minVal, counts: count });
-
-    count[i] += count[i - 1];
-
-    save(14, `count[${i}] += count[${i - 1}] = ${count[i]}`, {
-      max: maxVal, min: minVal, counts: count,
-    });
-  }
-
-  const output = new Array(n).fill(null);
-
-  for (let i = n - 1; i >= 0; i--) {
-    save(16, "Check i >= 0 (build output)", {
-      max: maxVal, min: minVal, activeIndex: i, counts: count, output,
-    });
-
-    const offset = arr[i] - minVal;
-
-    save(17, `output[count[${offset}] - 1] = arr[${i}] = ${arr[i]}`, {
-      max: maxVal, min: minVal, activeIndex: i, offset, outputIndex: count[offset] - 1, counts: count, output,
-    });
-
-    output[count[offset] - 1] = arr[i];
-    placements++;
-
-    count[offset]--;
-
-    save(18, `count[${offset}]--`, {
-      max: maxVal, min: minVal, activeIndex: i, offset, outputIndex: count[offset], counts: count, output,
-    });
-  }
-
-  save(19, "Output array complete", { max: maxVal, min: minVal, counts: count, output });
-
-  for (let i = 0; i < n; i++) {
-    arr[i] = output[i];
-
-    save(22, `arr[${i}] = ${output[i]}`, { max: maxVal, min: minVal, activeIndex: i, output });
-  }
-
-  save(1, "Array Sorted!", { max: maxVal, min: minVal });
-
-  return steps;
-}
-
-const CodeLines = [
-  // 1
-  <>
-    <span className="cts-type">void</span> countSort
-    <span className="cts-symbol">(</span>
-    <span className="cts-type">vector</span>
-    <span className="cts-symbol">&lt;</span>
-    <span className="cts-type">int</span>
-    <span className="cts-symbol">&gt;&amp;</span> arr
-    <span className="cts-symbol">)</span>{" "}
-    <span className="cts-symbol">{"{"}</span>
-  </>,
-
-  // 2
-  <>
-    &nbsp;&nbsp;
-    <span className="cts-type">int</span> n
-    <span className="cts-symbol"> = </span>
-    arr<span className="cts-symbol">.</span>size
-    <span className="cts-symbol">();</span>
-  </>,
-
-  // 3
-  <>
-    &nbsp;&nbsp;
-    <span className="cts-type">int</span> maxVal
-    <span className="cts-symbol"> = *</span>
-    max_element<span className="cts-symbol">(</span>
-    arr<span className="cts-symbol">.</span>begin<span className="cts-symbol">(),</span> arr<span className="cts-symbol">.</span>end<span className="cts-symbol">());</span>
-  </>,
-
-  // 4
-  <>
-    &nbsp;&nbsp;
-    <span className="cts-type">int</span> minVal
-    <span className="cts-symbol"> = *</span>
-    min_element<span className="cts-symbol">(</span>
-    arr<span className="cts-symbol">.</span>begin<span className="cts-symbol">(),</span> arr<span className="cts-symbol">.</span>end<span className="cts-symbol">());</span>
-  </>,
-
-  // 5
-  <>
-    &nbsp;&nbsp;
-    <span className="cts-type">int</span> range
-    <span className="cts-symbol"> = </span>
-    maxVal <span className="cts-symbol">-</span> minVal <span className="cts-symbol">+</span> <span className="cts-number">1</span>
-    <span className="cts-symbol">;</span>
-  </>,
-
-  // 6
-  <>&nbsp;</>,
-
-  // 7
-  <>
-    &nbsp;&nbsp;
-    <span className="cts-type">vector</span>
-    <span className="cts-symbol">&lt;</span>
-    <span className="cts-type">int</span>
-    <span className="cts-symbol">&gt;</span> count
-    <span className="cts-symbol">(</span>range<span className="cts-symbol">,</span> <span className="cts-number">0</span>
-    <span className="cts-symbol">);</span>
-  </>,
-
-  // 8
-  <>
-    &nbsp;&nbsp;
-    <span className="cts-type">vector</span>
-    <span className="cts-symbol">&lt;</span>
-    <span className="cts-type">int</span>
-    <span className="cts-symbol">&gt;</span> output
-    <span className="cts-symbol">(</span>n
-    <span className="cts-symbol">);</span>
-  </>,
-
-  // 9
-  <>&nbsp;</>,
-
-  // 10
-  <>
-    &nbsp;&nbsp;
-    <span className="cts-keyword">for</span>
-    <span className="cts-symbol">(</span>
-    <span className="cts-type">int</span> i
-    <span className="cts-symbol"> = </span>
-    <span className="cts-number">0</span>
-    <span className="cts-symbol">;</span> i
-    <span className="cts-symbol"> &lt; </span>n
-    <span className="cts-symbol">;</span> i
-    <span className="cts-symbol">++</span>
-    <span className="cts-symbol">)</span>
-  </>,
-
-  // 11
-  <>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    count<span className="cts-symbol">[</span>
-    arr<span className="cts-symbol">[</span>i<span className="cts-symbol">]</span>
-    <span className="cts-symbol"> - </span>minVal
-    <span className="cts-symbol">]++;</span>
-  </>,
-
-  // 12
-  <>&nbsp;</>,
-
-  // 13
-  <>
-    &nbsp;&nbsp;
-    <span className="cts-keyword">for</span>
-    <span className="cts-symbol">(</span>
-    <span className="cts-type">int</span> i
-    <span className="cts-symbol"> = </span>
-    <span className="cts-number">1</span>
-    <span className="cts-symbol">;</span> i
-    <span className="cts-symbol"> &lt; </span>range
-    <span className="cts-symbol">;</span> i
-    <span className="cts-symbol">++</span>
-    <span className="cts-symbol">)</span>
-  </>,
-
-  // 14
-  <>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    count<span className="cts-symbol">[</span>i
-    <span className="cts-symbol">] += </span>
-    count<span className="cts-symbol">[</span>i
-    <span className="cts-symbol"> - </span>
-    <span className="cts-number">1</span>
-    <span className="cts-symbol">];</span>
-  </>,
-
-  // 15
-  <>&nbsp;</>,
-
-  // 16
-  <>
-    &nbsp;&nbsp;
-    <span className="cts-keyword">for</span>
-    <span className="cts-symbol">(</span>
-    <span className="cts-type">int</span> i
-    <span className="cts-symbol"> = </span>
-    n<span className="cts-symbol"> - </span>
-    <span className="cts-number">1</span>
-    <span className="cts-symbol">;</span> i
-    <span className="cts-symbol"> &gt;= </span>
-    <span className="cts-number">0</span>
-    <span className="cts-symbol">;</span> i
-    <span className="cts-symbol">--</span>
-    <span className="cts-symbol">)</span>{" "}
-    <span className="cts-symbol">{"{"}</span>
-  </>,
-
-  // 17
-  <>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    output<span className="cts-symbol">[</span>
-    count<span className="cts-symbol">[</span>
-    arr<span className="cts-symbol">[</span>i<span className="cts-symbol">]</span>
-    <span className="cts-symbol"> - </span>minVal
-    <span className="cts-symbol">] - </span>
-    <span className="cts-number">1</span>
-    <span className="cts-symbol">] = </span>
-    arr<span className="cts-symbol">[</span>i
-    <span className="cts-symbol">];</span>
-  </>,
-
-  // 18
-  <>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    count<span className="cts-symbol">[</span>
-    arr<span className="cts-symbol">[</span>i<span className="cts-symbol">]</span>
-    <span className="cts-symbol"> - </span>minVal
-    <span className="cts-symbol">]--;</span>
-  </>,
-
-  // 19
-  <>
-    &nbsp;&nbsp;
-    <span className="cts-symbol">{"}"}</span>
-  </>,
-
-  // 20
-  <>&nbsp;</>,
-
-  // 21
-  <>
-    &nbsp;&nbsp;
-    <span className="cts-keyword">for</span>
-    <span className="cts-symbol">(</span>
-    <span className="cts-type">int</span> i
-    <span className="cts-symbol"> = </span>
-    <span className="cts-number">0</span>
-    <span className="cts-symbol">;</span> i
-    <span className="cts-symbol"> &lt; </span>n
-    <span className="cts-symbol">;</span> i
-    <span className="cts-symbol">++</span>
-    <span className="cts-symbol">)</span>
-  </>,
-
-  // 22
-  <>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    arr<span className="cts-symbol">[</span>i
-    <span className="cts-symbol">] = </span>
-    output<span className="cts-symbol">[</span>i
-    <span className="cts-symbol">];</span>
-  </>,
-
-  // 23
-  <>
-    <span className="cts-symbol">{"}"}</span>
-  </>,
+const CODE = [
+  "void countSort(vector<int>& arr) {",
+  "  int mx = *max_element(arr.begin(), arr.end());",
+  "  int mn = *min_element(arr.begin(), arr.end());",
+  "  vector<int> count(mx - mn + 1, 0);",
+  "  for (int x : arr) count[x - mn]++;",
+  "  for (int i = 1; i < count.size(); i++)",
+  "    count[i] += count[i - 1];",
+  "  vector<int> out(arr.size());",
+  "  for (int i = arr.size() - 1; i >= 0; i--) {",
+  "    out[--count[arr[i] - mn]] = arr[i];",
+  "  }",
+  "  arr = out;",
+  "}",
 ];
 
-const CELL_W = 46;
-const CELL_H = 46;
-const ROW_GAP = 74;
-const PAD_TOP = 36;
+function countSortSteps(arr) {
+  const n = arr.length;
+  const mn = Math.min(...arr);
+  const mx = Math.max(...arr);
+  const range = mx - mn + 1;
+  const count = new Array(range).fill(0);
+  const out = new Array(n).fill(null);
+  const steps = [];
+  let ops = 0;
 
-const CountSort = () => {
-  const [seed, setSeed] = useState(randomArray());
+  const save = (s) => steps.push({ count: [...count], out: [...out], active: null, slot: null, outAt: null, prefix: false, ops, ...s });
 
-  const steps = countSortSteps(seed);
-  const { index, playing, speed, setSpeed, reset, stepForward, stepBack, togglePlay } = usePlayback(steps.length);
-  const current = steps[index];
-  const isDone = index === steps.length - 1;
-  const n = current.array.length;
-  const range = current.min !== null ? current.max - current.min + 1 : 1;
+  save({
+    phase: "idea",
+    line: 1,
+    title: "Count instead of compare",
+    body: `The values are small whole numbers between ${mn} and ${mx}. Instead of comparing them, count how many of each there are, then write them out in order.`,
+    notice: "Count sort never compares two values. That is how it beats the O(n log n) limit for comparison sorts.",
+  });
 
-  const counts = current.counts ?? new Array(range).fill(0);
-  const output = current.output ?? new Array(n).fill(null);
+  save({
+    phase: "range",
+    line: 4,
+    title: `Make ${range} counters`,
+    body: `One counter for every value from ${mn} to ${mx}, all starting at zero.`,
+  });
 
-  const gridCols = Math.max(n, range);
-  const svgWidth = gridCols * CELL_W;
-  const svgHeight = PAD_TOP + CELL_H + ROW_GAP + CELL_H + ROW_GAP + CELL_H + 10;
+  arr.forEach((v, i) => {
+    count[v - mn]++;
+    ops++;
+    save({
+      phase: "count",
+      line: 5,
+      active: i,
+      slot: v - mn,
+      title: `Count a ${v}`,
+      body: `Counter ${v} goes up to ${count[v - mn]}.`,
+    });
+  });
 
-  const arrayRowY = PAD_TOP;
-  const countRowY = arrayRowY + CELL_H + ROW_GAP;
-  const outputRowY = countRowY + CELL_H + ROW_GAP;
-
-  const countW = (gridCols * CELL_W) / Math.max(range, 1);
-
-  const arrayPointerX =
-    current.activeIndex !== -1
-      ? current.activeIndex * CELL_W + CELL_W / 2
-      : null;
-
-  const outputTargetIndex =
-    current.outputIndex !== -1
-      ? current.outputIndex
-      : current.codeLine === 22
-        ? current.activeIndex
-        : -1;
-
-  const outputPointerX =
-    outputTargetIndex !== -1 ? outputTargetIndex * CELL_W + CELL_W / 2 : null;
-
-  let marker = null;
-
-  if (current.activeIndex !== -1 && current.min !== null) {
-    const sourceX = current.activeIndex * CELL_W + CELL_W / 2;
-    const sourceY = arrayRowY + CELL_H / 2;
-    const value = current.array[current.activeIndex];
-
-    if (current.codeLine === 10) {
-      marker = { x: sourceX, y: sourceY, value, color: "#ff6a3d", visible: false };
-    } else if (current.codeLine === 11 && current.offset !== -1) {
-      marker = {
-        x: current.offset * countW + countW / 2,
-        y: countRowY + CELL_H / 2,
-        value,
-        color: "#ff6a3d",
-        visible: true,
-      };
-    } else if (current.codeLine === 16) {
-      marker = { x: sourceX, y: sourceY, value, color: "#b4ff39", visible: false };
-    } else if (current.codeLine === 17 && current.outputIndex !== -1) {
-      marker = {
-        x: current.outputIndex * CELL_W + CELL_W / 2,
-        y: outputRowY + CELL_H / 2,
-        value,
-        color: "#b4ff39",
-        visible: true,
-      };
-    } else if (current.codeLine === 18) {
-      marker = {
-        x: current.outputIndex * CELL_W + CELL_W / 2,
-        y: outputRowY + CELL_H / 2,
-        value,
-        color: "#b4ff39",
-        visible: false,
-      };
-    }
+  for (let i = 1; i < range; i++) {
+    count[i] += count[i - 1];
+    ops++;
+    save({
+      phase: "prefix",
+      line: 7,
+      slot: i,
+      prefix: true,
+      title: `Running total at ${i + mn}: ${count[i]}`,
+      body: `Add the counter on the left. Now counter ${i + mn} says how many values are ${i + mn} or smaller, which is exactly where the last ${i + mn} has to go.`,
+    });
   }
 
-  const shuffle = () => {
-    setSeed(randomArray());
-    reset();
-  };
+  for (let i = n - 1; i >= 0; i--) {
+    const v = arr[i];
+    const pos = --count[v - mn];
+    out[pos] = { id: i, value: v };
+    ops++;
+    save({
+      phase: "place",
+      line: 10,
+      active: i,
+      slot: v - mn,
+      outAt: pos,
+      title: `Place ${v} at output ${pos}`,
+      body: `Counter ${v} drops by one to ${pos}, and that is the slot ${v} goes in. Walking the input from the right keeps equal values in their original order.`,
+    });
+  }
+
+  save({
+    phase: "done",
+    line: 12,
+    title: "Sorted",
+    body: `${ops} simple operations for ${n} values and ${range} counters.`,
+    notice: "The cost is O(n + k), where k is the range of values. A huge range would make the counter row huge too.",
+  });
+
+  return { steps, mn, range };
+}
+
+const TAGS = { idea: "Idea", range: "Setup", count: "Count", prefix: "Running total", place: "Place", done: "Sorted" };
+
+const CountSort = () => {
+  const [seed, setSeed] = useState(randomSmall);
+  const { steps, mn, range } = useMemo(() => countSortSteps(seed), [seed]);
+  const playback = usePlayback(steps.length);
+  const { index, reset } = playback;
+  const s = steps[index];
+
+  const inputCells = seed.map((value, k) => ({
+    id: `in${k}`,
+    value,
+    tone: k === s.active ? "coral" : s.phase === "place" && k > s.active ? "ghost" : s.phase === "done" ? "ghost" : "idle",
+    lift: k === s.active ? 0.4 : 0,
+  }));
+
+  const countCells = s.count.map((c, k) => ({
+    id: `c${k}`,
+    value: c,
+    tone: k === s.slot ? "coral" : c ? (s.prefix || s.phase === "place" || s.phase === "done" ? "amber" : "soft") : "idle",
+  }));
+
+  const outCells = s.out.flatMap((c, k) => (c ? [{ id: `o${c.id}`, value: c.value, pos: k, tone: s.phase === "done" ? "sage" : k === s.outAt ? "coral" : "sage" }] : []));
+
+  const y1 = SLAB_D + ROW_GAP;
+  const y2 = y1 * 2;
 
   return (
-    <div className="count-sort-wrapper">
-      <div className="count-sort">
-        <p className="cts-eyebrow">sorting</p>
-
-        <h1 className="cts-title">Count Sort</h1>
-
-        <div className="cts-header">
-          <p className="cts-blurb">
-            Counts occurrences of each value, then uses prefix sums to place every element directly into its sorted position.
-          </p>
-
-          <div className="cts-complexity">
-            <div>
-              <div className="cts-complexity-label">time</div>
-              <div className="cts-time-value">O(n + k)</div>
-            </div>
-
-            <div>
-              <div className="cts-complexity-label">space</div>
-              <div className="cts-space-value">O(n + k)</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="cts-grid">
-          <div className="cts-stage">
-            <div className="cts-stage-wrap">
-              <svg
-                className="cts-stage-svg"
-                viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-                width={svgWidth}
-                height={svgHeight}
-              >
-                {current.array.map((val, idx) => {
-                  const isActive = idx === current.activeIndex;
-
-                  return (
-                    <g key={`arr-${idx}`}>
-                      <rect
-                        className="cts-cell-rect"
-                        x={idx * CELL_W}
-                        y={arrayRowY}
-                        width={CELL_W}
-                        height={CELL_H}
-                        rx="8"
-                        fill={isDone ? "rgba(180, 255, 57, 0.08)" : "transparent"}
-                        stroke={isDone ? "#b4ff39" : isActive ? "#ff6a3d" : "#33333a"}
-                        strokeWidth={isActive ? 2 : 1.4}
-                      />
-
-                      <text
-                        x={idx * CELL_W + CELL_W / 2}
-                        y={arrayRowY + CELL_H / 2 + 5}
-                        textAnchor="middle"
-                        className="cts-cell-value"
-                        fill={isDone ? "#b4ff39" : isActive ? "#ff6a3d" : "#f3f2ed"}
-                      >
-                        {val}
-                      </text>
-
-                      {isActive && current.offset !== -1 && (
-                        <text
-                          x={idx * CELL_W + CELL_W / 2}
-                          y={arrayRowY - 14}
-                          textAnchor="middle"
-                          className="cts-offset-badge"
-                        >
-                          count[{current.offset}]
-                        </text>
-                      )}
-                    </g>
-                  );
-                })}
-
-                {counts.map((count, i) => {
-                  const isActive = i === current.offset;
-                  const label = current.min !== null ? current.min + i : i;
-
-                  return (
-                    <g key={`count-${i}`}>
-                      <rect
-                        className="cts-cell-rect"
-                        x={i * countW}
-                        y={countRowY}
-                        width={countW}
-                        height={CELL_H}
-                        rx="8"
-                        fill="transparent"
-                        stroke={isActive ? "#ff6a3d" : "#33333a"}
-                        strokeWidth={isActive ? 2 : 1.4}
-                      />
-
-                      <text
-                        x={i * countW + countW / 2}
-                        y={countRowY - 14}
-                        textAnchor="middle"
-                        className="cts-bucket-label"
-                      >
-                        {label}
-                      </text>
-
-                      <text
-                        x={i * countW + countW / 2}
-                        y={countRowY + CELL_H / 2 + 5}
-                        textAnchor="middle"
-                        className="cts-cell-value"
-                        fill={isActive ? "#ff6a3d" : "#7c8cff"}
-                      >
-                        {count}
-                      </text>
-                    </g>
-                  );
-                })}
-
-                {output.map((val, idx) => {
-                  const isTarget = idx === current.outputIndex;
-                  const isPlaced = val !== null && val !== undefined;
-
-                  return (
-                    <g key={`out-${idx}`}>
-                      <rect
-                        className="cts-cell-rect"
-                        x={idx * CELL_W}
-                        y={outputRowY}
-                        width={CELL_W}
-                        height={CELL_H}
-                        rx="8"
-                        fill={isPlaced ? "rgba(180, 255, 57, 0.08)" : "transparent"}
-                        stroke={isTarget ? "#ff6a3d" : isPlaced ? "#b4ff39" : "#33333a"}
-                        strokeWidth={isTarget ? 2 : 1.4}
-                      />
-
-                      <text
-                        x={idx * CELL_W + CELL_W / 2}
-                        y={outputRowY + CELL_H / 2 + 5}
-                        textAnchor="middle"
-                        className="cts-cell-value"
-                        fill={isPlaced ? "#b4ff39" : "#4a4a4f"}
-                      >
-                        {isPlaced ? val : "·"}
-                      </text>
-                    </g>
-                  );
-                })}
-
-                {arrayPointerX !== null && (
-                  <polygon
-                    className="cts-pointer"
-                    style={{
-                      transform: `translate(${arrayPointerX}px, ${arrayRowY + CELL_H + 12}px)`,
-                    }}
-                    points="0,-7 -6,4 6,4"
-                    fill="#ff6a3d"
-                  />
-                )}
-
-                {outputPointerX !== null && (
-                  <polygon
-                    className="cts-pointer"
-                    style={{
-                      transform: `translate(${outputPointerX}px, ${outputRowY - 12}px)`,
-                    }}
-                    points="0,7 -6,-4 6,-4"
-                    fill="#b4ff39"
-                  />
-                )}
-
-                {marker && (
-                  <g
-                    className="cts-marker"
-                    style={{
-                      transform: `translate(${marker.x}px, ${marker.y}px)`,
-                      opacity: marker.visible ? 1 : 0,
-                    }}
-                  >
-                    <circle r="13" fill="#0a0a0b" stroke={marker.color} strokeWidth="2" />
-                    <text
-                      textAnchor="middle"
-                      dy="5"
-                      className="cts-marker-value"
-                      fill={marker.color}
-                    >
-                      {marker.value}
-                    </text>
-                  </g>
-                )}
-              </svg>
-            </div>
-
-            <p className="cts-status">{current.description}</p>
-          </div>
-
-          <div className="cts-code-panel">
-            <div className="cts-code-header">
-              <div className="cts-dummy-btns">
-                <span className="cts-red-btn"></span>
-                <span className="cts-yellow-btn"></span>
-                <span className="cts-green-btn"></span>
-                <span className="cts-filename">count_sort.cpp</span>
-              </div>
-
-              <span className="cts-header-complexity">O(n + k)</span>
-            </div>
-
-            <pre className="cts-code-block">
-              {
-                CodeLines.map((line, i) => {
-                  return (
-                    <div
-                      key={i}
-                      className={`cts-code-line ${current.codeLine === i + 1 ? "cts-code-line-active" : ""}`}
-                    >
-                      <span className="cts-line-no">{i + 1}</span>
-                      {line}
-                    </div>
-                  );
-                })
-              }
-            </pre>
-          </div>
-        </div>
-
-        <div className="cts-controls">
-          <button className="cts-icon-btn" onClick={reset}>
-            <ResetIcon />
-          </button>
-
-          <button
-            className="cts-icon-btn"
-            onClick={stepBack}
-            disabled={index === 0}
-          >
-            <StepBackIcon />
-          </button>
-
-          <button className="cts-play-btn" onClick={togglePlay}>
-            {playing ? <PauseIcon /> : <PlayIcon />}
-          </button>
-
-          <button
-            className="cts-icon-btn"
-            onClick={stepForward}
-            disabled={index === steps.length - 1}
-          >
-            <StepForwardIcon />
-          </button>
-
-          <button className="cts-shuffle-btn" onClick={shuffle}>
-            <ShuffleIcon />
-            Shuffle
-          </button>
-
-          <div className="cts-speed">
-            <span>SPEED</span>
-
-            <input
-              type="range"
-              min="1"
-              max="10"
-              value={speed}
-              onChange={(e) => setSpeed(Number(e.target.value))}
-            />
-          </div>
-
-          <span className="cts-steps">
-            {index + 1} / {steps.length}
-          </span>
-        </div>
-
-        <div className="cts-stats">
-          <span>
-            increments: <b>{current.increments}</b>
-          </span>
-
-          <span>
-            placements: <b>{current.placements}</b>
-          </span>
-        </div>
-      </div>
-    </div>
+    <Lesson
+      steps={steps}
+      playback={playback}
+      timeline={(st) => st.title}
+      onShuffle={() => {
+        setSeed(randomSmall());
+        reset();
+      }}
+      complexity={[
+        { label: "time", value: "O(n + k)" },
+        { label: "space", value: "O(n + k)" },
+      ]}
+      stage={
+        <IsoRows
+          label="Count sort"
+          extraTop={1.2}
+          rows={[
+            { key: "in", y: 0, cells: inputCells, slots: SIZE, name: "input", callouts: s.active !== null && s.phase !== "done" ? [{ index: s.active, text: `${seed[s.active]}`, small: true }] : [] },
+            { key: "count", y: y1, cells: countCells, slots: SIZE, name: "count", indexLabels: Array.from({ length: range }, (_, i) => i + mn), indexHighlight: s.slot !== null ? [s.slot] : [] },
+            { key: "out", y: y2, cells: outCells, slots: SIZE, name: "output", indexHighlight: s.outAt !== null ? [s.outAt] : [] },
+          ]}
+        />
+      }
+      narration={{ tag: TAGS[s.phase], title: s.title, body: <p>{s.body}</p>, notice: s.notice }}
+      code={{ lines: CODE, active: s.line, file: "count_sort.cpp" }}
+      panels={[
+        {
+          title: "Counters",
+          rows: [
+            { label: "Value range", value: `${mn}–${mn + range - 1}` },
+            { label: s.prefix || s.phase === "place" ? "Running totals" : "Counts", value: s.count },
+          ],
+        },
+        { title: "Work done", rows: [{ label: "Operations", value: s.ops }] },
+      ]}
+      legend={[
+        { label: "Current value / counter", tone: "coral" },
+        { label: "Counted", tone: "soft" },
+        { label: "Running total", tone: "amber" },
+        { label: "Placed in output", tone: "sage" },
+      ]}
+    />
   );
 };
 

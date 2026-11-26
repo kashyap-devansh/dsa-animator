@@ -5,7 +5,6 @@ import SYLLABUS from "./syllabus";
 import { CATALOG, KIND, describe, encodeLesson, keyOf } from "./lesson";
 import { NOTES } from "../Notes/content";
 import { Reveal } from "../components/shared/effects";
-import { trackPointer } from "../components/shared/pointer";
 import "./Teach.css";
 
 const EASE = [0.22, 1, 0.36, 1];
@@ -39,49 +38,23 @@ function readDraft() {
 
 /* ---------- syllabus ---------- */
 
-const UnitCard = ({ unit, onTeach, onEdit, i }) => {
-  const counts = unit.items.reduce((acc, it) => ({ ...acc, [it.type]: (acc[it.type] ?? 0) + 1 }), {});
-
-  return (
-    <motion.article
-      className="tp-unit spotlight spotlight-relative"
-      onPointerMove={trackPointer}
-      initial={{ opacity: 0, y: 26 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-8% 0px" }}
-      transition={{ duration: 0.55, delay: (i % 3) * 0.07, ease: EASE }}
-    >
-      <div className="tp-unit-top">
-        <span className="tp-unit-num">{unit.unit}</span>
-        <span className="tp-unit-hours">≈ {unit.hours} hrs</span>
-      </div>
-      <h3>{unit.title}</h3>
-      <p>{unit.outcome}</p>
-
-      <div className="tp-unit-chips">
-        {unit.items.map((it, k) => (
-          <span key={k} className={`tp-chip tone-${KIND[it.type].tone}`} title={describe(it)?.title}>
-            {describe(it)?.title.replace(/ quiz$/, "")}
-          </span>
-        ))}
-      </div>
-
-      <div className="tp-unit-foot">
-        <span className="tp-unit-counts">
-          {counts.v ?? 0} visualizers · {counts.n ?? 0} notes · {counts.q ?? 0} quizzes
-        </span>
-        <div>
-          <button type="button" className="tp-ghost" onClick={onEdit}>
-            Customise
-          </button>
-          <button type="button" className="tp-solid" onClick={onTeach}>
-            Teach this unit →
-          </button>
-        </div>
-      </div>
-    </motion.article>
-  );
-};
+// One syllabus unit: its title and what students will be able to do.
+// The row teaches the unit; "Customise" opens it in the builder.
+const UnitCard = ({ unit, onTeach, onEdit }) => (
+  <div className="tp-unit-row">
+    <button type="button" className="tp-unit-main" onClick={onTeach}>
+      <span className="tp-unit-n">{unit.unit.replace(/\D/g, "").padStart(2, "0")}</span>
+      <span className="tp-unit-text">
+        <h3>{unit.title}</h3>
+        <p>{unit.outcome}</p>
+      </span>
+      <span className="tp-unit-go" aria-hidden="true">→</span>
+    </button>
+    <button type="button" className="tp-unit-edit" onClick={onEdit}>
+      Customise
+    </button>
+  </div>
+);
 
 /* ---------- builder ---------- */
 
@@ -144,7 +117,7 @@ const Builder = ({ draft, setDraft }) => {
 
         <Reorder.Group axis="y" values={rows} onReorder={setRows} className="tp-rows" data-lenis-prevent>
           <AnimatePresence initial={false}>
-            {rows.map((row, i) => {
+            {rows.map((row) => {
               const info = describe(row);
               return (
                 <Reorder.Item
@@ -157,7 +130,6 @@ const Builder = ({ draft, setDraft }) => {
                   whileDrag={{ scale: 1.02, boxShadow: "0 18px 40px rgba(0,0,0,0.5)" }}
                 >
                   <span className="tp-grip" aria-hidden="true">⋮⋮</span>
-                  <span className="tp-row-num">{String(i + 1).padStart(2, "0")}</span>
                   <span className={`tp-row-kind tone-text tone-${KIND[row.type].tone}`}>{KIND[row.type].label}</span>
                   <span className="tp-row-title">{info.title}</span>
                   <button type="button" className="tp-row-x" onClick={() => remove(row.uid)} aria-label={`Remove ${info.title}`}>
@@ -198,7 +170,6 @@ const Builder = ({ draft, setDraft }) => {
               <button type="button" onClick={() => add(c)}>
                 <span className={`tp-row-kind tone-text tone-${KIND[c.type].tone}`}>{KIND[c.type].label}</span>
                 <span className="tp-row-title">{c.title}</span>
-                <span className="tp-res-group">{c.group}</span>
                 <span className="tp-add">+</span>
               </button>
             </li>
@@ -295,7 +266,6 @@ const TeachPage = () => {
               <span className="tp-flow-num">{f.step}</span>
               <h3>{f.title}</h3>
               <p>{f.text}</p>
-              <kbd>{f.key}</kbd>
             </motion.div>
           ))}
         </div>
@@ -308,8 +278,8 @@ const TeachPage = () => {
           <p>Mapped to a standard undergraduate Data Structures course. Each unit opens as a ready-to-teach sequence — or customise it first.</p>
         </Reveal>
         <div className="tp-units">
-          {SYLLABUS.map((unit, i) => (
-            <UnitCard key={unit.id} unit={unit} i={i} onTeach={() => teach(unit)} onEdit={() => edit(unit)} />
+          {SYLLABUS.map((unit) => (
+            <UnitCard key={unit.id} unit={unit} onTeach={() => teach(unit)} onEdit={() => edit(unit)} />
           ))}
         </div>
       </section>

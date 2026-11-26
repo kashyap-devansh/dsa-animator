@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Logo from "../../shell/Logo";
 import "./Footer.css";
 
 const Footer = () => {
@@ -10,7 +11,7 @@ const Footer = () => {
 
           <div className="footer-brand">
             <h2>
-              DSA<span>/</span>ANIMATOR
+              <Logo size={30} /> DSA <span>Animator</span>
             </h2>
 
             <p>

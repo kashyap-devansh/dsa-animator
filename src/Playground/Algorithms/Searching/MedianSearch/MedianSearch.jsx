@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useMemo, useState } from "react";
 import { randomArray } from "../../../shared/randomArray";
 import { usePlayback } from "../../../shared/usePlayback";
-import { ResetIcon, StepBackIcon, PlayIcon, PauseIcon, StepForwardIcon, ShuffleIcon } from "../../../shared/icons";
-import "./MedianSearch.css";
+import Lesson from "../../../../lesson/Lesson";
+import IsoArray from "../../../../iso/IsoArray";
+import { trackIds } from "../../../../iso/trackIds";
 
 function quickSelectSteps(input) {
   const arr = [...input];
@@ -96,256 +96,135 @@ function quickSelectSteps(input) {
   return steps;
 }
 
-const CodeLines = [
-  <>
-    <span className="mds-type">int</span> quickSelect
-    <span className="mds-symbol">(</span><span className="mds-type">vector</span><span className="mds-symbol">&lt;</span><span className="mds-type">int</span><span className="mds-symbol">&gt;&amp;</span> arr<span className="mds-symbol">,</span> <span className="mds-type">int</span> l<span className="mds-symbol">,</span> <span className="mds-type">int</span> r<span className="mds-symbol">,</span> <span className="mds-type">int</span> k<span className="mds-symbol">)</span> <span className="mds-symbol">{"{"}</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;<span className="mds-keyword">if</span> <span className="mds-symbol">(</span>l <span className="mds-symbol">==</span> r<span className="mds-symbol">)</span> <span className="mds-keyword">return</span> l<span className="mds-symbol">;</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;<span className="mds-type">int</span> p <span className="mds-symbol">=</span> partition<span className="mds-symbol">(</span>arr<span className="mds-symbol">,</span> l<span className="mds-symbol">,</span> r<span className="mds-symbol">);</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;<span className="mds-keyword">if</span> <span className="mds-symbol">(</span>k <span className="mds-symbol">==</span> p<span className="mds-symbol">)</span> <span className="mds-keyword">return</span> p<span className="mds-symbol">;</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;<span className="mds-keyword">else if</span> <span className="mds-symbol">(</span>k <span className="mds-symbol">&lt;</span> p<span className="mds-symbol">)</span> <span className="mds-keyword">return</span> quickSelect<span className="mds-symbol">(</span>arr<span className="mds-symbol">,</span> l<span className="mds-symbol">,</span> p <span className="mds-symbol">-</span> <span className="mds-number">1</span><span className="mds-symbol">,</span> k<span className="mds-symbol">);</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;<span className="mds-keyword">else</span> <span className="mds-keyword">return</span> quickSelect<span className="mds-symbol">(</span>arr<span className="mds-symbol">,</span> p <span className="mds-symbol">+</span> <span className="mds-number">1</span><span className="mds-symbol">,</span> r<span className="mds-symbol">,</span> k<span className="mds-symbol">);</span>
-  </>,
-
-  <>
-    <span className="mds-symbol">{"}"}</span>
-  </>,
-
-  <>&nbsp;</>,
-
-  <>
-    <span className="mds-type">int</span> partition
-    <span className="mds-symbol">(</span><span className="mds-type">vector</span><span className="mds-symbol">&lt;</span><span className="mds-type">int</span><span className="mds-symbol">&gt;&amp;</span> arr<span className="mds-symbol">,</span> <span className="mds-type">int</span> l<span className="mds-symbol">,</span> <span className="mds-type">int</span> r<span className="mds-symbol">)</span> <span className="mds-symbol">{"{"}</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;<span className="mds-type">int</span> pivot <span className="mds-symbol">=</span> arr<span className="mds-symbol">[</span>r<span className="mds-symbol">];</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;<span className="mds-type">int</span> i <span className="mds-symbol">=</span> l <span className="mds-symbol">-</span> <span className="mds-number">1</span><span className="mds-symbol">;</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;<span className="mds-keyword">for</span> <span className="mds-symbol">(</span><span className="mds-type">int</span> j <span className="mds-symbol">=</span> l<span className="mds-symbol">;</span> j <span className="mds-symbol">&lt;</span> r<span className="mds-symbol">;</span> j<span className="mds-symbol">++)</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;&nbsp;&nbsp;<span className="mds-keyword">if</span> <span className="mds-symbol">(</span>arr<span className="mds-symbol">[</span>j<span className="mds-symbol">]</span> <span className="mds-symbol">&lt;=</span> pivot<span className="mds-symbol">)</span> swap<span className="mds-symbol">(</span>arr<span className="mds-symbol">[++</span>i<span className="mds-symbol">],</span> arr<span className="mds-symbol">[</span>j<span className="mds-symbol">]);</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;swap<span className="mds-symbol">(</span>arr<span className="mds-symbol">[</span>i <span className="mds-symbol">+</span> <span className="mds-number">1</span><span className="mds-symbol">],</span> arr<span className="mds-symbol">[</span>r<span className="mds-symbol">]);</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;<span className="mds-keyword">return</span> i <span className="mds-symbol">+</span> <span className="mds-number">1</span><span className="mds-symbol">;</span>
-  </>,
-
-  <>
-    <span className="mds-symbol">{"}"}</span>
-  </>,
+const CODE = [
+  "int quickSelect(vector<int>& a, int l, int r, int k) {",
+  "  if (l == r) return l;",
+  "  int p = partition(a, l, r);",
+  "  if (k == p) return p;",
+  "  if (k < p) return quickSelect(a, l, p - 1, k);",
+  "  return quickSelect(a, p + 1, r, k);",
+  "}",
+  "",
+  "int partition(vector<int>& a, int l, int r) {",
+  "  int pivot = a[r];",
+  "  int i = l - 1;",
+  "  for (int j = l; j < r; j++)",
+  "    if (a[j] <= pivot) swap(a[++i], a[j]);",
+  "  swap(a[i + 1], a[r]);",
+  "  return i + 1;",
+  "}",
 ];
 
-const fmt = (v) => (v === null || v === undefined || v === -1 ? "–" : v);
+const SIZE = 9;
+
+function tagOf(s) {
+  if (s.foundIdx >= 0) return "Found";
+  if (s.codeLine === 1) return "Recurse";
+  if (s.codeLine >= 10 && s.codeLine <= 15) return "Partition";
+  return "Narrow";
+}
 
 const MedianSearch = () => {
-  const [seed, setSeed] = useState(randomArray(11));
+  const [seed, setSeed] = useState(() => randomArray(SIZE));
+  const steps = useMemo(() => {
+    const raw = quickSelectSteps(seed);
+    const k = raw[0].k;
+    return [
+      {
+        ...raw[0],
+        codeLine: 1,
+        description: "Find the middle value without sorting",
+        body: `The median of ${seed.length} values is the one that would sit at index ${k} if the row were sorted. Quickselect partitions like quick sort, but only follows the side that contains index ${k}.`,
+        notice: "Quick sort recurses into both sides. Quickselect throws one away each time, so on average it does O(n) work instead of O(n log n).",
+        range: [0, seed.length - 1],
+        pivot: -1,
+        compare: -1,
+        swap: [],
+      },
+      ...raw,
+    ];
+  }, [seed]);
+  const ids = useMemo(() => trackIds(steps.map((s) => s.array)), [steps]);
+  const playback = usePlayback(steps.length);
+  const { index, reset } = playback;
+  const s = steps[index];
+  const [l, r] = s.range;
+  const [head, ...rest] = s.description.split(" — ");
 
-  const steps = quickSelectSteps(seed);
-  const { index, playing, speed, setSpeed, reset, stepForward, stepBack, togglePlay } = usePlayback(steps.length);
-  const current = steps[index];
-  const isDone = current.foundIdx !== -1;
+  const cells = s.array.map((value, i) => {
+    let tone = "idle";
+    let lift = 0;
+    if (i === s.foundIdx) {
+      tone = "sage";
+      lift = 0.5;
+    } else if (s.swap.includes(i)) {
+      tone = "amber";
+      lift = 0.5;
+    } else if (i === s.pivot) tone = "coral";
+    else if (i === s.compare) {
+      tone = "soft";
+      lift = 0.35;
+    } else if (i < l || i > r) tone = "ghost";
+    return { id: ids[index][i], value, tone, lift };
+  });
 
-  const shuffle = () => {
-    setSeed(randomArray(11));
-    reset();
-  };
+  const pointers = [{ index: s.k, text: "k", tone: "coral" }];
+  if (s.compare >= 0) pointers.push({ index: s.compare, text: "j" });
+
+  const callouts =
+    s.foundIdx >= 0
+      ? [{ index: s.foundIdx, text: `median = ${s.array[s.foundIdx]}`, tone: "sage" }]
+      : s.pivot >= 0 && s.compare < 0
+        ? [{ index: s.pivot, text: "pivot", small: true }]
+        : [];
 
   return (
-    <div className="median-search-wrapper">
-      <div className="median-search">
-        <p className="mds-eyebrow">searching</p>
-
-        <h1 className="mds-title">Median Search</h1>
-
-        <div className="mds-header">
-          <p className="mds-blurb">
-            Finds the median by partitioning like Quick Sort, but only recurses into the half that holds it.
-          </p>
-
-          <div className="mds-complexity">
-            <div>
-              <div className="mds-complexity-label">time</div>
-              <div className="mds-time-value">O(n)</div>
-            </div>
-
-            <div>
-              <div className="mds-complexity-label">space</div>
-              <div className="mds-space-value">O(log n)</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="mds-grid">
-          <div className="mds-stage">
-            <div className="mds-vars">
-              <span><b>range</b>[{current.range[0]}, {current.range[1]}]</span>
-              <span><b>k</b>{fmt(current.k)}</span>
-              <span><b>pivot</b>{fmt(current.pivot)}</span>
-            </div>
-
-            <div className="mds-boxs">
-              {current.array.map((value, i) => {
-                const inRange = i >= current.range[0] && i <= current.range[1];
-                const isFound = i === current.foundIdx;
-                const isPivot = i === current.pivot;
-                const isCompare = i === current.compare;
-                const isSwap = current.swap.includes(i);
-
-                let borderColor = "#262629";
-                let color = "#f3f2ed";
-
-                if (isFound) {
-                  borderColor = "#b4ff39";
-                  color = "#b4ff39";
-                } else if (isPivot) {
-                  borderColor = "#7c8cff";
-                  color = "#7c8cff";
-                } else if (isSwap) {
-                  borderColor = "#ffbd2e";
-                  color = "#ffbd2e";
-                } else if (isCompare) {
-                  borderColor = "#ff6a3d";
-                  color = "#ff6a3d";
-                }
-
-                return (
-                  <div key={i} className="mds-box-wrapper">
-                    <div className="mds-index">
-                      {i}
-                      {i === current.k && <span className="mds-k-marker">k</span>}
-                    </div>
-
-                    <motion.div
-                      className={`mds-box ${inRange ? "" : "dull-box"}`}
-                      animate={{ borderColor, color }}
-                    >
-                      {value}
-                    </motion.div>
-                  </div>
-                );
-              })}
-            </div>
-
-            <p className="mds-status">{current.description}</p>
-          </div>
-
-          <div className="mds-code-panel">
-            <div className="mds-code-header">
-              <div className="mds-dummy-btns">
-                <span className="mds-red-btn"></span>
-                <span className="mds-yellow-btn"></span>
-                <span className="mds-green-btn"></span>
-                <span className="mds-filename">medianSearch.cpp</span>
-              </div>
-
-              <span className="mds-header-complexity">O(n)</span>
-            </div>
-
-            <pre className="mds-code-block">
-              {CodeLines.map((line, i) => {
-                return (
-                  <div
-                    key={i}
-                    className={`mds-code-line ${current.codeLine === i + 1 ? "mds-code-line-active" : ""}`}
-                  >
-                    <span className="mds-line-no">{i + 1}</span>
-                    {line}
-                  </div>
-                );
-              })}
-            </pre>
-          </div>
-        </div>
-
-        <div className="mds-controls">
-          <button className="mds-icon-btn" onClick={reset}>
-            <ResetIcon />
-          </button>
-
-          <button
-            className="mds-icon-btn"
-            onClick={stepBack}
-            disabled={index === 0}
-          >
-            <StepBackIcon />
-          </button>
-
-          <button className="mds-play-btn" onClick={togglePlay}>
-            {playing ? <PauseIcon /> : <PlayIcon />}
-          </button>
-
-          <button
-            className="mds-icon-btn"
-            onClick={stepForward}
-            disabled={index === steps.length - 1}
-          >
-            <StepForwardIcon />
-          </button>
-
-          <button className="mds-shuffle-btn" onClick={shuffle}>
-            <ShuffleIcon />
-            Shuffle
-          </button>
-
-          <div className="mds-speed">
-            <span>SPEED</span>
-
-            <input
-              type="range"
-              min="1"
-              max="10"
-              value={speed}
-              onChange={(e) => setSpeed(Number(e.target.value))}
-            />
-          </div>
-
-          <span className="mds-steps">
-            {index + 1} / {steps.length}
-          </span>
-        </div>
-
-        <div className="mds-stats">
-          <span>
-            comparisons: <b>{current.comparisons}</b>
-          </span>
-
-          <span>
-            swaps: <b>{current.swaps}</b>
-          </span>
-
-          <span>
-            median: <b>{isDone ? current.array[current.foundIdx] : "–"}</b>
-          </span>
-        </div>
-      </div>
-    </div>
+    <Lesson
+      steps={steps}
+      playback={playback}
+      timeline={(st) => st.description.split(" — ")[0]}
+      onShuffle={() => {
+        setSeed(randomArray(SIZE));
+        reset();
+      }}
+      complexity={[
+        { label: "average", value: "O(n)" },
+        { label: "worst", value: "O(n²)" },
+        { label: "space", value: "O(log n)" },
+      ]}
+      stage={<IsoArray cells={cells} slots={SIZE} pointers={pointers} callouts={callouts} label="Quickselect" />}
+      narration={{
+        tag: tagOf(s),
+        title: head,
+        body: <p>{s.body ?? (rest.length ? rest.join(" — ") : `Working on indices ${l}–${r}. The median belongs at index ${s.k}.`)}</p>,
+        notice: s.notice,
+      }}
+      code={{ lines: CODE, active: s.codeLine, file: "quick_select.cpp" }}
+      panels={[
+        {
+          title: "Looking for",
+          rows: [
+            { label: "Median index k", value: s.k, tone: "coral" },
+            { label: "Live range", value: `${l}–${r}` },
+            { label: "Pivot", value: s.pivot >= 0 ? s.array[s.pivot] : null },
+          ],
+        },
+        {
+          title: "Work done",
+          rows: [
+            { label: "Comparisons", value: s.comparisons },
+            { label: "Swaps", value: s.swaps },
+          ],
+        },
+      ]}
+      legend={[
+        { label: "Pivot", tone: "coral" },
+        { label: "Comparing", tone: "soft" },
+        { label: "Swapping", tone: "amber" },
+        { label: "Median", tone: "sage" },
+        { label: "Thrown away", tone: "ghost" },
+      ]}
+    />
   );
 };
 

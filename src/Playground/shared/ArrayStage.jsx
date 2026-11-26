@@ -1,51 +1,47 @@
-import { motion } from "framer-motion";
+import IsoArray from "../../iso/IsoArray";
 import { Variables } from "./StepperPage";
-import "./ArrayStage.css";
 
-// Array cells with index labels, highlight roles, pointer tags and a
-// variables strip. Pass `keys` to make cells glide when elements swap.
-const ArrayStage = ({ values, keys, roles = {}, range, pointers = [], vars, caption, compact = false }) => {
-  const columns = { gridTemplateColumns: `repeat(${values.length}, minmax(0, 42px))` };
-  const dimmed = (i) => range && (i < range[0] || i > range[1]);
+// Adapter: the older ArrayStage API (values, roles, range, pointers, vars)
+// drawn as an isometric row. Pass `keys` to make cubes glide when values move.
+
+const ROLE_TONE = {
+  probe: "coral",
+  active: "coral",
+  compare: "soft",
+  found: "sage",
+  done: "sage",
+  include: "sage",
+  miss: "dark",
+  exclude: "dark",
+  block: "soft",
+  swap: "amber",
+  fixed: "sage",
+};
+
+const PIN_TONE = { orange: "coral", lime: "sage" };
+
+const ArrayStage = ({ values, keys, roles = {}, range, pointers = [], vars, caption }) => {
+  const cells = values.map((value, i) => {
+    const role = roles[i];
+    const dim = range && (i < range[0] || i > range[1]);
+    return {
+      id: keys ? keys[i] : i,
+      value,
+      tone: role ? ROLE_TONE[role] ?? "soft" : dim ? "ghost" : "idle",
+      lift: role === "probe" || role === "active" || role === "swap" ? 0.35 : 0,
+    };
+  });
 
   return (
-    <div className={`as-stage ${compact ? "as-compact" : ""}`}>
-      {caption && <p className="as-caption">{caption}</p>}
-
-      <div className="as-grid" style={columns}>
-        {values.map((_, i) => (
-          <span key={i} className="as-index">{i}</span>
-        ))}
-      </div>
-
-      <div className="as-grid" style={columns}>
-        {values.map((value, i) => (
-          <motion.div
-            key={keys ? keys[i] : i}
-            layout
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className={`as-cell ${roles[i] ? `as-${roles[i]}` : ""} ${dimmed(i) ? "as-dim" : ""}`}
-          >
-            {value}
-          </motion.div>
-        ))}
-      </div>
-
-      <div className="as-grid as-pointer-row" style={columns}>
-        {values.map((_, i) => (
-          <div key={i} className="as-pointers">
-            {pointers
-              .filter((p) => p.index === i)
-              .map((p) => (
-                <span key={p.label} className={`as-ptr as-ptr-${p.tone ?? "orange"}`}>
-                  {p.label}
-                </span>
-              ))}
-          </div>
-        ))}
-      </div>
-
-      {vars && <Variables items={vars} />}
+    <div className="lx-stage-wrap">
+      {caption && <p className="lx-stage-caption">{caption}</p>}
+      <IsoArray
+        cells={cells}
+        slots={values.length}
+        pointers={pointers.filter((p) => p.index >= 0 && p.index < values.length).map((p) => ({ index: p.index, text: p.label, tone: PIN_TONE[p.tone] }))}
+        label={caption || "Array"}
+      />
+      {vars?.length > 0 && <Variables items={vars} />}
     </div>
   );
 };

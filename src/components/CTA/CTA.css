@@ -1,77 +1,78 @@
 .cta {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  background: #080808;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.bg {
-  position: absolute;
-  inset: 0;
-}
-
-.blob {
-  position: absolute;
-  width: 800px;
-  height: 800px;
-  border-radius: 50%;
-  filter: blur(100px);
-  will-change: transform;
-  background: radial-gradient(circle, currentColor 0%, transparent 70%);
-}
-
-.orange {
-  color: #ff6b3d;
-  top: -10rem;
-  left: 32%;
-  transform: translateX(-50%);
-}
-
-.green {
-  color: #b4ff39;
-  bottom: -12rem;
-  right: 15%;
+  border-bottom: 1px solid var(--line);
 }
 
 .cta-content {
-  position: relative;
-  z-index: 10;
-  text-align: center;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 48px;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 110px 28px;
 }
+
+.cta-stairs {
+  width: 240px;
+}
+
+.cta-top { fill: var(--iso-top); stroke: var(--ink); }
+.cta-left { fill: var(--iso-left); stroke: var(--ink); }
+.cta-right { fill: var(--iso-right); stroke: var(--ink); }
+.cta-hot { fill: var(--coral); stroke: var(--ink); }
+[data-theme="dark"] .cta-stairs path { stroke: var(--page); }
 
 .cta-eyebrow {
-  display: inline-block;
-  margin-bottom: 0.8rem;
-  color: #ff6a3d;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.8rem;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
+  margin: 0 0 14px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--coral);
 }
 
-.cta-content h1 {
-  color: #f3f2ed;
-  font-size: clamp(4rem, 8vw, 8rem);
-  font-weight: 500;
-  line-height: .95;
-  letter-spacing: -4px;
-  font-family: "Space Grotesk";
-  margin-bottom: 0;
-  margin-top: 0;
+.cta h1 {
+  margin: 0;
+  font-size: clamp(36px, 4.6vw, 64px);
+  line-height: 1.02;
+  font-weight: 780;
+  letter-spacing: -0.05em;
+}
+
+.cta-actions p {
+  margin: 12px 0 0;
+  font-size: 13.5px;
+  color: var(--ink-3);
 }
 
 .cta-btn {
-  margin-top: 48px;
-  padding: 18px 42px;
-  border: none;
-  border-radius: 999px;
-  background: #ff6b3d;
-  color: #111;
-  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 52px;
+  padding: 0 24px;
+  border: 1px solid var(--coral);
+  border-radius: var(--radius);
+  background: var(--coral);
+  color: var(--on-coral);
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
-  transition: .3s;
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.12);
+  transition: background 0.15s;
+}
+
+.cta-btn:hover {
+  background: var(--coral-deep);
+}
+
+@media (max-width: 1000px) {
+  .cta-content {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+    padding: 72px 28px;
+  }
+
+  .cta-stairs {
+    width: 180px;
+  }
 }

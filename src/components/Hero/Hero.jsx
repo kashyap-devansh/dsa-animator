@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { animate, motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "framer-motion";
 import searchIndex from "../../Playground/shared/searchIndex.js";
+import IsoArray from "../../iso/IsoArray";
+import StageGrid from "../../lesson/StageGrid";
+import { FIRST_LESSON } from "../../course/course";
 import "./Hero.css";
 
 const VISUALIZER_COUNT = searchIndex.filter((item) => item.active).length;
@@ -51,102 +54,55 @@ const rise = (delay) => ({
   transition: { duration: 0.9, delay, ease: [0.22, 1, 0.36, 1] },
 });
 
+// Kept to about the same length so each one fits on a single line.
 const PHRASES = [
-  "Watch Algorithms Think.",
-  "See Complexity Unfold.",
-  "Feel The Recursion.",
+  "Watch it think.",
+  "See every swap.",
+  "Feel recursion.",
+  "Step through it.",
 ];
 
-function SortBars() {
-  const BARS = 42;
+// Bubble sort on an isometric slab, looping: the hero's centrepiece.
+function buildFrames() {
+  const arr = Array.from({ length: 12 }, () => 10 + Math.floor(Math.random() * 90));
+  const items = arr.map((v, id) => ({ id, v }));
+  const frames = [];
+  for (let i = 0; i < items.length - 1; i++) {
+    for (let j = 0; j < items.length - 1 - i; j++) {
+      frames.push({ items: [...items], cmp: [j, j + 1], sorted: items.length - i });
+      if (items[j].v > items[j + 1].v) {
+        [items[j], items[j + 1]] = [items[j + 1], items[j]];
+        frames.push({ items: [...items], cmp: [j, j + 1], swap: true, sorted: items.length - i });
+      }
+    }
+  }
+  frames.push({ items: [...items], cmp: [], sorted: 0 });
+  return frames;
+}
 
-  const [values, setValues] = useState(() =>
-    Array.from({ length: BARS }, () => Math.random() * 100 + 10)
-  );
-
-  const [active, setActive] = useState([-1, -1]);
-  const [sortedFrom, setSortedFrom] = useState(BARS);
-
-  const iRef = useRef(0);
-  const jRef = useRef(0);
-  const holdRef = useRef(0);
+function HeroSort() {
+  const reduced = useReducedMotion();
+  const [run, setRun] = useState(() => ({ frames: buildFrames(), i: 0 }));
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setValues((prev) => {
-        const arr = [...prev];
+    if (reduced) return;
+    const last = run.i >= run.frames.length - 1;
+    const t = setTimeout(() => setRun((r) => (last ? { frames: buildFrames(), i: 0 } : { ...r, i: r.i + 1 })), last ? 2400 : 380);
+    return () => clearTimeout(t);
+  }, [run, reduced]);
 
-        const i = iRef.current;
-        const j = jRef.current;
+  const f = run.frames[reduced ? run.frames.length - 1 : run.i];
+  const cells = f.items.map((item, k) => ({
+    id: item.id,
+    value: item.v,
+    tone: f.cmp.includes(k) ? (f.swap ? "amber" : "coral") : k >= f.sorted ? "sage" : "idle",
+    lift: f.cmp.includes(k) ? (f.swap ? 0.5 : 0.3) : 0,
+  }));
+  const callouts = f.cmp.length
+    ? [{ index: f.cmp[1], text: f.swap ? "swap" : `${f.items[f.cmp[0]].v} vs ${f.items[f.cmp[1]].v}`, small: true }]
+    : [{ index: f.items.length - 1, text: "sorted", tone: "sage", small: true }];
 
-        if (i >= arr.length - 1) {
-          // Hold the fully sorted (all lime) state for a beat before reshuffling.
-          setActive([-1, -1]);
-          setSortedFrom(0);
-          if (holdRef.current++ < 28) return prev;
-
-          holdRef.current = 0;
-          iRef.current = 0;
-          jRef.current = 0;
-          setSortedFrom(BARS);
-
-          return Array.from(
-            { length: BARS },
-            () => Math.random() * 100 + 10
-          );
-        }
-
-        if (arr[j] > arr[j + 1]) {
-          [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
-        }
-
-        setActive([j, j + 1]);
-
-        jRef.current++;
-
-        if (jRef.current >= arr.length - 1 - i) {
-          jRef.current = 0;
-          iRef.current++;
-          setSortedFrom(arr.length - iRef.current);
-        }
-
-        return arr;
-      });
-    }, 55);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div className="hero_bars">
-      {
-        values.map((value, index) => (
-          <motion.div
-            key={index}
-            layout
-            animate={{
-              height: value * 3.3,
-              backgroundColor:
-                index === active[0] || index === active[1]
-                  ? "#ff6a3d"
-                  : index >= sortedFrom
-                    ? "#34441b"
-                    : "#2a2a30",
-              boxShadow:
-                index === active[0] || index === active[1]
-                  ? "0 0 22px rgba(255, 106, 61, 0.55)"
-                  : "0 0 0px rgba(255, 106, 61, 0)",
-            }}
-            transition={{
-              duration: 0.12,
-              ease: "easeInOut",
-            }}
-            className="hero_bar"
-          />
-        ))
-      }
-    </div>
-  );
+  return <IsoArray cells={cells} slots={f.items.length} heights="value" maxValue={100} callouts={callouts} label="Bubble sort running" />;
 }
 
 const Hero = () => {
@@ -185,24 +141,11 @@ const Hero = () => {
   const reduced = useReducedMotion();
   const sectionRef = useRef(null);
 
-  // Feed the cursor position to the spotlight layers without re-rendering.
-  const trackSpotlight = (e) => {
-    if (e.pointerType !== "mouse") return;
-    const rect = sectionRef.current.getBoundingClientRect();
-    sectionRef.current.style.setProperty("--mx", `${e.clientX - rect.left}px`);
-    sectionRef.current.style.setProperty("--my", `${e.clientY - rect.top}px`);
-  };
-
   const enter = (delay) => (reduced ? {} : rise(delay));
 
   return (
-    <section className="hero" ref={sectionRef} onPointerMove={trackSpotlight}>
-      <div className="hero_grid" />
-      <div className="hero_grid hero_grid_lit" />
-
-      <SortBars />
-
-      <div className="hero_spot" />
+    <section className="hero" ref={sectionRef}>
+      <StageGrid />
 
       <div className="hero_content">
         <motion.span className="hero_tag" {...enter(0.05)}>
@@ -219,8 +162,8 @@ const Hero = () => {
         </motion.p>
 
         <motion.div className="hero_actions" {...enter(0.45)}>
-          <MagneticLink to="/playground" className="hero_btn hero_btn_primary">
-            Open the playground <span aria-hidden="true">→</span>
+          <MagneticLink to={FIRST_LESSON} className="hero_btn hero_btn_primary">
+            Start learning <span aria-hidden="true">→</span>
           </MagneticLink>
 
           <Link to="/notes" className="hero_btn hero_btn_ghost">
@@ -235,6 +178,10 @@ const Hero = () => {
           <i />
           <span>every step, in code</span>
         </motion.p>
+      </div>
+
+      <div className="hero_stage">
+        <HeroSort />
       </div>
 
       <span className="scroll">scroll</span>

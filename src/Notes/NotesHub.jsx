@@ -4,48 +4,21 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { NOTE_GROUPS, NOTES } from "./content";
 import { useLearned } from "./useLearned";
 import { Progress } from "./NotesSidebar";
-import { BigO } from "./CheatSheet";
 import CheatSheet from "./CheatSheet";
 import GrowthChart from "./GrowthChart";
-import NotesSection from "../components/NotesSection/NotesSection.jsx";
 import { Reveal } from "../components/shared/effects";
-import { trackPointer } from "../components/shared/pointer";
 import "./Notes.css";
 
 const EASE = [0.22, 1, 0.36, 1];
 const QUESTIONS = NOTES.reduce((sum, n) => sum + n.quiz.length, 0);
 
-const FLOATERS = [
-  { text: "O(log n)", x: "8%", y: "22%", d: 0 },
-  { text: "T(n) = 2T(n/2) + n", x: "74%", y: "16%", d: 1.2 },
-  { text: "bf ∈ {−1, 0, 1}", x: "82%", y: "64%", d: 0.6 },
-  { text: "h(k) = k mod m", x: "4%", y: "70%", d: 1.8 },
-  { text: "2ⁿ − 1", x: "60%", y: "82%", d: 2.4 },
-];
 
-const TopicCard = ({ note, index, learned }) => (
-  <motion.div
-    layout
-    initial={{ opacity: 0, y: 24 }}
-    animate={{ opacity: 1, y: 0 }}
-    exit={{ opacity: 0, scale: 0.96 }}
-    transition={{ duration: 0.45, delay: Math.min(index, 8) * 0.04, ease: EASE }}
-  >
-    <Link to={`/notes/${note.slug}`} className={`nh-card spotlight spotlight-relative tone-${note.tone}`} onPointerMove={trackPointer}>
-      <div className="nh-card-top">
-        <span className={`na-level na-level-${note.level.toLowerCase()}`}>{note.level}</span>
-        {learned ? <span className="nh-card-done">✓ learned</span> : <span className="nh-card-min">{note.minutes} min</span>}
-      </div>
-
-      <h3>{note.title}</h3>
-      <p>{note.tldr}</p>
-
-      <div className="nh-card-foot">
-        {note.growth ? <span className="bo bo-good">interactive</span> : <BigO value={note.complexity.average} />}
-        <span className="nh-card-go">read →</span>
-      </div>
-    </Link>
-  </motion.div>
+// One topic: its title and a one-line summary. Nothing else.
+const TopicRow = ({ note, learned }) => (
+  <Link to={`/notes/${note.slug}`} className={`nh-row ${learned ? "nh-row-done" : ""}`}>
+    <h3>{note.title}</h3>
+    <p>{note.tldr}</p>
+  </Link>
 );
 
 const NotesHub = () => {
@@ -65,20 +38,6 @@ const NotesHub = () => {
         <div className="nh-hero-grid" aria-hidden="true" />
         <div className="nh-hero-glow" aria-hidden="true" />
 
-        {!reduced &&
-          FLOATERS.map((f) => (
-            <motion.span
-              key={f.text}
-              className="nh-floater"
-              style={{ left: f.x, top: f.y }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: [0, 0.55, 0.55, 0], y: [10, -14, -24, -40] }}
-              transition={{ duration: 9, delay: f.d, repeat: Infinity, repeatDelay: 1.5, ease: "easeInOut" }}
-              aria-hidden="true"
-            >
-              {f.text}
-            </motion.span>
-          ))}
 
         <div className="nh-hero-inner">
           <motion.span className="nh-eyebrow" initial={reduced ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
@@ -143,12 +102,10 @@ const NotesHub = () => {
                 </span>
               </div>
 
-              <div className="nh-grid">
-                <AnimatePresence mode="popLayout">
-                  {g.notes.map((n, i) => (
-                    <TopicCard key={n.slug} note={n} index={i} learned={learned.has(n.slug)} />
-                  ))}
-                </AnimatePresence>
+              <div className="nh-rows">
+                {g.notes.map((n) => (
+                  <TopicRow key={n.slug} note={n} learned={learned.has(n.slug)} />
+                ))}
               </div>
             </motion.div>
           ))}
@@ -163,7 +120,7 @@ const NotesHub = () => {
           <h2>Feel the difference between n² and n log n.</h2>
           <p>Drag n and watch the curves pull apart, then scale the input up to see what “slow” really means.</p>
         </Reveal>
-        <Reveal className="nh-block-body spotlight" onPointerMove={trackPointer}>
+        <Reveal className="nh-block-body">
           <GrowthChart />
         </Reveal>
       </section>
@@ -179,14 +136,6 @@ const NotesHub = () => {
         </Reveal>
       </section>
 
-      <section className="nh-block" id="notebook">
-        <Reveal className="nh-block-head">
-          <span className="nh-eyebrow">the notebook</span>
-          <h2>Handwritten first. Animated after.</h2>
-          <p>The original pages behind the visualizers. Flip with ← → or swipe.</p>
-        </Reveal>
-        <NotesSection embedded />
-      </section>
     </div>
   );
 };

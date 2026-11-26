@@ -1,64 +1,59 @@
-import { ResetIcon, StepBackIcon, PlayIcon, PauseIcon, StepForwardIcon, ShuffleIcon } from "./icons";
-import { highlight } from "./highlight";
-import "./StepperPage.css";
+import Lesson from "../../lesson/Lesson";
 
-// Generic page shell for step-through visualizers: header, a stage slot,
-// highlighted code panel, playback controls and a stats row.
+// Adapter: pages written against the older StepperPage props render through
+// the new three-pane Lesson. `status` becomes the step's narration, `stats`
+// a panel, `input` a toolbar field.
 
 export const Chips = ({ label, items, active, onPick }) => (
-  <div className="sp-chips">
-    {label && <span className="sp-toolbar-label">{label}</span>}
-
+  <div className="lx-segment" role="group" aria-label={label}>
     {items.map((item) => (
-      <button
-        key={item.id}
-        className={`sp-chip ${active === item.id ? "sp-chip-active" : ""}`}
-        onClick={() => onPick(item)}
-        title={item.hint}
-      >
-        <b>{item.label ?? item.id}</b>
-        {item.hint && <span>{item.hint}</span>}
+      <button key={item.id} className={active === item.id ? "lx-segment-on" : ""} onClick={() => onPick(item)} title={item.hint}>
+        {item.label ?? item.id}
       </button>
     ))}
   </div>
 );
 
 export const Segment = ({ label, options, value, onChange }) => (
-  <div className="sp-segment-group">
-    {label && <span className="sp-toolbar-label">{label}</span>}
-
-    <div className="sp-segment">
-      {options.map((o) => (
-        <button
-          key={o.id}
-          className={`sp-segment-btn ${value === o.id ? "sp-segment-active" : ""}`}
-          onClick={() => onChange(o.id)}
-        >
-          {o.label ?? o.id}
-        </button>
-      ))}
-    </div>
+  <div className="lx-segment" role="group" aria-label={label}>
+    {options.map((o) => (
+      <button key={o.id} className={value === o.id ? "lx-segment-on" : ""} onClick={() => onChange(o.id)}>
+        {o.label ?? o.id}
+      </button>
+    ))}
   </div>
 );
 
+// Kept for older stages that list variables inline; rendered as plain chips.
 export const Variables = ({ items }) => (
-  <div className="sp-vars">
+  <div className="lx-vars">
     {items.map((v) => (
-      <span key={v.label} className={v.tone ? `sp-var-${v.tone}` : ""}>
+      <span key={v.label}>
         {v.label} <b>{v.value}</b>
       </span>
     ))}
   </div>
 );
 
+const textOf = (node) => {
+  if (node === null || node === undefined || node === false) return "";
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(textOf).join("");
+  if (node.props) return textOf(node.props.children);
+  return "";
+};
+
+const split = (text) => {
+  const [head, ...rest] = String(text).split(" — ");
+  return { title: head, body: rest.join(" — ") };
+};
+
 const StepperPage = ({
-  eyebrow,
   title,
   blurb,
-  complexity,
+  complexity = [],
   toolbar,
   stage,
-  legend,
   status,
   filename,
   code,
@@ -67,144 +62,68 @@ const StepperPage = ({
   shuffleLabel,
   onShuffle,
   input,
-  stats,
+  stats = [],
+  steps,
+  tag,
+  notice,
 }) => {
-  const { index, total, playing, speed, setSpeed } = playback;
-  const canBack = playback.canBack ?? index > 0;
-  const canForward = playback.canForward ?? index < total - 1;
+  const total = playback.total ?? steps?.length ?? 1;
+  const list = steps ?? Array.from({ length: total }, (_, i) => ({ description: `Step ${i + 1}` }));
+  const { title: head, body } = split(textOf(status));
+  const first = playback.index === 0;
 
-  const submit = (e) => {
-    e.preventDefault();
-    input.onAction?.();
-  };
+  const controls = (
+    <>
+      {toolbar}
+      {input && (
+        <form
+          className="lx-field"
+          onSubmit={(e) => {
+            e.preventDefault();
+            input.onAction?.();
+          }}
+        >
+          {input.label && <label htmlFor="sp-input">{input.label}</label>}
+          <input
+            id="sp-input"
+            type="number"
+            placeholder={input.placeholder}
+            value={input.value}
+            min={input.min}
+            max={input.max}
+            onChange={(e) => input.onChange(e.target.value)}
+          />
+          {input.actionLabel && <button type="submit">{input.actionLabel}</button>}
+        </form>
+      )}
+    </>
+  );
 
   return (
-    <div className="sp-wrapper">
-      <div className="sp-page">
-        <p className="sp-eyebrow">{eyebrow}</p>
-
-        <h1 className="sp-title">{title}</h1>
-
-        <div className="sp-header">
-          <p className="sp-blurb">{blurb}</p>
-
-          <div className="sp-complexity">
-            {complexity.map((c) => (
-              <div key={c.label}>
-                <div className="sp-complexity-label">{c.label}</div>
-                <div className={`sp-${c.tone}-value`}>{c.value}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {toolbar && <div className="sp-toolbar">{toolbar}</div>}
-
-        <div className="sp-grid">
-          <div className={`sp-stage ${playing ? "sp-stage-live" : ""}`}>
-            {stage}
-
-            {legend && legend.length > 0 && (
-              <div className="sp-legend">
-                {legend.map((item) => (
-                  <span key={item.label}>
-                    {item.mark ?? <i style={{ borderColor: item.stroke, background: item.fill }} />}
-                    {item.label}
-                  </span>
-                ))}
-              </div>
-            )}
-
-            <p className="sp-status">{status}</p>
-          </div>
-
-          <div className="sp-code-panel">
-            <div className="sp-code-header">
-              <div className="sp-dummy-btns">
-                <span className="sp-red-btn"></span>
-                <span className="sp-yellow-btn"></span>
-                <span className="sp-green-btn"></span>
-                <span className="sp-filename">{filename}</span>
-              </div>
-
-              <span className="sp-header-complexity">{complexity[0].value}</span>
-            </div>
-
-            <pre className="sp-code-block">
-              {code.map((line, i) => (
-                <div key={i} className={`sp-code-line ${codeLine === i + 1 ? "sp-code-line-active" : ""}`}>
-                  <span className="sp-line-no">{i + 1}</span>
-                  {highlight(line)}
-                </div>
-              ))}
-            </pre>
-          </div>
-        </div>
-
-        <div className="sp-controls">
-          <button className="sp-icon-btn" onClick={playback.reset}>
-            <ResetIcon />
-          </button>
-
-          <button className="sp-icon-btn" onClick={playback.stepBack} disabled={!canBack}>
-            <StepBackIcon />
-          </button>
-
-          <button className="sp-play-btn" onClick={playback.togglePlay}>
-            {playing ? <PauseIcon /> : <PlayIcon />}
-          </button>
-
-          <button className="sp-icon-btn" onClick={playback.stepForward} disabled={!canForward}>
-            <StepForwardIcon />
-          </button>
-
-          {onShuffle && (
-            <button className="sp-shuffle-btn" onClick={onShuffle}>
-              <ShuffleIcon />
-              {shuffleLabel}
-            </button>
-          )}
-
-          {input && (
-            <form className="sp-action" onSubmit={submit}>
-              {input.label && <span className="sp-input-label">{input.label}</span>}
-              <input
-                className="sp-input"
-                type="number"
-                placeholder={input.placeholder}
-                value={input.value}
-                min={input.min}
-                max={input.max}
-                onChange={(e) => input.onChange(e.target.value)}
-              />
-              {input.actionLabel && (
-                <button className="sp-action-btn" type="submit">
-                  {input.actionLabel}
-                </button>
-              )}
-            </form>
-          )}
-
-          <div className="sp-speed">
-            <span>SPEED</span>
-            <input type="range" min="1" max="10" value={speed} onChange={(e) => setSpeed(Number(e.target.value))} />
-          </div>
-
-          <span className="sp-steps">
-            {playback.prefix}
-            {index + 1} / {total}
-          </span>
-        </div>
-
-        <div className="sp-stats">
-          {stats.map((s) => (
-            <span key={s.label}>
-              {s.label}: <b>{s.value}</b>
-            </span>
-          ))}
-        </div>
-      </div>
-    </div>
+    <Lesson
+      title={title}
+      steps={list}
+      playback={playback}
+      timeline={(st) => split(textOf(st.description)).title}
+      onShuffle={onShuffle}
+      shuffleLabel={shuffleLabel}
+      controls={controls}
+      complexity={complexity.map((c) => ({ label: c.label, value: c.value }))}
+      stage={stage}
+      narration={{
+        tag: tag ?? (playback.index >= total - 1 ? "Done" : first ? "Idea" : "Step"),
+        title: first && !body && blurb ? head : head,
+        body: (
+          <>
+            {body && <p>{body}</p>}
+            {first && blurb && <p>{blurb}</p>}
+          </>
+        ),
+        notice,
+      }}
+      code={code ? { lines: code, active: codeLine, file: filename } : null}
+      panels={stats.length ? [{ title: "Work done", rows: stats.map((s) => ({ label: s.label.charAt(0).toUpperCase() + s.label.slice(1), value: s.value })) }] : []}
+    />
   );
 };
 

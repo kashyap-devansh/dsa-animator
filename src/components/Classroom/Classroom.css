@@ -20,27 +20,43 @@ body.is-lasering * {
   cursor: none !important;
 }
 
-/* ---------- dock ---------- */
+/* ---------- dock ----------
+   On course pages it sits at the foot of the outline, above the progress
+   card; elsewhere it floats bottom-centre. */
 
 .cr-dock {
   position: fixed;
   left: 50%;
-  bottom: 22px;
+  bottom: 18px;
   transform: translateX(-50%);
   z-index: 1950;
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 6px 6px 6px 16px;
-  border-radius: 999px;
-  background: rgba(20, 20, 22, 0.82);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  box-shadow:
-    0 18px 50px rgba(0, 0, 0, 0.55),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(16px) saturate(140%);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  gap: 2px;
+  padding: 5px 5px 5px 14px;
+  border-radius: 12px;
+  background: var(--paper);
+  border: 1px solid var(--line-strong);
+  box-shadow: var(--shadow-pop);
   transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.shell-course ~ .cr-dock,
+.shell-course .cr-dock {
+  left: 10px;
+  bottom: 80px;
+  width: 266px;
+  transform: none;
+  justify-content: space-between;
+  box-shadow: none;
+}
+
+.shell-course .cr-dock-label {
+  display: none;
+}
+
+.shell-course .cr-dock-idle {
+  transform: translateY(8px);
 }
 
 .cr-dock-idle {
@@ -49,57 +65,58 @@ body.is-lasering * {
 }
 
 .cr-dock-label {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.62rem;
-  letter-spacing: 0.18em;
+  margin-right: auto;
+  padding-right: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #6b6b72;
-  margin-right: 8px;
+  color: var(--ink-3);
 }
 
 .cr-btn {
   position: relative;
-  width: 38px;
-  height: 38px;
+  flex: none;
+  width: 32px;
+  height: 32px;
   display: grid;
   place-items: center;
-  border-radius: 999px;
+  border-radius: 8px;
   border: 0;
   background: transparent;
-  color: #b5b5bb;
+  color: var(--ink-2);
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.cr-btn svg {
+  width: 17px;
+  height: 17px;
 }
 
 .cr-btn:hover {
-  background: rgba(255, 255, 255, 0.07);
-  color: #f3f2ed;
+  background: var(--hover);
+  color: var(--ink);
 }
 
-.cr-btn-active {
-  background: #ff6a3d;
-  color: #140803;
-  box-shadow: 0 0 22px rgba(255, 106, 61, 0.45);
-}
-
+.cr-btn-active,
 .cr-btn-active:hover {
-  background: #ff7b52;
-  color: #140803;
+  background: var(--coral);
+  color: var(--on-coral);
 }
 
 .cr-tip {
   position: absolute;
-  bottom: calc(100% + 12px);
+  bottom: calc(100% + 10px);
   left: 50%;
   transform: translate(-50%, 4px);
   white-space: nowrap;
   padding: 6px 10px;
   border-radius: 8px;
-  background: #1c1c1f;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #e6e5e0;
-  font-family: "Satoshi", sans-serif;
-  font-size: 0.75rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 12px;
+  font-weight: 500;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.18s ease, transform 0.18s ease;
@@ -111,70 +128,85 @@ body.is-lasering * {
   transform: translate(-50%, 0);
 }
 
-.cr-dock kbd,
-.cr-help kbd {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.68rem;
-  padding: 1px 6px;
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #f3f2ed;
+.cr-tip kbd {
+  margin-left: 4px;
+  padding: 0 5px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--ink) 16%, transparent);
+  font-family: var(--font-mono);
+  font-size: 11px;
 }
 
 .cr-sep {
   width: 1px;
-  height: 20px;
-  margin: 0 4px;
-  background: rgba(255, 255, 255, 0.1);
+  height: 18px;
+  margin: 0 3px;
+  background: var(--line-strong);
 }
 
 .cr-inks {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   overflow: hidden;
-  padding: 0 4px;
+  padding: 0 3px;
 }
 
 .cr-ink {
   flex: none;
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
-  border: 2px solid transparent;
-  background: var(--ink);
+  border: 2px solid var(--paper);
+  background: var(--swatch);
+  box-shadow: 0 0 0 1px var(--line-strong);
   cursor: pointer;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4);
   transition: transform 0.15s ease;
 }
 
 .cr-ink-active {
-  border-color: #0a0a0b;
-  box-shadow: 0 0 0 2px var(--ink), 0 0 12px var(--ink);
+  box-shadow: 0 0 0 2px var(--swatch);
   transform: scale(1.1);
 }
 
 .cr-hint {
   position: absolute;
-  bottom: calc(100% + 14px);
+  bottom: calc(100% + 12px);
   left: 50%;
   white-space: nowrap;
   padding: 10px 14px;
-  border-radius: 12px;
-  background: #ff6a3d;
-  color: #140803;
-  font-family: "Satoshi", sans-serif;
-  font-size: 0.82rem;
+  border-radius: 10px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 13px;
   font-weight: 500;
-  box-shadow: 0 12px 30px rgba(255, 106, 61, 0.3);
+  box-shadow: var(--shadow-pop);
   cursor: pointer;
 }
 
+.shell-course .cr-hint {
+  left: 0;
+  transform: none !important;
+  white-space: normal;
+  width: 266px;
+}
+
+.cr-hint kbd,
+.cr-help kbd {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 5px;
+  border: 1px solid var(--line-strong);
+  background: var(--sunk);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
 .cr-hint kbd {
-  background: rgba(0, 0, 0, 0.15);
-  border-color: rgba(0, 0, 0, 0.2);
-  color: #140803;
+  border-color: transparent;
+  background: color-mix(in srgb, var(--ink) 16%, transparent);
+  color: inherit;
 }
 
 /* ---------- shortcuts panel ---------- */
@@ -186,42 +218,41 @@ body.is-lasering * {
   display: grid;
   place-items: center;
   padding: 16px;
-  background: rgba(5, 5, 6, 0.7);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  background: rgba(12, 13, 15, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .cr-help {
   width: min(520px, 100%);
-  padding: 32px;
-  border-radius: 20px;
-  background: #141416;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
-  font-family: "Satoshi", sans-serif;
-  color: #d8d7d2;
+  padding: 28px;
+  border-radius: var(--radius-lg);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-pop);
+  color: var(--ink-2);
 }
 
 .cr-help-eyebrow {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #ff6a3d;
+  color: var(--coral);
 }
 
 .cr-help h2 {
-  margin: 10px 0 6px;
-  font-family: "Space Grotesk", sans-serif;
-  font-weight: 500;
-  font-size: 1.7rem;
-  color: #f3f2ed;
+  margin: 8px 0 6px;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
 }
 
 .cr-help p {
-  margin: 0 0 22px;
-  color: #8a8a90;
-  font-size: 0.92rem;
+  margin: 0 0 20px;
+  color: var(--ink-3);
+  font-size: 14.5px;
 }
 
 .cr-help ul {
@@ -237,21 +268,42 @@ body.is-lasering * {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 0.88rem;
+  font-size: 14px;
 }
 
 .cr-help li kbd {
-  min-width: 54px;
+  min-width: 58px;
   text-align: center;
-  padding: 4px 8px;
-  font-size: 0.72rem;
+  padding: 3px 8px;
 }
 
 /* ---------- present mode ---------- */
 
+body.is-presenting .tn,
+body.is-presenting .co,
 body.is-presenting .navbar,
 body.is-presenting .footer {
   display: none !important;
+}
+
+body.is-presenting .shell-body {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+body.is-presenting .shell-course .cr-dock {
+  left: 50%;
+  bottom: 18px;
+  width: auto;
+  transform: translateX(-50%);
+  box-shadow: var(--shadow-pop);
+}
+
+body.is-presenting .shell-course .cr-dock-label {
+  display: none;
+}
+
+.shell-course .cr-dock-idle {
+  transform: translateX(-50%) translateY(12px);
 }
 
 body.is-presenting .page-main > * {
@@ -267,6 +319,16 @@ body.is-presenting [data-present-fit] {
   padding: 12px 0 72px !important;
 }
 
+@media (max-width: 960px) {
+  .shell-course .cr-dock {
+    left: auto;
+    right: 14px;
+    bottom: 14px;
+    width: auto;
+    box-shadow: var(--shadow-pop);
+  }
+}
+
 @media (max-width: 700px) {
   .cr-dock {
     display: none;
@@ -278,31 +340,4 @@ body.is-presenting [data-present-fit] {
   .cr-tip {
     transition: none;
   }
-}
-
-/* ---------- projector light mode ----------
-   Inverting the whole stage keeps every hand-built visualizer consistent;
-   hue-rotate brings the accent colours back to their own hues. */
-
-html:has(body.projector-light),
-body.projector-light {
-  background: #f5f5f4;
-}
-
-body.projector-light .navbar,
-body.projector-light .footer {
-  filter: invert(1) hue-rotate(180deg);
-}
-
-body.projector-light .page-main {
-  display: flow-root;
-  min-height: 100vh;
-  background: #0a0a0b;
-  filter: invert(1) hue-rotate(180deg) contrast(1.05);
-}
-
-/* paper and photos should not be inverted */
-body.projector-light .page-main .page,
-body.projector-light .page-main img {
-  filter: invert(1) hue-rotate(180deg);
 }

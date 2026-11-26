@@ -1,3 +1,4 @@
+import { useTheme } from "../../course/store";
 import "./Manifesto.css";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
@@ -10,14 +11,17 @@ function Manifesto() {
     offset: ["start center", "end center"],
   });
 
-  const color1 = useTransform(scrollYProgress, [0.00, 0.15], ["#262626", "#f3f2ed"]);
-  const color2 = useTransform(scrollYProgress, [0.10, 0.25], ["#262626", "#f3f2ed"]);
-  const color3 = useTransform(scrollYProgress, [0.20, 0.35], ["#262626", "#f3f2ed"]);
-  const color4 = useTransform(scrollYProgress, [0.30, 0.45], ["#262626", "#f3f2ed"]);
-  const color5 = useTransform(scrollYProgress, [0.40, 0.55], ["#262626", "#f3f2ed"]);
-  const color6 = useTransform(scrollYProgress, [0.50, 0.65], ["#262626", "#f3f2ed"]);
-  const color7 = useTransform(scrollYProgress, [0.60, 0.75], ["#262626", "#f3f2ed"]);
-  const color8 = useTransform(scrollYProgress, [0.70, 0.85], ["#262626", "#f3f2ed"]);
+  const { theme } = useTheme();
+  const dim = theme === "dark" ? "#2c2d31" : "#d9d3c8";
+  const lit = theme === "dark" ? "#f2f0eb" : "#27282c";
+  const color1 = useTransform(scrollYProgress, [0.00, 0.15], [dim, lit]);
+  const color2 = useTransform(scrollYProgress, [0.10, 0.25], [dim, lit]);
+  const color3 = useTransform(scrollYProgress, [0.20, 0.35], [dim, lit]);
+  const color4 = useTransform(scrollYProgress, [0.30, 0.45], [dim, lit]);
+  const color5 = useTransform(scrollYProgress, [0.40, 0.55], [dim, lit]);
+  const color6 = useTransform(scrollYProgress, [0.50, 0.65], [dim, lit]);
+  const color7 = useTransform(scrollYProgress, [0.60, 0.75], [dim, lit]);
+  const color8 = useTransform(scrollYProgress, [0.70, 0.85], [dim, lit]);
 
   return (
     <div

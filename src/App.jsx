@@ -1,8 +1,10 @@
-import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { Analytics } from "@vercel/analytics/react";
 
-import LoadingScreen from "./components/LoadingScreen/LoadingScreen.jsx";
+import { CourseShell, PageShell } from "./shell/AppShell.jsx";
+import { FIRST_LESSON } from "./course/course.js";
+import ProgressPage from "./pages/ProgressPage.jsx";
+
 import NotesHub from "./Notes/NotesHub.jsx";
 import NoteArticle from "./Notes/NoteArticle.jsx";
 import Classroom from "./components/Classroom/Classroom.jsx";
@@ -12,7 +14,6 @@ import LessonCover from "./Classroom/LessonCover.jsx";
 import ClassQuiz from "./Classroom/ClassQuiz.jsx";
 import LessonBar from "./Classroom/LessonBar.jsx";
 
-import Playground from "./Playground/PlaygroundHero/PlaygroundHero";
 import Sorting from "./Playground/Algorithms/Sorting/Sorting";
 import Searching from "./Playground/Algorithms/Searching/Searching.jsx";
 import Hashing from "./Playground/Algorithms/Hashing/Hashing.jsx";
@@ -24,7 +25,9 @@ import BST from "./Playground/Structures/BST/BST.jsx";
 import AVL from "./Playground/Structures/AVL/AVL.jsx";
 import Recursion from "./Playground/Recursion/Recursion.jsx";
 
-import Navbar from "./components/Navbar/Navbar";
+import { useState } from "react";
+import TopNav from "./shell/TopNav";
+import LoadingScreen from "./components/LoadingScreen/LoadingScreen.jsx";
 import Hero from "./components/Hero/Hero";
 import Marquee from "./components/Marquee/Marquee";
 import Preview from "./components/Preview/Preview";
@@ -35,27 +38,17 @@ import Notes from "./components/Notes/Notes";
 import ClassroomSection from "./components/ClassroomSection/ClassroomSection";
 import CTA from "./components/CTA/CTA";
 import Footer from "./components/Footer/Footer";
+import { ScrollProgress, SmoothScroll } from "./components/shared/effects.jsx";
 
-// `classroom` adds the teaching dock (present mode, pen, laser, keyboard control).
-function Page({ children, classroom = false }) {
-  return (
-    <>
-      <Navbar />
-      <main className="page-main">{children}</main>
-      {classroom && <Classroom />}
-      <Footer />
-    </>
-  );
-}
-
-const Lesson = ({ children }) => <Page classroom>{children}</Page>;
-
+// The original landing page, section for section, in the course's look.
 function LandingPage() {
-  const [loading, setLoading] = useState(!sessionStorage.getItem("loaderShown"));
+  const [loading, setLoading] = useState(() => !sessionStorage.getItem("loaderShown"));
 
   return (
-    <>
-      <Navbar />
+    <div className="landing">
+      <SmoothScroll />
+      <ScrollProgress />
+      <TopNav />
       <Hero />
       <Marquee />
       <Preview />
@@ -68,21 +61,31 @@ function LandingPage() {
       <Footer />
 
       {loading && (
-        <LoadingScreen onComplete={() => {
-          setLoading(false)
-          sessionStorage.setItem("loaderShown", "true");
-        }} />
+        <LoadingScreen
+          onComplete={() => {
+            setLoading(false);
+            sessionStorage.setItem("loaderShown", "true");
+          }}
+        />
       )}
-    </>
+    </div>
   );
 }
 
-const App = () => {
-  return (
-    <>
+// A lesson: the course outline beside it, plus the teaching dock.
+const Lesson = ({ children }) => (
+  <CourseShell>
+    {children}
+    <Classroom />
+  </CourseShell>
+);
+
+const App = () => (
+  <>
     <Routes>
       <Route path="/" element={<LandingPage />} />
-      <Route path="/playground" element={<Page><Playground /></Page>} />
+      <Route path="/learn" element={<Navigate to={FIRST_LESSON} replace />} />
+      <Route path="/playground" element={<Navigate to={FIRST_LESSON} replace />} />
       <Route path="/playground/sorting/:slug" element={<Lesson><Sorting /></Lesson>} />
       <Route path="/playground/searching/:slug" element={<Lesson><Searching /></Lesson>} />
       <Route path="/playground/hashing/:slug" element={<Lesson><Hashing /></Lesson>} />
@@ -93,19 +96,19 @@ const App = () => {
       <Route path="/playground/bst/:slug" element={<Lesson><BST /></Lesson>} />
       <Route path="/playground/avl/:slug" element={<Lesson><AVL /></Lesson>} />
       <Route path="/playground/recursion/:slug" element={<Lesson><Recursion /></Lesson>} />
-      <Route path="/notes" element={<Page><NotesHub /></Page>} />
-      <Route path="/notes/:slug" element={<Lesson><NoteArticle /></Lesson>} />
-      <Route path="/classroom" element={<Page><TeachPage /></Page>} />
-      <Route path="/lesson" element={<Lesson><LessonCover /></Lesson>} />
-      <Route path="/quiz/:slug" element={<Lesson><ClassQuiz /></Lesson>} />
-
+      <Route path="/progress" element={<PageShell><ProgressPage /></PageShell>} />
+      <Route path="/notes" element={<PageShell><NotesHub /></PageShell>} />
+      <Route path="/notes/:slug" element={<PageShell><NoteArticle /><Classroom /></PageShell>} />
+      <Route path="/classroom" element={<PageShell><TeachPage /></PageShell>} />
+      <Route path="/lesson" element={<PageShell><LessonCover /><Classroom /></PageShell>} />
+      <Route path="/quiz/:slug" element={<PageShell><ClassQuiz /><Classroom /></PageShell>} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
 
     <LessonBar />
     <CommandPalette />
     <Analytics />
-    </>
-  );
-}
+  </>
+);
 
 export default App;

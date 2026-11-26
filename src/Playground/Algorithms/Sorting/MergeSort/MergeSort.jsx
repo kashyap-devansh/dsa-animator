@@ -1,901 +1,303 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { randomArray } from "../../../shared/randomArray";
 import { usePlayback } from "../../../shared/usePlayback";
-import { ResetIcon, StepBackIcon, PlayIcon, PauseIcon, StepForwardIcon, ShuffleIcon } from "../../../shared/icons";
-import "./MergeSort.css";
+import Lesson from "../../../../lesson/Lesson";
+import IsoArray, { STEP } from "../../../../iso/IsoArray";
+import { At, Tile } from "../../../../iso/IsoParts";
 
+const SIZE = 8;
+const TRAY = 3.1;
+
+const CODE = [
+  "void mergeSort(vector<int>& a, int l, int r) {",
+  "  if (l >= r) return;",
+  "  int m = l + (r - l) / 2;",
+  "  mergeSort(a, l, m);",
+  "  mergeSort(a, m + 1, r);",
+  "  merge(a, l, m, r);",
+  "}",
+  "",
+  "void merge(vector<int>& a, int l, int m, int r) {",
+  "  vector<int> tmp;",
+  "  int i = l, j = m + 1;",
+  "  while (i <= m && j <= r) {",
+  "    if (a[i] <= a[j]) tmp.push_back(a[i++]);",
+  "    else              tmp.push_back(a[j++]);",
+  "  }",
+  "  while (i <= m) tmp.push_back(a[i++]);",
+  "  while (j <= r) tmp.push_back(a[j++]);",
+  "  for (int k = l; k <= r; k++) a[k] = tmp[k - l];",
+  "}",
+];
+
+// Each cell keeps its id. During a merge, taken values move down into the
+// tray in front of the row (at the slot they will end up in), then the whole
+// run goes back up together.
 function mergeSortSteps(input) {
-  const arr = [...input];
+  const n = input.length;
+  let row = input.map((value, id) => ({ id, value }));
+  const tray = new Map(); // id -> pos
   const steps = [];
-  const n = arr.length;
-
   let comparisons = 0;
-  let merges = 0;
-  let nodeId = 0;
+  let writes = 0;
+  let depth = 0;
   let maxDepth = 0;
-  const nodes = [];
+  const sortedRuns = [];
 
-  function createNode(l, r, depth, parentId) {
-    const node = {
-      id: nodeId++,
-      l,
-      r,
+  const save = (s) =>
+    steps.push({
+      row: row.map((c) => ({ ...c })),
+      tray: new Map(tray),
+      range: null,
+      mid: null,
+      i: null,
+      j: null,
       depth,
-      parentId,
-      status: "active",
-    };
+      runs: sortedRuns.map((r) => [...r]),
+      comparisons,
+      writes,
+      maxDepth,
+      ...s,
+    });
 
-    nodes.push(node);
+  save({
+    phase: "idea",
+    line: 1,
+    title: "Split in half, sort each half, merge",
+    body: `A row of one value is already sorted. So keep halving the ${n} values until every piece has one, then merge pieces back together in order.`,
+    notice: "Merging two sorted rows is easy: keep taking the smaller of the two front values.",
+  });
+
+  const sort = (l, r) => {
+    depth++;
     maxDepth = Math.max(maxDepth, depth);
 
-    return node;
-  }
+    if (l >= r) {
+      sortedRuns.push([l, r]);
+      save({
+        phase: "base",
+        line: 2,
+        range: [l, r],
+        title: `${row[l].value} alone is sorted`,
+        body: "A single value has nothing to be out of order with. This is where the splitting stops.",
+      });
+      depth--;
+      return;
+    }
 
-  function cloneNodes() {
-    return nodes.map((nd) => ({ ...nd }));
-  }
-
-  function save(
-    line,
-    description,
-    range,
-    compare,
-    placed,
-    activeNodeId
-  ) {
-    steps.push({
-      array: [...arr],
-      codeLine: line,
-      description,
-      range: range || [],
-      compare: compare || [],
-      placed: placed ?? -1,
-      merges,
-      comparisons,
-      callTree: cloneNodes(),
-      activeNodeId: activeNodeId ?? -1,
-      maxDepth,
+    const m = l + Math.floor((r - l) / 2);
+    save({
+      phase: "split",
+      line: 3,
+      range: [l, r],
+      mid: m,
+      title: `Split indices ${l}–${r} at ${m}`,
+      body: `Sort the left half (${l}–${m}) first, then the right half (${m + 1}–${r}), then merge them.`,
     });
-  }
 
-  function merge(l, m, r, node) {
-    // Line 9
-    save(
-      9,
-      `merge(${l}, ${m}, ${r})`,
-      [l, r],
-      [],
-      -1,
-      node.id
-    );
+    sort(l, m);
+    sort(m + 1, r);
+    merge(l, m, r);
+    depth--;
+  };
 
-    // Line 10
-    const temp = [];
+  const merge = (l, m, r) => {
+    const left = row.slice(l, m + 1).map((c) => c.value);
+    const right = row.slice(m + 1, r + 1).map((c) => c.value);
+    save({
+      phase: "merge",
+      line: 9,
+      range: [l, r],
+      mid: m,
+      i: l,
+      j: m + 1,
+      title: `Merge [${left.join(", ")}] with [${right.join(", ")}]`,
+      body: "Both halves are sorted. Compare their front values and take the smaller each time, filling the tray from the left.",
+    });
 
-    save(
-      10,
-      "Initialize temp array",
-      [l, r],
-      [],
-      -1,
-      node.id
-    );
-
-    // Line 11
     let i = l;
     let j = m + 1;
+    let k = l;
+    const taken = new Set();
+    const nextOf = (from, to) => {
+      for (let x = from; x <= to; x++) if (!taken.has(x)) return x;
+      return null;
+    };
 
-    save(
-      11,
-      `Initialize i = ${i}, j = ${j}`,
-      [l, r],
-      [],
-      -1,
-      node.id
-    );
+    const take = (idx, line, title, body, extra = {}) => {
+      tray.set(row[idx].id, k);
+      taken.add(idx);
+      writes++;
+      k++;
+      save({ phase: "take", line, range: [l, r], mid: m, i: nextOf(l, m), j: nextOf(m + 1, r), title, body, ...extra });
+    };
 
-    // Line 12
     while (i <= m && j <= r) {
-      save(
-        12,
-        `Check while condition: i <= ${m} && j <= ${r}`,
-        [l, r],
-        [],
-        -1,
-        node.id
-      );
-
-      // Line 13
       comparisons++;
+      const a = row[i].value;
+      const b = row[j].value;
+      save({
+        phase: "compare",
+        line: 13,
+        range: [l, r],
+        mid: m,
+        i,
+        j,
+        title: `${a} or ${b}?`,
+        body: a <= b ? `${a} is smaller${a === b ? " (or equal, so take the left one to keep the sort stable)" : ""}, so it goes into the tray next.` : `${b} is smaller, so it goes into the tray next.`,
+      });
 
-      save(
-        13,
-        `Compare arr[${i}] = ${arr[i]} and arr[${j}] = ${arr[j]}`,
-        [l, r],
-        [i, j],
-        -1,
-        node.id
-      );
-
-      if (arr[i] <= arr[j]) {
-        temp.push(arr[i]);
-
-        save(
-          13,
-          `arr[${i}] <= arr[${j}], push ${arr[i]} to temp`,
-          [l, r],
-          [i, j],
-          -1,
-          node.id
-        );
-
+      if (a <= b) {
+        take(i, 13, `Take ${a} from the left`, `${a} drops into tray slot ${k}.`);
         i++;
       } else {
-        // Line 14
-        temp.push(arr[j]);
-
-        save(
-          14,
-          `arr[${i}] > arr[${j}], push ${arr[j]} to temp`,
-          [l, r],
-          [i, j],
-          -1,
-          node.id
-        );
-
+        take(j, 14, `Take ${b} from the right`, `${b} drops into tray slot ${k}.`);
         j++;
       }
     }
 
-    // Line 15
-    save(
-      15,
-      "First while loop finished",
-      [l, r],
-      [],
-      -1,
-      node.id
-    );
-
-    // Line 16
     while (i <= m) {
-      save(
-        16,
-        `Check remaining left elements: i <= ${m}`,
-        [l, r],
-        [i],
-        -1,
-        node.id
-      );
-
-      // Line 17
-      temp.push(arr[i]);
-
-      save(
-        17,
-        `Push remaining left element ${arr[i]} to temp`,
-        [l, r],
-        [i],
-        -1,
-        node.id
-      );
-
+      take(i, 16, `Take the leftover ${row[i].value}`, "The right half is empty, so whatever is left on the left comes next, already in order.");
       i++;
     }
-
-    // Line 18
-    save(
-      18,
-      "Remaining left elements processed",
-      [l, r],
-      [],
-      -1,
-      node.id
-    );
-
-    // Line 19
     while (j <= r) {
-      save(
-        19,
-        `Check remaining right elements: j <= ${r}`,
-        [l, r],
-        [j],
-        -1,
-        node.id
-      );
-
-      // Line 20
-      temp.push(arr[j]);
-
-      save(
-        20,
-        `Push remaining right element ${arr[j]} to temp`,
-        [l, r],
-        [j],
-        -1,
-        node.id
-      );
-
+      take(j, 17, `Take the leftover ${row[j].value}`, "The left half is empty, so the rest of the right half follows in order.");
       j++;
     }
 
-    // Line 21
-    save(
-      21,
-      "Remaining right elements processed",
-      [l, r],
-      [],
-      -1,
-      node.id
-    );
-
-    // Line 22
-    for (let k = l; k <= r; k++) {
-      arr[k] = temp[k - l];
-
-      merges++;
-
-      save(
-        22,
-        `Placed ${arr[k]} at index ${k}`,
-        [l, r],
-        [],
-        k,
-        node.id
-      );
+    // Copy the tray back up into the row.
+    const merged = [...row.slice(l, r + 1)].sort((a, b) => tray.get(a.id) - tray.get(b.id));
+    row = [...row.slice(0, l), ...merged, ...row.slice(r + 1)];
+    merged.forEach((c) => tray.delete(c.id));
+    for (let x = sortedRuns.length - 1; x >= 0; x--) {
+      const [a, b] = sortedRuns[x];
+      if (a >= l && b <= r) sortedRuns.splice(x, 1);
     }
+    sortedRuns.push([l, r]);
 
-    // Line 23
-    node.status = "done";
+    save({
+      phase: "copy",
+      line: 18,
+      range: [l, r],
+      title: `Copy back: ${merged.map((c) => c.value).join(", ")}`,
+      body: `Indices ${l}–${r} now hold one sorted run of ${r - l + 1} values.`,
+    });
+  };
 
-    save(
-      23,
-      `Merge complete for [${l}, ${r}]`,
-      [l, r],
-      [],
-      -1,
-      node.id
-    );
-  }
+  sort(0, n - 1);
 
-  function mergeSort(l, r, depth, parentId) {
-    // Line 1
-    const node = createNode(l, r, depth, parentId);
-
-    save(
-      1,
-      `mergeSort(${l}, ${r})`,
-      [l, r],
-      [],
-      -1,
-      node.id
-    );
-
-    // Line 2
-    if (l >= r) {
-      node.status = "done";
-
-      save(
-        2,
-        "Base case reached",
-        [l, r],
-        [],
-        -1,
-        node.id
-      );
-
-      return;
-    }
-
-    // Line 3
-    const m = l + Math.floor((r - l) / 2);
-
-    save(
-      3,
-      `Mid index = ${m}`,
-      [l, r],
-      [],
-      -1,
-      node.id
-    );
-
-    // Line 4
-    save(
-      4,
-      `mergeSort(${l}, ${m})`,
-      [l, m],
-      [],
-      -1,
-      node.id
-    );
-
-    mergeSort(l, m, depth + 1, node.id);
-
-    // Line 5
-    save(
-      5,
-      `mergeSort(${m + 1}, ${r})`,
-      [m + 1, r],
-      [],
-      -1,
-      node.id
-    );
-
-    mergeSort(m + 1, r, depth + 1, node.id);
-
-    // Line 6
-    save(
-      6,
-      `merge(${l}, ${m}, ${r})`,
-      [l, r],
-      [],
-      -1,
-      node.id
-    );
-
-    merge(l, m, r, node);
-  }
-
-  // Start
-  save(
-    1,
-    "Started Merge Sort",
-    [0, n - 1],
-    [],
-    -1,
-    -1
-  );
-
-  mergeSort(0, n - 1, 0, null);
-
-  save(
-    1,
-    "Array Sorted!",
-    [0, n - 1],
-    [],
-    -1,
-    -1
-  );
+  save({
+    phase: "done",
+    line: 7,
+    title: "Sorted",
+    body: `The last merge joined the two halves of the whole row. ${comparisons} comparisons, ${writes} writes, recursion ${maxDepth} levels deep.`,
+    notice: "There are about log₂ n levels of splitting and each level does O(n) work to merge, which gives O(n log n) every time.",
+  });
 
   return steps;
 }
 
-const CodeLines = [
-  // 1
-  <>
-    <span className="ms-type">void</span> mergeSort
-    <span className="ms-symbol">(</span>
-    <span className="ms-type">vector</span>
-    <span className="ms-symbol">&lt;</span>
-    <span className="ms-type">int</span>
-    <span className="ms-symbol">&gt;&amp;</span> arr
-    <span className="ms-symbol">,</span>{" "}
-    <span className="ms-type">int</span> l
-    <span className="ms-symbol">,</span>{" "}
-    <span className="ms-type">int</span> r
-    <span className="ms-symbol">)</span>{" "}
-    <span className="ms-symbol">{"{"}</span>
-  </>,
-
-  // 2
-  <>
-    &nbsp;&nbsp;
-    <span className="ms-keyword">if</span>
-    <span className="ms-symbol">(</span>
-    l <span className="ms-symbol">&gt;=</span> r
-    <span className="ms-symbol">)</span>{" "}
-    <span className="ms-keyword">return</span>
-    <span className="ms-symbol">;</span>
-  </>,
-
-  // 3
-  <>
-    &nbsp;&nbsp;
-    <span className="ms-type">int</span> m
-    <span className="ms-symbol"> = </span>
-    l <span className="ms-symbol">+</span>
-    <span className="ms-symbol">(</span>
-    r <span className="ms-symbol">-</span> l
-    <span className="ms-symbol">)</span>
-    <span className="ms-symbol"> / </span>
-    <span className="ms-number">2</span>
-    <span className="ms-symbol">;</span>
-  </>,
-
-  // 4
-  <>
-    &nbsp;&nbsp;
-    mergeSort
-    <span className="ms-symbol">(</span>
-    arr<span className="ms-symbol">,</span> l
-    <span className="ms-symbol">,</span> m
-    <span className="ms-symbol">)</span>
-    <span className="ms-symbol">;</span>
-  </>,
-
-  // 5
-  <>
-    &nbsp;&nbsp;
-    mergeSort
-    <span className="ms-symbol">(</span>
-    arr<span className="ms-symbol">,</span>{" "}
-    m <span className="ms-symbol">+</span>{" "}
-    <span className="ms-number">1</span>
-    <span className="ms-symbol">,</span> r
-    <span className="ms-symbol">)</span>
-    <span className="ms-symbol">;</span>
-  </>,
-
-  // 6
-  <>
-    &nbsp;&nbsp;
-    merge
-    <span className="ms-symbol">(</span>
-    arr<span className="ms-symbol">,</span> l
-    <span className="ms-symbol">,</span> m
-    <span className="ms-symbol">,</span> r
-    <span className="ms-symbol">)</span>
-    <span className="ms-symbol">;</span>
-  </>,
-
-  // 7
-  <>
-    <span className="ms-symbol">{"}"}</span>
-  </>,
-
-  // 8
-  <>&nbsp;</>,
-
-  // 9
-  <>
-    <span className="ms-type">void</span> merge
-    <span className="ms-symbol">(</span>
-    <span className="ms-type">vector</span>
-    <span className="ms-symbol">&lt;</span>
-    <span className="ms-type">int</span>
-    <span className="ms-symbol">&gt;&amp;</span> arr
-    <span className="ms-symbol">,</span>{" "}
-    <span className="ms-type">int</span> l
-    <span className="ms-symbol">,</span>{" "}
-    <span className="ms-type">int</span> m
-    <span className="ms-symbol">,</span>{" "}
-    <span className="ms-type">int</span> r
-    <span className="ms-symbol">)</span>{" "}
-    <span className="ms-symbol">{"{"}</span>
-  </>,
-
-  // 10
-  <>
-    &nbsp;&nbsp;
-    <span className="ms-type">vector</span>
-    <span className="ms-symbol">&lt;</span>
-    <span className="ms-type">int</span>
-    <span className="ms-symbol">&gt;</span> temp
-    <span className="ms-symbol">;</span>
-  </>,
-
-  // 11
-  <>
-    &nbsp;&nbsp;
-    <span className="ms-type">int</span> i
-    <span className="ms-symbol"> = </span> l
-    <span className="ms-symbol">,</span> j
-    <span className="ms-symbol"> = </span>
-    m <span className="ms-symbol">+</span>{" "}
-    <span className="ms-number">1</span>
-    <span className="ms-symbol">;</span>
-  </>,
-
-  // 12
-  <>
-    &nbsp;&nbsp;
-    <span className="ms-keyword">while</span>
-    <span className="ms-symbol">(</span>
-    i <span className="ms-symbol">&lt;=</span> m
-    <span className="ms-symbol"> &amp;&amp; </span>
-    j <span className="ms-symbol">&lt;=</span> r
-    <span className="ms-symbol">)</span>
-    <span className="ms-symbol">{"{"}</span>
-  </>,
-
-  // 13
-  <>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <span className="ms-keyword">if</span>
-    <span className="ms-symbol">(</span>
-    arr<span className="ms-symbol">[</span>i
-    <span className="ms-symbol">]</span>
-    <span className="ms-symbol"> &lt;= </span>
-    arr<span className="ms-symbol">[</span>j
-    <span className="ms-symbol">]</span>
-    <span className="ms-symbol">)</span>{" "}
-    temp<span className="ms-symbol">.</span>
-    push_back
-    <span className="ms-symbol">(</span>
-    arr<span className="ms-symbol">[</span>
-    i<span className="ms-symbol">++</span>
-    <span className="ms-symbol">]</span>
-    <span className="ms-symbol">)</span>
-    <span className="ms-symbol">;</span>
-  </>,
-
-  // 14
-  <>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <span className="ms-keyword">else</span>{" "}
-    temp<span className="ms-symbol">.</span>
-    push_back
-    <span className="ms-symbol">(</span>
-    arr<span className="ms-symbol">[</span>
-    j<span className="ms-symbol">++</span>
-    <span className="ms-symbol">]</span>
-    <span className="ms-symbol">)</span>
-    <span className="ms-symbol">;</span>
-  </>,
-
-  // 15
-  <>
-    &nbsp;&nbsp;
-    <span className="ms-symbol">{"}"}</span>
-  </>,
-
-  // 16
-  <>
-    &nbsp;&nbsp;
-    <span className="ms-keyword">while</span>
-    <span className="ms-symbol">(</span>
-    i <span className="ms-symbol">&lt;=</span> m
-    <span className="ms-symbol">)</span>
-    <span className="ms-symbol">{"{"}</span>
-  </>,
-
-  // 17
-  <>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    temp<span className="ms-symbol">.</span>
-    push_back
-    <span className="ms-symbol">(</span>
-    arr<span className="ms-symbol">[</span>
-    i<span className="ms-symbol">++</span>
-    <span className="ms-symbol">]</span>
-    <span className="ms-symbol">)</span>
-    <span className="ms-symbol">;</span>
-  </>,
-
-  // 18
-  <>
-    &nbsp;&nbsp;
-    <span className="ms-symbol">{"}"}</span>
-  </>,
-
-  // 19
-  <>
-    &nbsp;&nbsp;
-    <span className="ms-keyword">while</span>
-    <span className="ms-symbol">(</span>
-    j <span className="ms-symbol">&lt;=</span> r
-    <span className="ms-symbol">)</span>
-    <span className="ms-symbol">{"{"}</span>
-  </>,
-
-  // 20
-  <>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    temp<span className="ms-symbol">.</span>
-    push_back
-    <span className="ms-symbol">(</span>
-    arr<span className="ms-symbol">[</span>
-    j<span className="ms-symbol">++</span>
-    <span className="ms-symbol">]</span>
-    <span className="ms-symbol">)</span>
-    <span className="ms-symbol">;</span>
-  </>,
-
-  // 21
-  <>
-    &nbsp;&nbsp;
-    <span className="ms-symbol">{"}"}</span>
-  </>,
-
-  // 22
-  <>
-    &nbsp;&nbsp;
-    <span className="ms-keyword">for</span>
-    <span className="ms-symbol">(</span>
-    <span className="ms-type">int</span> k
-    <span className="ms-symbol"> = </span> l
-    <span className="ms-symbol">;</span>{" "}
-    k <span className="ms-symbol">&lt;=</span> r
-    <span className="ms-symbol">;</span>{" "}
-    k<span className="ms-symbol">++</span>
-    <span className="ms-symbol">)</span>{" "}
-    arr<span className="ms-symbol">[</span>k
-    <span className="ms-symbol">]</span>
-    <span className="ms-symbol"> = </span>
-    temp<span className="ms-symbol">[</span>
-    k <span className="ms-symbol">-</span> l
-    <span className="ms-symbol">]</span>
-    <span className="ms-symbol">;</span>
-  </>,
-
-  // 23
-  <>
-    <span className="ms-symbol">{"}"}</span>
-  </>,
-];
-
-const CELL_W = 46;
-const CELL_H = 46;
-const LEVEL_GAP = 96;
-const PAD_TOP = 10;
+const TAGS = { idea: "Idea", base: "Base case", split: "Split", merge: "Merge", compare: "Compare", take: "Merge", copy: "Copy back", done: "Sorted" };
 
 const MergeSort = () => {
-  const [seed, setSeed] = useState(randomArray());
+  const [seed, setSeed] = useState(() => randomArray(SIZE));
+  const steps = useMemo(() => mergeSortSteps(seed), [seed]);
+  const playback = usePlayback(steps.length);
+  const { index, reset } = playback;
+  const s = steps[index];
+  const [l, r] = s.range ?? [0, SIZE - 1];
+  const inRun = (k) => s.runs.some(([a, b]) => b > a && k >= a && k <= b);
 
-  const steps = mergeSortSteps(seed);
-  const { index, playing, speed, setSpeed, reset, stepForward, stepBack, togglePlay } = usePlayback(steps.length);
-  const current = steps[index];
-  const isDone = index === steps.length - 1;
-  const n = current.array.length;
-  const nodes = current.callTree;
-
-  const svgWidth = n * CELL_W;
-  const svgHeight = (current.maxDepth + 1) * LEVEL_GAP + CELL_H + PAD_TOP + 10;
-
-  const shuffle = () => {
-    setSeed(randomArray());
-    reset();
-  };
-
-  const nodeBox = (node) => ({
-    x0: node.l * CELL_W,
-    y0: node.depth * LEVEL_GAP + PAD_TOP,
-    width: (node.r - node.l + 1) * CELL_W,
+  const cells = s.row.map((c, k) => {
+    const inTray = s.tray.has(c.id);
+    let tone = "idle";
+    if (s.phase === "done") tone = "sage";
+    else if (inTray) tone = "coral";
+    else if (s.range && (k < l || k > r)) tone = "ghost";
+    else if (k === s.i || k === s.j) tone = "soft";
+    else if (inRun(k) || (s.phase === "base" && k === l)) tone = "sage";
+    return {
+      id: c.id,
+      value: c.value,
+      pos: inTray ? s.tray.get(c.id) : k,
+      dy: inTray ? TRAY : 0,
+      tone,
+      lift: !inTray && s.phase === "compare" && (k === s.i || k === s.j) ? 0.35 : 0,
+    };
   });
 
-  const cellFill = (idx) => {
-    if (idx === current.placed) return "#b4ff39";
-    if (current.compare.includes(idx)) return "#ff6a3d";
-    return "#f3f2ed";
-  };
+  const pointers = [];
+  if (s.i !== null) pointers.push({ index: s.i, text: "i" });
+  if (s.j !== null) pointers.push({ index: s.j, text: "j", tone: "coral" });
+  if (s.phase === "split") pointers.push({ index: s.mid, text: "m", tone: "sage" });
+
+  const tiles = {};
+  if (["merge", "compare", "take"].includes(s.phase)) {
+    // Empty tray slots for this merge.
+    for (let k = l; k <= r; k++) tiles[k] = "slot";
+  }
 
   return (
-    <div className="merge-sort-wrapper">
-      <div className="merge-sort">
-        <p className="ms-eyebrow">sorting</p>
-
-        <h1 className="ms-title">Merge Sort</h1>
-
-        <div className="ms-header">
-          <p className="ms-blurb">
-            Divides the array in half, recursively sorts each half, then merges them back together.
-          </p>
-
-          <div className="ms-complexity">
-            <div>
-              <div className="ms-complexity-label">time</div>
-              <div className="ms-time-value">O(n log n)</div>
-            </div>
-
-            <div>
-              <div className="ms-complexity-label">space</div>
-              <div className="ms-space-value">O(n)</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="ms-grid">
-          <div className="ms-stage">
-            <div className="ms-tree-wrap">
-              <svg
-                className="ms-tree-svg"
-                viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-                width={svgWidth}
-                height={svgHeight}
-              >
-                <defs>
-                  <marker
-                    id="ms-arrowhead"
-                    markerWidth="8"
-                    markerHeight="8"
-                    refX="4"
-                    refY="4"
-                    orient="auto"
-                  >
-                    <path d="M0,0 L8,4 L0,8 Z" fill="#7a7a80" />
-                  </marker>
-                </defs>
-
-                {nodes.map((node) => {
-                  const children = nodes
-                    .filter((c) => c.parentId === node.id)
-                    .sort((a, b) => a.l - b.l);
-
-                  if (children.length === 0) return null;
-
-                  const { x0, y0, width } = nodeBox(node);
-                  const fromX = x0 + width / 2;
-                  const fromY = y0 + CELL_H;
-
-                  return children.map((child) => {
-                    const childBox = nodeBox(child);
-                    const toX = childBox.x0 + childBox.width / 2;
-                    const toY = childBox.y0;
-
-                    return (
-                      <line
-                        key={`arrow-${node.id}-${child.id}`}
-                        x1={fromX}
-                        y1={fromY}
-                        x2={toX}
-                        y2={toY - 5}
-                        stroke="#7a7a80"
-                        strokeWidth="1.6"
-                        markerEnd="url(#ms-arrowhead)"
-                      />
-                    );
-                  });
-                })}
-
-                {nodes.map((node) => {
-                  const { x0, y0, width } = nodeBox(node);
-                  const isActive = node.id === current.activeNodeId;
-                  const isNodeDone = node.status === "done" || isDone;
-                  const isLeaf = node.r === node.l;
-                  const mid = node.l + Math.floor((node.r - node.l) / 2);
-                  const splitX = (mid + 1) * CELL_W;
-
-                  return (
-                    <g key={node.id}>
-                      <rect
-                        x={x0}
-                        y={y0}
-                        width={width}
-                        height={CELL_H}
-                        rx="8"
-                        fill={isNodeDone ? "rgba(180, 255, 57, 0.08)" : "transparent"}
-                        stroke={isNodeDone ? "#b4ff39" : isActive ? "#ff6a3d" : "#33333a"}
-                        strokeWidth={isActive ? 2 : 1.4}
-                      />
-
-                      {Array.from({ length: node.r - node.l }, (_, k) => node.l + k + 1).map(
-                        (divIdx) => (
-                          <line
-                            key={divIdx}
-                            x1={divIdx * CELL_W}
-                            y1={y0}
-                            x2={divIdx * CELL_W}
-                            y2={y0 + CELL_H}
-                            stroke="#262629"
-                            strokeWidth="1"
-                          />
-                        )
-                      )}
-
-                      {!isNodeDone && !isLeaf && (
-                        <line
-                          x1={splitX}
-                          y1={y0 - 4}
-                          x2={splitX}
-                          y2={y0 + CELL_H + 4}
-                          stroke="#ff6a3d"
-                          strokeWidth="3"
-                          strokeLinecap="round"
-                        />
-                      )}
-
-                      {Array.from({ length: node.r - node.l + 1 }, (_, k) => node.l + k).map(
-                        (idx) => (
-                          <text
-                            key={idx}
-                            x={idx * CELL_W + CELL_W / 2}
-                            y={y0 + CELL_H / 2 + 5}
-                            textAnchor="middle"
-                            className="ms-tree-value"
-                            fill={isNodeDone ? "#b4ff39" : isActive ? cellFill(idx) : "#f3f2ed"}
-                          >
-                            {current.array[idx]}
-                          </text>
-                        )
-                      )}
-                    </g>
-                  );
-                })}
-              </svg>
-            </div>
-
-            <p className="ms-status">{current.description}</p>
-          </div>
-
-          <div className="ms-code-panel">
-            <div className="ms-code-header">
-              <div className="ms-dummy-btns">
-                <span className="ms-red-btn"></span>
-                <span className="ms-yellow-btn"></span>
-                <span className="ms-green-btn"></span>
-                <span className="ms-filename">merge_sort.cpp</span>
-              </div>
-
-              <span className="ms-header-complexity">O(n log n)</span>
-            </div>
-
-            <pre className="ms-code-block">
-              {
-                CodeLines.map((line, i) => {
-                  return (
-                    <div
-                      key={i}
-                      className={`ms-code-line ${current.codeLine === i + 1 ? "ms-code-line-active" : ""}`}
-                    >
-                      <span className="ms-line-no">{i + 1}</span>
-                      {line}
-                    </div>
-                  );
-                })
-              }
-            </pre>
-          </div>
-        </div>
-
-        <div className="ms-controls">
-          <button className="ms-icon-btn" onClick={reset}>
-            <ResetIcon />
-          </button>
-
-          <button
-            className="ms-icon-btn"
-            onClick={stepBack}
-            disabled={index === 0}
-          >
-            <StepBackIcon />
-          </button>
-
-          <button className="ms-play-btn" onClick={togglePlay}>
-            {playing ? <PauseIcon /> : <PlayIcon />}
-          </button>
-
-          <button
-            className="ms-icon-btn"
-            onClick={stepForward}
-            disabled={index === steps.length - 1}
-          >
-            <StepForwardIcon />
-          </button>
-
-          <button className="ms-shuffle-btn" onClick={shuffle}>
-            <ShuffleIcon />
-            Shuffle
-          </button>
-
-          <div className="ms-speed">
-            <span>SPEED</span>
-
-            <input
-              type="range"
-              min="1"
-              max="10"
-              value={speed}
-              onChange={(e) => setSpeed(Number(e.target.value))}
-            />
-          </div>
-
-          <span className="ms-steps">
-            {index + 1} / {steps.length}
-          </span>
-        </div>
-
-        <div className="ms-stats">
-          <span>
-            comparisons: <b>{current.comparisons}</b>
-          </span>
-
-          <span>
-            merges: <b>{current.merges}</b>
-          </span>
-        </div>
-      </div>
-    </div>
+    <Lesson
+      steps={steps}
+      playback={playback}
+      timeline={(st) => st.title}
+      onShuffle={() => {
+        setSeed(randomArray(SIZE));
+        reset();
+      }}
+      complexity={[
+        { label: "time", value: "O(n log n)" },
+        { label: "space", value: "O(n)" },
+      ]}
+      stage={
+        <IsoArray
+          cells={cells}
+          slots={SIZE}
+          heights="value"
+          pointers={pointers}
+          front={TRAY}
+          before={<TraySlots tiles={tiles} />}
+          label="Merge sort"
+        />
+      }
+      narration={{ tag: TAGS[s.phase], title: s.title, body: <p>{s.body}</p>, notice: s.notice }}
+      code={{ lines: CODE, active: s.line, file: "merge_sort.cpp" }}
+      panels={[
+        {
+          title: "This merge",
+          rows: [
+            { label: "Range", value: s.range ? `${l}–${r}` : null },
+            { label: "Left front", value: s.i !== null ? s.row[s.i].value : null, tone: s.phase === "compare" ? "coral" : undefined },
+            { label: "Right front", value: s.j !== null ? s.row[s.j].value : null, tone: s.phase === "compare" ? "coral" : undefined },
+            { label: "In the tray", value: s.row.filter((c) => s.tray.has(c.id)).sort((a, b) => s.tray.get(a.id) - s.tray.get(b.id)).map((c) => c.value) },
+          ],
+        },
+        {
+          title: "Work done",
+          rows: [
+            { label: "Comparisons", value: s.comparisons },
+            { label: "Writes", value: s.writes },
+            { label: "Recursion depth", value: s.depth || null },
+          ],
+        },
+      ]}
+      legend={[
+        { label: "Front of each half", tone: "soft" },
+        { label: "Taken into the tray", tone: "coral" },
+        { label: "Sorted run", tone: "sage" },
+        { label: "Not in this call", tone: "ghost" },
+      ]}
+    />
   );
 };
+
+// Dashed floor squares where the merged values will land.
+const TraySlots = ({ tiles }) =>
+  Object.keys(tiles).map((pos) => (
+    <At key={pos} x={Number(pos) * STEP} y={0.3 + TRAY} instant>
+      <Tile tone="slot" />
+    </At>
+  ));
 
 export default MergeSort;

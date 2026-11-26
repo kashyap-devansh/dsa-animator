@@ -1,21 +1,19 @@
 import { BrowserRouter } from "react-router-dom";
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
-
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "@fontsource-variable/inter";
 import "./styles/fonts.css";
+import "./styles/theme.css";
+import "./index.css";
 import "lenis/dist/lenis.css";
 import "./styles/effects.css";
-import { ScrollProgress, SmoothScroll } from "./components/shared/effects.jsx";
+import "./styles/pages.css";
+import App from "./App.jsx";
 
-
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-      <SmoothScroll />
-      <ScrollProgress />
       <App />
     </BrowserRouter>
-  </StrictMode>,
+  </StrictMode>
 );

@@ -1,10 +1,10 @@
-import { AnimatePresence, motion } from "framer-motion";
+import IsoArray from "../../iso/IsoArray";
+import TreeStage from "../../Playground/Structures/Tree/TreeStage";
 import { useFrameLoop, pick, uniqueSorted } from "./useFrameLoop";
 import "./MiniViz.css";
 
 // Small, self-looping teaser animations for the landing page.
 
-const glide = { type: "spring", stiffness: 380, damping: 32 };
 
 /* ---------- bubble sort bars ---------- */
 
@@ -28,16 +28,18 @@ function buildSort() {
 }
 
 export const MiniSort = () => {
-  const [ref, f] = useFrameLoop(buildSort, 120, 14);
+  const [ref, f] = useFrameLoop(buildSort, 420, 6);
+  const cells = f.items.map((item, k) => ({
+    id: item.id,
+    value: item.v,
+    tone: f.cmp.includes(k) ? (f.swap ? "amber" : "coral") : k >= f.sorted ? "sage" : "idle",
+    lift: f.cmp.includes(k) ? 0.3 : 0,
+    label: "",
+  }));
 
   return (
-    <div ref={ref} className="mv mv-sort">
-      {f.items.map((item, k) => {
-        const tone = f.cmp.includes(k) ? (f.swap ? "mv-hot" : "mv-warm") : k >= f.sorted ? "mv-done" : "";
-        return (
-          <motion.div key={item.id} layout transition={glide} className={`mv-bar ${tone}`} style={{ height: `${item.v}%` }} />
-        );
-      })}
+    <div ref={ref} className="mv mv-iso">
+      <IsoArray cells={cells} slots={f.items.length} heights="value" maxValue={100} extraTop={0.4} label="Bubble sort" />
     </div>
   );
 };
@@ -67,24 +69,25 @@ function buildBinary() {
 }
 
 export const MiniBinarySearch = () => {
-  const [ref, f] = useFrameLoop(buildBinary, 650, 4);
+  const [ref, f] = useFrameLoop(buildBinary, 900, 3);
+  const cells = f.a.map((v, i) => ({
+    id: i,
+    value: v,
+    tone: f.found && i === f.mid ? "sage" : i === f.mid ? "coral" : i < f.lo || i > f.hi ? "ghost" : "idle",
+    lift: i === f.mid ? 0.35 : 0,
+  }));
+  const pointers = [];
+  if (!f.found && f.lo <= f.hi) {
+    pointers.push({ index: f.lo, text: "lo" });
+    if (f.hi !== f.lo) pointers.push({ index: f.hi, text: "hi" });
+  }
 
   return (
-    <div ref={ref} className="mv mv-binary">
+    <div ref={ref} className="mv mv-iso">
       <p className="mv-caption">
         target <b>{f.target}</b>
       </p>
-      <div className="mv-cells" style={{ gridTemplateColumns: `repeat(${f.a.length}, minmax(0, 36px))` }}>
-        {f.a.map((v, i) => {
-          const tone = f.found && i === f.mid ? "mv-cell-found" : i === f.mid ? "mv-cell-hot" : "";
-          return (
-            <div key={i} className={`mv-cell ${tone} ${i < f.lo || i > f.hi ? "mv-cell-dim" : ""}`}>
-              {v}
-              <span className="mv-tag">{i === f.lo && "lo"}{i === f.mid && !f.found && " mid"}{i === f.hi && " hi"}</span>
-            </div>
-          );
-        })}
-      </div>
+      <IsoArray cells={cells} slots={f.a.length} pointers={pointers} callouts={f.mid >= 0 ? [{ index: f.mid, text: f.found ? "found" : "mid", tone: f.found ? "sage" : "coral", small: true }] : []} label="Binary search" />
     </div>
   );
 };
@@ -121,38 +124,20 @@ function buildTree() {
 }
 
 export const MiniTree = () => {
-  const [ref, f] = useFrameLoop(buildTree, 620, 5);
-  const y = (depth) => 14 + depth * 26;
+  const [ref, f] = useFrameLoop(buildTree, 800, 4);
   const last = f.path[f.path.length - 1];
+  const byX = [...f.nodes].sort((a, b) => a.x - b.x);
+  const step = {
+    nodes: f.nodes.map((n) => ({ id: n.id, value: n.v, depth: n.depth, rank: byX.indexOf(n), parentId: n.parent, bf: 0 })),
+    marks: Object.fromEntries(f.path.map((id) => [id, id === last ? (f.done ? "found" : "active") : "path"])),
+  };
 
   return (
-    <div ref={ref} className="mv mv-tree">
+    <div ref={ref} className="mv mv-iso">
       <p className="mv-caption">
         search <b>{f.target}</b>
       </p>
-      <svg viewBox="0 0 100 96" preserveAspectRatio="xMidYMid meet">
-        {f.nodes.map((n) =>
-          n.parent === null ? null : (
-            <line
-              key={`e${n.id}`}
-              x1={f.nodes[n.parent].x}
-              y1={y(f.nodes[n.parent].depth)}
-              x2={n.x}
-              y2={y(n.depth)}
-              className={f.path.includes(n.id) ? "mv-edge-hot" : "mv-edge"}
-            />
-          )
-        )}
-        {f.nodes.map((n) => {
-          const tone = n.id === last ? (f.done ? "mv-node-found" : "mv-node-hot") : f.path.includes(n.id) ? "mv-node-path" : "";
-          return (
-            <g key={n.id} className={`mv-node ${tone}`}>
-              <circle cx={n.x} cy={y(n.depth)} r="4.6" />
-              <text x={n.x} y={y(n.depth) + 1.5}>{n.v}</text>
-            </g>
-          );
-        })}
-      </svg>
+      <TreeStage step={step} bounds={{ count: f.nodes.length, depth: 3 }} />
     </div>
   );
 };
@@ -299,31 +284,16 @@ function buildList() {
 }
 
 export const MiniList = () => {
-  const [ref, f] = useFrameLoop(buildList, 700, 6);
+  const [ref, f] = useFrameLoop(buildList, 900, 4);
+  const cells = f.nodes.map((n, k) => ({ id: n.id, value: n.v, pos: k, tone: n.id === f.fresh ? "coral" : "idle", lift: n.id === f.fresh && f.step === "new node" ? 1 : 0 }));
+  const arrows = f.nodes.map((n, k) => ({ from: n.id, to: f.nodes[k + 1]?.id ?? null }));
 
   return (
-    <div ref={ref} className="mv mv-list">
-      <p className="mv-caption">insertAtHead · <b>{f.step || "done"}</b></p>
-      <div className="mv-chain">
-        <span className="mv-pointer">head</span>
-        <AnimatePresence initial={false}>
-          {f.nodes.map((n) => (
-            <motion.div
-              key={n.id}
-              layout
-              initial={{ opacity: 0, y: -24, scale: 0.6 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={glide}
-              className={`mv-link ${n.id === f.fresh ? "mv-link-new" : ""}`}
-            >
-              <span className="mv-box">{n.v}</span>
-              <span className="mv-arrow">→</span>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-        <span className="mv-null">null</span>
-      </div>
+    <div ref={ref} className="mv mv-iso">
+      <p className="mv-caption">
+        insertAtHead · <b>{f.step || "done"}</b>
+      </p>
+      <IsoArray cells={cells.map((c, k) => ({ ...c, nextNull: k === cells.length - 1 }))} slots={5} slab={false} shape="node" step={2.6} arrows={arrows.filter((a) => a.to !== null)} pointers={f.nodes.length ? [{ index: 0, text: "head", tone: "coral" }] : []} extraTop={1.8} label="Linked list" />
     </div>
   );
 };
@@ -352,32 +322,17 @@ function buildQueue() {
 }
 
 export const MiniQueue = () => {
-  const [ref, f] = useFrameLoop(buildQueue, 750, 4);
+  const [ref, f] = useFrameLoop(buildQueue, 900, 3);
+  const cells = f.items.map((item, k) => ({ id: item.id, value: item.v, pos: k, tone: item.id === f.hot ? "coral" : item.id === f.out ? "ghost" : "idle", lift: item.id === f.out ? 0.8 : 0 }));
+  const tiles = {};
+  for (let k = f.items.length; k < 6; k++) tiles[k] = "slot";
 
   return (
-    <div ref={ref} className="mv mv-queue">
+    <div ref={ref} className="mv mv-iso">
       <p className="mv-caption">
-        <b>{f.op || " "}</b>
+        <b>{f.op || "\u00a0"}</b>
       </p>
-      <div className="mv-lane">
-        <span className="mv-pointer">front</span>
-        <AnimatePresence initial={false} mode="popLayout">
-          {f.items.map((item) => (
-            <motion.span
-              key={item.id}
-              layout
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -40 }}
-              transition={glide}
-              className={`mv-box ${item.id === f.hot ? "mv-box-new" : ""} ${item.id === f.out ? "mv-box-out" : ""}`}
-            >
-              {item.v}
-            </motion.span>
-          ))}
-        </AnimatePresence>
-        <span className="mv-pointer">rear</span>
-      </div>
+      <IsoArray cells={cells} slots={6} tiles={tiles} pointers={f.items.length ? [{ index: 0, text: "front", tone: "coral" }, { index: f.items.length - 1, text: "rear" }] : []} label="Queue" />
     </div>
   );
 };

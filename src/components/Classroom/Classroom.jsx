@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import { useTheme } from "../../course/store";
 import "./Classroom.css";
 
 // Classroom toolkit: present mode (fullscreen, chrome hidden, stage scaled to
 // fit the projector), an annotation pen, a laser pointer and keyboard control
 // of whichever visualizer is on screen.
 
-const INKS = ["#ff6a3d", "#b4ff39", "#7c8cff", "#f3f2ed"];
+const INKS = ["#e2694f", "#4f9a7e", "#5b6ee1", "#27282c"];
 const PRESENT_WIDTH = 1100;
 const HINT_KEY = "classroomHintSeen";
 
@@ -17,7 +18,7 @@ const SHORTCUTS = [
   ["←", "Step back"],
   ["R", "Reset"],
   ["F", "Present mode"],
-  ["T", "Projector light mode"],
+  ["T", "Light / dark theme"],
   ["PgDn / N", "Next lesson item"],
   ["P", "Pen"],
   ["L", "Laser pointer"],
@@ -269,7 +270,7 @@ const Classroom = () => {
   const [tool, setTool] = useState(null);
   const [color, setColor] = useState(INKS[0]);
   const [help, setHelp] = useState(false);
-  const [light, setLight] = useState(() => document.body.classList.contains("projector-light"));
+  const { theme, toggle: toggleTheme } = useTheme();
   const [idle, setIdle] = useState(false);
   const [hint, setHint] = useState(false);
   const { canvasRef, handlers, clear, undo } = useInk(tool, color);
@@ -356,7 +357,7 @@ const Classroom = () => {
       else if (k === "ArrowLeft" && controls) press(controls.back);
       else if ((k === "r" || k === "R") && controls) press(controls.reset);
       else if (k === "f" || k === "F") togglePresent();
-      else if (k === "t" || k === "T") setLight((on) => !on);
+      else if (k === "t" || k === "T") toggleTheme();
       else if (k === "p" || k === "P") setTool((t) => (t === "pen" ? null : "pen"));
       else if (k === "l" || k === "L") setTool((t) => (t === "laser" ? null : "laser"));
       else if (k === "c" || k === "C") clear();
@@ -380,14 +381,9 @@ const Classroom = () => {
 
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [togglePresent, clear, undo, help, tool, presenting]);
+  }, [togglePresent, clear, undo, help, tool, presenting, toggleTheme]);
 
-  // High-contrast light stage for projectors that wash out dark themes.
-  useEffect(() => {
-    document.body.classList.toggle("projector-light", light);
-  }, [light]);
 
-  useEffect(() => () => document.body.classList.remove("projector-light"), []);
 
   useEffect(() => {
     document.body.classList.toggle("is-lasering", tool === "laser");
@@ -423,7 +419,7 @@ const Classroom = () => {
                   key={ink}
                   type="button"
                   className={`cr-ink ${color === ink ? "cr-ink-active" : ""}`}
-                  style={{ "--ink": ink }}
+                  style={{ "--swatch": ink }}
                   onClick={() => setColor(ink)}
                   aria-label={`Ink ${i + 1}`}
                 />
@@ -440,7 +436,7 @@ const Classroom = () => {
           <ClearIcon />
         </DockButton>
 
-        <DockButton label={light ? "Dark stage" : "Projector light"} keyHint="T" active={light} onClick={() => setLight((on) => !on)}>
+        <DockButton label={theme === "dark" ? "Light theme" : "Dark theme"} keyHint="T" onClick={toggleTheme}>
           <SunIcon />
         </DockButton>
 

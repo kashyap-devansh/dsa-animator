@@ -1,7 +1,24 @@
-// Tiny C++ highlighter so stepper pages can keep their code as plain strings.
-const TOKEN = /(\/\/.*$)|\b(if|else|return|new|while|for|nullptr|true|false|break)\b|\b(Node|int|void|bool|long|vector|string)\b|\b(\d+)\b|([{}()[\];,<>=!&|+\-*%?:.]+)/g;
+// A small C++ highlighter so lesson code can stay as plain strings.
+// Colours: comments, strings, keywords, types, function names, numbers and
+// punctuation each get their own class.
 
-const CLASS_BY_GROUP = [null, "sp-comment", "sp-keyword", "sp-type", "sp-number", "sp-symbol"];
+const KEYWORDS = "if|else|for|while|do|return|new|delete|break|continue|switch|case|default|throw|try|catch|const|static|auto|struct|class|public|private|template|typename|using|namespace|nullptr|true|false|this|sizeof";
+const TYPES = "void|int|long|short|bool|char|double|float|unsigned|size_t|string|vector|list|map|set|pair|queue|stack|Node";
+
+const TOKEN = new RegExp(
+  [
+    "(\\/\\/.*$)", // 1 comment
+    '("(?:[^"\\\\]|\\\\.)*"|\'(?:[^\'\\\\]|\\\\.)*\')', // 2 string / char
+    `\\b(${KEYWORDS})\\b`, // 3 keyword
+    `\\b(${TYPES})\\b`, // 4 type
+    "\\b([A-Za-z_]\\w*)(?=\\s*\\()", // 5 function name
+    "\\b(\\d+(?:\\.\\d+)?)\\b", // 6 number
+    "([{}()[\\];,<>=!&|+\\-*/%?:.^~]+)", // 7 punctuation
+  ].join("|"),
+  "g"
+);
+
+const CLASS_BY_GROUP = [null, "sp-comment", "sp-string", "sp-keyword", "sp-type", "sp-fn", "sp-number", "sp-symbol"];
 
 export function highlight(line) {
   const parts = [];
@@ -11,6 +28,10 @@ export function highlight(line) {
   TOKEN.lastIndex = 0;
 
   while ((match = TOKEN.exec(line)) !== null) {
+    if (match[0] === "") {
+      TOKEN.lastIndex++;
+      continue;
+    }
     if (match.index > last) parts.push(line.slice(last, match.index));
 
     const group = match.findIndex((m, i) => i > 0 && m !== undefined);

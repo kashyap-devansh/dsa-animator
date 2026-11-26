@@ -1,40 +1,40 @@
 /* Faculty hub (tp-), lesson bar (lb-), lesson cover (lc-), class quiz (cq-). */
 
-.tone-orange { --tone: #ff6a3d; }
-.tone-lime { --tone: #b4ff39; }
-.tone-blue { --tone: #7c8cff; }
+.tone-orange { --tone: var(--coral); }
+.tone-lime { --tone: var(--sage); }
+.tone-blue { --tone: var(--ink-2); }
 .tone-text { color: var(--tone); }
 
 .tp,
 .lc,
 .cq-page {
-  background: #0a0a0b;
-  color: #d8d7d2;
-  font-family: "Satoshi", sans-serif;
+  background: var(--page);
+  color: var(--ink-2);
+  font-family: var(--font-sans);
   overflow-x: clip;
 }
 
 .tp kbd,
 .lc kbd,
 .cq kbd {
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.7rem;
   padding: 3px 8px;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--line);
+  border: 1px solid var(--line);
   border-bottom-width: 2px;
-  color: #d8d7d2;
+  color: var(--ink-2);
 }
 
 .tp-eyebrow,
 .lc-eyebrow,
 .cq-eyebrow {
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.72rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #ff6a3d;
+  color: var(--coral);
 }
 
 /* buttons */
@@ -47,8 +47,8 @@
   justify-content: center;
   gap: 10px;
   padding: 10px 16px;
-  border-radius: 999px;
-  font-family: "Satoshi", sans-serif;
+  border-radius: 8px;
+  font-family: var(--font-sans);
   font-size: 0.88rem;
   font-weight: 500;
   text-decoration: none;
@@ -58,26 +58,26 @@
 
 .tp-solid,
 .cq-btn {
-  border: 1px solid #ff6a3d;
-  background: #ff6a3d;
-  color: #140803;
-  box-shadow: 0 10px 30px rgba(255, 106, 61, 0.25);
+  border: 1px solid var(--coral);
+  background: var(--coral);
+  color: var(--on-coral);
+  box-shadow: none;
 }
 
 .tp-solid:hover:not(:disabled),
 .cq-btn:hover:not(:disabled) {
-  background: #ff7b52;
+  background: var(--coral-deep);
   transform: translateY(-1px);
 }
 
 .tp-ghost {
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.03);
-  color: #e6e5e0;
+  border: 1px solid var(--line);
+  background: var(--hover);
+  color: var(--ink);
 }
 
 .tp-ghost:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.07);
+  background: var(--line);
 }
 
 .tp-solid:disabled,
@@ -96,7 +96,7 @@
 .cq-btn kbd {
   background: rgba(0, 0, 0, 0.15);
   border-color: rgba(0, 0, 0, 0.2);
-  color: #140803;
+  color: var(--on-coral);
 }
 
 /* =====================================================================
@@ -115,19 +115,20 @@
   inset: -20% -10% auto;
   height: 120%;
   background:
-    radial-gradient(500px 360px at 25% 30%, rgba(255, 106, 61, 0.22), transparent 70%),
-    radial-gradient(560px 400px at 78% 45%, rgba(124, 140, 255, 0.2), transparent 70%),
-    radial-gradient(420px 300px at 55% 85%, rgba(180, 255, 57, 0.1), transparent 70%);
+    radial-gradient(500px 360px at 25% 30%, color-mix(in srgb, var(--coral) 22%, transparent), transparent 70%),
+    radial-gradient(560px 400px at 78% 45%, color-mix(in srgb, var(--ink-2) 20%, transparent), transparent 70%),
+    radial-gradient(420px 300px at 55% 85%, color-mix(in srgb, var(--sage) 10%, transparent), transparent 70%);
   filter: blur(10px);
   pointer-events: none;
-}
+
+  display: none;}
 
 .tp-hero-grid {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    linear-gradient(var(--hover) 1px, transparent 1px),
+    linear-gradient(90deg, var(--hover) 1px, transparent 1px);
   background-size: 64px 64px;
   mask-image: radial-gradient(ellipse 65% 55% at 50% 40%, #000 25%, transparent 75%);
   -webkit-mask-image: radial-gradient(ellipse 65% 55% at 50% 40%, #000 25%, transparent 75%);
@@ -145,27 +146,28 @@
 
 .tp-title {
   margin: 22px 0 0;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 500;
   font-size: clamp(2.8rem, 7.4vw, 6.6rem);
   line-height: 0.98;
   letter-spacing: -0.045em;
-  color: #f3f2ed;
+  color: var(--ink);
 }
 
 .tp-title span {
-  background: linear-gradient(100deg, #ff6a3d 0%, #ffb454 45%, #b4ff39 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
+  background: none;
+  
+  
+  color: var(--coral);
+
+  -webkit-text-fill-color: currentColor;}
 
 .tp-lede {
   max-width: 680px;
   margin: 28px 0 0;
   font-size: 1.12rem;
   line-height: 1.65;
-  color: #8f8f96;
+  color: var(--ink-3);
 }
 
 .tp-hero-actions {
@@ -182,14 +184,14 @@
   width: min(900px, 100%);
   margin: 64px 0 0;
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--line);
   background: rgba(17, 17, 19, 0.7);
   overflow: hidden;
 }
 
 .tp-numbers div {
   padding: 22px 12px;
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  border-right: 1px solid var(--line);
 }
 
 .tp-numbers div:last-child {
@@ -197,20 +199,20 @@
 }
 
 .tp-numbers dt {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: var(--font-sans);
   font-size: 2.2rem;
   font-weight: 500;
-  color: #f3f2ed;
+  color: var(--ink);
   letter-spacing: -0.03em;
 }
 
 .tp-numbers dd {
   margin: 4px 0 0;
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.68rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #6b6b72;
+  color: var(--ink-4);
 }
 
 /* sections */
@@ -219,7 +221,7 @@
   max-width: 1240px;
   margin: 0 auto;
   padding: 6rem 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--hover);
   scroll-margin-top: 90px;
 }
 
@@ -231,17 +233,17 @@
 .tp-section-head h2,
 .tp-final h2 {
   margin: 14px 0 12px;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 500;
   font-size: clamp(2rem, 4.4vw, 3.4rem);
   line-height: 1.04;
   letter-spacing: -0.03em;
-  color: #f3f2ed;
+  color: var(--ink);
 }
 
 .tp-section-head p {
   margin: 0;
-  color: #85858c;
+  color: var(--ink-3);
   line-height: 1.6;
 }
 
@@ -258,8 +260,8 @@
   position: relative;
   padding: 24px;
   border-radius: 18px;
-  background: #121214;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--paper);
+  border: 1px solid var(--line);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -276,9 +278,9 @@
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: #0a0a0b;
-  border: 1px solid rgba(255, 106, 61, 0.4);
-  color: #ff6a3d;
+  background: var(--page);
+  border: 1px solid color-mix(in srgb, var(--coral) 40%, transparent);
+  color: var(--coral);
   font-size: 0.75rem;
 }
 
@@ -287,24 +289,24 @@
 }
 
 .tp-flow-num {
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.75rem;
-  color: #ff6a3d;
+  color: var(--coral);
 }
 
 .tp-flow-step h3 {
   margin: 14px 0 8px;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 500;
   font-size: 1.5rem;
-  color: #f3f2ed;
+  color: var(--ink);
 }
 
 .tp-flow-step p {
   margin: 0 0 18px;
   font-size: 0.9rem;
   line-height: 1.6;
-  color: #85858c;
+  color: var(--ink-3);
   flex: 1;
 }
 
@@ -321,41 +323,41 @@
   flex-direction: column;
   padding: 24px;
   border-radius: 18px;
-  background: #121214;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--paper);
+  border: 1px solid var(--line);
 }
 
 .tp-unit-top {
   display: flex;
   justify-content: space-between;
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.72rem;
 }
 
 .tp-unit-num {
-  color: #ff6a3d;
+  color: var(--coral);
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .tp-unit-hours {
-  color: #5d5d64;
+  color: var(--ink-4);
 }
 
 .tp-unit h3 {
   margin: 14px 0 6px;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 500;
   font-size: 1.55rem;
   letter-spacing: -0.02em;
-  color: #f3f2ed;
+  color: var(--ink);
 }
 
 .tp-unit > p {
   margin: 0 0 18px;
   font-size: 0.9rem;
   line-height: 1.55;
-  color: #85858c;
+  color: var(--ink-3);
 }
 
 .tp-unit-chips {
@@ -368,8 +370,8 @@
 .tp-chip {
   font-size: 0.74rem;
   padding: 4px 9px;
-  border-radius: 999px;
-  color: #c9c8c3;
+  border-radius: 8px;
+  color: var(--ink-2);
   background: color-mix(in srgb, var(--tone) 9%, transparent);
   border: 1px solid color-mix(in srgb, var(--tone) 28%, transparent);
 }
@@ -382,7 +384,7 @@
   justify-content: space-between;
   gap: 12px;
   padding-top: 18px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--hover);
 }
 
 .tp-unit-foot > div {
@@ -391,9 +393,9 @@
 }
 
 .tp-unit-counts {
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.68rem;
-  color: #5d5d64;
+  color: var(--ink-4);
 }
 
 /* builder */
@@ -408,8 +410,8 @@
 .tp-picker {
   padding: 22px;
   border-radius: 20px;
-  background: #111113;
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: var(--paper);
+  border: 1px solid var(--line);
   display: flex;
   flex-direction: column;
   min-height: 520px;
@@ -417,11 +419,11 @@
 
 .tp-title-field span {
   display: block;
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.66rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #5d5d64;
+  color: var(--ink-4);
   margin-bottom: 8px;
 }
 
@@ -431,36 +433,36 @@
   box-sizing: border-box;
   padding: 12px 14px;
   border-radius: 12px;
-  background: #0a0a0b;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #f3f2ed;
+  background: var(--page);
+  border: 1px solid var(--line);
+  color: var(--ink);
   font: inherit;
   outline: none;
 }
 
 .tp-title-field input {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: var(--font-sans);
   font-size: 1.25rem;
 }
 
 .tp-title-field input:focus,
 .tp-picker-head input:focus {
-  border-color: rgba(255, 106, 61, 0.55);
+  border-color: color-mix(in srgb, var(--coral) 55%, transparent);
 }
 
 .tp-lesson-head {
   display: flex;
   justify-content: space-between;
   margin: 18px 0 10px;
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.7rem;
-  color: #5d5d64;
+  color: var(--ink-4);
 }
 
 .tp-link {
   border: 0;
   background: transparent;
-  color: #ff6a3d;
+  color: var(--coral);
   font: inherit;
   cursor: pointer;
 }
@@ -474,7 +476,7 @@
   max-height: 420px;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: #2a2a2e transparent;
+  scrollbar-color: var(--line-strong) transparent;
 }
 
 .tp-rows {
@@ -489,8 +491,8 @@
   gap: 12px;
   padding: 10px 12px;
   border-radius: 12px;
-  background: #18181b;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--paper);
+  border: 1px solid var(--line);
   cursor: grab;
   user-select: none;
   position: relative;
@@ -507,15 +509,15 @@
 }
 
 .tp-row-num {
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.72rem;
-  color: #5d5d64;
+  color: var(--ink-4);
 }
 
 .tp-row-kind {
   flex: none;
   width: 74px;
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.6rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -525,7 +527,7 @@
   flex: 1;
   min-width: 0;
   font-size: 0.92rem;
-  color: #f3f2ed;
+  color: var(--ink);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -534,22 +536,22 @@
 .tp-row-x {
   border: 0;
   background: transparent;
-  color: #6b6b72;
+  color: var(--ink-4);
   font-size: 1.1rem;
   cursor: pointer;
   padding: 0 4px;
 }
 
 .tp-row-x:hover {
-  color: #ff6a3d;
+  color: var(--coral);
 }
 
 .tp-empty {
   padding: 28px 12px;
   text-align: center;
-  color: #5d5d64;
+  color: var(--ink-4);
   font-size: 0.9rem;
-  border: 1px dashed rgba(255, 255, 255, 0.08);
+  border: 1px dashed var(--line);
   border-radius: 12px;
 }
 
@@ -571,25 +573,25 @@
   display: flex;
   gap: 4px;
   padding: 3px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  background: var(--hover);
   align-self: flex-start;
 }
 
 .tp-kinds button {
   border: 0;
   background: transparent;
-  color: #85858c;
+  color: var(--ink-3);
   font: inherit;
   font-size: 0.8rem;
   padding: 6px 12px;
-  border-radius: 999px;
+  border-radius: 8px;
   cursor: pointer;
 }
 
 .tp-kinds .is-active {
-  background: #f3f2ed;
-  color: #0a0a0b;
+  background: var(--ink);
+  color: var(--page);
 }
 
 .tp-results button {
@@ -608,12 +610,12 @@
 }
 
 .tp-results button:hover {
-  background: rgba(255, 106, 61, 0.07);
+  background: color-mix(in srgb, var(--coral) 7%, transparent);
 }
 
 .tp-res-group {
   font-size: 0.75rem;
-  color: #5d5d64;
+  color: var(--ink-4);
   white-space: nowrap;
 }
 
@@ -623,8 +625,8 @@
   display: grid;
   place-items: center;
   border-radius: 50%;
-  border: 1px solid rgba(255, 106, 61, 0.45);
-  color: #ff6a3d;
+  border: 1px solid color-mix(in srgb, var(--coral) 45%, transparent);
+  color: var(--coral);
   font-size: 0.9rem;
   flex: none;
 }
@@ -640,16 +642,16 @@
 .tp-promise {
   padding: 22px;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent);
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, var(--hover), transparent);
 }
 
 .tp-promise h4 {
   margin: 0 0 8px;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 500;
   font-size: 1.1rem;
-  color: #f3f2ed;
+  color: var(--ink);
 }
 
 .tp-promise h4::before {
@@ -660,8 +662,8 @@
   height: 20px;
   margin-right: 10px;
   border-radius: 50%;
-  background: rgba(180, 255, 57, 0.12);
-  color: #b4ff39;
+  background: color-mix(in srgb, var(--sage) 12%, transparent);
+  color: var(--sage);
   font-size: 0.72rem;
   vertical-align: 2px;
 }
@@ -670,7 +672,7 @@
   margin: 0;
   font-size: 0.88rem;
   line-height: 1.55;
-  color: #85858c;
+  color: var(--ink-3);
 }
 
 .tp-final {
@@ -679,10 +681,10 @@
   border-radius: 26px;
   text-align: center;
   background:
-    radial-gradient(500px 260px at 30% 0%, rgba(255, 106, 61, 0.18), transparent 70%),
-    radial-gradient(500px 260px at 70% 100%, rgba(124, 140, 255, 0.16), transparent 70%),
-    #111113;
-  border: 1px solid rgba(255, 255, 255, 0.07);
+    radial-gradient(500px 260px at 30% 0%, color-mix(in srgb, var(--coral) 18%, transparent), transparent 70%),
+    radial-gradient(500px 260px at 70% 100%, color-mix(in srgb, var(--ink-2) 16%, transparent), transparent 70%),
+    var(--paper);
+  border: 1px solid var(--line);
 }
 
 .tp-final > div {
@@ -708,13 +710,13 @@
   gap: 12px;
   max-width: calc(100vw - 32px);
   padding: 6px 8px;
-  border-radius: 999px;
-  background: rgba(20, 20, 22, 0.88);
-  border: 1px solid rgba(255, 106, 61, 0.3);
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5), 0 0 30px -10px rgba(255, 106, 61, 0.4);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--page) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--coral) 30%, transparent);
+  box-shadow: none;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  font-family: "Satoshi", sans-serif;
+  font-family: var(--font-sans);
 }
 
 body.is-presenting .lb {
@@ -734,24 +736,24 @@ body.in-lesson .page-main > :first-child {
   height: 34px;
   flex: none;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--line);
   background: transparent;
-  color: #e6e5e0;
+  color: var(--ink);
   cursor: pointer;
 }
 
 .lb-btn:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.07);
+  background: var(--line);
 }
 
 .lb-next {
-  background: #ff6a3d;
-  border-color: #ff6a3d;
-  color: #140803;
+  background: var(--coral);
+  border-color: var(--coral);
+  color: var(--on-coral);
 }
 
 .lb-next:hover:not(:disabled) {
-  background: #ff7b52;
+  background: var(--coral-deep);
 }
 
 .lb-btn:disabled {
@@ -767,11 +769,11 @@ body.in-lesson .page-main > :first-child {
 }
 
 .lb-lesson {
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.6rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #6b6b72;
+  color: var(--ink-4);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -780,7 +782,7 @@ body.in-lesson .page-main > :first-child {
 
 .lb-item {
   font-size: 0.88rem;
-  color: #f3f2ed;
+  color: var(--ink);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -789,7 +791,7 @@ body.in-lesson .page-main > :first-child {
 
 .lb-item i {
   font-style: normal;
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.62rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -805,36 +807,36 @@ body.in-lesson .page-main > :first-child {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--line);
 }
 
 .lb-dots .is-done {
-  background: rgba(255, 106, 61, 0.5);
+  background: color-mix(in srgb, var(--coral) 50%, transparent);
 }
 
 .lb-dots .is-current {
   width: 18px;
-  border-radius: 999px;
-  background: #ff6a3d;
+  border-radius: 8px;
+  background: var(--coral);
 }
 
 .lb-count {
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.72rem;
-  color: #8f8f96;
+  color: var(--ink-3);
 }
 
 .lb-end {
   border: 0;
   background: transparent;
-  color: #6b6b72;
+  color: var(--ink-4);
   font-size: 1.1rem;
   cursor: pointer;
   padding: 0 6px;
 }
 
 .lb-end:hover {
-  color: #f3f2ed;
+  color: var(--ink);
 }
 
 /* =====================================================================
@@ -856,8 +858,8 @@ body.in-lesson .page-main > :first-child {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(600px 400px at 20% 20%, rgba(255, 106, 61, 0.16), transparent 70%),
-    radial-gradient(600px 400px at 85% 80%, rgba(124, 140, 255, 0.14), transparent 70%);
+    radial-gradient(600px 400px at 20% 20%, color-mix(in srgb, var(--coral) 16%, transparent), transparent 70%),
+    radial-gradient(600px 400px at 85% 80%, color-mix(in srgb, var(--ink-2) 14%, transparent), transparent 70%);
   pointer-events: none;
 }
 
@@ -868,19 +870,19 @@ body.in-lesson .page-main > :first-child {
 
 .lc-title {
   margin: 18px 0 14px;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 500;
   font-size: clamp(2.6rem, 6.4vw, 5.4rem);
   line-height: 1;
   letter-spacing: -0.04em;
-  color: #f3f2ed;
+  color: var(--ink);
 }
 
 .lc-meta {
   margin: 0 0 34px;
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.8rem;
-  color: #6b6b72;
+  color: var(--ink-4);
 }
 
 .lc-list {
@@ -900,24 +902,24 @@ body.in-lesson .page-main > :first-child {
   border-radius: 10px;
   text-decoration: none;
   color: inherit;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--hover);
   transition: background 0.2s ease;
 }
 
 .lc-list a:hover {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--hover);
 }
 
 .lc-num {
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.72rem;
-  color: #5d5d64;
+  color: var(--ink-4);
 }
 
 .lc-kind {
   width: 76px;
   flex: none;
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.6rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -926,7 +928,7 @@ body.in-lesson .page-main > :first-child {
 .lc-name {
   flex: 1;
   min-width: 0;
-  color: #f3f2ed;
+  color: var(--ink);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -934,7 +936,7 @@ body.in-lesson .page-main > :first-child {
 
 .lc-group {
   font-size: 0.75rem;
-  color: #5d5d64;
+  color: var(--ink-4);
   white-space: nowrap;
 }
 
@@ -953,7 +955,7 @@ body.in-lesson .page-main > :first-child {
 
 .lc-hint {
   font-size: 0.85rem;
-  color: #6b6b72;
+  color: var(--ink-4);
 }
 
 /* =====================================================================
@@ -981,9 +983,9 @@ body.in-lesson .page-main > :first-child {
 
 .cq-progress {
   margin-left: auto;
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.75rem;
-  color: #6b6b72;
+  color: var(--ink-4);
 }
 
 .cq-timer {
@@ -1001,20 +1003,20 @@ body.in-lesson .page-main > :first-child {
 
 .cq-timer-track {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.07);
+  stroke: var(--line);
   stroke-width: 5;
 }
 
 .cq-timer-ring {
   fill: none;
-  stroke: #b4ff39;
+  stroke: var(--sage);
   stroke-width: 5;
   stroke-linecap: round;
   transition: stroke 0.3s ease;
 }
 
 .cq-timer.is-low .cq-timer-ring {
-  stroke: #ff6a3d;
+  stroke: var(--coral);
 }
 
 .cq-timer b {
@@ -1022,20 +1024,20 @@ body.in-lesson .page-main > :first-child {
   inset: 0;
   display: grid;
   place-items: center;
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 1rem;
   font-weight: 500;
-  color: #f3f2ed;
+  color: var(--ink);
 }
 
 .cq-q {
   margin: 0 0 36px;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 500;
   font-size: clamp(1.9rem, 4vw, 3.2rem);
   line-height: 1.12;
   letter-spacing: -0.025em;
-  color: #f3f2ed;
+  color: var(--ink);
 }
 
 .cq-options {
@@ -1051,10 +1053,10 @@ body.in-lesson .page-main > :first-child {
   min-height: 92px;
   padding: 18px 22px;
   border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  border: 1px solid var(--line);
   background: #131315;
-  color: #e6e5e0;
-  font-family: "Satoshi", sans-serif;
+  color: var(--ink);
+  font-family: var(--font-sans);
   font-size: clamp(1.05rem, 1.8vw, 1.35rem);
   text-align: left;
   cursor: pointer;
@@ -1062,7 +1064,7 @@ body.in-lesson .page-main > :first-child {
 }
 
 .cq-option:hover {
-  border-color: rgba(255, 255, 255, 0.22);
+  border-color: color-mix(in srgb, var(--ink) 22%, transparent);
 }
 
 .cq-letter {
@@ -1072,41 +1074,41 @@ body.in-lesson .page-main > :first-child {
   display: grid;
   place-items: center;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.06);
-  font-family: "JetBrains Mono", monospace;
+  background: var(--line);
+  font-family: var(--font-mono);
   font-size: 1.05rem;
-  color: #a5a5ab;
+  color: var(--ink-3);
 }
 
 .cq-option.is-picked {
-  border-color: #7c8cff;
-  background: rgba(124, 140, 255, 0.1);
+  border-color: var(--ink-2);
+  background: color-mix(in srgb, var(--ink-2) 10%, transparent);
 }
 
 .cq-option.is-picked .cq-letter {
-  background: #7c8cff;
-  color: #0a0a0b;
+  background: var(--ink-2);
+  color: var(--page);
 }
 
 .cq-option.is-right {
-  border-color: #b4ff39;
-  background: rgba(180, 255, 57, 0.1);
-  box-shadow: 0 0 40px -10px rgba(180, 255, 57, 0.5);
+  border-color: var(--sage);
+  background: color-mix(in srgb, var(--sage) 10%, transparent);
+  box-shadow: 0 0 40px -10px color-mix(in srgb, var(--sage) 50%, transparent);
 }
 
 .cq-option.is-right .cq-letter {
-  background: #b4ff39;
-  color: #0a0a0b;
+  background: var(--sage);
+  color: var(--page);
 }
 
 .cq-option.is-wrong {
-  border-color: rgba(255, 106, 61, 0.6);
-  background: rgba(255, 106, 61, 0.08);
+  border-color: color-mix(in srgb, var(--coral) 60%, transparent);
+  background: color-mix(in srgb, var(--coral) 8%, transparent);
 }
 
 .cq-option.is-wrong .cq-letter {
-  background: #ff6a3d;
-  color: #140803;
+  background: var(--coral);
+  color: var(--on-coral);
 }
 
 .cq-option.is-dim {
@@ -1117,15 +1119,15 @@ body.in-lesson .page-main > :first-child {
   margin: 26px 0 0;
   padding: 18px 22px;
   border-radius: 16px;
-  background: rgba(180, 255, 57, 0.06);
-  border: 1px solid rgba(180, 255, 57, 0.2);
+  background: color-mix(in srgb, var(--sage) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--sage) 20%, transparent);
   font-size: 1.15rem;
   line-height: 1.6;
-  color: #d8d7d2;
+  color: var(--ink-2);
 }
 
 .cq-why b {
-  color: #b4ff39;
+  color: var(--sage);
 }
 
 .cq-foot {
@@ -1141,13 +1143,13 @@ body.in-lesson .page-main > :first-child {
 }
 
 .cq-link {
-  color: #8f8f96;
+  color: var(--ink-3);
   text-decoration: none;
   font-size: 0.9rem;
 }
 
 .cq-link:hover {
-  color: #f3f2ed;
+  color: var(--ink);
 }
 
 /* ---------- responsive ---------- */
@@ -1177,7 +1179,7 @@ body.in-lesson .page-main > :first-child {
   }
 
   .tp-numbers div:nth-child(-n + 3) {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid var(--line);
   }
 
   .tp-units {

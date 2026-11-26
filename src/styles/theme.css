@@ -1,0 +1,278 @@
+/* Design tokens for the whole app. Light is the default; [data-theme="dark"]
+   is set on <html> by the inline script in index.html before first paint. */
+
+:root {
+  color-scheme: light;
+
+  --font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --page: #f6f3ec;
+  --paper: #fbf9f5;
+  --sunk: #f1ede5;
+  --ink: #27282c;
+  --ink-2: #45444a;
+  --ink-3: #75726c;
+  --ink-4: #a29e97;
+  --line: #e0dbd1;
+  --line-soft: #e9e5dc;
+  --line-strong: #cec8bd;
+  --hover: rgba(39, 40, 44, 0.05);
+
+  --coral: #e2694f;
+  --coral-deep: #cf5940;
+  --coral-ink: #7a2a1a;
+  --coral-50: #fcede6;
+  --coral-100: #f9dfd4;
+  --coral-200: #f3c7b8;
+  --coral-300: #eaae9b;
+  --on-coral: #fff;
+
+  --sage: #5e9a83;
+  --sage-50: #e6f1ec;
+  --amber: #c98a2c;
+  --amber-50: #f8eedb;
+
+  --code-bg: #2b2c31;
+  --code-fg: #ebe7e0;
+  --code-dim: #a1a4b3;
+  --code-gutter: #77798a;
+  --code-kw: #f08b6e;
+  --code-type: #92cec4;
+  --code-num: #e5c27a;
+  --code-fn: #8fb4ff;
+  --code-str: #b5d98a;
+  --code-active: rgba(226, 105, 79, 0.18);
+
+  /* Isometric scene */
+  --iso-top: #fbf9f4;
+  --iso-left: #f0ece4;
+  --iso-right: #fff;
+  --iso-edge: #27282c;
+  --iso-hatch: var(--coral);
+  --iso-slab-side: #27282c;
+  --iso-slab-text: #f3f0ea;
+  --iso-grid: #dcd4c6;
+  --iso-shadow: rgba(79, 61, 42, 0.16);
+  --iso-ghost: #c7c1b7;
+
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --shadow-card: 0 1px 0 rgba(39, 40, 44, 0.04), 0 1px 2px rgba(39, 40, 44, 0.04);
+  --shadow-pop: 0 12px 32px -12px rgba(39, 40, 44, 0.25);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --page: #0c0d0f;
+  --paper: #16171a;
+  --sunk: #111215;
+  --ink: #f2f0eb;
+  --ink-2: #c9c6c0;
+  --ink-3: #918e88;
+  --ink-4: #66645f;
+  --line: #27292e;
+  --line-soft: #1f2125;
+  --line-strong: #393c43;
+  --hover: rgba(255, 255, 255, 0.06);
+
+  --coral: #e8694e;
+  --coral-deep: #f07a5f;
+  --coral-ink: #f6ab98;
+  --coral-50: #261511;
+  --coral-100: #4a2219;
+  --coral-200: #6b2e21;
+  --coral-300: #923f2d;
+
+  --sage: #7cc0a6;
+  --sage-50: #14251f;
+  --amber: #e0a54c;
+  --amber-50: #2a2113;
+
+  --code-bg: #101114;
+  --code-gutter: #5f6170;
+
+  --iso-top: #ebe7e0;
+  --iso-left: #d5d1c9;
+  --iso-right: #e4e0d8;
+  --iso-edge: #16171a;
+  --iso-slab-side: #2a2c31;
+  --iso-slab-text: #c9c6c0;
+  --iso-grid: #202227;
+  --iso-shadow: rgba(0, 0, 0, 0.45);
+  --iso-ghost: #3d4047;
+
+  --shadow-card: none;
+  --shadow-pop: 0 16px 40px -12px rgba(0, 0, 0, 0.7);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: var(--coral-200);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--coral);
+  outline-offset: 2px;
+}
+
+/* Shared primitives used across pages. */
+
+.ui-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.ui-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line-strong);
+  background: var(--paper);
+  color: var(--ink-2);
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.1s;
+}
+
+.ui-btn:hover:not(:disabled) {
+  background: var(--hover);
+  color: var(--ink);
+}
+
+.ui-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.ui-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.ui-btn-primary {
+  background: var(--coral);
+  border-color: var(--coral);
+  color: var(--on-coral);
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.12);
+}
+
+.ui-btn-primary:hover:not(:disabled) {
+  background: var(--coral-deep);
+  border-color: var(--coral-deep);
+  color: var(--on-coral);
+}
+
+.ui-btn-icon {
+  width: 40px;
+  padding: 0;
+}
+
+.ui-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.ui-tag {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 5px;
+  background: var(--coral-100);
+  color: var(--coral-ink);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ui-kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 18px;
+  padding: 0 4px;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  font-size: 10px;
+  color: var(--ink-3);
+  background: var(--paper);
+}
+
+.ui-chip {
+  display: inline-grid;
+  place-items: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 7px;
+  border-radius: 6px;
+  background: var(--sunk);
+  border: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+.ui-chip-coral {
+  background: var(--coral);
+  border-color: var(--coral);
+  color: var(--on-coral);
+}
+
+.ui-chip-muted {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  color: var(--ink-4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,163 @@
+.pp {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+.pp-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.pp-head h1 {
+  margin: 8px 0 6px;
+  font-size: 36px;
+  font-weight: 750;
+  letter-spacing: -0.03em;
+}
+
+.pp-head p {
+  margin: 0;
+  color: var(--ink-3);
+  font-size: 15.5px;
+}
+
+.pp-ring {
+  --pct: 0;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  background: conic-gradient(var(--coral) calc(var(--pct) * 1%), var(--sunk) 0);
+}
+
+.pp-ring span {
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: var(--page);
+  font-size: 22px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.pp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 24px 0 32px;
+}
+
+.pp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 14px;
+}
+
+.pp-mod {
+  padding: 18px 18px 10px;
+}
+
+.pp-mod-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pp-mod-num {
+  padding: 1px 6px;
+  border-radius: 5px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.pp-mod h2 {
+  flex: 1;
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.pp-mod-count {
+  font-size: 13px;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.pp-mod-bar {
+  height: 5px;
+  margin: 12px 0 8px;
+  border-radius: 99px;
+  background: var(--sunk);
+  overflow: hidden;
+}
+
+.pp-mod-bar div {
+  height: 100%;
+  background: var(--coral);
+}
+
+.pp-mod ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pp-mod a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 6px;
+  border-radius: 8px;
+  color: var(--ink-2);
+  font-size: 14.5px;
+  text-decoration: none;
+}
+
+.pp-mod a:hover {
+  background: var(--hover);
+  color: var(--ink);
+}
+
+.pp-mod a svg {
+  flex-shrink: 0;
+  color: var(--ink-4);
+}
+
+.pp-mod a span {
+  flex: 1;
+}
+
+.pp-mod a small {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+
+.pp-mod a.pp-done svg {
+  color: var(--sage);
+}
+
+@media (max-width: 640px) {
+  .pp {
+    padding-top: 28px;
+  }
+
+  .pp-head h1 {
+    font-size: 28px;
+  }
+
+  .pp-ring {
+    display: none;
+  }
+}

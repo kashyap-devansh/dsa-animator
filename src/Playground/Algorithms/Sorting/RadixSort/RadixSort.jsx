@@ -1,877 +1,157 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { usePlayback } from "../../../shared/usePlayback";
-import { ResetIcon, StepBackIcon, PlayIcon, PauseIcon, StepForwardIcon, ShuffleIcon } from "../../../shared/icons";
-import "./RadixSort.css";
+import Lesson from "../../../../lesson/Lesson";
+import BucketScene from "../bucketScene";
 
-function randomArray(size = 10) {
-  const arr = [];
+const SIZE = 8;
+const randomInput = () => Array.from({ length: SIZE }, () => Math.floor(Math.random() * 990) + 10);
+const PLACE = ["ones", "tens", "hundreds"];
 
-  for (let i = 0; i < size; i++) {
-    arr.push(Math.floor(Math.random() * 890) + 10);
-  }
+const CODE = [
+  "void radixSort(vector<int>& arr) {",
+  "  int mx = *max_element(arr.begin(), arr.end());",
+  "  for (int exp = 1; mx / exp > 0; exp *= 10) {",
+  "    vector<vector<int>> bucket(10);",
+  "    for (int x : arr)",
+  "      bucket[(x / exp) % 10].push_back(x);",
+  "    int k = 0;",
+  "    for (int d = 0; d < 10; d++)",
+  "      for (int x : bucket[d]) arr[k++] = x;",
+  "  }",
+  "}",
+];
 
-  return arr;
-}
-
-const PlaceNames = ["ones", "tens", "hundreds", "thousands"];
-
-function placeLabel(exp) {
-  if (exp === null) return "—";
-
-  const power = Math.round(Math.log10(exp));
-
-  return PlaceNames[power] ?? `10^${power}`;
-}
-
-function radixSortSteps(input) {
-  const arr = [...input];
-  const n = arr.length;
+// LSD radix sort, base 10: drop every value into the bucket for its current
+// digit, then gather the buckets back in order. Repeat for each digit.
+function radixSteps(input) {
+  let row = input.map((value, id) => ({ id, value }));
   const steps = [];
+  const mx = Math.max(...input);
+  const digits = String(mx).length;
+  let moves = 0;
 
-  let extractions = 0;
-  let placements = 0;
-  let passNumber = 0;
+  const save = (s) => steps.push({ row: row.map((c) => ({ ...c })), placed: new Map(), active: null, digit: null, pass: null, moves, ...s });
 
-  function save(line, description, opts = {}) {
-    steps.push({
-      array: [...arr],
-      codeLine: line,
-      description,
-      exp: opts.exp ?? null,
-      digit: opts.digit ?? -1,
-      activeIndex: opts.activeIndex ?? -1,
-      outputIndex: opts.outputIndex ?? -1,
-      counts: opts.counts ? [...opts.counts] : null,
-      output: opts.output ? [...opts.output] : null,
-      passNumber,
-      extractions,
-      placements,
+  save({
+    phase: "idea",
+    line: 1,
+    title: "Sort by one digit at a time",
+    body: `Sort by the ones digit, then by the tens, then by the hundreds. ${mx} has ${digits} digits, so that is ${digits} passes.`,
+    notice: "Each pass must keep equal digits in their current order. That stability is what makes the earlier passes count.",
+  });
+
+  for (let p = 0, exp = 1; p < digits; p++, exp *= 10) {
+    const buckets = Array.from({ length: 10 }, () => []);
+    const placed = new Map();
+
+    save({ phase: "pass", line: 3, pass: p, title: `Pass ${p + 1}: the ${PLACE[p]} digit`, body: `Look only at the ${PLACE[p]} digit of each value. Everything else is ignored for this pass.` });
+
+    row.forEach((c) => {
+      const d = Math.floor(c.value / exp) % 10;
+      placed.set(c.id, { bucket: d, level: buckets[d].length });
+      buckets[d].push(c);
+      moves++;
+      save({
+        phase: "drop",
+        line: 6,
+        pass: p,
+        active: c.id,
+        digit: d,
+        placed: new Map(placed),
+        title: `${c.value} → bucket ${d}`,
+        body: `The ${PLACE[p]} digit of ${c.value} is ${d}, so it goes on top of bucket ${d}.`,
+      });
+    });
+
+    row = buckets.flat();
+    moves += row.length;
+    save({
+      phase: "gather",
+      line: 9,
+      pass: p,
+      title: `Gather buckets 0 to 9`,
+      body: `Read the buckets from 0 to 9, bottom to top: ${row.map((c) => c.value).join(", ")}. The row is now sorted by the last ${p + 1} digit${p ? "s" : ""}.`,
     });
   }
 
-  function countSort(exp) {
-    // Line 4
-    save(4, `countSort(arr, ${exp})`, { exp });
+  save({
+    phase: "done",
+    line: 11,
+    title: "Sorted",
+    body: `${digits} passes, each one walking all ${input.length} values once.`,
+    notice: "The cost is O(d · (n + b)) for d digits in base b. With few digits that is close to linear.",
+  });
 
-    // Line 9
-    save(9, "Initialize output array", { exp });
-
-    // Line 10
-    const count = new Array(10).fill(0);
-
-    save(10, "Initialize count[10] = {0}", { exp, counts: count });
-
-    // Line 11 + 12
-    for (let i = 0; i < n; i++) {
-      save(11, `Check i < ${n}`, {
-        exp,
-        activeIndex: i,
-        counts: count,
-      });
-
-      const d = Math.floor(arr[i] / exp) % 10;
-
-      count[d]++;
-      extractions++;
-
-      save(
-        12,
-        `Digit of arr[${i}] = ${arr[i]} is ${d}, count[${d}]++`,
-        { exp, activeIndex: i, digit: d, counts: count }
-      );
-    }
-
-    // Line 13 + 14
-    for (let i = 1; i < 10; i++) {
-      save(13, "Check i < 10 (prefix sum)", { exp, counts: count });
-
-      count[i] += count[i - 1];
-
-      save(14, `count[${i}] += count[${i - 1}] = ${count[i]}`, {
-        exp,
-        counts: count,
-      });
-    }
-
-    const output = new Array(n).fill(null);
-
-    // Line 15-18
-    for (let i = n - 1; i >= 0; i--) {
-      save(15, "Check i >= 0 (build output)", {
-        exp,
-        activeIndex: i,
-        counts: count,
-        output,
-      });
-
-      const d = Math.floor(arr[i] / exp) % 10;
-
-      save(16, `d = digit of arr[${i}] = ${arr[i]} \u2192 ${d}`, {
-        exp,
-        activeIndex: i,
-        digit: d,
-        counts: count,
-        output,
-      });
-
-      output[count[d] - 1] = arr[i];
-      placements++;
-
-      save(17, `output[${count[d] - 1}] = ${arr[i]}`, {
-        exp,
-        activeIndex: i,
-        digit: d,
-        outputIndex: count[d] - 1,
-        counts: count,
-        output,
-      });
-
-      count[d]--;
-
-      save(18, `count[${d}]--`, {
-        exp,
-        activeIndex: i,
-        digit: d,
-        counts: count,
-        output,
-      });
-    }
-
-    // Line 19
-    save(19, "Output array complete", { exp, counts: count, output });
-
-    // Line 20 + 21
-    for (let i = 0; i < n; i++) {
-      arr[i] = output[i];
-
-      save(21, `arr[${i}] = ${output[i]}`, { exp, activeIndex: i, output });
-    }
-
-    // Line 22
-    save(22, `Pass complete for exp = ${exp}`, { exp });
-  }
-
-  // Start
-  save(1, "Started Radix Sort");
-
-  // Line 2
-  const m = Math.max(...arr);
-
-  save(2, `Find max value = ${m}`);
-
-  // Line 3
-  for (let exp = 1; Math.floor(m / exp) > 0; exp *= 10) {
-    passNumber++;
-
-    save(3, `Loop: exp = ${exp}`, { exp });
-
-    countSort(exp);
-  }
-
-  save(1, "Array Sorted!");
-
-  return steps;
+  return { steps, exps: digits };
 }
 
-const CodeLines = [
-  // 1
-  <>
-    <span className="rs-type">void</span> radixSort
-    <span className="rs-symbol">(</span>
-    <span className="rs-type">vector</span>
-    <span className="rs-symbol">&lt;</span>
-    <span className="rs-type">int</span>
-    <span className="rs-symbol">&gt;&amp;</span> arr
-    <span className="rs-symbol">)</span>{" "}
-    <span className="rs-symbol">{"{"}</span>
-  </>,
-
-  // 2
-  <>
-    &nbsp;&nbsp;
-    <span className="rs-type">int</span> m
-    <span className="rs-symbol"> = </span>
-    getMax
-    <span className="rs-symbol">(</span>
-    arr
-    <span className="rs-symbol">)</span>
-    <span className="rs-symbol">;</span>
-  </>,
-
-  // 3
-  <>
-    &nbsp;&nbsp;
-    <span className="rs-keyword">for</span>
-    <span className="rs-symbol">(</span>
-    <span className="rs-type">int</span> exp
-    <span className="rs-symbol"> = </span>
-    <span className="rs-number">1</span>
-    <span className="rs-symbol">;</span> m
-    <span className="rs-symbol"> / </span>exp
-    <span className="rs-symbol"> &gt; </span>
-    <span className="rs-number">0</span>
-    <span className="rs-symbol">;</span> exp
-    <span className="rs-symbol"> *= </span>
-    <span className="rs-number">10</span>
-    <span className="rs-symbol">)</span>
-  </>,
-
-  // 4
-  <>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    countSort
-    <span className="rs-symbol">(</span>
-    arr<span className="rs-symbol">,</span> exp
-    <span className="rs-symbol">)</span>
-    <span className="rs-symbol">;</span>
-  </>,
-
-  // 5
-  <>
-    <span className="rs-symbol">{"}"}</span>
-  </>,
-
-  // 6
-  <>&nbsp;</>,
-
-  // 7
-  <>
-    <span className="rs-type">void</span> countSort
-    <span className="rs-symbol">(</span>
-    <span className="rs-type">vector</span>
-    <span className="rs-symbol">&lt;</span>
-    <span className="rs-type">int</span>
-    <span className="rs-symbol">&gt;&amp;</span> arr
-    <span className="rs-symbol">,</span>{" "}
-    <span className="rs-type">int</span> exp
-    <span className="rs-symbol">)</span>{" "}
-    <span className="rs-symbol">{"{"}</span>
-  </>,
-
-  // 8
-  <>
-    &nbsp;&nbsp;
-    <span className="rs-type">int</span> n
-    <span className="rs-symbol"> = </span>
-    arr<span className="rs-symbol">.</span>size
-    <span className="rs-symbol">();</span>
-  </>,
-
-  // 9
-  <>
-    &nbsp;&nbsp;
-    <span className="rs-type">vector</span>
-    <span className="rs-symbol">&lt;</span>
-    <span className="rs-type">int</span>
-    <span className="rs-symbol">&gt;</span> output
-    <span className="rs-symbol">(</span>n
-    <span className="rs-symbol">);</span>
-  </>,
-
-  // 10
-  <>
-    &nbsp;&nbsp;
-    <span className="rs-type">int</span> count
-    <span className="rs-symbol">[</span>
-    <span className="rs-number">10</span>
-    <span className="rs-symbol">] = {"{"}</span>
-    <span className="rs-number">0</span>
-    <span className="rs-symbol">{"};"}</span>
-  </>,
-
-  // 11
-  <>
-    &nbsp;&nbsp;
-    <span className="rs-keyword">for</span>
-    <span className="rs-symbol">(</span>
-    <span className="rs-type">int</span> i
-    <span className="rs-symbol"> = </span>
-    <span className="rs-number">0</span>
-    <span className="rs-symbol">;</span> i
-    <span className="rs-symbol"> &lt; </span>n
-    <span className="rs-symbol">;</span> i
-    <span className="rs-symbol">++</span>
-    <span className="rs-symbol">)</span>
-  </>,
-
-  // 12
-  <>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    count<span className="rs-symbol">[(</span>
-    arr<span className="rs-symbol">[</span>i
-    <span className="rs-symbol">]</span>
-    <span className="rs-symbol"> / </span>exp
-    <span className="rs-symbol">) % </span>
-    <span className="rs-number">10</span>
-    <span className="rs-symbol">]</span>
-    <span className="rs-symbol">++;</span>
-  </>,
-
-  // 13
-  <>
-    &nbsp;&nbsp;
-    <span className="rs-keyword">for</span>
-    <span className="rs-symbol">(</span>
-    <span className="rs-type">int</span> i
-    <span className="rs-symbol"> = </span>
-    <span className="rs-number">1</span>
-    <span className="rs-symbol">;</span> i
-    <span className="rs-symbol"> &lt; </span>
-    <span className="rs-number">10</span>
-    <span className="rs-symbol">;</span> i
-    <span className="rs-symbol">++</span>
-    <span className="rs-symbol">)</span>
-  </>,
-
-  // 14
-  <>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    count<span className="rs-symbol">[</span>i
-    <span className="rs-symbol">] += </span>
-    count<span className="rs-symbol">[</span>i
-    <span className="rs-symbol"> - </span>
-    <span className="rs-number">1</span>
-    <span className="rs-symbol">];</span>
-  </>,
-
-  // 15
-  <>
-    &nbsp;&nbsp;
-    <span className="rs-keyword">for</span>
-    <span className="rs-symbol">(</span>
-    <span className="rs-type">int</span> i
-    <span className="rs-symbol"> = </span>
-    n<span className="rs-symbol"> - </span>
-    <span className="rs-number">1</span>
-    <span className="rs-symbol">;</span> i
-    <span className="rs-symbol"> &gt;= </span>
-    <span className="rs-number">0</span>
-    <span className="rs-symbol">;</span> i
-    <span className="rs-symbol">--</span>
-    <span className="rs-symbol">)</span>
-    <span className="rs-symbol">{"{"}</span>
-  </>,
-
-  // 16
-  <>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <span className="rs-type">int</span> d
-    <span className="rs-symbol"> = (</span>
-    arr<span className="rs-symbol">[</span>i
-    <span className="rs-symbol">]</span>
-    <span className="rs-symbol"> / </span>exp
-    <span className="rs-symbol">) % </span>
-    <span className="rs-number">10</span>
-    <span className="rs-symbol">;</span>
-  </>,
-
-  // 17
-  <>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    output<span className="rs-symbol">[</span>
-    count<span className="rs-symbol">[</span>d
-    <span className="rs-symbol">] - </span>
-    <span className="rs-number">1</span>
-    <span className="rs-symbol">] = </span>
-    arr<span className="rs-symbol">[</span>i
-    <span className="rs-symbol">];</span>
-  </>,
-
-  // 18
-  <>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    count<span className="rs-symbol">[</span>d
-    <span className="rs-symbol">]--;</span>
-  </>,
-
-  // 19
-  <>
-    &nbsp;&nbsp;
-    <span className="rs-symbol">{"}"}</span>
-  </>,
-
-  // 20
-  <>
-    &nbsp;&nbsp;
-    <span className="rs-keyword">for</span>
-    <span className="rs-symbol">(</span>
-    <span className="rs-type">int</span> i
-    <span className="rs-symbol"> = </span>
-    <span className="rs-number">0</span>
-    <span className="rs-symbol">;</span> i
-    <span className="rs-symbol"> &lt; </span>n
-    <span className="rs-symbol">;</span> i
-    <span className="rs-symbol">++</span>
-    <span className="rs-symbol">)</span>
-  </>,
-
-  // 21
-  <>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    arr<span className="rs-symbol">[</span>i
-    <span className="rs-symbol">] = </span>
-    output<span className="rs-symbol">[</span>i
-    <span className="rs-symbol">];</span>
-  </>,
-
-  // 22
-  <>
-    <span className="rs-symbol">{"}"}</span>
-  </>,
-];
-
-
-const CELL_W = 46;
-const CELL_H = 46;
-const ROW_GAP = 74;
-const PAD_TOP = 36;
+const TAGS = { idea: "Idea", pass: "New pass", drop: "Distribute", gather: "Gather", done: "Sorted" };
 
 const RadixSort = () => {
-  const [seed, setSeed] = useState(randomArray());
+  const [seed, setSeed] = useState(randomInput);
+  const { steps } = useMemo(() => radixSteps(seed), [seed]);
+  const playback = usePlayback(steps.length);
+  const { index, reset } = playback;
+  const s = steps[index];
+  const exp = s.pass !== null ? 10 ** s.pass : null;
 
-  const steps = radixSortSteps(seed);
-  const { index, playing, speed, setSpeed, reset, stepForward, stepBack, togglePlay } = usePlayback(steps.length);
-  const current = steps[index];
-  const isDone = index === steps.length - 1;
-  const n = current.array.length;
-
-  const counts = current.counts ?? new Array(10).fill(0);
-  const output = current.output ?? new Array(n).fill(null);
-
-  const gridCols = Math.max(n, 10);
-  const svgWidth = gridCols * CELL_W;
-  const svgHeight = PAD_TOP + CELL_H + ROW_GAP + CELL_H + ROW_GAP + CELL_H + 10;
-
-  const arrayRowY = PAD_TOP;
-  const bucketRowY = arrayRowY + CELL_H + ROW_GAP;
-  const outputRowY = bucketRowY + CELL_H + ROW_GAP;
-
-  const bucketW = (gridCols * CELL_W) / 10;
-
-  // Pointer under the array row - tracks the loop index i
-  const arrayPointerX =
-    current.activeIndex !== -1
-      ? current.activeIndex * CELL_W + CELL_W / 2
-      : null;
-
-  // Pointer above the output row - tracks where a value just landed
-  const outputTargetIndex =
-    current.outputIndex !== -1
-      ? current.outputIndex
-      : current.codeLine === 21
-        ? current.activeIndex
-        : -1;
-
-  const outputPointerX =
-    outputTargetIndex !== -1 ? outputTargetIndex * CELL_W + CELL_W / 2 : null;
-
-  // Traveling marker - animates a value moving out of the array and into
-  // whichever row the current loop iteration is acting on. Parking it at
-  // the source position with opacity 0 first, then flipping to the target
-  // position with opacity 1, is what makes the movement animate smoothly
-  // between two consecutive steps.
-  let marker = null;
-
-  if (current.activeIndex !== -1) {
-    const sourceX = current.activeIndex * CELL_W + CELL_W / 2;
-    const sourceY = arrayRowY + CELL_H / 2;
-    const value = current.array[current.activeIndex];
-
-    if (current.codeLine === 11) {
-      marker = { x: sourceX, y: sourceY, value, color: "#ff6a3d", visible: false };
-    } else if (current.codeLine === 12 && current.digit !== -1) {
-      marker = {
-        x: current.digit * bucketW + bucketW / 2,
-        y: bucketRowY + CELL_H / 2,
-        value,
-        color: "#ff6a3d",
-        visible: true,
-      };
-    } else if (current.codeLine === 15 || current.codeLine === 16) {
-      marker = { x: sourceX, y: sourceY, value, color: "#b4ff39", visible: false };
-    } else if (current.codeLine === 17 && current.outputIndex !== -1) {
-      marker = {
-        x: current.outputIndex * CELL_W + CELL_W / 2,
-        y: outputRowY + CELL_H / 2,
-        value,
-        color: "#b4ff39",
-        visible: true,
-      };
-    } else if (current.codeLine === 18 && current.outputIndex !== -1) {
-      marker = {
-        x: current.outputIndex * CELL_W + CELL_W / 2,
-        y: outputRowY + CELL_H / 2,
-        value,
-        color: "#b4ff39",
-        visible: false,
-      };
-    }
-  }
-
-  const maxPasses = steps[steps.length - 1].passNumber;
-  const passSnapshots = steps.filter((s) => s.codeLine === 22);
-
-  const passState = (passNum) => {
-    if (current.passNumber === 0) return "pending";
-    if (passNum < current.passNumber) return "done";
-
-    if (passNum === current.passNumber) {
-      return current.codeLine === 22 || isDone ? "done" : "active";
-    }
-
-    return "pending";
-  };
-
-  const shuffle = () => {
-    setSeed(randomArray());
-    reset();
-  };
+  const cells = s.row.map((c, k) => {
+    const where = s.placed.get(c.id);
+    const digit = exp ? Math.floor(c.value / exp) % 10 : null;
+    return {
+      id: c.id,
+      value: c.value,
+      pos: k,
+      bucket: where?.bucket ?? null,
+      level: where?.level ?? 0,
+      topLabel: digit,
+      labelSize: 15,
+      tone: s.phase === "done" ? "sage" : c.id === s.active ? "coral" : where ? "soft" : "idle",
+    };
+  });
 
   return (
-    <div className="radix-sort-wrapper">
-      <div className="radix-sort">
-        <p className="rs-eyebrow">sorting</p>
-
-        <h1 className="rs-title">Radix Sort</h1>
-
-        <div className="rs-header">
-          <p className="rs-blurb">
-            Sorts numbers digit by digit, from least to most significant, using a stable counting sort at each pass.
-          </p>
-
-          <div className="rs-complexity">
-            <div>
-              <div className="rs-complexity-label">time</div>
-              <div className="rs-time-value">O(d(n + k))</div>
-            </div>
-
-            <div>
-              <div className="rs-complexity-label">space</div>
-              <div className="rs-space-value">O(n + k)</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="rs-grid">
-          <div className="rs-stage">
-            <div className="rs-pass-tracker">
-              {Array.from({ length: maxPasses }, (_, i) => i + 1).flatMap(
-                (passNum, i) => {
-                  const state = passState(passNum);
-                  const label = placeLabel(10 ** (passNum - 1));
-
-                  const pill = (
-                    <div
-                      key={`pill-${passNum}`}
-                      className={`rs-pass-pill rs-pass-${state}`}
-                    >
-                      <span className="rs-pass-index">{passNum}</span>
-                      <span className="rs-pass-label">{label}</span>
-                    </div>
-                  );
-
-                  return i === 0
-                    ? [pill]
-                    : [
-                      <span key={`arrow-${passNum}`} className="rs-pass-arrow">
-                        &rarr;
-                      </span>,
-                      pill,
-                    ];
-                }
-              )}
-            </div>
-
-            <div className="rs-stage-wrap">
-              <svg
-                className="rs-stage-svg"
-                viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-                width={svgWidth}
-                height={svgHeight}
-              >
-                {/* Main array row */}
-                {current.array.map((val, idx) => {
-                  const isActive = idx === current.activeIndex;
-
-                  return (
-                    <g key={`arr-${idx}`}>
-                      <rect
-                        className="rs-cell-rect"
-                        x={idx * CELL_W}
-                        y={arrayRowY}
-                        width={CELL_W}
-                        height={CELL_H}
-                        rx="8"
-                        fill={isDone ? "rgba(180, 255, 57, 0.08)" : "transparent"}
-                        stroke={isDone ? "#b4ff39" : isActive ? "#ff6a3d" : "#33333a"}
-                        strokeWidth={isActive ? 2 : 1.4}
-                      />
-
-                      <text
-                        x={idx * CELL_W + CELL_W / 2}
-                        y={arrayRowY + CELL_H / 2 + 5}
-                        textAnchor="middle"
-                        className="rs-cell-value"
-                        fill={isDone ? "#b4ff39" : isActive ? "#ff6a3d" : "#f3f2ed"}
-                      >
-                        {val}
-                      </text>
-
-                      {isActive && current.digit !== -1 && (
-                        <text
-                          x={idx * CELL_W + CELL_W / 2}
-                          y={arrayRowY - 14}
-                          textAnchor="middle"
-                          className="rs-digit-badge"
-                        >
-                          digit {current.digit}
-                        </text>
-                      )}
-                    </g>
-                  );
-                })}
-
-                {/* Bucket / count row */}
-                {counts.map((count, digit) => {
-                  const isActive = digit === current.digit;
-
-                  return (
-                    <g key={`bucket-${digit}`}>
-                      <rect
-                        className="rs-cell-rect"
-                        x={digit * bucketW}
-                        y={bucketRowY}
-                        width={bucketW}
-                        height={CELL_H}
-                        rx="8"
-                        fill="transparent"
-                        stroke={isActive ? "#ff6a3d" : "#33333a"}
-                        strokeWidth={isActive ? 2 : 1.4}
-                      />
-
-                      <text
-                        x={digit * bucketW + bucketW / 2}
-                        y={bucketRowY - 14}
-                        textAnchor="middle"
-                        className="rs-bucket-label"
-                      >
-                        {digit}
-                      </text>
-
-                      <text
-                        x={digit * bucketW + bucketW / 2}
-                        y={bucketRowY + CELL_H / 2 + 5}
-                        textAnchor="middle"
-                        className="rs-cell-value"
-                        fill={isActive ? "#ff6a3d" : "#7c8cff"}
-                      >
-                        {count}
-                      </text>
-                    </g>
-                  );
-                })}
-
-                {/* Output row */}
-                {output.map((val, idx) => {
-                  const isTarget = idx === current.outputIndex;
-                  const isPlaced = val !== null && val !== undefined;
-
-                  return (
-                    <g key={`out-${idx}`}>
-                      <rect
-                        className="rs-cell-rect"
-                        x={idx * CELL_W}
-                        y={outputRowY}
-                        width={CELL_W}
-                        height={CELL_H}
-                        rx="8"
-                        fill={isPlaced ? "rgba(180, 255, 57, 0.08)" : "transparent"}
-                        stroke={isTarget ? "#ff6a3d" : isPlaced ? "#b4ff39" : "#33333a"}
-                        strokeWidth={isTarget ? 2 : 1.4}
-                      />
-
-                      <text
-                        x={idx * CELL_W + CELL_W / 2}
-                        y={outputRowY + CELL_H / 2 + 5}
-                        textAnchor="middle"
-                        className="rs-cell-value"
-                        fill={isPlaced ? "#b4ff39" : "#4a4a4f"}
-                      >
-                        {isPlaced ? val : "\u00b7"}
-                      </text>
-                    </g>
-                  );
-                })}
-
-                {/* Pointer tracking loop index i under the array row */}
-                {arrayPointerX !== null && (
-                  <polygon
-                    className="rs-pointer"
-                    style={{
-                      transform: `translate(${arrayPointerX}px, ${arrayRowY + CELL_H + 12}px)`,
-                    }}
-                    points="0,-7 -6,4 6,4"
-                    fill="#ff6a3d"
-                  />
-                )}
-
-                {/* Pointer tracking where a value just landed in output */}
-                {outputPointerX !== null && (
-                  <polygon
-                    className="rs-pointer"
-                    style={{
-                      transform: `translate(${outputPointerX}px, ${outputRowY - 12}px)`,
-                    }}
-                    points="0,7 -6,-4 6,-4"
-                    fill="#b4ff39"
-                  />
-                )}
-
-                {/* Traveling marker: animates a value moving out of the
-                    array into the bucket row (counting) or the output
-                    row (building) */}
-                {marker && (
-                  <g
-                    className="rs-marker"
-                    style={{
-                      transform: `translate(${marker.x}px, ${marker.y}px)`,
-                      opacity: marker.visible ? 1 : 0,
-                    }}
-                  >
-                    <circle r="13" fill="#0a0a0b" stroke={marker.color} strokeWidth="2" />
-                    <text
-                      textAnchor="middle"
-                      dy="5"
-                      className="rs-marker-value"
-                      fill={marker.color}
-                    >
-                      {marker.value}
-                    </text>
-                  </g>
-                )}
-              </svg>
-            </div>
-
-            <p className="rs-status">
-              {current.description}
-              {current.exp !== null && (
-                <span className="rs-place">
-                  {" "}&mdash; digit place: {placeLabel(current.exp)}
-                </span>
-              )}
-            </p>
-          </div>
-
-          <div className="rs-code-panel">
-            <div className="rs-code-header">
-              <div className="rs-dummy-btns">
-                <span className="rs-red-btn"></span>
-                <span className="rs-yellow-btn"></span>
-                <span className="rs-green-btn"></span>
-                <span className="rs-filename">radix_sort.cpp</span>
-              </div>
-
-              <span className="rs-header-complexity">O(d(n + k))</span>
-            </div>
-
-            <pre className="rs-code-block">
-              {
-                CodeLines.map((line, i) => {
-                  return (
-                    <div
-                      key={i}
-                      className={`rs-code-line ${current.codeLine === i + 1 ? "rs-code-line-active" : ""}`}
-                    >
-                      <span className="rs-line-no">{i + 1}</span>
-                      {line}
-                    </div>
-                  );
-                })
-              }
-            </pre>
-          </div>
-        </div>
-
-        <div className="rs-controls">
-          <button className="rs-icon-btn" onClick={reset}>
-            <ResetIcon />
-          </button>
-
-          <button
-            className="rs-icon-btn"
-            onClick={stepBack}
-            disabled={index === 0}
-          >
-            <StepBackIcon />
-          </button>
-
-          <button className="rs-play-btn" onClick={togglePlay}>
-            {playing ? <PauseIcon /> : <PlayIcon />}
-          </button>
-
-          <button
-            className="rs-icon-btn"
-            onClick={stepForward}
-            disabled={index === steps.length - 1}
-          >
-            <StepForwardIcon />
-          </button>
-
-          <button className="rs-shuffle-btn" onClick={shuffle}>
-            <ShuffleIcon />
-            Shuffle
-          </button>
-
-          <div className="rs-speed">
-            <span>SPEED</span>
-
-            <input
-              type="range"
-              min="1"
-              max="10"
-              value={speed}
-              onChange={(e) => setSpeed(Number(e.target.value))}
-            />
-          </div>
-
-          <span className="rs-steps">
-            {index + 1} / {steps.length}
-          </span>
-        </div>
-
-        <div className="rs-stats">
-          <span>
-            pass: <b>{current.passNumber}</b> / {maxPasses}
-          </span>
-
-          <span>
-            digit extractions: <b>{current.extractions}</b>
-          </span>
-
-          <span>
-            placements: <b>{current.placements}</b>
-          </span>
-        </div>
-
-        <div className="rs-pass-history">
-          <p className="rs-pass-history-title">array after each pass</p>
-
-          <div className="rs-pass-history-rows">
-            {passSnapshots.map((snap) => (
-              <div key={snap.passNumber} className="rs-pass-history-row">
-                <span className="rs-pass-history-label">
-                  pass {snap.passNumber} &middot; {placeLabel(snap.exp)}
-                </span>
-
-                <span className="rs-pass-history-values">
-                  {snap.array.join(", ")}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
+    <Lesson
+      steps={steps}
+      playback={playback}
+      timeline={(st) => st.title}
+      onShuffle={() => {
+        setSeed(randomInput());
+        reset();
+      }}
+      complexity={[
+        { label: "time", value: "O(d(n + b))" },
+        { label: "space", value: "O(n + b)" },
+      ]}
+      stage={
+        <BucketScene
+          label="Radix sort"
+          cells={cells}
+          slots={SIZE}
+          buckets={10}
+          maxStack={4}
+          bucketHighlight={s.digit !== null ? [s.digit] : []}
+        />
+      }
+      narration={{ tag: TAGS[s.phase], title: s.title, body: <p>{s.body}</p>, notice: s.notice }}
+      code={{ lines: CODE, active: s.line, file: "radix_sort.cpp" }}
+      panels={[
+        {
+          title: "This pass",
+          rows: [
+            { label: "Digit", value: s.pass !== null ? PLACE[s.pass] : null, tone: s.pass !== null ? "coral" : undefined },
+            { label: "Row order", value: s.row.map((c) => c.value) },
+          ],
+          foot: "The number on top of each cube is the digit this pass looks at.",
+        },
+        { title: "Work done", rows: [{ label: "Moves", value: s.moves }] },
+      ]}
+      legend={[
+        { label: "Being placed", tone: "coral" },
+        { label: "In a bucket", tone: "soft" },
+        { label: "Sorted", tone: "sage" },
+      ]}
+    />
   );
 };
 

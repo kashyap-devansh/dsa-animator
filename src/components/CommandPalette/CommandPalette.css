@@ -6,7 +6,7 @@
   justify-content: center;
   align-items: flex-start;
   padding: 14vh 16px 16px;
-  background: rgba(5, 5, 6, 0.65);
+  background: color-mix(in srgb, var(--page) 65%, transparent);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
@@ -14,11 +14,11 @@
 .cp {
   width: min(640px, 100%);
   border-radius: 18px;
-  background: #141416;
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 106, 61, 0.05);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  box-shadow: none;
   overflow: hidden;
-  font-family: "Satoshi", sans-serif;
+  font-family: var(--font-sans);
 }
 
 .cp-input {
@@ -27,8 +27,8 @@
   gap: 12px;
   padding: 0 18px;
   height: 60px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  color: #6b6b72;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-4);
 }
 
 .cp-input input {
@@ -37,23 +37,23 @@
   border: 0;
   outline: none;
   background: transparent;
-  color: #f3f2ed;
+  color: var(--ink);
   font: inherit;
   font-size: 1.05rem;
 }
 
 .cp-input input::placeholder {
-  color: #55555c;
+  color: var(--ink-4);
 }
 
 .cp kbd {
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.66rem;
   padding: 2px 6px;
   border-radius: 5px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #a5a5ab;
+  background: var(--line);
+  border: 1px solid var(--line);
+  color: var(--ink-3);
   margin-right: 3px;
 }
 
@@ -64,7 +64,7 @@
   max-height: min(420px, 55vh);
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: #2a2a2e transparent;
+  scrollbar-color: var(--line-strong) transparent;
 }
 
 .cp-item {
@@ -76,33 +76,33 @@
   border: 0;
   border-radius: 10px;
   background: transparent;
-  color: #d8d7d2;
+  color: var(--ink-2);
   font: inherit;
   text-align: left;
   cursor: pointer;
 }
 
 .cp-item.is-active {
-  background: rgba(255, 106, 61, 0.1);
-  box-shadow: inset 2px 0 0 #ff6a3d;
+  background: color-mix(in srgb, var(--coral) 10%, transparent);
+  box-shadow: none;
 }
 
 .cp-kind {
   flex: none;
   width: 66px;
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.62rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
-.cp-kind-visualize { color: #ff6a3d; }
-.cp-kind-notes { color: #b4ff39; }
-.cp-kind-goto { color: #7c8cff; }
+.cp-kind-visualize { color: var(--coral); }
+.cp-kind-notes { color: var(--sage); }
+.cp-kind-goto { color: var(--ink-2); }
 
 .cp-title {
   font-size: 0.95rem;
-  color: #f3f2ed;
+  color: var(--ink);
   white-space: nowrap;
 }
 
@@ -110,7 +110,7 @@
   flex: 1;
   min-width: 0;
   font-size: 0.82rem;
-  color: #6b6b72;
+  color: var(--ink-4);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -118,14 +118,14 @@
 
 .cp-extra {
   flex: none;
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.72rem;
-  color: #6b6b72;
+  color: var(--ink-4);
 }
 
 .cp-empty {
   padding: 22px 12px;
-  color: #6b6b72;
+  color: var(--ink-4);
   font-size: 0.9rem;
 }
 
@@ -133,9 +133,9 @@
   display: flex;
   gap: 18px;
   padding: 10px 18px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid var(--line);
   font-size: 0.75rem;
-  color: #5d5d64;
+  color: var(--ink-4);
 }
 
 @media (max-width: 600px) {

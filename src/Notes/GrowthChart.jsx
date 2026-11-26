@@ -6,12 +6,12 @@ import { motion, useReducedMotion } from "framer-motion";
 const log2 = (n) => Math.log2(Math.max(n, 1));
 
 const CLASSES = [
-  { id: "1", label: "O(1)", color: "#b4ff39", f: () => 1, log10: () => 0 },
-  { id: "log", label: "O(log n)", color: "#56b6c2", f: (n) => log2(n), log10: (n) => Math.log10(Math.max(log2(n), 1)) },
-  { id: "n", label: "O(n)", color: "#7c8cff", f: (n) => n, log10: (n) => Math.log10(n) },
-  { id: "nlog", label: "O(n log n)", color: "#c792ea", f: (n) => n * log2(n), log10: (n) => Math.log10(n * Math.max(log2(n), 1)) },
-  { id: "n2", label: "O(n²)", color: "#ffb454", f: (n) => n * n, log10: (n) => 2 * Math.log10(n) },
-  { id: "2n", label: "O(2ⁿ)", color: "#ff6a3d", f: (n) => 2 ** n, log10: (n) => n * Math.log10(2) },
+  { id: "1", label: "O(1)", color: "#5e9a83", f: () => 1, log10: () => 0 },
+  { id: "log", label: "O(log n)", color: "#4f8fb3", f: (n) => log2(n), log10: (n) => Math.log10(Math.max(log2(n), 1)) },
+  { id: "n", label: "O(n)", color: "#6b6fd6", f: (n) => n, log10: (n) => Math.log10(n) },
+  { id: "nlog", label: "O(n log n)", color: "#a26bc7", f: (n) => n * log2(n), log10: (n) => Math.log10(n * Math.max(log2(n), 1)) },
+  { id: "n2", label: "O(n²)", color: "#c98a2c", f: (n) => n * n, log10: (n) => 2 * Math.log10(n) },
+  { id: "2n", label: "O(2ⁿ)", color: "#e2694f", f: (n) => 2 ** n, log10: (n) => n * Math.log10(2) },
 ];
 
 const W = 560;
@@ -108,7 +108,7 @@ const GrowthChart = () => {
           {CLASSES.map((c) => {
             const v = c.f(n);
             if (v > Y_MAX) return null;
-            return <circle key={c.id} cx={sx(n)} cy={sy(v)} r="4.5" fill="#0a0a0b" stroke={c.color} strokeWidth="2.4" />;
+            return <circle key={c.id} cx={sx(n)} cy={sy(v)} r="4.5" fill="var(--paper)" stroke={c.color} strokeWidth="2.4" />;
           })}
         </svg>
 

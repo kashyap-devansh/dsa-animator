@@ -4,7 +4,6 @@ const searching = [
     title: "Linear Search",
     level: "Beginner",
     minutes: 3,
-    notebook: "linear-search",
     tldr: "Check every element from left to right until you find the target or run out of array.",
     intuition: [
       "The simplest possible search, and the only option when the data has no order you can exploit. It makes no assumptions — unsorted arrays, linked lists and streams all work.",
@@ -43,7 +42,6 @@ const searching = [
     level: "Beginner",
     minutes: 5,
     viz: "binary",
-    notebook: "binary-search",
     tldr: "On a sorted array, look at the middle element and throw away the half that cannot contain the target. Repeat.",
     intuition: [
       "Every comparison halves the search space: 1,000,000 elements need at most 20 checks. That logarithmic behaviour is why binary search shows up everywhere — databases, git bisect, guessing games.",

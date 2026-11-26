@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { MiniSort, MiniBinarySearch, MiniList, MiniQueue } from "../MiniViz/MiniViz";
 import { Reveal } from "../shared/effects";
-import { trackPointer } from "../shared/pointer";
 import "./Gallery.css";
 
 const GalleryElements = [
@@ -44,7 +43,7 @@ const GalleryCard = ({ item, index, total, progress, onOpen }) => {
   const { Viz } = item;
 
   return (
-    <motion.div className="gallery-card spotlight" style={{ scale }} onPointerMove={trackPointer}>
+    <motion.div className="gallery-card" style={{ scale }}>
       <div className="gallery-card-header">
         <span className="gallery-number">
           {String(index + 1).padStart(2, "0")} / {item.tag.toUpperCase()}

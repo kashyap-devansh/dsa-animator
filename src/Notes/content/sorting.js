@@ -5,7 +5,6 @@ const sorting = [
     level: "Beginner",
     minutes: 4,
     viz: "sort",
-    notebook: "bubble-sort",
     tldr: "Walk the array comparing neighbours and swap any pair that is out of order. After each pass the largest remaining value has bubbled to the end.",
     intuition: [
       "Picture air bubbles rising in water: big values keep getting swapped one step to the right until they reach the top. One full pass guarantees the maximum ends up in the last slot, so the unsorted part shrinks by one every pass.",
@@ -65,7 +64,6 @@ const sorting = [
     level: "Beginner",
     minutes: 4,
     viz: "sort",
-    notebook: "selection-sort",
     tldr: "Repeatedly find the smallest value in the unsorted part and swap it to the front. Exactly one swap per pass.",
     intuition: [
       "The array is split into a sorted prefix and an unsorted suffix. Each pass scans the whole suffix to select its minimum, then moves it to the boundary in a single swap.",
@@ -120,7 +118,6 @@ const sorting = [
     level: "Beginner",
     minutes: 5,
     viz: "sort",
-    notebook: "insertion-sort",
     tldr: "Grow a sorted prefix one element at a time: take the next value, shift bigger values right, and drop it into the gap.",
     intuition: [
       "This is how most people sort a hand of cards. You hold the sorted cards on the left and slide each new card leftwards until it sits behind something smaller.",

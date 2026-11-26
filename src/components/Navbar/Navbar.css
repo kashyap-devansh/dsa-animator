@@ -15,14 +15,14 @@
 
 .navbar.scrolled {
   background: rgba(8, 8, 8, 0.45);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--line);
   backdrop-filter: blur(20px) saturate(140%);
   -webkit-backdrop-filter: blur(20px) saturate(140%);
   isolation: isolate;
 }
 
 .navbar.scrolled::after {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--line);
 }
 
 .navbar-container {
@@ -34,16 +34,16 @@
 }
 
 .logo {
-  color: #f3f2ed;
+  color: var(--ink);
   font-size: 1.1rem;
-  font-family: "Space Grotesk";
+  font-family: var(--font-sans);
   font-weight: 600;
   letter-spacing: 0.25em;
   text-decoration: none;
 }
 
 .logo span {
-  color: #ff6b3d;
+  color: var(--coral);
 }
 
 nav {
@@ -52,9 +52,9 @@ nav {
 }
 
 nav a {
-  color: rgba(255, 255, 255, 0.75);
+  color: color-mix(in srgb, var(--ink) 75%, transparent);
   text-decoration: none;
-  font-family: "Satoshi";
+  font-family: var(--font-sans);
   font-size: 1rem;
   font-weight: 500;
   transition:
@@ -70,14 +70,14 @@ nav a::after {
   bottom: -0.25rem;
   height: 1px;
   width: 100%;
-  background: #ff6b3d;
+  background: var(--coral);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s ease;
 }
 
 nav a:hover {
-  color: rgba(255, 255, 255, 0.9);
+  color: color-mix(in srgb, var(--ink) 90%, transparent);
 }
 
 nav a:hover::after {
@@ -89,7 +89,7 @@ nav a:hover::after {
   overflow: hidden;
   padding: .8rem 1.4rem;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, .15);
+  border: 1px solid color-mix(in srgb, var(--ink) 15%, transparent);
   background: transparent;
   color: white;
   cursor: pointer;
@@ -196,7 +196,7 @@ nav a:hover::after {
   display: block;
   width: 24px;
   height: 2px;
-  background: #f3f2ed;
+  background: var(--ink);
   border-radius: 2px;
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
@@ -329,25 +329,25 @@ nav a:hover::after {
   height: 38px;
   padding: 0 8px 0 12px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.03);
-  color: #8f8f96;
-  font-family: "Satoshi", sans-serif;
+  border: 1px solid var(--line);
+  background: var(--hover);
+  color: var(--ink-3);
+  font-family: var(--font-sans);
   font-size: 0.82rem;
   cursor: pointer;
   transition: border-color 0.2s ease, color 0.2s ease;
 }
 
 .nav-search:hover {
-  color: #f3f2ed;
-  border-color: rgba(255, 106, 61, 0.5);
+  color: var(--ink);
+  border-color: color-mix(in srgb, var(--coral) 50%, transparent);
 }
 
 .nav-search kbd {
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.64rem;
   padding: 2px 6px;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.07);
-  color: #a5a5ab;
+  background: var(--line);
+  color: var(--ink-3);
 }

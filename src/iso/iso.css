@@ -1,0 +1,186 @@
+.iso-scene {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  font-family: var(--font-sans);
+}
+
+.iso-face {
+  stroke: var(--iso-edge);
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+  transition: fill 0.3s ease;
+}
+
+.iso-hatch-bg { fill: var(--iso-right); }
+.iso-hatch-fg-coral { fill: var(--coral); }
+.iso-hatch-fg-sage { fill: var(--sage); }
+.iso-hatch-fg-ink { fill: var(--ink-3); }
+.iso-hatch-fg-amber { fill: var(--amber); }
+.iso-hatch-fg-ghost { fill: var(--iso-ghost); }
+.iso-hatch-bg-ghost { fill: transparent; }
+
+.iso-tone-idle .iso-top { fill: var(--iso-top); }
+.iso-tone-idle .iso-front { fill: var(--iso-left); }
+
+.iso-tone-coral .iso-top { fill: var(--coral); }
+.iso-tone-coral .iso-front { fill: var(--coral-deep); }
+.iso-tone-coral .iso-label,
+.iso-tone-coral .iso-top-label { fill: #fff; }
+
+.iso-tone-soft .iso-top { fill: #f9d9cc; }
+.iso-tone-soft .iso-front { fill: #f4c8b8; }
+
+.iso-tone-sage .iso-top { fill: #dcece4; }
+.iso-tone-sage .iso-front { fill: #c4ddd1; }
+
+.iso-tone-amber .iso-top { fill: #f6e3bd; }
+.iso-tone-amber .iso-front { fill: #eed29c; }
+
+.iso-tone-dark .iso-top { fill: #3b3c42; }
+.iso-tone-dark .iso-front { fill: #2a2b2f; }
+.iso-tone-dark .iso-label,
+.iso-tone-dark .iso-top-label { fill: #f3f0ea; }
+
+.iso-tone-ghost { opacity: 0.32; }
+.iso-tone-ghost .iso-top { fill: var(--iso-top); }
+.iso-tone-ghost .iso-front { fill: var(--iso-left); }
+.iso-box { transition: opacity 0.3s ease; }
+
+.iso-dashed .iso-face { stroke-dasharray: 4 3; }
+
+.iso-label,
+.iso-top-label,
+.iso-side-label {
+  fill: #27282c;
+  font-weight: 650;
+  text-anchor: middle;
+  dominant-baseline: central;
+  font-feature-settings: "tnum";
+  pointer-events: none;
+}
+
+.iso-side-label {
+  font-weight: 600;
+  fill: #45444a;
+}
+
+.iso-shadow {
+  fill: var(--iso-shadow);
+}
+
+/* Seats */
+.iso-seat {
+  fill: none;
+  stroke: var(--coral);
+  stroke-width: 1.3;
+  stroke-linejoin: round;
+  opacity: 0.85;
+}
+
+/* Floor tiles */
+.iso-tile polygon {
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+  transition: fill 0.3s ease;
+}
+.iso-tile-slot polygon { fill: #f8d9cd; stroke: var(--coral); stroke-width: 1.4; }
+[data-theme="dark"] .iso-tile-slot polygon { fill: #f3cbbd; }
+.iso-tile-light polygon { fill: var(--iso-top); stroke: var(--iso-edge); }
+.iso-tile-dark polygon { fill: #d8d2c8; stroke: var(--iso-edge); }
+[data-theme="dark"] .iso-tile-dark polygon { fill: #b9b4ab; }
+.iso-tile-coral polygon { fill: var(--coral-200); stroke: var(--coral); }
+.iso-tile-sage polygon { fill: #cfe5da; stroke: var(--sage); }
+.iso-tile-ghost polygon { fill: transparent; stroke: var(--iso-ghost); stroke-dasharray: 4 3; }
+.iso-tile-label {
+  fill: var(--ink-3);
+  font-weight: 600;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+/* Slab */
+.iso-slab polygon { stroke: var(--iso-edge); stroke-width: 1.4; stroke-linejoin: round; }
+.iso-slab-top { fill: var(--iso-top); }
+.iso-slab-front { fill: var(--iso-slab-side); }
+.iso-slab-index {
+  fill: var(--iso-slab-text);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  text-anchor: middle;
+  dominant-baseline: central;
+  transition: fill 0.2s;
+}
+.iso-slab-index-on { fill: var(--coral); }
+
+/* Links */
+.iso-link line { stroke: var(--ink); stroke-linecap: round; transition: stroke 0.3s; }
+.iso-link polygon { fill: var(--ink); }
+.iso-link-coral line { stroke: var(--coral); }
+.iso-link-coral polygon { fill: var(--coral); }
+.iso-link-ghost line { stroke: var(--iso-ghost); }
+.iso-link-ghost polygon { fill: var(--iso-ghost); }
+.iso-link-sage line { stroke: var(--sage); }
+.iso-link-sage polygon { fill: var(--sage); }
+.iso-link.iso-dashed line { stroke-dasharray: 5 4; }
+
+/* Callouts and pins */
+.iso-callout line { stroke: var(--coral); stroke-width: 1.4; }
+.iso-callout circle { fill: var(--coral); stroke: var(--paper); stroke-width: 1.5; }
+.iso-callout rect { fill: var(--coral); }
+.iso-callout text {
+  fill: #fff;
+  font-weight: 550;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+.iso-callout-ink line { stroke: var(--ink); }
+.iso-callout-ink circle { fill: var(--ink); }
+.iso-callout-ink rect { fill: var(--ink); }
+.iso-callout-ink text { fill: var(--paper); }
+.iso-callout-sage line { stroke: var(--sage); }
+.iso-callout-sage circle,
+.iso-callout-sage rect { fill: var(--sage); }
+
+.iso-pin rect { fill: var(--ink); }
+.iso-pin text {
+  fill: var(--paper);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+.iso-pin-coral rect { fill: var(--coral); }
+.iso-pin-coral text { fill: #fff; }
+.iso-pin-sage rect { fill: var(--sage); }
+.iso-pin-sage text { fill: #fff; }
+.iso-pin-amber rect { fill: var(--amber); }
+.iso-pin-amber text { fill: #fff; }
+
+.iso-note { fill: var(--ink-3); font-family: var(--font-sans); dominant-baseline: central; }
+.iso-note-ink { fill: var(--ink); }
+.iso-note-coral { fill: var(--coral); }
+.iso-note-mono { fill: var(--ink-3); font-family: var(--font-mono); }
+
+.iso-fade-enter { animation: iso-pop 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
+
+@keyframes iso-pop {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Round shapes */
+.iso-cyl .iso-face { stroke-width: 1.3; }
+.iso-hole { fill: var(--iso-edge); }
+.iso-cyl .iso-label { font-weight: 700; }
+
+.iso-queen-body { stroke: var(--iso-edge); stroke-width: 1.4; stroke-linejoin: round; }
+.iso-queen-band { stroke: var(--iso-edge); stroke-width: 1.2; fill: none; opacity: 0.6; }
+.iso-queen-jewel { fill: var(--coral); stroke: var(--iso-edge); stroke-width: 1; }
+.iso-tone-coral .iso-queen-jewel { fill: #fff; }
+.iso-tone-dark .iso-queen-band { stroke: #f3f0ea; }
+.iso-tone-dark .iso-queen-body { fill: #3b3c42; }
+.iso-tone-ghost .iso-queen-body { fill: var(--iso-top); }
+
+.iso-node-dot { fill: var(--coral); }

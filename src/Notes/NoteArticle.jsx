@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { NOTES, noteBySlug } from "./content";
-import NotesData from "../components/NotesSection/NotesData.js";
-import { NotebookPaper } from "../components/NotesSection/NotesSection.jsx";
 import { MiniSort, MiniBinarySearch, MiniTree, MiniList, MiniQueue } from "../components/MiniViz/MiniViz";
 import { highlight } from "../Playground/shared/highlight";
 import { trackPointer } from "../components/shared/pointer";
@@ -65,7 +63,6 @@ const Article = ({ note }) => {
   const { learned, toggle } = useLearned();
   const isLearned = learned.has(note.slug);
   const Viz = VIZ[note.viz];
-  const paper = NotesData.find((p) => p.id === note.notebook);
   const index = NOTES.findIndex((n) => n.slug === note.slug);
   const prev = NOTES[index - 1];
   const next = NOTES[index + 1];
@@ -76,7 +73,6 @@ const Article = ({ note }) => {
     ["complexity", "Complexity"],
     ["code", "Code"],
     ["pitfalls", "Pitfalls"],
-    paper && ["notebook", "From the notebook"],
     ["quiz", "Check yourself"],
   ].filter(Boolean);
   const active = useActiveSection(sections.map(([id]) => id).join(","));
@@ -224,21 +220,7 @@ const Article = ({ note }) => {
           </div>
         </Section>
 
-        {paper && (
-          <Section id="notebook" kicker="06" title="From the notebook">
-            <p className="na-p na-muted">The handwritten page this topic started from.</p>
-            <div className="na-paper">
-              <div className="page">
-                <NotebookPaper note={paper} reduced={reduced} />
-              </div>
-              <a href={paper.pdf} target="_blank" rel="noreferrer" className="na-btn">
-                Open PDF ↗
-              </a>
-            </div>
-          </Section>
-        )}
-
-        <Section id="quiz" kicker={paper ? "07" : "06"} title="Check yourself">
+        <Section id="quiz" kicker="06" title="Check yourself">
           <Quiz key={note.slug} items={note.quiz} />
         </Section>
 

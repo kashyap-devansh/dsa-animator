@@ -55,6 +55,7 @@ const SubsetSum = () => {
 
   return (
     <StepperPage
+      steps={steps}
       eyebrow="recursion"
       title="Subset Sum"
       blurb="At every item, branch twice: take it or skip it. Overshoot the target and the branch dies; hit it exactly and the answer bubbles up."

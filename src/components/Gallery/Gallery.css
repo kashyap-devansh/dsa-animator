@@ -1,404 +1,106 @@
-.gallery {
-  width: min(1400px, 92%);
-  margin: 140px auto;
-  display: flex;
-  flex-direction: column;
-}
+/* Sticky stacked sheets: each visualizer slides up over the last. They are
+   page-coloured with a single rule, not floating cards. */
 
 .gallery-wrapper {
-  border-bottom: 1px solid #262629;
+  border-bottom: 1px solid var(--line);
+}
+
+.gallery {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 96px 28px 120px;
 }
 
 .gallery-header {
-  margin-bottom: 70px;
-}
-
-.gallery-eyebrow {
-  display: inline-block;
-  color: #ff6a3d;
-  letter-spacing: .28em;
-  text-transform: uppercase;
-  font-size: .6rem;
-  font-family: "JetBrains Mono", monospace;
-  margin-bottom: .8rem;
-}
-
-.gallery-header h1 {
-  font-size: clamp(2rem, 3.8vw, 3.8rem);
-  font-weight: 400;
-  line-height: 1.05;
-  font-family: "Space Grotesk";
-  color: white;
-  margin: 0;
+  margin-bottom: 8px;
 }
 
 .gallery-card-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
+  position: relative;
 }
 
 .gallery-card {
   position: sticky;
-  top: 120px;
-  width: 60rem;
-  height: 21rem;
-  box-sizing: border-box;
-  padding: 3rem 3.5rem;
-  transform-origin: 50% 0;
-  border: 1px solid #262629;
-  border-radius: 24px;
-  background: #141416;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, .4);
+  top: 72px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  margin-bottom: 28px;
+  min-height: 520px;
+  padding: 28px 0 32px;
+  border-top: 1px solid var(--line-strong);
+  background: var(--page);
+  transform-origin: center top;
 }
 
 .gallery-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--ink-3);
+}
+
+.gallery-complexity {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0;
+  color: var(--coral);
 }
 
 .gallery-card-body {
   flex: 1;
-  min-height: 0;
   display: grid;
-  grid-template-columns: 1fr 1.1fr;
-  gap: 2.5rem;
-  align-items: stretch;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 48px;
+  align-items: center;
+  margin-top: 20px;
 }
 
-.gallery-card-text {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.gallery-card-viz {
-  min-height: 0;
-  display: flex;
-  padding: 0.9rem;
-  border-radius: 16px;
-  border: 1px solid #1f1f23;
-  background:
-    radial-gradient(rgba(243, 242, 237, 0.05) 1px, transparent 1px) 0 0 / 10px 10px,
-    #0f0f11;
-  overflow: hidden;
-}
-
-.gallery-number {
-  color: #7a7a80;
-  font-family: "JetBrains Mono", monospace;
-  font-size: .8rem;
-  letter-spacing: 2.4px;
-  text-transform: uppercase;
-}
-
-.gallery-complexity {
-  color: #ff6a3d;
-  font-family: "JetBrains Mono", monospace;
-  font-size: .8rem;
-}
-
-.gallery-card h1 {
-  margin: 0;
-  margin-bottom: 2rem;
-  font-family: "Space Grotesk";
-  font-size: 4rem;
-  font-weight: 400;
-  color: white;
-  line-height: 1.05;
+.gallery-card-text h1 {
+  margin: 0 0 24px;
+  font-size: clamp(40px, 5.6vw, 76px);
+  line-height: 1;
+  font-weight: 780;
+  letter-spacing: -0.05em;
 }
 
 .gallery-btn {
-  position: relative;
-  overflow: hidden;
-  width: 7rem;
-  height: 3rem;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, .05);
-  background: transparent;
-  color: white;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  font-size: .8rem;
+  height: 46px;
+  padding: 0 20px;
+  border: 1px solid var(--coral);
+  border-radius: var(--radius);
+  background: var(--coral);
+  color: var(--on-coral);
+  font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
-  transition: color .3s ease;
-}
-
-.gallery-btn::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: white;
-  border-radius: inherit;
-  transform: scaleY(0);
-  transform-origin: bottom;
-  transition: transform .3s ease;
-  z-index: -1;
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.12);
 }
 
 .gallery-btn:hover {
-  color: black;
+  background: var(--coral-deep);
 }
 
-.gallery-btn:hover::after {
-  transform: scaleY(1);
+.gallery-card-viz {
+  height: 400px;
 }
 
-/* =========================
-   Large Tablets
-========================= */
-@media (max-width: 1200px) {
-
-  .gallery {
-    width: min(1400px, 94%);
-  }
-
-  .gallery-card {
-    width: 100%;
-    max-width: 52rem;
-    height: 18rem;
-    padding: 3rem;
-  }
-
-  .gallery-card h1 {
-    font-size: 3.4rem;
-  }
-
-}
-
-/* =========================
-   Tablets
-========================= */
-@media (max-width: 992px) {
-
-  .gallery {
-    width: 92%;
-    margin: 110px auto;
-  }
-
-  .gallery-header {
-    margin-bottom: 56px;
-  }
-
-  .gallery-card {
-    position: sticky;
-    top: 90px;
-    z-index: 10;
-    width: 100%;
-    height: auto;
-    min-height: 16rem;
-    padding: 2.4rem;
-    top: 90px;
-    border-radius: 22px;
-    margin-bottom: 20px;
-  }
-
-  .gallery-btn {
-    flex-direction: auto;
-  }
-
-  .gallery-card-header {
-    margin-bottom: 2rem;
-  }
-
-  .gallery-card h1 {
-    font-size: 2.8rem;
-    margin-bottom: 2rem;
-  }
-
-  .gallery-card-body {
-    grid-template-columns: 1fr;
-    gap: 1.4rem;
-  }
-
-  .gallery-card-viz {
-    height: 9rem;
-  }
-
-  .gallery-btn {
-    width: 6.5rem;
-    height: 2.9rem;
-    font-size: .75rem;
-  }
-
-}
-
-/* =========================
-   Phones
-========================= */
-@media (max-width: 768px) {
-
-  .gallery {
-    width: 92%;
-    margin: 90px auto;
-  }
-
-  .gallery-header {
-    margin-bottom: 48px;
-  }
-
-  .gallery-card {
-    position: sticky;
-    top: 78px;
-    z-index: 10;
-
-    min-height: 15rem;
-    padding: 1.8rem;
-
-    display: flex;
-    flex-direction: column;
-  }
-
-  .gallery-btn {
-    margin-top: auto;
-  }
-
-  .gallery-card-header {
-    margin-bottom: 1.5rem;
-  }
-
-  .gallery-number,
-  .gallery-complexity {
-    font-size: .72rem;
-  }
-
-  .gallery-card h1 {
-    font-size: 2.2rem;
-    margin-bottom: 1.75rem;
-    line-height: 1.1;
-  }
-
-  .gallery-btn {
-    width: 6rem;
-    height: 2.7rem;
-    font-size: .72rem;
-  }
-
-}
-
-/* =========================
-   Small Phones
-========================= */
-@media (max-width: 480px) {
-
-  .gallery {
-    width: 94%;
-    margin: 72px auto;
-  }
-
-  .gallery-header {
-    margin-bottom: 36px;
-  }
-
-  .gallery-eyebrow {
-    font-size: .55rem;
-    letter-spacing: .22em;
-  }
-
-  .gallery-card {
-    position: sticky;
-    top: 66px;
-    z-index: 10;
-
-    min-height: 14rem;
-    padding: 1.4rem;
-
-    display: flex;
-    flex-direction: column;
-  }
-
-  .gallery-btn {
-    margin-top: auto;
-  }
-
-  .gallery-card-header {
-    margin-bottom: 1.25rem;
-  }
-
-  .gallery-number,
-  .gallery-complexity {
-    font-size: .68rem;
-  }
-
-  .gallery-card h1 {
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .gallery-card-viz {
-    height: 7.5rem;
-    padding: 0.6rem;
-  }
-
-  .gallery-btn {
-    width: 5.5rem;
-    height: 2.5rem;
-    font-size: .68rem;
-  }
-
-}
-
-/* =========================
-   Very Small Phones
-========================= */
-@media (max-width: 340px) {
-
-  .gallery-card {
-    position: sticky;
-    top: 60px;
-    z-index: 10;
-
-    min-height: 13rem;
-    padding: 1.2rem;
-
-    display: flex;
-    flex-direction: column;
-  }
-
-  .gallery-btn {
-    margin-top: auto;
-  }
-
-  .gallery-card h1 {
-    font-size: 1.5rem;
-  }
-
-  .gallery-btn {
-    width: 5rem;
-    height: 2.3rem;
-    font-size: .65rem;
-  }
-
-}
-
-/* =========================
-   Landscape Phones
-========================= */
-@media (max-height: 500px) and (orientation: landscape) {
-
+@media (max-width: 900px) {
   .gallery-card {
     position: relative;
     top: 0;
+    min-height: 0;
   }
 
-}
-
-/* =========================
-   Reduced Motion
-========================= */
-@media (prefers-reduced-motion: reduce) {
-
-  .gallery-btn,
-  .gallery-btn::after {
-    transition: none;
+  .gallery-card-body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
   }
 
+  .gallery-card-viz {
+    height: 300px;
+  }
 }

@@ -1,249 +1,167 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useMemo, useState } from "react";
 import { randomArray } from "../../../shared/randomArray";
 import { usePlayback } from "../../../shared/usePlayback";
-import { ResetIcon, StepBackIcon, PlayIcon, PauseIcon, StepForwardIcon, ShuffleIcon } from "../../../shared/icons";
-import "./BubbleSort.css";
+import Lesson from "../../../../lesson/Lesson";
+import IsoArray from "../../../../iso/IsoArray";
+import { trackIds } from "../../../../iso/trackIds";
+
+const SIZE = 8;
+
+const CODE = [
+  "void bubbleSort(vector<int>& arr) {",
+  "  int n = arr.size();",
+  "  for (int i = 0; i < n - 1; i++) {",
+  "    for (int j = 0; j < n - 1 - i; j++) {",
+  "      if (arr[j] > arr[j + 1]) {",
+  "        swap(arr[j], arr[j + 1]);",
+  "      }",
+  "    }",
+  "  }",
+  "}",
+];
 
 function bubbleSortSteps(input) {
   const arr = [...input];
-  const steps = [];
   const n = arr.length;
-
+  const steps = [];
   let comparisons = 0;
   let swaps = 0;
 
-  function save(line, description, compare, sortedFrom) {
-    steps.push({
-      array: [...arr],
-      codeLine: line,
-      description,
-      compare,
-      sortedFrom,
-      swaps,
-      comparisons,
-    });
-  }
+  const save = (s) => steps.push({ array: [...arr], compare: [], swapped: false, pass: 0, comparisons, swaps, ...s });
 
-  save(1, "Started Bubble Sort", [], n);
+  save({
+    phase: "idea",
+    line: 1,
+    sortedFrom: n,
+    title: "Let the big values bubble up",
+    body: `Walk the row comparing neighbours. Whenever the left one is bigger, swap them. By the end of one pass, the largest of the ${n} values has been carried all the way to the right.`,
+    notice: "Each pass fixes one more value at the end, so the unsorted part shrinks by one every time.",
+  });
 
   for (let i = 0; i < n - 1; i++) {
+    let swappedThisPass = false;
+
     for (let j = 0; j < n - 1 - i; j++) {
       comparisons++;
-      save(4, `Compare ${j} and ${j + 1}`, [j, j + 1], n - i);
+      const a = arr[j];
+      const b = arr[j + 1];
+      save({
+        phase: "compare",
+        line: 5,
+        compare: [j, j + 1],
+        pass: i + 1,
+        sortedFrom: n - i,
+        title: `Compare ${a} and ${b}`,
+        body: a > b ? `${a} is bigger than ${b}, so they are in the wrong order.` : `${a} is not bigger than ${b}. They are already in order, so leave them.`,
+      });
 
-      if (arr[j] > arr[j + 1]) {
+      if (a > b) {
         [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
-
         swaps++;
-        save(6, `Swap ${j} and ${j + 1}`, [j, j + 1], n - i);
+        swappedThisPass = true;
+        save({
+          phase: "swap",
+          line: 6,
+          compare: [j, j + 1],
+          swapped: true,
+          pass: i + 1,
+          sortedFrom: n - i,
+          title: `Swap: ${b} goes left, ${a} goes right`,
+          body: `${a} keeps moving right. If it is the biggest value left, it will ride all the way to index ${n - 1 - i}.`,
+        });
       }
     }
 
-    save(2, `Index ${n - 1 - i} sorted`, [], n - i - 1);
+    save({
+      phase: "settled",
+      line: 3,
+      pass: i + 1,
+      sortedFrom: n - i - 1,
+      title: `${arr[n - 1 - i]} is in its final place`,
+      body: `Pass ${i + 1} is done. The biggest value still unsorted has reached index ${n - 1 - i}, and it never moves again.`,
+      notice: swappedThisPass ? null : "This pass made no swaps at all, so the row is already sorted. A common tweak stops early here.",
+    });
   }
 
-  save(10, "Array Sorted!", [], 0);
+  save({
+    phase: "done",
+    line: 10,
+    sortedFrom: 0,
+    title: "Sorted",
+    body: `Every value has bubbled into place. That took ${comparisons} comparisons and ${swaps} swaps.`,
+    notice: "Comparisons grow with n², so doubling the input roughly quadruples the work.",
+  });
 
   return steps;
 }
 
-const CodeLines = [
-  <>
-    <span className="bs-type">void</span> bubbleSort<span className="bs-symbol">(</span><span className="bs-type">vector</span><span className="bs-symbol">&lt;</span><span className="bs-type">int</span><span className="bs-symbol">&gt;&amp;</span> arr<span className="bs-symbol">)</span> <span className="bs-symbol">{"{"}</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;<span className="bs-type">int</span> n <span className="bs-symbol">=</span> arr<span className="bs-symbol">.</span>size<span className="bs-symbol">()</span><span className="bs-symbol">;</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;<span className="bs-keyword">for</span> <span className="bs-symbol">(</span>
-    <span className="bs-type">int</span> i <span className="bs-symbol">=</span> <span className="bs-number">0</span><span className="bs-symbol">;</span>
-    {" "}i <span className="bs-symbol">{"<"}</span> n <span className="bs-symbol">-</span> <span className="bs-number">1</span><span className="bs-symbol">;</span>
-    {" "}i<span className="bs-symbol">++</span><span className="bs-symbol">)</span> <span className="bs-symbol">{"{"}</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;&nbsp;&nbsp;<span className="bs-keyword">for</span> <span className="bs-symbol">(</span>
-    <span className="bs-type">int</span> j <span className="bs-symbol">=</span> <span className="bs-number">0</span><span className="bs-symbol">;</span>
-    {" "}j <span className="bs-symbol">{"<"}</span> n <span className="bs-symbol">-</span> <span className="bs-number">1</span> <span className="bs-symbol">-</span> i<span className="bs-symbol">;</span>
-    {" "}j<span className="bs-symbol">++</span><span className="bs-symbol">)</span> <span className="bs-symbol">{"{"}</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <span className="bs-keyword">if</span> <span className="bs-symbol">(</span>arr<span className="bs-symbol">[</span>j<span className="bs-symbol">]</span> <span className="bs-symbol">{">"}</span> arr<span className="bs-symbol">[</span>j <span className="bs-symbol">+</span> <span className="bs-number">1</span><span className="bs-symbol">]</span><span className="bs-symbol">)</span> <span className="bs-symbol">{"{"}</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    swap<span className="bs-symbol">(</span>arr<span className="bs-symbol">[</span>j<span className="bs-symbol">]</span><span className="bs-symbol">,</span> arr<span className="bs-symbol">[</span>j <span className="bs-symbol">+</span> <span className="bs-number">1</span><span className="bs-symbol">]</span><span className="bs-symbol">)</span><span className="bs-symbol">;</span>
-  </>,
-
-  <>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="bs-symbol">{"}"}</span></>,
-  <>&nbsp;&nbsp;&nbsp;&nbsp;<span className="bs-symbol">{"}"}</span></>,
-  <>&nbsp;&nbsp;<span className="bs-symbol">{"}"}</span></>,
-
-  <>
-    &nbsp;&nbsp;<span className="bs-keyword">return</span><span className="bs-symbol">;</span>
-  </>,
-
-  <><span className="bs-symbol">{"}"}</span></>,
-];
+const TAGS = { idea: "Idea", compare: "Compare", swap: "Swap", settled: "Pass done", done: "Sorted" };
 
 const BubbleSort = () => {
-  const [seed, setSeed] = useState(randomArray());
+  const [seed, setSeed] = useState(() => randomArray(SIZE));
+  const steps = useMemo(() => bubbleSortSteps(seed), [seed]);
+  const ids = useMemo(() => trackIds(steps.map((s) => s.array)), [steps]);
+  const playback = usePlayback(steps.length);
+  const { index, reset } = playback;
+  const s = steps[index];
 
-  const steps = bubbleSortSteps(seed);
-  const { index, playing, speed, setSpeed, reset, stepForward, stepBack, togglePlay } = usePlayback(steps.length);
-  const current = steps[index];
-  const max = Math.max(...current.array);
+  const cells = s.array.map((value, k) => {
+    const sorted = k >= s.sortedFrom;
+    const hot = s.compare.includes(k);
+    return {
+      id: ids[index][k],
+      value,
+      tone: sorted ? "sage" : hot ? (s.swapped ? "amber" : "soft") : "idle",
+      lift: hot ? (s.swapped ? 0.55 : 0.35) : 0,
+    };
+  });
 
-  const shuffle = () => {
-    setSeed(randomArray());
-    reset();
-  };
+  const callouts = s.compare.length
+    ? [{ index: s.compare[1], text: s.swapped ? "swapped" : s.array[s.compare[0]] > s.array[s.compare[1]] ? `${s.array[s.compare[0]]} > ${s.array[s.compare[1]]}` : `${s.array[s.compare[0]]} ≤ ${s.array[s.compare[1]]}` }]
+    : s.phase === "settled"
+      ? [{ index: s.sortedFrom, text: "final place", tone: "sage" }]
+      : [];
 
   return (
-    <div className="bubble-sort-wrapper">
-      <div className="bubble-sort">
-        <p className="bs-eyebrow">sorting</p>
-
-        <h1 className="bs-title">Bubble Sort</h1>
-
-        <div className="bs-header">
-          <p className="bs-blurb">
-            Adjacent swaps bubble the largest value to the end each pass.
-          </p>
-
-          <div className="bs-complexity">
-            <div>
-              <div className="bs-complexity-label">time</div>
-              <div className="bs-time-value">O(n²)</div>
-            </div>
-
-            <div>
-              <div className="bs-complexity-label">space</div>
-              <div className="bs-space-value">O(1)</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="bs-grid">
-          <div className="bs-stage">
-            <div className="bs-bars">
-              {current.array.map((value, i) => {
-                const isSorted = i >= current.sortedFrom;
-                const isCompare = current.compare.includes(i);
-
-                let color = "#3a3a3f";
-
-                if (isSorted) color = "#b4ff39";
-                else if (isCompare) color = "#ff6a3d";
-
-                return (
-                  <motion.div
-                    key={i}
-                    className="bs-bar"
-                    style={{
-                      height: `${(value / max) * 230 + 6}px`,
-                      backgroundColor: color,
-                    }}
-                  />
-                );
-              })}
-            </div>
-
-            <p className="bs-status">{current.description}</p>
-          </div>
-
-          <div className="bs-code-panel">
-            <div className="bs-code-header">
-              <div className="bs-dummy-btns">
-                <span className="bs-red-btn"></span>
-                <span className="bs-yellow-btn"></span>
-                <span className="bs-green-btn"></span>
-                <span className="bs-filename">bubble_sort.cpp</span>
-              </div>
-
-              <span className="bs-header-complexity">O(n²)</span>
-            </div>
-
-            <pre className="bs-code-block">
-              {CodeLines.map((line, i) => {
-                return (
-                  <div
-                    key={i}
-                    className={`bs-code-line ${current.codeLine === i + 1 ? "bs-code-line-active" : ""}`}
-                  >
-                    <span className="bs-line-no">{i + 1}</span>
-                    {line}
-                  </div>
-                );
-              })}
-            </pre>
-          </div>
-        </div>
-
-        <div className="bs-controls">
-          <button className="bs-icon-btn" onClick={reset}>
-            <ResetIcon />
-          </button>
-
-          <button
-            className="bs-icon-btn"
-            onClick={stepBack}
-            disabled={index === 0}
-          >
-            <StepBackIcon />
-          </button>
-
-          <button className="bs-play-btn" onClick={togglePlay}>
-            {playing ? <PauseIcon /> : <PlayIcon />}
-          </button>
-
-          <button
-            className="bs-icon-btn"
-            onClick={stepForward}
-            disabled={index === steps.length - 1}
-          >
-            <StepForwardIcon />
-          </button>
-
-          <button className="bs-shuffle-btn" onClick={shuffle}>
-            <ShuffleIcon />
-            Shuffle
-          </button>
-
-          <div className="bs-speed">
-            <span>SPEED</span>
-
-            <input
-              type="range"
-              min="1"
-              max="10"
-              value={speed}
-              onChange={(e) => setSpeed(Number(e.target.value))}
-            />
-          </div>
-
-          <span className="bs-steps">
-            {index + 1} / {steps.length}
-          </span>
-        </div>
-
-        <div className="bs-stats">
-          <span>
-            comparisons: <b>{current.comparisons}</b>
-          </span>
-
-          <span>
-            swaps: <b>{current.swaps}</b>
-          </span>
-        </div>
-      </div>
-    </div>
+    <Lesson
+      steps={steps}
+      playback={playback}
+      timeline={(st) => st.title}
+      onShuffle={() => {
+        setSeed(randomArray(SIZE));
+        reset();
+      }}
+      complexity={[
+        { label: "time", value: "O(n²)" },
+        { label: "best", value: "O(n)" },
+        { label: "space", value: "O(1)" },
+      ]}
+      stage={<IsoArray cells={cells} slots={SIZE} heights="value" callouts={callouts} indexHighlight={s.compare} label="Bubble sort" />}
+      narration={{ tag: TAGS[s.phase], title: s.title, body: <p>{s.body}</p>, notice: s.notice }}
+      code={{ lines: CODE, active: s.line, file: "bubble_sort.cpp" }}
+      panels={[
+        {
+          title: "This pass",
+          rows: [
+            { label: "Pass", value: s.pass || null },
+            { label: "Comparing", value: s.compare.map((k) => s.array[k]), tone: s.compare.length ? "coral" : undefined },
+            { label: "Settled at the end", value: s.array.slice(s.sortedFrom) },
+          ],
+        },
+        {
+          title: "Work done",
+          rows: [
+            { label: "Comparisons", value: s.comparisons },
+            { label: "Swaps", value: s.swaps },
+          ],
+        },
+      ]}
+      legend={[
+        { label: "Comparing", tone: "soft" },
+        { label: "Swapping", tone: "amber" },
+        { label: "In final place", tone: "sage" },
+      ]}
+    />
   );
 };
 

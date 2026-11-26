@@ -1,33 +1,65 @@
-import StepperPage, { Chips, Segment } from "../../shared/StepperPage";
+import Lesson from "../../../lesson/Lesson";
 import TreeStage from "./TreeStage";
-import { ROLE_STYLE } from "./roleStyle";
+import "./TreeStage.css";
 
-const LEGEND_LABELS = {
-  active: "comparing",
-  path: "visited",
-  new: "new / updated",
-  found: "found",
-  remove: "removing",
-  pivot: "unbalanced",
-  rotate: "rotating",
-  successor: "successor",
-};
+// Shared lesson page for BST and AVL operations, driven by useTreeRun.
+// Operations chain: when one finishes, the next starts on the resulting tree.
 
 const START_MODES = [
-  { id: "empty", label: "empty" },
-  { id: "small", label: "small tree" },
+  { id: "empty", label: "Empty" },
+  { id: "small", label: "Small tree" },
 ];
 
+function tagFor(step) {
+  const d = step.description.toLowerCase();
+  if (d.includes("no rotation")) return "Balanced";
+  if (step.rot) return step.rot.done ? "Rotated" : "Rotation";
+  if (d.includes("rotat")) return "Rotate";
+  if (d.includes("unbalanced") || d.includes("balance")) return "Balance";
+  if (d.includes("found")) return "Found";
+  if (d.includes("successor")) return "Successor";
+  if (d.includes("insert") || d.includes("new node") || d.includes("place")) return "Insert";
+  if (d.includes("delet") || d.includes("remov")) return "Delete";
+  if (d.includes("compare") || d.includes("<") || d.includes(">")) return "Compare";
+  return "Step";
+}
+
+// What a rotation does, in words, using the actual node values.
+function explainRotation(step) {
+  const { dir, at, done } = step.rot;
+  const byId = Object.fromEntries(step.nodes.map((n) => [n.id, n]));
+  const node = byId[at];
+  if (!node) return null;
+  const kids = step.nodes.filter((n) => n.parentId === at).sort((a, b) => a.rank - b.rank);
+  const parent = byId[node.parentId];
+
+  if (!done) {
+    // Before: `node` is too heavy; its child on the heavy side will move up.
+    const up = dir === "right" ? kids[0] : kids[kids.length - 1];
+    if (!up) return null;
+    return dir === "right"
+      ? `A right rotation at ${node.value}: its left child ${up.value} moves up into its place, ${node.value} drops down to become ${up.value}'s right child, and ${up.value}'s old right subtree is handed over as ${node.value}'s new left subtree.`
+      : `A left rotation at ${node.value}: its right child ${up.value} moves up into its place, ${node.value} drops down to become ${up.value}'s left child, and ${up.value}'s old left subtree is handed over as ${node.value}'s new right subtree.`;
+  }
+
+  // After: `node` is the new top of this subtree.
+  const down = dir === "right" ? kids[kids.length - 1] : kids[0];
+  return `${node.value} is now at the top of this subtree${parent ? ` under ${parent.value}` : ", so it is the new root"}${down ? `, with ${down.value} below it on the ${dir === "right" ? "right" : "left"}` : ""}. Values still read in the same order from left to right, so it is still a valid search tree, just shorter.`;
+}
+
+// "headline — detail" becomes title and body.
+function split(text) {
+  const [head, ...rest] = String(text).split(" — ");
+  return { title: head, body: rest.join(" — ") };
+}
+
 const TreePage = ({
-  eyebrow,
-  title,
   blurb,
   complexity,
   filename,
   code,
   run,
   showBalance = false,
-  legend,
   scenarios,
   activeScenario,
   onScenario,
@@ -43,56 +75,94 @@ const TreePage = ({
   startMode,
   onStartMode,
 }) => {
-  const { current, steps, index, playing, speed, setSpeed, bounds } = run;
+  const { current, steps, index } = run;
+  const { title, body } = split(current.description);
+  const first = index === 0 && run.opNumber === 1;
+  // Frame each operation for its own tree size, so small trees stay large.
+  const frame = {
+    count: Math.max(7, ...steps.map((st) => st.nodes.length)),
+    depth: Math.max(2, ...steps.flatMap((st) => st.nodes.map((n) => n.depth))),
+  };
 
-  const toolbar = (scenarios || onStartMode) && (
+  const controls = (
     <>
-      {scenarios && <Chips label={scenarioLabel} items={scenarios} active={activeScenario} onPick={onScenario} />}
-      {onStartMode && <Segment label="start from" options={START_MODES} value={startMode} onChange={onStartMode} />}
+      {onStartMode && (
+        <div className="lx-segment" role="group" aria-label="Start from">
+          {START_MODES.map((m) => (
+            <button key={m.id} className={startMode === m.id ? "lx-segment-on" : ""} onClick={() => onStartMode(m.id)}>
+              {m.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {scenarios && (
+        <div className="lx-segment" role="group" aria-label={scenarioLabel}>
+          {scenarios.map((sc) => (
+            <button key={sc.id} className={activeScenario === sc.id ? "lx-segment-on" : ""} onClick={() => onScenario(sc)} title={sc.hint}>
+              {sc.label ?? sc.id}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {onAction && (
+        <form
+          className="lx-field"
+          onSubmit={(e) => {
+            e.preventDefault();
+            onAction();
+          }}
+        >
+          <label htmlFor="tree-key">key</label>
+          <input id="tree-key" type="number" value={inputValue} placeholder="any" onChange={(e) => onInputChange(e.target.value)} />
+          <button type="submit">{actionLabel}</button>
+        </form>
+      )}
     </>
   );
 
-  const legendItems = [
-    ...legend.map((role) => ({ label: LEGEND_LABELS[role], stroke: ROLE_STYLE[role].stroke, fill: ROLE_STYLE[role].fill })),
-    ...(showBalance ? [{ label: "balance factor", mark: <em>+1</em> }] : []),
-  ];
-
   return (
-    <StepperPage
-      eyebrow={eyebrow}
-      title={title}
-      blurb={blurb}
-      complexity={complexity}
-      toolbar={toolbar}
-      stage={<TreeStage step={current} bounds={bounds} speed={speed} showBalance={showBalance} />}
-      legend={legendItems}
-      status={
-        <>
-          {current.description}
-          {run.finished && doneMessage && <span className="sp-done"> · {doneMessage}</span>}
-        </>
-      }
-      filename={filename}
-      code={code}
-      codeLine={current.codeLine}
+    <Lesson
+      steps={steps}
       playback={{
         index,
-        total: steps.length,
-        playing,
-        speed,
-        setSpeed,
+        playing: run.playing,
+        speed: run.speed,
+        setSpeed: run.setSpeed,
         reset: run.reset,
         stepBack: run.stepBack,
         stepForward: run.stepForward,
         togglePlay: run.togglePlay,
         canBack: run.canBack,
         canForward: run.canForward,
-        prefix: run.opNumber > 1 && `op ${run.opNumber} · `,
       }}
-      shuffleLabel={shuffleLabel}
+      timeline={(st) => split(st.description).title}
       onShuffle={onShuffle}
-      input={{ value: inputValue, onChange: onInputChange, placeholder: "key", actionLabel, onAction }}
-      stats={stats}
+      shuffleLabel={shuffleLabel}
+      controls={controls}
+      complexity={complexity.map((c) => ({ label: c.label, value: c.value }))}
+      stage={<TreeStage step={current} bounds={frame} showBalance={showBalance} />}
+      narration={{
+        tag: run.finished ? "Done" : tagFor(current),
+        title,
+        body: (
+          <>
+            {body && <p>{body}</p>}
+            {current.rot && !current.labels && <p>{explainRotation(current)}</p>}
+            {first && blurb && <p>{blurb}</p>}
+          </>
+        ),
+        notice: run.finished && doneMessage ? doneMessage : run.opNumber > 1 && index === 0 ? `Operation ${run.opNumber} starts on the tree the last one left behind.` : null,
+        noticeLabel: run.finished ? "Session over" : "Chained",
+      }}
+      code={{ lines: code, active: current.codeLine, file: filename }}
+      panels={[
+        {
+          title: "Work done",
+          rows: [{ label: "Operation", value: `#${run.opNumber}` }, ...stats.map((st) => ({ label: st.label.charAt(0).toUpperCase() + st.label.slice(1), value: st.value }))],
+        },
+      ]}
     />
   );
 };

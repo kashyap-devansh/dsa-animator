@@ -1,0 +1,298 @@
+/* Brings the older content pages (notes, teach, quiz) in line with the
+   lesson pages: heavy tight headings, sans eyebrows, no text glows. */
+
+.page-main h1,
+.page-main h2,
+.page-main h3 {
+  font-family: var(--font-sans);
+  font-weight: 750 !important;
+  letter-spacing: -0.035em;
+}
+
+.page-main h3 {
+  letter-spacing: -0.02em;
+}
+
+.page-main h1 *,
+.page-main h2 * {
+  text-shadow: none !important;
+}
+
+.page-main [class*="eyebrow"] {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+/* Fewer boxes: topic and unit tiles become ruled entries on the page. */
+
+.nh-grid,
+.tp-units {
+  gap: 0 32px !important;
+  border-top: 1px solid var(--line-strong);
+}
+
+.nh-card,
+.tp-unit,
+.tp-flow-step {
+  border: 0 !important;
+  border-bottom: 1px solid var(--line) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding-left: 2px !important;
+  padding-right: 2px !important;
+}
+
+.nh-card:hover,
+.tp-unit:hover {
+  transform: none !important;
+}
+
+.nh-card:hover h3,
+.tp-unit:hover h3 {
+  color: var(--coral);
+}
+
+.nh-card::before,
+.nh-card::after,
+.tp-unit::before,
+.tp-unit::after {
+  display: none !important;
+}
+
+.nh-floater,
+.nh-hero-glow {
+  display: none !important;
+}
+
+/* Notes and Teach: everything that was a decorative box is now plain
+   content separated by rules. Only interactive or code surfaces keep a
+   frame, with small, ordinary rounded corners. */
+
+.tp-lesson,
+.nh-block-body,
+.cs-table-wrap,
+.na-cx-cell,
+.na-pitfalls li,
+.na-tip,
+.qz-card,
+.na-viz-links,
+.na-pager-card,
+.tp-numbers,
+.tp-promise,
+.tp-final,
+.tp-picker,
+.cq-why {
+  border: 0 !important;
+  border-top: 1px solid var(--line-strong) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.tp-numbers > *,
+.na-cx > *,
+.tp-final::before,
+.tp-final::after,
+.na-tip::before,
+.qz-card::before {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.na-code,
+.na-hero-viz {
+  border-radius: 10px !important;
+  box-shadow: none !important;
+}
+
+.qz-option,
+.cq-option,
+.tp-row,
+.tp-picker-head input {
+  border-radius: 8px !important;
+  box-shadow: none !important;
+}
+
+.page-main [class*="pill"],
+.page-main [class*="chip"],
+.page-main [class*="tag"],
+.page-main [class*="btn"] {
+  border-radius: 8px !important;
+}
+
+/* Pitfalls keep room for their "!" marker. */
+.na-pitfalls li {
+  padding-left: 40px !important;
+}
+
+.na-pitfalls li::before {
+  left: 4px !important;
+}
+
+/* ---------- Lists instead of tiles ---------- */
+
+/* Notes hub: each topic is a title and one line, in two columns. */
+.nh-rows {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 48px;
+}
+
+.nh-row {
+  display: block;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+  color: inherit;
+  text-decoration: none;
+}
+
+.nh-row h3 {
+  margin: 0 0 4px;
+  font-size: 18px;
+  transition: color 0.15s;
+}
+
+.nh-row p {
+  margin: 0;
+  overflow: hidden;
+  font-size: 14.5px;
+  color: var(--ink-3);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.nh-row:hover h3 {
+  color: var(--coral);
+}
+
+.nh-row-done h3::after {
+  content: " ✓";
+  color: var(--sage);
+}
+
+/* Teach: syllabus units as numbered rows. */
+.tp-units {
+  display: block !important;
+  border-top: 1px solid var(--line-strong);
+}
+
+.tp-unit-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.tp-unit-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  min-width: 0;
+  padding: 20px 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.tp-unit-n {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--coral);
+}
+
+.tp-unit-text {
+  min-width: 0;
+}
+
+.tp-unit-text h3 {
+  margin: 0 0 4px;
+  font-size: 21px;
+  transition: color 0.15s;
+}
+
+.tp-unit-text p {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink-3);
+}
+
+.tp-unit-go {
+  margin-left: auto;
+  font-size: 20px;
+  color: var(--ink-4);
+  transition: transform 0.2s, color 0.2s;
+}
+
+.tp-unit-main:hover h3,
+.tp-unit-main:hover .tp-unit-go {
+  color: var(--coral);
+}
+
+.tp-unit-main:hover .tp-unit-go {
+  transform: translateX(4px);
+}
+
+.tp-unit-edit {
+  padding: 6px 0;
+  border: 0;
+  background: none;
+  font-size: 14px;
+  color: var(--ink-3);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.tp-unit-edit:hover {
+  color: var(--ink);
+}
+
+/* Teach flow: no arrows or key badges between steps. */
+.tp-flow-step::after,
+.tp-flow-step::before,
+.tp-flow-arrow {
+  display: none !important;
+}
+
+/* Small boxes become plain text everywhere on these pages. */
+.page-main .bo,
+.page-main .na-level,
+.page-main .tp-row-kind,
+.page-main .nh-stats span,
+.page-main .na-meta span,
+.page-main .na-fact,
+.page-main .na-facts > *,
+.page-main .tp-numbers > div {
+  padding: 0 !important;
+  border: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+.page-main .bo {
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.page-main .tp-row-kind {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+}
+
+@media (max-width: 760px) {
+  .nh-rows {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tp-unit-edit {
+    display: none;
+  }
+}

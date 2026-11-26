@@ -32,6 +32,7 @@ const FibonacciSequence = () => {
 
   return (
     <StepperPage
+      steps={steps}
       eyebrow="recursion"
       title="Fibonacci Sequence"
       blurb="fib(n) calls fib(n-1) and fib(n-2), which call their own pair… The same values get recomputed again and again — unless you memoize."

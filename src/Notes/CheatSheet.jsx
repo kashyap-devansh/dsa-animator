@@ -30,7 +30,6 @@ const CheatSheet = () => {
           <thead>
             <tr>
               <th>Topic</th>
-              <th>Best</th>
               <th>Average</th>
               <th>Worst</th>
               <th>Space</th>
@@ -54,7 +53,6 @@ const CheatSheet = () => {
                       {n.title}
                     </Link>
                   </td>
-                  <td><BigO value={n.complexity.best} /></td>
                   <td><BigO value={n.complexity.average} /></td>
                   <td><BigO value={n.complexity.worst} /></td>
                   <td><BigO value={n.complexity.space} /></td>
@@ -68,12 +66,6 @@ const CheatSheet = () => {
         </table>
       </div>
 
-      <div className="cs-key">
-        <span><i className="bo-swatch bo-good" /> excellent</span>
-        <span><i className="bo-swatch bo-mid" /> fine</span>
-        <span><i className="bo-swatch bo-warn" /> slow at scale</span>
-        <span><i className="bo-swatch bo-bad" /> explodes</span>
-      </div>
     </div>
   );
 };

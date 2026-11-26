@@ -1,519 +1,148 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import Lesson from "../../../lesson/Lesson";
+import { IsoScene, At, Box, Slab, Note, Callout, Cylinder } from "../../../iso/IsoParts";
+import { bounds, boxCorners } from "../../../iso/projection";
 import { usePlayback } from "../../shared/usePlayback";
-import { ResetIcon, StepBackIcon, PlayIcon, PauseIcon, StepForwardIcon, ShuffleIcon } from "../../shared/icons";
-import "./TowerOfHanoi.css";
 
-const PEG_ORDER = ["A", "B", "C"];
+// Tower of Hanoi on three pegs. Every disk keeps its size as its id, so a
+// move is drawn as the disk lifting off one peg and settling on another.
 
-function hanoiSteps(diskCount) {
+const PEGS = ["A", "B", "C"];
+const GAP = 4.2;
+const DISK_H = 0.42;
+
+const CODE = [
+  "void hanoi(int n, char from, char to, char via) {",
+  "  if (n == 0) return;",
+  "  hanoi(n - 1, from, via, to);",
+  "  move(from, to);",
+  "  hanoi(n - 1, via, to, from);",
+  "}",
+];
+
+function hanoiSteps(count) {
   const pegs = { A: [], B: [], C: [] };
-
-  for (let size = diskCount; size >= 1; size--) {
-    pegs.A.push(size);
-  }
-
+  for (let d = count; d >= 1; d--) pegs.A.push(d);
   const steps = [];
-  const moveLog = [];
-  const totalMoves = Math.pow(2, diskCount) - 1;
+  let moves = 0;
+  const total = 2 ** count - 1;
+  const snap = () => ({ A: [...pegs.A], B: [...pegs.B], C: [...pegs.C] });
+  const save = (s) => steps.push({ pegs: snap(), moves, total, lifted: null, depth: 0, ...s });
 
-  let moveCount = 0;
+  save({
+    phase: "idea",
+    line: 1,
+    title: `Move ${count} disks from A to C`,
+    body: "Only one disk moves at a time, and a bigger disk may never sit on a smaller one. The trick: to move n disks, first move the n − 1 on top out of the way.",
+    notice: `It always takes 2ⁿ − 1 moves: ${total} for ${count} disks.`,
+  });
 
-  function clonePegs() {
-    return { A: [...pegs.A], B: [...pegs.B], C: [...pegs.C] };
-  }
-
-  function save(line, description, opts = {}) {
-    steps.push({
-      pegs: clonePegs(),
-      floatingDisk: opts.floatingDisk ?? null,
-      codeLine: line,
-      description,
-      fromPeg: opts.fromPeg ?? null,
-      toPeg: opts.toPeg ?? null,
-      depth: opts.depth ?? 0,
-      moveCount,
-      totalMoves,
-    });
-  }
-
-  function hanoi(n, from, to, via, depth) {
-    // Line 1
-    save(1, `hanoi(${n}, ${from}, ${to}, ${via})`, { depth });
-
-    // Line 2
-    if (n === 0) {
-      save(2, "Base case: n = 0, return", { depth });
-      return;
-    }
-
-    // Line 3
-    save(3, `hanoi(${n - 1}, ${from}, ${via}, ${to})`, { depth });
-    hanoi(n - 1, from, via, to, depth + 1);
-
-    // Line 4 - lift, carry, drop
-    const disk = pegs[from][pegs[from].length - 1];
-
-    pegs[from].pop();
-
-    save(4, `Lift disk ${disk} off peg ${from}`, {
-      depth,
-      fromPeg: from,
-      toPeg: to,
-      floatingDisk: { disk, peg: from },
-    });
-
-    save(4, `Carry disk ${disk} across to peg ${to}`, {
-      depth,
-      fromPeg: from,
-      toPeg: to,
-      floatingDisk: { disk, peg: to },
-    });
-
+  const solve = (n, from, to, via, depth) => {
+    if (n === 0) return;
+    save({ phase: "plan", line: 3, depth, title: n > 1 ? `Clear ${n - 1} disk${n > 2 ? "s" : ""} off disk ${n}` : `Disk 1 is free to move`, body: n > 1 ? `To move disk ${n} from ${from} to ${to}, the ${n - 1} smaller disk${n > 2 ? "s" : ""} above it must go to ${via} first.` : `Nothing sits on disk 1, so it can move straight away.` });
+    solve(n - 1, from, via, to, depth + 1);
+    const disk = pegs[from].pop();
     pegs[to].push(disk);
-    moveCount++;
+    moves++;
+    save({ phase: "move", line: 4, depth, lifted: { disk, from, to }, title: `Disk ${disk}: ${from} → ${to}`, body: `Move ${moves} of ${total}. Disk ${disk} lands on ${pegs[to].length > 1 ? `disk ${pegs[to][pegs[to].length - 2]}, which is bigger` : "an empty peg"}.` });
+    if (n > 1) save({ phase: "plan", line: 5, depth, title: `Stack the ${n - 1} back on top`, body: `Disk ${n} is in place on ${to}. Now move the ${n - 1} smaller disk${n > 2 ? "s" : ""} from ${via} onto it.` });
+    solve(n - 1, via, to, from, depth + 1);
+  };
 
-    moveLog.push({ moveNumber: moveCount, disk, from, to });
-
-    save(4, `Move ${moveCount}: disk ${disk} placed on peg ${to}`, {
-      depth,
-      fromPeg: from,
-      toPeg: to,
-    });
-
-    // Line 5
-    save(5, `hanoi(${n - 1}, ${via}, ${to}, ${from})`, { depth });
-    hanoi(n - 1, via, to, from, depth + 1);
-  }
-
-  // Start
-  save(1, "Started Tower of Hanoi");
-
-  hanoi(diskCount, "A", "C", "B", 0);
-
-  save(1, `Solved! ${moveCount} moves (2^${diskCount} - 1 = ${totalMoves})`);
-
-  return { steps, moveLog };
+  solve(count, "A", "C", "B", 1);
+  save({ phase: "done", line: 6, title: "Solved", body: `All ${count} disks are on C, in ${moves} moves, the fewest possible.` });
+  return steps;
 }
 
-const CodeLines = [
-  // 1
-  <>
-    <span className="ht-type">void</span> hanoi
-    <span className="ht-symbol">(</span>
-    <span className="ht-type">int</span> n
-    <span className="ht-symbol">,</span>{" "}
-    <span className="ht-type">char</span> from
-    <span className="ht-symbol">,</span>{" "}
-    <span className="ht-type">char</span> to
-    <span className="ht-symbol">,</span>{" "}
-    <span className="ht-type">char</span> via
-    <span className="ht-symbol">)</span>{" "}
-    <span className="ht-symbol">{"{"}</span>
-  </>,
-
-  // 2
-  <>
-    &nbsp;&nbsp;
-    <span className="ht-keyword">if</span>
-    <span className="ht-symbol">(</span>
-    n <span className="ht-symbol">==</span>
-    <span className="ht-number">0</span>
-    <span className="ht-symbol">)</span>{" "}
-    <span className="ht-keyword">return</span>
-    <span className="ht-symbol">;</span>
-  </>,
-
-  // 3
-  <>
-    &nbsp;&nbsp;
-    hanoi
-    <span className="ht-symbol">(</span>
-    n <span className="ht-symbol">-</span>
-    <span className="ht-number">1</span>
-    <span className="ht-symbol">,</span> from
-    <span className="ht-symbol">,</span> via
-    <span className="ht-symbol">,</span> to
-    <span className="ht-symbol">)</span>
-    <span className="ht-symbol">;</span>
-  </>,
-
-  // 4
-  <>
-    &nbsp;&nbsp;
-    moveDisk
-    <span className="ht-symbol">(</span>
-    from<span className="ht-symbol">,</span> to
-    <span className="ht-symbol">)</span>
-    <span className="ht-symbol">;</span>
-  </>,
-
-  // 5
-  <>
-    &nbsp;&nbsp;
-    hanoi
-    <span className="ht-symbol">(</span>
-    n <span className="ht-symbol">-</span>
-    <span className="ht-number">1</span>
-    <span className="ht-symbol">,</span> via
-    <span className="ht-symbol">,</span> to
-    <span className="ht-symbol">,</span> from
-    <span className="ht-symbol">)</span>
-    <span className="ht-symbol">;</span>
-  </>,
-
-  // 6
-  <>
-    <span className="ht-symbol">{"}"}</span>
-  </>,
-
-  // 7
-  <>&nbsp;</>,
-
-  // 8
-  <>
-    <span className="ht-type">void</span> moveDisk
-    <span className="ht-symbol">(</span>
-    <span className="ht-type">char</span> from
-    <span className="ht-symbol">,</span>{" "}
-    <span className="ht-type">char</span> to
-    <span className="ht-symbol">)</span>{" "}
-    <span className="ht-symbol">{"{"}</span>
-  </>,
-
-  // 9
-  <>
-    &nbsp;&nbsp;
-    <span className="ht-type">int</span> disk
-    <span className="ht-symbol"> = </span>
-    pegs<span className="ht-symbol">[</span>from
-    <span className="ht-symbol">].</span>pop
-    <span className="ht-symbol">();</span>
-  </>,
-
-  // 10
-  <>
-    &nbsp;&nbsp;
-    pegs<span className="ht-symbol">[</span>to
-    <span className="ht-symbol">].</span>push
-    <span className="ht-symbol">(</span>disk
-    <span className="ht-symbol">);</span>
-  </>,
-
-  // 11
-  <>
-    <span className="ht-symbol">{"}"}</span>
-  </>,
-];
-
-const DISK_COLORS = [
-  "#ff6a3d",
-  "#ffb037",
-  "#b4ff39",
-  "#39d9ff",
-  "#7c8cff",
-  "#c77cff",
-  "#ff5fa8",
-];
-
-const DISK_H = 20;
-const SLOT_H = 24;
-const PEG_COL_W = 160;
-const MIN_DISK_W = 46;
-const MAX_DISK_W = 138;
-const TOP_PAD = 46;
-const LIFT_HEIGHT = 46;
-const BASE_H = 12;
-
-const PEG_INDEX = { A: 0, B: 1, C: 2 };
-
-const HanoiTower = () => {
-  const [diskCount, setDiskCount] = useState(4);
-
-  const { steps, moveLog } = hanoiSteps(diskCount);
-  const { index, playing, speed, setSpeed, reset, stepForward, stepBack, togglePlay } = usePlayback(steps.length);
-  const current = steps[index];
-
-  const rodHeight = diskCount * SLOT_H + 20;
-  const baseY = TOP_PAD + LIFT_HEIGHT + rodHeight;
-  const rodTopY = baseY - rodHeight;
-  const liftedY = rodTopY - LIFT_HEIGHT;
-
-  const svgWidth = PEG_COL_W * 3;
-  const svgHeight = baseY + BASE_H + 34;
-
-  const pegX = (pegLetter) => PEG_COL_W * (PEG_INDEX[pegLetter] + 0.5);
-
-  const diskWidth = (size) =>
-    diskCount <= 1
-      ? MAX_DISK_W
-      : MIN_DISK_W + ((size - 1) * (MAX_DISK_W - MIN_DISK_W)) / (diskCount - 1);
-
-  const diskPosition = (disk) => {
-    if (current.floatingDisk && current.floatingDisk.disk === disk) {
-      return { x: pegX(current.floatingDisk.peg), y: liftedY };
-    }
-
-    for (const peg of PEG_ORDER) {
-      const stackIndex = current.pegs[peg].indexOf(disk);
-
-      if (stackIndex !== -1) {
-        return { x: pegX(peg), y: baseY - (stackIndex + 1) * SLOT_H };
-      }
-    }
-
-    return { x: pegX("A"), y: baseY - SLOT_H };
-  };
-
-  const shuffle = () => {
-    setDiskCount(Math.floor(Math.random() * 4) + 3);
-    reset();
-  };
+const HanoiScene = ({ s, count }) => {
+  const maxW = 0.9 + count * 0.42;
+  const view = bounds([...boxCorners(-maxW / 2 - 0.5, -maxW / 2 - 0.5, -0.75, GAP * 2 + maxW + 1, maxW + 1, 0.75), ...boxCorners(0, 0, 0, GAP * 2, 1, count * DISK_H + 2.2)], 16);
+  const disks = [];
+  PEGS.forEach((p, pi) => {
+    s.pegs[p].forEach((d, level) => {
+      const r = 0.45 + d * 0.21;
+      disks.push({ d, r, z: level * DISK_H, pi, level });
+    });
+  });
+  disks.sort((a, b) => a.pi - b.pi || a.level - b.level);
 
   return (
-    <div className="hanoi-tower-wrapper">
-      <div className="hanoi-tower">
-        <p className="ht-eyebrow">recursion</p>
-
-        <h1 className="ht-title">Tower of Hanoi</h1>
-
-        <div className="ht-header">
-          <p className="ht-blurb">
-            Moves a stack of disks from one peg to another, one at a time, never placing a larger disk on a smaller one.
-          </p>
-
-          <div className="ht-complexity">
-            <div>
-              <div className="ht-complexity-label">time</div>
-              <div className="ht-time-value">O(2^n)</div>
-            </div>
-
-            <div>
-              <div className="ht-complexity-label">space</div>
-              <div className="ht-space-value">O(n)</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="ht-grid">
-          <div className="ht-stage">
-            <div className="ht-call-banner">
-              <span className="ht-call-label">call</span>
-              <span className="ht-call-value">{current.description}</span>
-
-              {current.moveCount > 0 && (
-                <span className="ht-move-badge">
-                  move {current.moveCount} / {current.totalMoves}
-                </span>
-              )}
-            </div>
-
-            <div className="ht-stage-wrap">
-              <svg
-                className="ht-stage-svg"
-                viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-                width={svgWidth}
-                height={svgHeight}
-              >
-                <rect
-                  x="0"
-                  y={baseY}
-                  width={svgWidth}
-                  height={BASE_H}
-                  rx="4"
-                  fill="#1c1c1f"
-                  stroke="#262629"
-                  strokeWidth="1.4"
-                />
-
-                {PEG_ORDER.map((peg) => (
-                  <rect
-                    key={`rod-${peg}`}
-                    x={pegX(peg) - 4}
-                    y={rodTopY}
-                    width="8"
-                    height={baseY - rodTopY}
-                    rx="3"
-                    fill="#33333a"
-                  />
-                ))}
-
-                {PEG_ORDER.map((peg) => {
-                  const isSource = peg === current.fromPeg;
-                  const isTarget = peg === current.toPeg;
-
-                  return (
-                    <text
-                      key={`label-${peg}`}
-                      x={pegX(peg)}
-                      y={baseY + BASE_H + 22}
-                      textAnchor="middle"
-                      className="ht-peg-label"
-                      fill={isSource ? "#ff6a3d" : isTarget ? "#b4ff39" : "#7a7a80"}
-                    >
-                      {peg}
-                    </text>
-                  );
-                })}
-
-                {Array.from({ length: diskCount }, (_, i) => diskCount - i).map(
-                  (size) => {
-                    const pos = diskPosition(size);
-                    const width = diskWidth(size);
-                    const isFloating =
-                      current.floatingDisk && current.floatingDisk.disk === size;
-
-                    return (
-                      <g
-                        key={`disk-${size}`}
-                        className="ht-disk"
-                        style={{
-                          transform: `translate(${pos.x}px, ${pos.y}px)`,
-                        }}
-                      >
-                        <rect
-                          x={-width / 2}
-                          y="0"
-                          width={width}
-                          height={DISK_H}
-                          rx="6"
-                          fill={DISK_COLORS[(size - 1) % DISK_COLORS.length]}
-                          stroke={isFloating ? "#f3f2ed" : "#0a0a0b"}
-                          strokeWidth={isFloating ? 2 : 1.2}
-                        />
-
-                        <text
-                          x="0"
-                          y={DISK_H / 2 + 4}
-                          textAnchor="middle"
-                          className="ht-disk-value"
-                        >
-                          {size}
-                        </text>
-                      </g>
-                    );
-                  }
-                )}
-              </svg>
-            </div>
-
-            <p className="ht-status">
-              recursion depth: {current.depth}
-              {current.fromPeg && (
-                <span className="ht-status-move">
-                  {" "}&mdash; peg {current.fromPeg} &rarr; peg {current.toPeg}
-                </span>
-              )}
-            </p>
-          </div>
-
-          <div className="ht-code-panel">
-            <div className="ht-code-header">
-              <div className="ht-dummy-btns">
-                <span className="ht-red-btn"></span>
-                <span className="ht-yellow-btn"></span>
-                <span className="ht-green-btn"></span>
-                <span className="ht-filename">hanoi.cpp</span>
-              </div>
-
-              <span className="ht-header-complexity">O(2^n)</span>
-            </div>
-
-            <pre className="ht-code-block">
-              {
-                CodeLines.map((line, i) => {
-                  return (
-                    <div
-                      key={i}
-                      className={`ht-code-line ${current.codeLine === i + 1 ? "ht-code-line-active" : ""}`}
-                    >
-                      <span className="ht-line-no">{i + 1}</span>
-                      {line}
-                    </div>
-                  );
-                })
-              }
-            </pre>
-          </div>
-        </div>
-
-        <div className="ht-controls">
-          <button className="ht-icon-btn" onClick={reset}>
-            <ResetIcon />
-          </button>
-
-          <button
-            className="ht-icon-btn"
-            onClick={stepBack}
-            disabled={index === 0}
-          >
-            <StepBackIcon />
-          </button>
-
-          <button className="ht-play-btn" onClick={togglePlay}>
-            {playing ? <PauseIcon /> : <PlayIcon />}
-          </button>
-
-          <button
-            className="ht-icon-btn"
-            onClick={stepForward}
-            disabled={index === steps.length - 1}
-          >
-            <StepForwardIcon />
-          </button>
-
-          <button className="ht-shuffle-btn" onClick={shuffle}>
-            <ShuffleIcon />
-            New puzzle
-          </button>
-
-          <div className="ht-speed">
-            <span>SPEED</span>
-
-            <input
-              type="range"
-              min="1"
-              max="10"
-              value={speed}
-              onChange={(e) => setSpeed(Number(e.target.value))}
-            />
-          </div>
-
-          <span className="ht-steps">
-            {index + 1} / {steps.length}
-          </span>
-        </div>
-
-        <div className="ht-stats">
-          <span>
-            disks: <b>{diskCount}</b>
-          </span>
-
-          <span>
-            move: <b>{current.moveCount}</b> / {current.totalMoves}
-          </span>
-
-          <span>
-            recursion depth: <b>{current.depth}</b>
-          </span>
-        </div>
-
-        <div className="ht-move-log">
-          <p className="ht-move-log-title">full move sequence</p>
-
-          <div className="ht-move-log-rows">
-            {moveLog.map((m) => (
-              <span
-                key={m.moveNumber}
-                className={`ht-move-log-chip ${m.moveNumber <= current.moveCount ? "ht-move-log-chip-done" : ""}`}
-              >
-                {m.moveNumber}. {m.disk}: {m.from}&rarr;{m.to}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
+    <IsoScene view={view} label="Tower of Hanoi">
+      <Slab x={-maxW / 2 - 0.5} y={-maxW / 2 - 0.5} w={GAP * 2 + maxW + 1} d={maxW + 1} indexAt={[0, GAP, GAP * 2]} indexLabels={PEGS} />
+      {PEGS.flatMap((p, pi) => {
+        const stack = disks.filter((k) => k.pi === pi);
+        const topZ = stack.length * DISK_H;
+        const poleH = count * DISK_H + 0.9;
+        return [
+          // Disks first, bottom up; then the part of the pole that rises out
+          // of the top disk's hole, so the pole reads as running through them.
+          ...stack.map((k) => (
+            <At key={`d${k.d}`} x={pi * GAP - k.r} y={-k.r} z={k.z}>
+              <Cylinder r={k.r} h={DISK_H} hole={0.13} tone={s.lifted?.disk === k.d ? "coral" : s.phase === "done" ? "sage" : "idle"} label={k.d} labelSize={13} />
+            </At>
+          )),
+          <At key={`pole${p}`} x={pi * GAP - 0.1} y={-0.1} z={topZ} instant>
+            <Box w={0.2} d={0.2} h={poleH - topZ} tone="dark" />
+          </At>,
+        ];
+      })}
+      {PEGS.map((p, pi) => (
+        <Note key={`n${p}`} at={[pi * GAP, maxW / 2 + 1.4, -0.75]} text={p === "A" ? "from" : p === "C" ? "to" : "spare"} size={12} weight={600} />
+      ))}
+      {s.lifted && <Callout at={[PEGS.indexOf(s.lifted.to) * GAP, 0, s.pegs[s.lifted.to].length * DISK_H]} text={`${s.lifted.from} → ${s.lifted.to}`} rise={1.2} small />}
+    </IsoScene>
   );
 };
 
-export default HanoiTower;
+const TAGS = { idea: "Idea", plan: "Recurse", move: "Move", done: "Solved" };
+
+const TowerOfHanoi = () => {
+  const [count, setCount] = useState(3);
+  const steps = useMemo(() => hanoiSteps(count), [count]);
+  const playback = usePlayback(steps.length);
+  const s = steps[Math.min(playback.index, steps.length - 1)];
+
+  return (
+    <Lesson
+      steps={steps}
+      playback={playback}
+      timeline={(st) => st.title}
+      controls={
+        <div className="lx-segment" role="group" aria-label="Disks">
+          {[3, 4, 5].map((n) => (
+            <button
+              key={n}
+              className={count === n ? "lx-segment-on" : ""}
+              onClick={() => {
+                setCount(n);
+                playback.reset();
+              }}
+            >
+              {n} disks
+            </button>
+          ))}
+        </div>
+      }
+      complexity={[
+        { label: "time", value: "O(2ⁿ)" },
+        { label: "space", value: "O(n)" },
+      ]}
+      stage={<HanoiScene s={s} count={count} />}
+      narration={{ tag: TAGS[s.phase], title: s.title, body: <p>{s.body}</p>, notice: s.notice }}
+      code={{ lines: CODE, active: s.line, file: "hanoi.cpp" }}
+      panels={[
+        {
+          title: "Progress",
+          rows: [
+            { label: "Moves", value: `${s.moves} / ${s.total}`, tone: "coral" },
+            { label: "A", value: s.pegs.A },
+            { label: "B", value: s.pegs.B },
+            { label: "C", value: s.pegs.C },
+          ],
+        },
+      ]}
+    />
+  );
+};
+
+export default TowerOfHanoi;

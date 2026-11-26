@@ -4,7 +4,22 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>dsa-animatorr</title>
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f6f3ec" />
+    <meta name="description" content="DSA Animator: data structures and algorithms as step-by-step lessons, with a diagram that moves as you go and the real code beside it." />
+    <script>
+      // Pick the theme before anything paints: the saved choice, else the system's.
+      (function () {
+        var theme = null;
+        try { theme = localStorage.getItem("dsa:theme"); } catch (e) {}
+        if (theme !== "dark" && theme !== "light") {
+          theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+        document.documentElement.dataset.theme = theme;
+        if (theme === "dark") document.querySelector('meta[name="theme-color"]').content = "#0c0d0f";
+      })();
+    </script>
+    <title>DSA Animator · Data structures and algorithms, one step at a time</title>
   </head>
   <body>
     <div id="root"></div>

@@ -1,429 +1,149 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { usePlayback } from "../../../shared/usePlayback";
-import { ResetIcon, StepBackIcon, PlayIcon, PauseIcon, StepForwardIcon, ShuffleIcon } from "../../../shared/icons";
-import "./BucketSort.css";
+import Lesson from "../../../../lesson/Lesson";
+import BucketScene from "../bucketScene";
 
-const BUCKET_COUNT = 5;
+const SIZE = 9;
+const B = 5;
+const randomInput = () => Array.from({ length: SIZE }, () => Math.floor(Math.random() * 100));
+const LABELS = Array.from({ length: B }, (_, b) => `${b * 20}–${b * 20 + 19}`);
 
-function randomArray(size = 11) {
-  const arr = [];
+const CODE = [
+  "void bucketSort(vector<int>& arr) {",
+  "  int b = 5;",
+  "  vector<vector<int>> bucket(b);",
+  "  for (int x : arr)",
+  "    bucket[x * b / 100].push_back(x);",
+  "  for (auto& bk : bucket)",
+  "    sort(bk.begin(), bk.end());",
+  "  int k = 0;",
+  "  for (auto& bk : bucket)",
+  "    for (int x : bk) arr[k++] = x;",
+  "}",
+];
 
-  for (let i = 0; i < size; i++) {
-    arr.push(Math.floor(Math.random() * 100));
-  }
-
-  return arr;
-}
-
-function bucketSortSteps(input) {
-  const arr = [...input];
-  const n = arr.length;
+// Spread values into buckets by range, sort each small bucket, then read
+// the buckets back in order.
+function bucketSteps(input) {
+  let row = input.map((value, id) => ({ id, value }));
+  const buckets = Array.from({ length: B }, () => []);
   const steps = [];
+  let ops = 0;
 
-  const min = Math.min(...arr);
-  const max = Math.max(...arr);
-  const bucketSize = Math.max(1, Math.ceil((max - min + 1) / BUCKET_COUNT));
+  const placed = () => {
+    const m = new Map();
+    buckets.forEach((bk, b) => bk.forEach((c, level) => m.set(c.id, { bucket: b, level })));
+    return m;
+  };
+  const save = (s) => steps.push({ row: row.map((c) => ({ ...c })), placed: placed(), active: null, bucket: null, ops, ...s });
 
-  const buckets = Array.from({ length: BUCKET_COUNT }, () => []);
+  save({
+    phase: "idea",
+    line: 1,
+    title: "Spread out, sort small, join up",
+    body: `The values are between 0 and 99. Split that range into ${B} buckets of 20. Each bucket ends up small, so sorting it is cheap.`,
+    notice: "Bucket sort shines when values are spread evenly. If they all land in one bucket, it is no better than the inner sort.",
+  });
 
-  let distributions = 0;
-  let comparisons = 0;
-
-  function save(line, description, opts = {}) {
-    steps.push({
-      array: [...arr],
-      codeLine: line,
-      description,
-      phase: opts.phase,
-      activeIndex: opts.activeIndex ?? -1,
-      activeBucket: opts.activeBucket ?? -1,
-      buckets: buckets.map((b) => [...b]),
-      output: opts.output ? [...opts.output] : [],
-      bucketSize,
-      distributions,
-      comparisons,
+  input.forEach((value, id) => {
+    const b = Math.min(B - 1, Math.floor((value * B) / 100));
+    buckets[b].push({ id, value });
+    ops++;
+    save({
+      phase: "drop",
+      line: 5,
+      active: id,
+      bucket: b,
+      title: `${value} → bucket ${LABELS[b]}`,
+      body: `${value} × ${B} ÷ 100 = ${b}, so it goes in bucket ${b}.`,
     });
-  }
+  });
 
-  save(1, "Started Bucket Sort", { phase: "start" });
-  save(3, `${BUCKET_COUNT} buckets, bucketSize = ${bucketSize}`, { phase: "start" });
-
-  for (let i = 0; i < n; i++) {
-    save(5, `Check i < ${n}`, { phase: "distributing", activeIndex: i });
-
-    const bucketIdx = Math.min(BUCKET_COUNT - 1, Math.floor((arr[i] - min) / bucketSize));
-
-    buckets[bucketIdx].push(arr[i]);
-    distributions++;
-
-    save(6, `arr[${i}] = ${arr[i]} → bucket[${bucketIdx}]`, {
-      phase: "distributing", activeIndex: i, activeBucket: bucketIdx,
+  buckets.forEach((bk, b) => {
+    if (bk.length < 2) return;
+    const before = bk.map((c) => c.value).join(", ");
+    bk.sort((a, c) => a.value - c.value);
+    ops += bk.length;
+    save({
+      phase: "sort",
+      line: 7,
+      bucket: b,
+      title: `Sort bucket ${LABELS[b]}`,
+      body: `[${before}] becomes [${bk.map((c) => c.value).join(", ")}]. With so few values, insertion sort is quick.`,
     });
-  }
+  });
 
-  for (let b = 0; b < BUCKET_COUNT; b++) {
-    if (buckets[b].length < 2) continue;
+  row = buckets.flat();
+  buckets.forEach((bk) => (bk.length = 0));
+  ops += row.length;
+  save({
+    phase: "gather",
+    line: 10,
+    title: "Read the buckets back in order",
+    body: `Every value in bucket 0 is smaller than every value in bucket 1, and so on. So reading them in order gives ${row.map((c) => c.value).join(", ")}.`,
+  });
 
-    save(9, `Sort bucket[${b}] = [${buckets[b].join(", ")}]`, { phase: "sorting-bucket", activeBucket: b });
-
-    for (let j = 1; j < buckets[b].length; j++) {
-      let k = j;
-      comparisons++;
-
-      while (k > 0 && buckets[b][k - 1] > buckets[b][k]) {
-        const tmp = buckets[b][k - 1];
-        buckets[b][k - 1] = buckets[b][k];
-        buckets[b][k] = tmp;
-        k--;
-        comparisons++;
-      }
-
-      save(9, `bucket[${b}] → [${buckets[b].join(", ")}]`, { phase: "sorting-bucket", activeBucket: b });
-    }
-  }
-
-  const output = [];
-
-  for (let b = 0; b < BUCKET_COUNT; b++) {
-    for (const val of buckets[b]) {
-      output.push(val);
-
-      save(13, `Append ${val} from bucket[${b}] → output`, {
-        phase: "concatenating", activeBucket: b, output,
-      });
-    }
-  }
-
-  for (let i = 0; i < n; i++) arr[i] = output[i];
-
-  save(1, "Array Sorted!", { phase: "done", output });
+  save({ phase: "done", line: 11, title: "Sorted", body: `${ops} operations in total.`, notice: "With evenly spread input, the average cost is O(n + k)." });
 
   return steps;
 }
 
-const CodeLines = [
-  <>
-    <span className="bks-type">void</span> bucketSort
-    <span className="bks-symbol">(</span>
-    <span className="bks-type">vector</span>
-    <span className="bks-symbol">&lt;</span>
-    <span className="bks-type">int</span>
-    <span className="bks-symbol">&gt;&amp;</span> arr
-    <span className="bks-symbol">)</span>{" "}
-    <span className="bks-symbol">{"{"}</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;
-    <span className="bks-type">int</span> bucketCount
-    <span className="bks-symbol"> = </span>
-    <span className="bks-number">5</span>
-    <span className="bks-symbol">;</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;
-    <span className="bks-type">int</span> bucketSize
-    <span className="bks-symbol"> = </span>
-    ceil<span className="bks-symbol">((</span>maxVal <span className="bks-symbol">-</span> minVal <span className="bks-symbol">+</span> <span className="bks-number">1</span>
-    <span className="bks-symbol">) / </span>bucketCount<span className="bks-symbol">);</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;
-    <span className="bks-type">vector</span>
-    <span className="bks-symbol">&lt;</span>
-    <span className="bks-type">vector</span>
-    <span className="bks-symbol">&lt;</span>
-    <span className="bks-type">int</span>
-    <span className="bks-symbol">&gt;&gt;</span> buckets
-    <span className="bks-symbol">(</span>bucketCount
-    <span className="bks-symbol">);</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;
-    <span className="bks-keyword">for</span>
-    <span className="bks-symbol">(</span>
-    <span className="bks-type">int</span> i
-    <span className="bks-symbol"> = </span>
-    <span className="bks-number">0</span>
-    <span className="bks-symbol">;</span> i
-    <span className="bks-symbol"> &lt; </span>n
-    <span className="bks-symbol">;</span> i
-    <span className="bks-symbol">++</span>
-    <span className="bks-symbol">)</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    buckets<span className="bks-symbol">[(</span>
-    arr<span className="bks-symbol">[</span>i<span className="bks-symbol">]</span>
-    <span className="bks-symbol"> - </span>minVal
-    <span className="bks-symbol">) / </span>bucketSize
-    <span className="bks-symbol">].</span>push_back
-    <span className="bks-symbol">(</span>
-    arr<span className="bks-symbol">[</span>i<span className="bks-symbol">]);</span>
-  </>,
-
-  <>&nbsp;</>,
-
-  <>
-    &nbsp;&nbsp;
-    <span className="bks-keyword">for</span>
-    <span className="bks-symbol">(</span>
-    <span className="bks-type">int</span> b
-    <span className="bks-symbol"> = </span>
-    <span className="bks-number">0</span>
-    <span className="bks-symbol">;</span> b
-    <span className="bks-symbol"> &lt; </span>bucketCount
-    <span className="bks-symbol">;</span> b
-    <span className="bks-symbol">++</span>
-    <span className="bks-symbol">)</span>
-  </>,
-
-  <>&nbsp;</>,
-
-  <>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    sort<span className="bks-symbol">(</span>
-    buckets<span className="bks-symbol">[</span>b<span className="bks-symbol">].</span>begin
-    <span className="bks-symbol">(),</span> buckets<span className="bks-symbol">[</span>b<span className="bks-symbol">].</span>end
-    <span className="bks-symbol">());</span>
-  </>,
-
-  <>&nbsp;</>,
-
-  <>
-    &nbsp;&nbsp;
-    <span className="bks-type">int</span> idx
-    <span className="bks-symbol"> = </span>
-    <span className="bks-number">0</span>
-    <span className="bks-symbol">;</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;
-    <span className="bks-keyword">for</span>
-    <span className="bks-symbol">(</span>
-    <span className="bks-type">int</span> b
-    <span className="bks-symbol"> = </span>
-    <span className="bks-number">0</span>
-    <span className="bks-symbol">;</span> b
-    <span className="bks-symbol"> &lt; </span>bucketCount
-    <span className="bks-symbol">;</span> b
-    <span className="bks-symbol">++</span>
-    <span className="bks-symbol">)</span>
-  </>,
-
-  <>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <span className="bks-keyword">for</span>
-    <span className="bks-symbol">(</span>
-    <span className="bks-type">int</span> val
-    <span className="bks-symbol"> : </span>buckets<span className="bks-symbol">[</span>b<span className="bks-symbol">])</span> arr
-    <span className="bks-symbol">[</span>idx<span className="bks-symbol">++] = </span>val
-    <span className="bks-symbol">;</span>
-  </>,
-
-  <>
-    <span className="bks-symbol">{"}"}</span>
-  </>,
-];
+const TAGS = { idea: "Idea", drop: "Distribute", sort: "Sort bucket", gather: "Gather", done: "Sorted" };
 
 const BucketSort = () => {
-  const [seed, setSeed] = useState(randomArray());
+  const [seed, setSeed] = useState(randomInput);
+  const steps = useMemo(() => bucketSteps(seed), [seed]);
+  const playback = usePlayback(steps.length);
+  const { index, reset } = playback;
+  const s = steps[index];
 
-  const steps = bucketSortSteps(seed);
-  const { index, playing, speed, setSpeed, reset, stepForward, stepBack, togglePlay } = usePlayback(steps.length);
-  const current = steps[index];
-  const isDone = current.phase === "done";
-
-  const min = Math.min(...current.array);
-
-  const shuffle = () => {
-    setSeed(randomArray());
-    reset();
-  };
+  const cells = s.row.map((c, k) => {
+    const where = s.placed.get(c.id);
+    return {
+      id: c.id,
+      value: c.value,
+      pos: k,
+      bucket: where?.bucket ?? null,
+      level: where?.level ?? 0,
+      tone: s.phase === "done" || s.phase === "gather" ? "sage" : c.id === s.active ? "coral" : where && where.bucket === s.bucket && s.phase === "sort" ? "amber" : where ? "soft" : "idle",
+    };
+  });
 
   return (
-    <div className="bucket-sort-wrapper">
-      <div className="bucket-sort">
-        <p className="bks-eyebrow">sorting</p>
-
-        <h1 className="bks-title">Bucket Sort</h1>
-
-        <div className="bks-header">
-          <p className="bks-blurb">
-            Distributes values into buckets by range, sorts each bucket individually, then concatenates them back together.
-          </p>
-
-          <div className="bks-complexity">
-            <div>
-              <div className="bks-complexity-label">time</div>
-              <div className="bks-time-value">O(n + k)</div>
-            </div>
-
-            <div>
-              <div className="bks-complexity-label">space</div>
-              <div className="bks-space-value">O(n + k)</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="bks-grid">
-          <div className="bks-stage">
-            <div className="bks-row">
-              {current.array.map((value, i) => {
-                const isActive = i === current.activeIndex;
-
-                return (
-                  <div key={i} className="bks-chip-wrapper">
-                    <div className="bks-chip-index">{i}</div>
-                    <div className={`bks-chip ${isActive ? "bks-chip-active" : ""}`}>
-                      {value}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="bks-buckets">
-              {current.buckets.map((bucket, b) => {
-                const isActive = b === current.activeBucket;
-                const rangeStart = min + b * current.bucketSize;
-                const rangeEnd = rangeStart + current.bucketSize - 1;
-
-                return (
-                  <div
-                    key={b}
-                    className={`bks-lane ${isActive ? "bks-lane-active" : ""}`}
-                  >
-                    <div className="bks-lane-label">
-                      bucket {b}
-                      <span className="bks-lane-range">{rangeStart}–{rangeEnd}</span>
-                    </div>
-
-                    <div className="bks-lane-stack">
-                      {bucket.map((value, vi) => (
-                        <div key={vi} className="bks-bucket-chip">
-                          {value}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="bks-row bks-output-row">
-              {current.array.map((_, i) => {
-                const val = current.output[i];
-                const isPlaced = val !== undefined;
-
-                return (
-                  <div key={i} className="bks-chip-wrapper">
-                    <div className={`bks-chip bks-output-chip ${isPlaced ? "bks-chip-placed" : ""}`}>
-                      {isPlaced ? val : "·"}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            <p className="bks-status">{current.description}</p>
-          </div>
-
-          <div className="bks-code-panel">
-            <div className="bks-code-header">
-              <div className="bks-dummy-btns">
-                <span className="bks-red-btn"></span>
-                <span className="bks-yellow-btn"></span>
-                <span className="bks-green-btn"></span>
-                <span className="bks-filename">bucket_sort.cpp</span>
-              </div>
-
-              <span className="bks-header-complexity">O(n + k)</span>
-            </div>
-
-            <pre className="bks-code-block">
-              {CodeLines.map((line, i) => (
-                <div
-                  key={i}
-                  className={`bks-code-line ${current.codeLine === i + 1 ? "bks-code-line-active" : ""}`}
-                >
-                  <span className="bks-line-no">{i + 1}</span>
-                  {line}
-                </div>
-              ))}
-            </pre>
-          </div>
-        </div>
-
-        <div className="bks-controls">
-          <button className="bks-icon-btn" onClick={reset}>
-            <ResetIcon />
-          </button>
-
-          <button
-            className="bks-icon-btn"
-            onClick={stepBack}
-            disabled={index === 0}
-          >
-            <StepBackIcon />
-          </button>
-
-          <button className="bks-play-btn" onClick={togglePlay}>
-            {playing ? <PauseIcon /> : <PlayIcon />}
-          </button>
-
-          <button
-            className="bks-icon-btn"
-            onClick={stepForward}
-            disabled={index === steps.length - 1}
-          >
-            <StepForwardIcon />
-          </button>
-
-          <button className="bks-shuffle-btn" onClick={shuffle}>
-            <ShuffleIcon />
-            Shuffle
-          </button>
-
-          <div className="bks-speed">
-            <span>SPEED</span>
-
-            <input
-              type="range"
-              min="1"
-              max="10"
-              value={speed}
-              onChange={(e) => setSpeed(Number(e.target.value))}
-            />
-          </div>
-
-          <span className="bks-steps">
-            {index + 1} / {steps.length}
-          </span>
-        </div>
-
-        <div className="bks-stats">
-          <span>
-            distributions: <b>{current.distributions}</b>
-          </span>
-
-          <span>
-            comparisons: <b>{current.comparisons}</b>
-          </span>
-
-          <span>
-            buckets: <b>{BUCKET_COUNT}</b>
-          </span>
-        </div>
-
-        {isDone && <p className="bks-done-flag">Array Sorted</p>}
-      </div>
-    </div>
+    <Lesson
+      steps={steps}
+      playback={playback}
+      timeline={(st) => st.title}
+      onShuffle={() => {
+        setSeed(randomInput());
+        reset();
+      }}
+      complexity={[
+        { label: "average", value: "O(n + k)" },
+        { label: "worst", value: "O(n²)" },
+        { label: "space", value: "O(n + k)" },
+      ]}
+      stage={<BucketScene label="Bucket sort" cells={cells} slots={SIZE} buckets={B} bucketLabels={LABELS} maxStack={5} bucketHighlight={s.bucket !== null ? [s.bucket] : []} />}
+      narration={{ tag: TAGS[s.phase], title: s.title, body: <p>{s.body}</p>, notice: s.notice }}
+      code={{ lines: CODE, active: s.line, file: "bucket_sort.cpp" }}
+      panels={[
+        {
+          title: "Buckets",
+          rows: LABELS.map((lab, b) => ({
+            label: lab,
+            value: [...s.placed.entries()].filter(([, w]) => w.bucket === b).sort((a, c) => a[1].level - c[1].level).map(([id]) => s.row.find((c) => c.id === id).value),
+            tone: b === s.bucket ? "coral" : undefined,
+          })),
+        },
+        { title: "Work done", rows: [{ label: "Operations", value: s.ops }] },
+      ]}
+      legend={[
+        { label: "Being placed", tone: "coral" },
+        { label: "In a bucket", tone: "soft" },
+        { label: "Bucket being sorted", tone: "amber" },
+        { label: "Sorted", tone: "sage" },
+      ]}
+    />
   );
 };
 

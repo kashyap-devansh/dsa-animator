@@ -1,9 +1,8 @@
 import { useMemo, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import StepperPage from "../../shared/StepperPage";
 import { usePlayback } from "../../shared/usePlayback";
 import { FACTORIAL_CODE, factorialSteps } from "../recursionSteps";
-import "../recursionStage.css";
+import { IsoCallStack } from "../../../iso/IsoExtras";
 
 const MAX_N = 10;
 
@@ -33,6 +32,7 @@ const Factorial = () => {
 
   return (
     <StepperPage
+      steps={steps}
       eyebrow="recursion"
       title="Factorial"
       blurb="Each call parks on the stack waiting for a smaller one, until n hits 1 — then the products multiply their way back down."
@@ -41,34 +41,16 @@ const Factorial = () => {
         { label: "space", value: "O(n)", tone: "space" },
       ]}
       stage={
-        <div className="rc-stage">
-          <div className="rc-stack">
-            <AnimatePresence initial={false}>
-              {[...current.frames].reverse().map((frame) => (
-                <motion.div
-                  key={frame.n}
-                  layout
-                  initial={{ opacity: 0, y: -14 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, x: 40 }}
-                  transition={{ duration: 0.3 }}
-                  className={`rc-frame rc-frame-${frame.status} ${current.active === frame.n && frame.status !== "returning" && frame.status !== "base" ? "rc-frame-active" : ""}`}
-                >
-                  <span>factorial({frame.n})</span>
-                  <span className="rc-frame-note">{frameNote(frame)}</span>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
-
-          <div className="rc-stack-floor">call stack</div>
-
-          {current.result !== undefined && (
-            <p className="rc-result">
-              {size}! = <b>{current.result}</b>
-            </p>
-          )}
-        </div>
+        <IsoCallStack
+          max={MAX_N}
+          frames={current.frames.map((frame) => ({
+            id: frame.n,
+            label: `factorial(${frame.n})`,
+            note: frameNote(frame),
+            tone: frame.status === "returning" || frame.status === "base" ? "sage" : current.active === frame.n ? "coral" : "idle",
+          }))}
+          footer={current.result !== undefined ? `${size}! = ${current.result}` : "call stack"}
+        />
       }
       legend={[
         { label: "running / waiting", stroke: "#ff6a3d", fill: "rgba(255, 106, 61, 0.08)" },

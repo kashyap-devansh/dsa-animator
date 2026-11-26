@@ -11,25 +11,25 @@
   gap: 10px;
   padding: 14px 18px;
   background-color: #141417;
-  border: 1px solid #262629;
+  border: 1px solid var(--line-strong);
   border-radius: 10px;
   transition: border-color 0.25s ease;
 }
 
 .algo-search-bar:focus-within,
 .algo-search-bar.expanded {
-  border-color: #ff6a3d;
+  border-color: var(--coral);
 }
 
 .algo-search-prompt {
-  color: #ff6a3d;
-  font-family: "JetBrains Mono", monospace;
+  color: var(--coral);
+  font-family: var(--font-mono);
   font-size: 0.9rem;
   line-height: 1;
 }
 
 .algo-search-bar svg {
-  color: #7a7a80;
+  color: var(--ink-3);
   flex-shrink: 0;
 }
 
@@ -38,19 +38,19 @@
   background: none;
   border: none;
   outline: none;
-  color: #f3f2ed;
-  font-family: "JetBrains Mono", monospace;
+  color: var(--ink);
+  font-family: var(--font-mono);
   font-size: 0.85rem;
 }
 
 .algo-search-bar input::placeholder {
-  color: #5f5f64;
+  color: var(--ink-4);
 }
 
 .algo-search-cursor {
   width: 7px;
   height: 14px;
-  background-color: #ff6a3d;
+  background-color: var(--coral);
   flex-shrink: 0;
   animation: algo-search-blink 1s step-end infinite;
 }
@@ -67,7 +67,7 @@
   right: 0;
   z-index: 20;
   background-color: #141417;
-  border: 1px solid #262629;
+  border: 1px solid var(--line-strong);
   border-radius: 10px;
   padding: 6px;
   max-height: 320px;
@@ -77,8 +77,8 @@
 .algo-search-empty {
   margin: 0;
   padding: 14px 12px;
-  color: #5f5f64;
-  font-family: "JetBrains Mono", monospace;
+  color: var(--ink-4);
+  font-family: var(--font-mono);
   font-size: 0.8rem;
 }
 
@@ -109,24 +109,24 @@
 }
 
 .result-category {
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.62rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #7a7a80;
+  color: var(--ink-3);
   flex-shrink: 0;
   width: 84px;
 }
 
 .algo-search-result.locked .result-category {
-  color: #5f5f64;
+  color: var(--ink-4);
 }
 
 .result-title {
   flex: 1;
-  font-family: "Space Grotesk";
+  font-family: var(--font-sans);
   font-size: 0.95rem;
-  color: #f3f2ed;
+  color: var(--ink);
 }
 
 .algo-search-result.locked .result-title {
@@ -134,14 +134,14 @@
 }
 
 .result-complexity {
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.7rem;
-  color: #ff6a3d;
+  color: var(--coral);
   flex-shrink: 0;
 }
 
 .algo-search-result.locked .result-complexity {
-  color: #7a7a80;
+  color: var(--ink-3);
 }
 
 .algo-search-result.locked svg {

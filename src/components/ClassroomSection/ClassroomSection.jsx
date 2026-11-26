@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { MiniSort } from "../MiniViz/MiniViz";
 import { Reveal } from "../shared/effects";
-import { trackPointer } from "../shared/pointer";
 import "./ClassroomSection.css";
 
 // Landing section pitching the site to lecturers and students: a mock
@@ -58,7 +57,7 @@ const Projector = () => {
   const pressed = useKeyCycle(KEYS.length, 1400);
 
   return (
-    <div className="cls-projector spotlight" onPointerMove={trackPointer}>
+    <div className="cls-projector">
       <div className="cls-screen">
         <div className="cls-screen-head">
           <span className="cls-screen-eyebrow">sorting</span>
@@ -77,7 +76,7 @@ const Projector = () => {
           <motion.path
             d="M248 58 C 210 40, 168 52, 160 92 C 152 140, 210 160, 262 146 C 306 132, 312 84, 270 62"
             fill="none"
-            stroke="#b4ff39"
+            stroke="var(--coral)"
             strokeWidth="3"
             strokeLinecap="round"
             initial={{ pathLength: 0, opacity: 0 }}
@@ -87,7 +86,7 @@ const Projector = () => {
           <motion.path
             d="M318 40 C 300 30, 290 40, 284 52 M284 52 l 3 -12 M284 52 l 11 -4"
             fill="none"
-            stroke="#b4ff39"
+            stroke="var(--coral)"
             strokeWidth="3"
             strokeLinecap="round"
             strokeLinejoin="round"
