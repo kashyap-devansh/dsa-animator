@@ -578,7 +578,40 @@
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
+  height: clamp(260px, 31vh, 320px);
   padding: 16px 20px 18px;
+}
+
+/* The text area takes the card's spare height and scrolls if a step says a
+   lot; a soft fade at the bottom hints that there is more. */
+.lx-narr-scroll {
+  flex: 1;
+  min-height: 0;
+  margin: 0 -6px;
+  padding: 0 6px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+  mask-image: linear-gradient(#000 calc(100% - 18px), transparent);
+}
+
+.lx-narr-text {
+  padding-bottom: 14px;
+  animation: lx-narr-in 0.24s cubic-bezier(0.2, 0, 0, 1);
+}
+
+@keyframes lx-narr-in {
+  from {
+    opacity: 0.35;
+    transform: translateY(3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lx-narr-text {
+    animation: none;
+  }
 }
 
 .lx-narr-top {
@@ -645,9 +678,10 @@
 }
 
 .lx-narr-nav {
+  flex-shrink: 0;
   display: flex;
   gap: 8px;
-  padding-top: 16px;
+  padding-top: 12px;
 }
 
 .lx-next {

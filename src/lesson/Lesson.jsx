@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, Lightbulb, ListOrdere
 import { findLesson } from "../course/course";
 import { useProgress } from "../course/store";
 import { highlight } from "../Playground/shared/highlight";
+import { SpeedContext } from "../iso/pace";
 import StageGrid from "./StageGrid";
 import "./Lesson.css";
 
@@ -51,9 +52,12 @@ const Lesson = ({
   const last = playback.canForward !== undefined ? !playback.canForward : index >= total - 1;
   const title = titleOverride ?? info?.lesson.title ?? "";
 
+  // Chained pages (trees) can step across operations, so they say for themselves.
+  const canBack = playback.canBack ?? index > 0;
+  const canForward = playback.canForward ?? !last;
   const go = (i) => playback.setIndex?.(Math.max(0, Math.min(total - 1, i)));
-  const back = () => (playback.canBack ?? index > 0) && playback.stepBack();
-  const forward = () => (playback.canForward ?? !last) && playback.stepForward();
+  const back = () => canBack && playback.stepBack();
+  const forward = () => canForward && playback.stepForward();
 
   // Finishing the last step completes the lesson.
   useEffect(() => {
@@ -86,6 +90,12 @@ const Lesson = ({
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  // Each step's explanation starts at its top.
+  const narrBox = useRef(null);
+  useLayoutEffect(() => {
+    narrBox.current?.scrollTo({ top: 0 });
+  }, [index, narration.title]);
+
   // Every panel's rows, flattened into one compact block of live values.
   const stats = panels.filter(Boolean).flatMap((p) => p.rows).slice(0, 6);
 
@@ -116,7 +126,9 @@ const Lesson = ({
         <div className="lx-stage">
           <StageGrid />
 
-          <div className="lx-scene">{stage}</div>
+          <SpeedContext.Provider value={speed ?? 5}>
+            <div className="lx-scene">{stage}</div>
+          </SpeedContext.Provider>
 
           {/* Controls and live values share one bar along the bottom. */}
           <div className="lx-stage-bar">
@@ -167,6 +179,8 @@ const Lesson = ({
           onPick={setIndex ? go : null}
           back={back}
           forward={forward}
+          canBack={canBack}
+          canForward={canForward}
         />
       </section>
 
@@ -179,23 +193,29 @@ const Lesson = ({
             {narration.tag && <span className="ui-tag">{narration.tag}</span>}
           </div>
 
-          <h2 className="lx-narr-title">{narration.title}</h2>
-          {narration.body && <div className="lx-narr-body">{narration.body}</div>}
+          {/* Fixed-height card: the text scrolls inside it, so the code
+              panel below never shifts as explanations grow and shrink. */}
+          <div className="lx-narr-scroll" ref={narrBox}>
+            <div className="lx-narr-text" key={index}>
+              <h2 className="lx-narr-title">{narration.title}</h2>
+              {narration.body && <div className="lx-narr-body">{narration.body}</div>}
 
-          {narration.notice && (
-            <div className="lx-notice">
-              <span className="lx-notice-icon">
-                <Lightbulb size={15} />
-              </span>
-              <div>
-                <span className="lx-notice-label">{narration.noticeLabel ?? "Notice"}</span>
-                <p>{narration.notice}</p>
-              </div>
+              {narration.notice && (
+                <div className="lx-notice">
+                  <span className="lx-notice-icon">
+                    <Lightbulb size={15} />
+                  </span>
+                  <div>
+                    <span className="lx-notice-label">{narration.noticeLabel ?? "Notice"}</span>
+                    <p>{narration.notice}</p>
+                  </div>
+                </div>
+              )}
             </div>
-          )}
+          </div>
 
           <div className="lx-narr-nav">
-            <button className="ui-btn" onClick={back} disabled={index === 0}>
+            <button className="ui-btn" onClick={back} disabled={!canBack}>
               <ArrowLeft size={16} /> Back
             </button>
 
@@ -251,7 +271,7 @@ const Thumb = () => (
 );
 
 
-const Timeline = ({ steps, index, total, label, onPick, back, forward }) => {
+const Timeline = ({ steps, index, total, label, onPick, back, forward, canBack, canForward }) => {
   const track = useRef(null);
 
   // Keep the current step centred in the strip.
@@ -277,7 +297,7 @@ const Timeline = ({ steps, index, total, label, onPick, back, forward }) => {
       </div>
 
       <div className="lx-tl-body">
-        <button className="lx-tl-arrow" onClick={back} disabled={index === 0} aria-label="Previous step">
+        <button className="lx-tl-arrow" onClick={back} disabled={!canBack} aria-label="Previous step">
           <ChevronLeft size={16} />
         </button>
 
@@ -296,7 +316,7 @@ const Timeline = ({ steps, index, total, label, onPick, back, forward }) => {
           ))}
         </div>
 
-        <button className="lx-tl-arrow" onClick={forward} disabled={index >= total - 1} aria-label="Next step">
+        <button className="lx-tl-arrow" onClick={forward} disabled={!canForward} aria-label="Next step">
           <ChevronRight size={16} />
         </button>
       </div>

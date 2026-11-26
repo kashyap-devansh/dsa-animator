@@ -78,11 +78,10 @@ const TreePage = ({
   const { current, steps, index } = run;
   const { title, body } = split(current.description);
   const first = index === 0 && run.opNumber === 1;
-  // Frame each operation for its own tree size, so small trees stay large.
-  const frame = {
-    count: Math.max(7, ...steps.map((st) => st.nodes.length)),
-    depth: Math.max(2, ...steps.flatMap((st) => st.nodes.map((n) => n.depth))),
-  };
+  // One frame for the whole session, centred on the root. It only grows (and
+  // eases out when it does), so the root holds its spot from step to step.
+  // Growth comes in coarse steps, so a session zooms out once or twice at most.
+  const frame = { half: Math.max(3, 2 * Math.ceil((run.bounds.half - 1) / 2) + 1), depth: Math.max(3, run.bounds.reach) };
 
   const controls = (
     <>

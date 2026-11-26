@@ -2,7 +2,7 @@
   stroke: var(--ink-3);
   stroke-width: 2.4;
   stroke-linecap: round;
-  transition: stroke 0.3s;
+  transition: stroke 0.3s ease, stroke-width 0.3s ease;
 }
 
 .tree-edge-lit {

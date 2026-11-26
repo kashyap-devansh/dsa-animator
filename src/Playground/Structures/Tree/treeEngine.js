@@ -97,6 +97,22 @@ export function snapshot(root, floating = []) {
   return nodes;
 }
 
+// The rank the drawing is centred on: the root's, so the root never moves
+// sideways as nodes come and go. Falls back to the shallowest node while the
+// tree has no attached root (e.g. its only node is being removed).
+export function anchorRank(nodes) {
+  if (!nodes.length) return 0;
+  const root = nodes.find((n) => !n.float && (n.parentId === null || n.parentId === undefined));
+  if (root) return root.rank;
+  return nodes.reduce((a, b) => (b.depth < a.depth ? b : a)).rank;
+}
+
+// How many ranks the tree reaches to either side of its root.
+export const reachOf = (nodes) => {
+  const at = anchorRank(nodes);
+  return nodes.reduce((m, n) => Math.max(m, Math.abs(n.rank - at)), 0);
+};
+
 export function randomValues(count, exclude = []) {
   const values = new Set();
   const taken = new Set(exclude);

@@ -1,25 +1,34 @@
-import { createContext, useContext, useEffect, useId, useRef } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { createContext, useContext, useId, useLayoutEffect, useRef } from "react";
+import { animate, motion, useMotionValue, useReducedMotion, useTransform } from "framer-motion";
 import { U, project, pts, faceMatrix } from "./projection";
+import { paceOf, springFor, useSpeed } from "./pace";
 import "./iso.css";
 
 // Building blocks for the isometric diagrams: a scene (svg + shared patterns),
 // boxes that glide to new positions, floor tiles, links and callouts.
 
 const SceneCtx = createContext("iso");
-const useIds = () => useContext(SceneCtx);
+const EASE = [0.45, 0, 0.25, 1];
+export const useIds = () => useContext(SceneCtx);
 
 
 // maxScale caps how far a small scene may be blown up to fill the stage.
-export const IsoScene = ({ view, children, className = "", label, maxScale = 1.75 }) => {
+// smooth eases the camera when the frame changes instead of cutting to it.
+export const IsoScene = ({ view, children, className = "", label, maxScale = 1.75, smooth = false }) => {
   const id = useId().replace(/:/g, "");
+  const reduced = useReducedMotion();
+  const box = `${view.x.toFixed(1)} ${view.y.toFixed(1)} ${view.w.toFixed(1)} ${view.h.toFixed(1)}`;
+  const size = { maxWidth: view.w * maxScale, maxHeight: view.h * maxScale };
+  const Svg = smooth ? motion.svg : "svg";
+  const frameProps = smooth
+    ? { initial: false, animate: { viewBox: box, ...size }, transition: reduced ? { duration: 0 } : { duration: 0.7, ease: EASE } }
+    : { viewBox: box, style: size };
 
   return (
-    <svg
+    <Svg
       className={`iso-scene ${className}`}
-      viewBox={`${view.x.toFixed(1)} ${view.y.toFixed(1)} ${view.w.toFixed(1)} ${view.h.toFixed(1)}`}
+      {...frameProps}
       preserveAspectRatio="xMidYMid meet"
-      style={{ maxWidth: view.w * maxScale, maxHeight: view.h * maxScale }}
       role="img"
       aria-label={label}
     >
@@ -42,7 +51,7 @@ export const IsoScene = ({ view, children, className = "", label, maxScale = 1.7
         </filter>
       </defs>
       <SceneCtx.Provider value={id}>{children}</SceneCtx.Provider>
-    </svg>
+    </Svg>
   );
 };
 
@@ -52,22 +61,69 @@ export const IsoScene = ({ view, children, className = "", label, maxScale = 1.7
 //   swapping pass over and under each other instead of through;
 // - everything else eases into place with a soft spring and no overshoot;
 // - a newly mounted thing fades in from just above.
-// `glide` moves in a straight line: true for 1.1s (tree rotations), or a
-// number of seconds (a queen sliding along its row); `instant` skips motion.
-const SPRING = { type: "spring", stiffness: 170, damping: 26, mass: 1 };
-const EASE = [0.45, 0, 0.25, 1];
-
+// `glide` moves in a straight line: true for 1.1s, or a number of seconds
+// (a queen sliding along its row); `instant` skips motion. All timings
+// follow the playback speed (see pace.js).
 export const At = ({ x = 0, y = 0, z = 0, children, className = "", style, instant = false, glide = false }) => {
   const [sx, sy] = project(x, y, z);
   const reduced = useReducedMotion();
-  const prev = useRef(null);
-  const p = prev.current;
+  const speed = useSpeed();
+  const pace = paceOf(speed);
+  const still = instant || reduced;
+  // Motion values hold where the piece really is on screen, so a move that is
+  // retargeted mid-flight starts from there instead of snapping back first.
+  const mx = useMotionValue(sx);
+  const my = useMotionValue(still ? sy : sy - 10);
+  const fade = useMotionValue(still ? 1 : 0);
+  const target = useRef(null);
 
-  useEffect(() => {
-    prev.current = [sx, sy];
-  });
+  useLayoutEffect(() => {
+    const t = target.current;
+    if (t && t[0] === sx && t[1] === sy) return;
+    target.current = [sx, sy];
 
-  if (instant || reduced) {
+    if (still) {
+      mx.set(sx);
+      my.set(sy);
+      fade.set(1);
+      return;
+    }
+
+    const spring = springFor(speed, 0.5);
+
+    // First appearance: drop in from just above.
+    if (!t) {
+      animate(fade, 1, { duration: 0.3, ease: EASE });
+      animate(my, sy, spring);
+      return;
+    }
+
+    if (glide) {
+      const timing = { duration: (typeof glide === "number" ? glide : 1.1) * pace, ease: EASE };
+      animate(mx, sx, timing);
+      animate(my, sy, timing);
+      return;
+    }
+
+    const cx = mx.get();
+    const cy = my.get();
+    const dx = sx - cx;
+
+    if (Math.abs(dx) > 6) {
+      // One continuous ease across, and a rise-then-settle arc up and down.
+      const hop = dx > 0 ? 16 + Math.min(Math.abs(dx) * 0.12, 18) : 4;
+      const top = Math.min(cy, sy) - hop;
+      const duration = 0.6 * pace;
+      animate(mx, sx, { duration, ease: EASE });
+      animate(my, [cy, top, sy], { duration, times: [0, 0.5, 1], ease: [[0.2, 0, 0.4, 1], [0.6, 0, 0.4, 1]] });
+      return;
+    }
+
+    animate(mx, sx, spring);
+    animate(my, sy, spring);
+  }, [sx, sy, still, glide, speed, pace, mx, my, fade]);
+
+  if (still) {
     return (
       <g className={className} style={style} transform={`translate(${sx.toFixed(2)} ${sy.toFixed(2)})`}>
         {children}
@@ -75,28 +131,8 @@ export const At = ({ x = 0, y = 0, z = 0, children, className = "", style, insta
     );
   }
 
-  let initial = false;
-  let animate = { x: sx, y: sy, opacity: 1 };
-  let transition = SPRING;
-
-  if (!p) {
-    initial = { x: sx, y: sy - 10, opacity: 0 };
-    transition = { x: SPRING, y: SPRING, opacity: { duration: 0.3 } };
-  } else if (glide) {
-    transition = { duration: typeof glide === "number" ? glide : 1.1, ease: EASE };
-  } else {
-    const dx = sx - p[0];
-    if (Math.abs(dx) > 6) {
-      const hop = dx > 0 ? 16 + Math.min(Math.abs(dx) * 0.12, 18) : 4;
-      const top = Math.min(p[1], sy) - hop;
-      const timing = { duration: 0.6, times: [0, 0.5, 1], ease: [EASE, EASE] };
-      animate = { x: [p[0], (p[0] + sx) / 2, sx], y: [p[1], top, sy], opacity: 1 };
-      transition = { x: timing, y: timing, opacity: { duration: 0 } };
-    }
-  }
-
   return (
-    <motion.g className={className} style={style} initial={initial} animate={animate} transition={transition}>
+    <motion.g className={className} style={{ ...style, x: mx, y: my, opacity: fade }}>
       {children}
     </motion.g>
   );
@@ -318,33 +354,53 @@ export const Slab = ({ x = 0, y = 0, w, d = 1.6, h = SLAB_H, indexAt = [], index
 
 // A straight line on (or above) the floor between two world points, with an
 // optional arrowhead at the end.
+// A straight line on (or above) the floor between two world points, with an
+// optional arrowhead at the end. When its ends move it glides with the cells
+// it joins instead of jumping ahead of them.
 export const Link = ({ from, to, tone = "ink", arrow = false, dashed = false, width = 1.6 }) => {
-  const [x1, y1] = project(...from);
-  const [x2, y2] = project(...to);
-  const ang = Math.atan2(y2 - y1, x2 - x1);
-  const head = 9;
+  const [ax, ay] = project(...from);
+  const [bx, by] = project(...to);
+  const reduced = useReducedMotion();
+  const speed = useSpeed();
+  const x1 = useMotionValue(ax);
+  const y1 = useMotionValue(ay);
+  const x2 = useMotionValue(bx);
+  const y2 = useMotionValue(by);
+  const target = useRef([ax, ay, bx, by]);
+
+  useLayoutEffect(() => {
+    const next = [ax, ay, bx, by];
+    if (next.every((v, i) => v === target.current[i])) return;
+    target.current = next;
+    const spring = springFor(speed, 0.5);
+    [x1, y1, x2, y2].forEach((mv, i) => (reduced ? mv.set(next[i]) : animate(mv, next[i], spring)));
+  }, [ax, ay, bx, by, reduced, speed, x1, y1, x2, y2]);
+
+  const head = useTransform(() => {
+    const ex = x2.get();
+    const ey = y2.get();
+    const ang = Math.atan2(ey - y1.get(), ex - x1.get());
+    return [
+      [ex, ey],
+      [ex - 9 * Math.cos(ang - 0.42), ey - 9 * Math.sin(ang - 0.42)],
+      [ex - 9 * Math.cos(ang + 0.42), ey - 9 * Math.sin(ang + 0.42)],
+    ]
+      .map((p) => p.map((n) => n.toFixed(2)).join(","))
+      .join(" ");
+  });
 
   return (
     <g className={`iso-link iso-link-${tone} ${dashed ? "iso-dashed" : ""}`}>
-      <line x1={x1} y1={y1} x2={x2} y2={y2} strokeWidth={width} />
-      {arrow && (
-        <polygon
-          points={[
-            [x2, y2],
-            [x2 - head * Math.cos(ang - 0.42), y2 - head * Math.sin(ang - 0.42)],
-            [x2 - head * Math.cos(ang + 0.42), y2 - head * Math.sin(ang + 0.42)],
-          ]
-            .map((p) => p.join(","))
-            .join(" ")}
-        />
-      )}
+      <motion.line x1={x1} y1={y1} x2={x2} y2={y2} strokeWidth={width} />
+      {arrow && <motion.polygon points={head} />}
     </g>
   );
 };
 
 // A tag that floats above a world point with a leader line down to it.
-export const Callout = ({ at, text, tone = "coral", rise = 1.2, small = false }) => {
+export const Callout = ({ at, text, tone = "coral", rise = 1.2, small = false, transition }) => {
   const reduced = useReducedMotion();
+  const speed = useSpeed();
   if (!text) return null;
 
   const [ax, ay] = project(...at);
@@ -359,7 +415,7 @@ export const Callout = ({ at, text, tone = "coral", rise = 1.2, small = false })
       className={`iso-callout iso-callout-${tone}`}
       initial={false}
       animate={{ x: ax, y: ay }}
-      transition={reduced ? { duration: 0 } : SPRING}
+      transition={reduced ? { duration: 0 } : (transition ?? springFor(speed, 0.5))}
     >
       <motion.g
         key={String(text)}
@@ -380,13 +436,14 @@ export const Callout = ({ at, text, tone = "coral", rise = 1.2, small = false })
 };
 
 // A small dark pill pinned to a world point, used for pointers like i, j, lo, hi.
-export const Pin = ({ at, text, tone = "ink", drop = 0 }) => {
+export const Pin = ({ at, text, tone = "ink", drop = 0, transition }) => {
   const reduced = useReducedMotion();
+  const speed = useSpeed();
   const [ax, ay] = project(...at);
   const w = Math.max(22, String(text).length * 7.4 + 12);
 
   return (
-    <motion.g className={`iso-pin iso-pin-${tone}`} initial={false} animate={{ x: ax, y: ay + drop }} transition={reduced ? { duration: 0 } : SPRING}>
+    <motion.g className={`iso-pin iso-pin-${tone}`} initial={false} animate={{ x: ax, y: ay + drop }} transition={reduced ? { duration: 0 } : (transition ?? springFor(speed, 0.5))}>
       <rect x={-w / 2} y={0} width={w} height={20} rx={5} />
       <text x={0} y={10.5} fontSize={12}>
         {text}
