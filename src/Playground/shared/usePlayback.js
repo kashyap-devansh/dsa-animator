@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { SpeedDelay } from "./speedDelay";
 
-export function usePlayback(stepsLength) {
+// holdFor(i), optional: how many times longer step i stays on screen during
+// playback (e.g. 1.8 for swaps, so the exchange can be followed).
+export function usePlayback(stepsLength, holdFor) {
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState(5);
@@ -16,10 +18,11 @@ export function usePlayback(stepsLength) {
 
     const timer = setTimeout(
       () => setIndex(i => i + 1),
-      SpeedDelay[speed]
+      SpeedDelay[speed] * (holdFor?.(index) ?? 1)
     );
 
     return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playing, index, speed, stepsLength]);
 
   const reset = () => {

@@ -1,5 +1,6 @@
 import Lesson from "../../../lesson/Lesson";
 import TreeStage from "./TreeStage";
+import { shapeOf } from "./treeEngine";
 import "./TreeStage.css";
 
 // Shared lesson page for BST and AVL operations, driven by useTreeRun.
@@ -47,6 +48,8 @@ function explainRotation(step) {
   return `${node.value} is now at the top of this subtree${parent ? ` under ${parent.value}` : ", so it is the new root"}${down ? `, with ${down.value} below it on the ${dir === "right" ? "right" : "left"}` : ""}. Values still read in the same order from left to right, so it is still a valid search tree, just shorter.`;
 }
 
+const atEndOf = (run) => run.index === run.steps.length - 1;
+
 // "headline — detail" becomes title and body.
 function split(text) {
   const [head, ...rest] = String(text).split(" — ");
@@ -74,9 +77,14 @@ const TreePage = ({
   doneMessage,
   startMode,
   onStartMode,
+  leanCheck = true,
+  extraNotice,
 }) => {
   const { current, steps, index } = run;
   const { title, body } = split(current.description);
+  // The balance check: is the tree near its best height, or leaning?
+  const shape = shapeOf(current.nodes);
+  const leanNotice = leanCheck && !shape.even && !showBalance && atEndOf(run) ? `This tree is ${shape.label.replace(/ \(.*/, "").replace(/^leans/, "leaning")}: it is well over the ${Math.ceil(Math.log2(current.nodes.length + 1))} levels ${current.nodes.length} nodes need. Keys arriving in sorted order do this; an AVL tree rotates to prevent it.` : null;
   const first = index === 0 && run.opNumber === 1;
   // One frame for the whole session, centred on the root. It only grows (and
   // eases out when it does), so the root holds its spot from step to step.
@@ -150,16 +158,21 @@ const TreePage = ({
             {body && <p>{body}</p>}
             {current.rot && !current.labels && <p>{explainRotation(current)}</p>}
             {first && blurb && <p>{blurb}</p>}
+            {extraNotice?.(current)}
           </>
         ),
-        notice: run.finished && doneMessage ? doneMessage : run.opNumber > 1 && index === 0 ? `Operation ${run.opNumber} starts on the tree the last one left behind.` : null,
-        noticeLabel: run.finished ? "Session over" : "Chained",
+        notice: run.finished && doneMessage ? doneMessage : leanNotice ?? (run.opNumber > 1 && index === 0 ? `Operation ${run.opNumber} starts on the tree the last one left behind.` : null),
+        noticeLabel: run.finished ? "Session over" : leanNotice ? "Balance check" : "Chained",
       }}
       code={{ lines: code, active: current.codeLine, file: filename }}
       panels={[
         {
           title: "Work done",
-          rows: [{ label: "Operation", value: `#${run.opNumber}` }, ...stats.map((st) => ({ label: st.label.charAt(0).toUpperCase() + st.label.slice(1), value: st.value }))],
+          rows: [
+            { label: "Operation", value: `#${run.opNumber}` },
+            { label: "Shape", value: shape.label, tone: shape.even ? undefined : "coral" },
+            ...stats.map((st) => ({ label: st.label.charAt(0).toUpperCase() + st.label.slice(1), value: st.value })),
+          ],
         },
       ]}
     />

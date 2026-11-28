@@ -1,0 +1,107 @@
+/* Linked list stage: pointers, their chips, variable labels and markers. */
+
+.ll-ptr-line {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  transition: stroke 0.3s ease, stroke-width 0.3s ease;
+}
+
+.ll-ptr-head {
+  fill: var(--ink);
+  transition: fill 0.3s ease;
+}
+
+.ll-ptr-coral .ll-ptr-line {
+  stroke: var(--coral);
+  stroke-width: 3.2;
+}
+
+.ll-ptr-coral .ll-ptr-head {
+  fill: var(--coral);
+}
+
+.ll-ptr-ghost .ll-ptr-line {
+  stroke: var(--iso-ghost);
+}
+
+.ll-ptr-ghost .ll-ptr-head {
+  fill: var(--iso-ghost);
+}
+
+.ll-ptr-dashed .ll-ptr-line {
+  stroke-dasharray: 6 5;
+}
+
+.ll-chip {
+  fill: var(--coral);
+}
+
+.ll-ptr-ghost .ll-chip,
+.ll-ptr-ink .ll-chip {
+  fill: var(--ink);
+}
+
+.ll-chip-text {
+  fill: #fff;
+  font-variant-ligatures: none;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.ll-var line {
+  stroke: var(--coral);
+  stroke-width: 1.4;
+}
+
+.ll-var rect {
+  fill: var(--coral);
+}
+
+.ll-var text {
+  fill: #fff;
+  font-variant-ligatures: none;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.ll-var-ink line {
+  stroke: var(--ink-3);
+}
+
+.ll-var-ink rect {
+  fill: var(--ink-3);
+}
+
+.ll-marker rect {
+  fill: var(--ink);
+}
+
+.ll-marker-coral rect {
+  fill: var(--coral);
+}
+
+.ll-marker text {
+  fill: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.ll-marker-coral text {
+  fill: #fff;
+}
+
+.ll-shadow {
+  fill: var(--iso-shadow);
+  filter: blur(5px);
+}

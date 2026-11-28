@@ -46,9 +46,28 @@ body.is-lasering * {
   left: 10px;
   bottom: 80px;
   width: 266px;
+  box-sizing: border-box;
+  padding: 5px;
   transform: none;
+  flex-wrap: wrap;
   justify-content: space-between;
+  row-gap: 4px;
   box-shadow: none;
+}
+
+/* Nine tools in the sidebar's width; pen colours wrap onto a second row. */
+.shell-course .cr-btn {
+  width: 28px;
+}
+
+.shell-course .cr-sep {
+  display: none;
+}
+
+.shell-course .cr-inks {
+  order: 10;
+  width: 100% !important;
+  justify-content: center;
 }
 
 .shell-course .cr-dock-label {
@@ -340,4 +359,157 @@ body.is-presenting [data-present-fit] {
   .cr-tip {
     transition: none;
   }
+}
+
+/* ---------- whiteboard ---------- */
+
+.cr-board {
+  position: fixed;
+  inset: 0;
+  z-index: 1850;
+  background-color: var(--paper);
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 12%, transparent) 1px, transparent 1.4px);
+  background-size: 28px 28px;
+}
+
+.cr-board-label {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  translate: -50% 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  pointer-events: none;
+}
+
+/* ---------- student picker ---------- */
+
+.cr-pick {
+  width: min(560px, 100%);
+}
+
+.cr-pick-name {
+  margin: 22px 0 26px;
+  min-height: 1.2em;
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  font-weight: 750;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+  color: var(--ink);
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.cr-pick-name.is-rolling {
+  color: var(--ink-4);
+}
+
+.cr-pick-name.is-done {
+  color: var(--coral);
+  animation: cr-pick-land 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes cr-pick-land {
+  from {
+    transform: scale(0.94);
+  }
+}
+
+.cr-pick-setup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 16px 0 20px;
+}
+
+.cr-seg {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 3px;
+  border-radius: 8px;
+  background: var(--hover);
+}
+
+.cr-seg button {
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink-3);
+  font: inherit;
+  font-size: 0.84rem;
+  cursor: pointer;
+}
+
+.cr-seg .is-on {
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.cr-pick-range {
+  display: flex;
+  gap: 16px;
+}
+
+.cr-pick-range label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.cr-pick-range input,
+.cr-pick-setup textarea {
+  box-sizing: border-box;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--page);
+  color: var(--ink);
+  font: inherit;
+  outline: none;
+}
+
+.cr-pick-range input {
+  width: 90px;
+  font-family: var(--font-mono);
+}
+
+.cr-pick-setup textarea {
+  width: 100%;
+  resize: vertical;
+}
+
+.cr-pick-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.86rem;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+
+.cr-pick-note {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--ink-4);
+}
+
+.cr-pick-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cr-pick-actions kbd {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.15);
 }

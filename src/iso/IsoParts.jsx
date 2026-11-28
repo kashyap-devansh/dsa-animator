@@ -64,7 +64,10 @@ export const IsoScene = ({ view, children, className = "", label, maxScale = 1.7
 // `glide` moves in a straight line: true for 1.1s, or a number of seconds
 // (a queen sliding along its row); `instant` skips motion. All timings
 // follow the playback speed (see pace.js).
-export const At = ({ x = 0, y = 0, z = 0, children, className = "", style, instant = false, glide = false }) => {
+// `clear` (px) is for swaps: the piece moving right arcs that high, over its
+// partner, while the one moving left slides underneath, so the two are seen
+// trading places rather than passing through each other.
+export const At = ({ x = 0, y = 0, z = 0, children, className = "", style, instant = false, glide = false, clear = 0 }) => {
   const [sx, sy] = project(x, y, z);
   const reduced = useReducedMotion();
   const speed = useSpeed();
@@ -111,9 +114,9 @@ export const At = ({ x = 0, y = 0, z = 0, children, className = "", style, insta
 
     if (Math.abs(dx) > 6) {
       // One continuous ease across, and a rise-then-settle arc up and down.
-      const hop = dx > 0 ? 16 + Math.min(Math.abs(dx) * 0.12, 18) : 4;
+      const hop = clear ? (dx > 0 ? clear : 0) : dx > 0 ? 16 + Math.min(Math.abs(dx) * 0.12, 18) : 4;
       const top = Math.min(cy, sy) - hop;
-      const duration = 0.6 * pace;
+      const duration = (clear ? 0.85 : 0.6) * pace;
       animate(mx, sx, { duration, ease: EASE });
       animate(my, [cy, top, sy], { duration, times: [0, 0.5, 1], ease: [[0.2, 0, 0.4, 1], [0.6, 0, 0.4, 1]] });
       return;
@@ -121,7 +124,7 @@ export const At = ({ x = 0, y = 0, z = 0, children, className = "", style, insta
 
     animate(mx, sx, spring);
     animate(my, sy, spring);
-  }, [sx, sy, still, glide, speed, pace, mx, my, fade]);
+  }, [sx, sy, still, glide, clear, speed, pace, mx, my, fade]);
 
   if (still) {
     return (
@@ -228,7 +231,7 @@ export const NodeBox = ({ tone = "idle", label, nextNull = false }) => (
   <g className="iso-node">
     <Box w={1} tone={tone} label={label} />
     <g transform={`translate(${project(1, 0, 0).map((n) => n.toFixed(2)).join(" ")})`}>
-      <Box w={0.42} tone={nextNull ? "ghost" : "dark"} />
+      <Box w={0.42} tone={nextNull || tone === "ghost" ? "ghost" : "dark"} />
       <circle className="iso-node-dot" cx={project(0.21, 1, 0.5)[0]} cy={project(0.21, 1, 0.5)[1]} r={3.2} />
     </g>
   </g>
@@ -357,16 +360,18 @@ export const Slab = ({ x = 0, y = 0, w, d = 1.6, h = SLAB_H, indexAt = [], index
 // A straight line on (or above) the floor between two world points, with an
 // optional arrowhead at the end. When its ends move it glides with the cells
 // it joins instead of jumping ahead of them.
-export const Link = ({ from, to, tone = "ink", arrow = false, dashed = false, width = 1.6 }) => {
+// `grow` draws a newly created link out from its start point.
+export const Link = ({ from, to, tone = "ink", arrow = false, dashed = false, width = 1.6, grow = false }) => {
   const [ax, ay] = project(...from);
   const [bx, by] = project(...to);
   const reduced = useReducedMotion();
   const speed = useSpeed();
+  const grows = grow && !reduced;
   const x1 = useMotionValue(ax);
   const y1 = useMotionValue(ay);
-  const x2 = useMotionValue(bx);
-  const y2 = useMotionValue(by);
-  const target = useRef([ax, ay, bx, by]);
+  const x2 = useMotionValue(grows ? ax : bx);
+  const y2 = useMotionValue(grows ? ay : by);
+  const target = useRef(grows ? [ax, ay, ax, ay] : [ax, ay, bx, by]);
 
   useLayoutEffect(() => {
     const next = [ax, ay, bx, by];

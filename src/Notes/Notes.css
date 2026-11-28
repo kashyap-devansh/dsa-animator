@@ -1184,6 +1184,8 @@
   margin: 0;
   padding: 16px 0;
   overflow-x: auto;
+  /* Show code exactly as typed: no ligatures turning ++ or >= into symbols. */
+  font-variant-ligatures: none;
   font-family: var(--font-mono);
   font-size: 0.84rem;
   line-height: 1.75;
@@ -1542,6 +1544,215 @@ body.is-presenting .na-layout [data-present-fit] {
 
 /* ---------- responsive ---------- */
 
+/* worked example */
+
+.na-example-input {
+  margin: 0 0 14px;
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  font-variant-ligatures: none;
+  color: var(--ink);
+}
+
+.na-example-input span {
+  margin-right: 8px;
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+.na-example .cs-table td {
+  white-space: normal;
+  vertical-align: top;
+  line-height: 1.55;
+}
+
+.na-example .na-example-step {
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--coral);
+}
+
+.na-example .na-example-state {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-variant-ligatures: none;
+  color: var(--ink);
+}
+
+.na-example .na-example-note {
+  color: var(--ink-3);
+}
+
+/* why each complexity case costs what it does */
+
+.na-why {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0 0;
+}
+
+.na-why div {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr);
+  gap: 12px;
+  align-items: baseline;
+}
+
+.na-why dt {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+.na-why dd {
+  margin: 0;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+/* when to use it */
+
+.na-use {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.na-use-label {
+  display: block;
+  margin-bottom: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+.na-use-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.na-use-list li {
+  position: relative;
+  padding: 14px 16px 14px 48px;
+  border-radius: 12px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.na-use-list li::before {
+  position: absolute;
+  left: 16px;
+  top: 14px;
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.na-use-yes li {
+  background: color-mix(in srgb, var(--sage) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--sage) 18%, transparent);
+}
+
+.na-use-yes li::before {
+  content: "✓";
+  background: var(--sage);
+  color: #fff;
+}
+
+.na-use-no li {
+  background: var(--hover);
+  border: 1px solid var(--line);
+}
+
+.na-use-no li::before {
+  content: "×";
+  background: var(--ink-3);
+  color: var(--paper);
+}
+
+/* copy code */
+
+.na-copy {
+  margin-left: auto;
+  padding: 3px 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.na-copy:hover {
+  color: var(--ink);
+  border-color: var(--line-strong);
+}
+
+/* Printing a note gives a clean revision sheet. */
+@media print {
+  .tn,
+  .nt-sidebar,
+  .na-rail,
+  .na-actions,
+  .na-hero-viz,
+  .na-viz-links,
+  .na-pager,
+  .na-copy,
+  .cr-dock,
+  .cr-canvas,
+  .qz-foot {
+    display: none !important;
+  }
+
+  .na-layout {
+    display: block !important;
+  }
+
+  /* Reveal-on-scroll pieces may never have scrolled into view. */
+  .na-article,
+  .na-article * {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  .na-section h2,
+  .na-steps li,
+  .na-example tr,
+  .na-cx,
+  .na-code,
+  .na-use-list li,
+  .na-pitfalls li,
+  .qz-card {
+    break-inside: avoid;
+  }
+
+  .na-h2 {
+    break-after: avoid;
+  }
+
+  .na-example .cs-table td {
+    white-space: normal;
+  }
+}
+
 @media (max-width: 1240px) {
   .na-layout {
     grid-template-columns: 220px minmax(0, 760px);
@@ -1577,6 +1788,15 @@ body.is-presenting .na-layout [data-present-fit] {
 }
 
 @media (max-width: 600px) {
+  .na-use {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .na-why div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+
   .nh-hero {
     padding: 8.5rem 16px 3rem;
   }

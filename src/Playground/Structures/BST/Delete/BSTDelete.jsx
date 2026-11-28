@@ -2,7 +2,7 @@ import { useState } from "react";
 import TreePage from "../../Tree/TreePage";
 import { useTreeRun } from "../../Tree/useTreeRun";
 import { BST_DELETE_CODE } from "../../Tree/treeCode";
-import { buildBST, collectNodes, countNodes, deleteSteps, parseKey, randomValues, snapshotHeight } from "../../Tree/treeEngine";
+import { balancedVictim, collectNodes, countNodes, deleteSteps, parseKey, randomBalancedBST, snapshotHeight } from "../../Tree/treeEngine";
 
 const generate = (tree, key) => deleteSteps(tree, key);
 
@@ -21,7 +21,7 @@ function runFor(tree, children) {
   for (let attempt = 0; attempt < 50; attempt++) {
     const matches = collectNodes(tree).filter((n) => children === undefined || childCount(n) === children);
     if (matches.length) return { tree, key: pick(matches).value };
-    tree = buildBST(randomValues(15));
+    tree = randomBalancedBST(15);
   }
 
   return { tree, key: collectNodes(tree)[0].value };
@@ -29,10 +29,11 @@ function runFor(tree, children) {
 
 const MIN_NODES = 3;
 
-const freshRun = () => runFor(buildBST(randomValues(15)), 2);
+const freshRun = () => runFor(randomBalancedBST(15), 2);
 
 const session = {
-  nextKey: (root) => pick(collectNodes(root)).value,
+  // Delete from the heavier side, so the tree shrinks evenly.
+  nextKey: (root) => balancedVictim(root, pick).value,
   shouldStop: (root) => countNodes(root) <= MIN_NODES,
   restart: freshRun,
   minBounds: { count: 15, depth: 4 },

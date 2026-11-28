@@ -29,6 +29,7 @@ const Footer = () => {
               <Link to="/playground/sorting/bubble-sort">Sorting</Link>
               <Link to="/playground/searching/binary-search">Searching</Link>
               <Link to="/playground/avl/insertion">Trees</Link>
+              <Link to="/playground/graph/bfs">Graphs</Link>
               <Link to="/playground/recursion/n-queens">Recursion</Link>
             </div>
 

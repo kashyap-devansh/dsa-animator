@@ -1,5 +1,6 @@
-import { useEffect, useLayoutEffect, useRef } from "react";
-import { AnimatePresence, animate, motion, motionValue, useMotionValue, usePresence, useReducedMotion, useTransform } from "framer-motion";
+import { useEffect } from "react";
+import { AnimatePresence, animate, motion, useMotionValue, usePresence, useReducedMotion, useTransform } from "framer-motion";
+import { useNodeMotion } from "../../../iso/useNodeMotion";
 import { IsoScene, Cylinder, Note, Callout, Pin, useIds } from "../../../iso/IsoParts";
 import { project, bounds as frame, boxCorners, U } from "../../../iso/projection";
 import { springFor, useSpeed } from "../../../iso/pace";
@@ -35,50 +36,20 @@ export const TONE = {
   rotate: "coral",
   settled: "idle",
   successor: "sage",
+  conflict: "coral",
 };
 
-const LIT = new Set(["path", "active", "found", "new", "rotate", "pivot"]);
+const LIT = new Set(["path", "active", "found", "new", "rotate", "pivot", "conflict"]);
 const EASE = [0.45, 0, 0.25, 1];
 
 // Screen offset from a node's origin to the centre of its footprint and of its top.
 const [, FOOT_Y] = project(R, R, 0);
 const [TOP_X, TOP_Y] = project(R, R, H);
+const RING_X = Math.SQRT2 * R * 0.94 * U * 1.38;
+const RING_Y = Math.SQRT2 * R * 0.47 * U * 1.38;
 
 // One spring for the whole scene, tuned to playback speed (see pace.js).
 const glideFor = (speed, reduced) => (reduced ? { duration: 0 } : springFor(speed, 0.65));
-
-/* ---------- shared motion values ---------- */
-
-// id → { x, y, lift } motion values plus the target they last headed for.
-// Created during render so children can bind to them on their first frame;
-// animated after commit so React and the springs never fight.
-function useNodeMotion(targets, transition) {
-  const store = useRef(new Map());
-  const map = store.current;
-
-  for (const [id, [x, y, lift]] of targets) {
-    if (!map.has(id)) map.set(id, { x: motionValue(x), y: motionValue(y), lift: motionValue(lift), target: [x, y, lift] });
-  }
-
-  useLayoutEffect(() => {
-    for (const [id, t] of targets) {
-      const rec = map.get(id);
-      if (rec.target[0] === t[0] && rec.target[1] === t[1] && rec.target[2] === t[2]) continue;
-      rec.target = t;
-      animate(rec.x, t[0], transition);
-      animate(rec.y, t[1], transition);
-      animate(rec.lift, t[2], transition);
-    }
-
-    // Forget nodes that are long gone (a new tree was loaded).
-    if (map.size > 400) {
-      const live = new Set(targets.map(([id]) => id));
-      for (const id of map.keys()) if (!live.has(id)) map.delete(id);
-    }
-  });
-
-  return map;
-}
 
 /* ---------- pieces ---------- */
 
@@ -195,7 +166,7 @@ const TreeStage = ({ step, bounds, showBalance, speed: speedProp, emptyLabel = "
   const screen = (id) => project(pos[id][0], pos[id][1], 0);
   const ordered = [...step.nodes].sort((a, b) => a.depth - b.depth || a.rank - b.rank);
   const root = step.nodes.find((n) => !n.float && (n.parentId === null || n.parentId === undefined));
-  const activeId = Object.entries(step.marks).find(([, role]) => role === "active" || role === "found" || role === "remove")?.[0];
+  const activeId = Object.entries(step.marks).find(([, role]) => role === "active" || role === "found" || role === "remove" || role === "conflict")?.[0];
   const active = step.nodes.find((n) => String(n.id) === activeId);
   const maxDepth = step.nodes.length ? Math.max(...step.nodes.map((n) => n.depth)) : 0;
   const rotAt = step.rot && pos[step.rot.at] && screen(step.rot.at);
@@ -269,7 +240,15 @@ const TreeStage = ({ step, bounds, showBalance, speed: speedProp, emptyLabel = "
             const bad = Math.abs(node.bf) > 1;
             return (
               <TreeNode key={node.id} rec={motionOf.get(node.id)} reduced={reduced}>
-                <Cylinder r={R} h={H} tone={TONE[role] ?? "idle"} label={node.value} labelSize={17} />
+                {/* Red-black nodes keep their own colour; what the step is doing
+                    with them shows as a ring on the floor around them. */}
+                {node.red !== undefined && role !== "default" && (
+                  <g className={`tree-ring tree-ring-${role}`}>
+                    <ellipse cx={TOP_X} cy={FOOT_Y} rx={RING_X} ry={RING_Y} />
+                    {(role === "conflict" || role === "active") && !reduced && <ellipse className="tree-ring-pulse" cx={TOP_X} cy={FOOT_Y} rx={RING_X} ry={RING_Y} />}
+                  </g>
+                )}
+                <Cylinder r={R} h={H} tone={node.red === undefined ? TONE[role] ?? "idle" : node.red ? "red" : "dark"} label={node.value} labelSize={17} />
                 {showBalance && (
                   <g className={`tree-bf ${bad ? "tree-bf-bad" : ""}`}>
                     <rect x={project(2 * R, R, H)[0] - 2} y={project(2 * R, R, H)[1] - 22} width={30} height={18} rx={5} />

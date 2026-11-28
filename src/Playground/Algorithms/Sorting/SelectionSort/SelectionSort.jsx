@@ -135,7 +135,8 @@ const SelectionSort = () => {
   const [seed, setSeed] = useState(() => randomArray(SIZE));
   const steps = useMemo(() => selectionSortSteps(seed), [seed]);
   const ids = useMemo(() => trackIds(steps.map((s) => s.array)), [steps]);
-  const playback = usePlayback(steps.length);
+  // Swaps stay on screen longer so the exchange can be followed.
+  const playback = usePlayback(steps.length, (i) => (steps[i]?.swapping.length === 2 ? 1.8 : 1));
   const { index, reset } = playback;
   const s = steps[index];
 
@@ -174,7 +175,7 @@ const SelectionSort = () => {
         { label: "time", value: "O(n²)" },
         { label: "space", value: "O(1)" },
       ]}
-      stage={<IsoArray cells={cells} slots={SIZE} heights="value" pointers={pointers} callouts={callouts} label="Selection sort" />}
+      stage={<IsoArray cells={cells} slots={SIZE} heights="value" pointers={pointers} callouts={callouts} swaps={s.swapping.length === 2 ? [s.swapping] : []} label="Selection sort" />}
       narration={{ tag: TAGS[s.phase], title: s.title, body: <p>{s.body}</p>, notice: s.notice }}
       code={{ lines: CODE, active: s.line, file: "selection_sort.cpp" }}
       panels={[

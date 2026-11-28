@@ -101,7 +101,8 @@ const BubbleSort = () => {
   const [seed, setSeed] = useState(() => randomArray(SIZE));
   const steps = useMemo(() => bubbleSortSteps(seed), [seed]);
   const ids = useMemo(() => trackIds(steps.map((s) => s.array)), [steps]);
-  const playback = usePlayback(steps.length);
+  // Swaps stay on screen longer so the exchange can be followed.
+  const playback = usePlayback(steps.length, (i) => (steps[i]?.phase === "swap" ? 1.8 : 1));
   const { index, reset } = playback;
   const s = steps[index];
 
@@ -117,7 +118,9 @@ const BubbleSort = () => {
   });
 
   const callouts = s.compare.length
-    ? [{ index: s.compare[1], text: s.swapped ? "swapped" : s.array[s.compare[0]] > s.array[s.compare[1]] ? `${s.array[s.compare[0]]} > ${s.array[s.compare[1]]}` : `${s.array[s.compare[0]]} ≤ ${s.array[s.compare[1]]}` }]
+    ? s.swapped
+      ? [] // the swap arrow says it
+      : [{ index: s.compare[1], text: s.array[s.compare[0]] > s.array[s.compare[1]] ? `${s.array[s.compare[0]]} > ${s.array[s.compare[1]]}` : `${s.array[s.compare[0]]} ≤ ${s.array[s.compare[1]]}` }]
     : s.phase === "settled"
       ? [{ index: s.sortedFrom, text: "final place", tone: "sage" }]
       : [];
@@ -136,7 +139,7 @@ const BubbleSort = () => {
         { label: "best", value: "O(n)" },
         { label: "space", value: "O(1)" },
       ]}
-      stage={<IsoArray cells={cells} slots={SIZE} heights="value" callouts={callouts} indexHighlight={s.compare} label="Bubble sort" />}
+      stage={<IsoArray cells={cells} slots={SIZE} heights="value" callouts={callouts} swaps={s.swapped ? [s.compare] : []} indexHighlight={s.compare} label="Bubble sort" />}
       narration={{ tag: TAGS[s.phase], title: s.title, body: <p>{s.body}</p>, notice: s.notice }}
       code={{ lines: CODE, active: s.line, file: "bubble_sort.cpp" }}
       panels={[

@@ -43,6 +43,11 @@
 .iso-tone-dark .iso-label,
 .iso-tone-dark .iso-top-label { fill: #f3f0ea; }
 
+.iso-tone-red .iso-top { fill: #d9473b; }
+.iso-tone-red .iso-front { fill: #b3352b; }
+.iso-tone-red .iso-label,
+.iso-tone-red .iso-top-label { fill: #fff; }
+
 .iso-tone-ghost { opacity: 0.32; }
 .iso-tone-ghost .iso-top { fill: var(--iso-top); }
 .iso-tone-ghost .iso-front { fill: var(--iso-left); }
@@ -184,3 +189,26 @@
 .iso-tone-ghost .iso-queen-body { fill: var(--iso-top); }
 
 .iso-node-dot { fill: var(--coral); }
+
+/* Swap arrow: a curved double-headed arrow over two slots trading values. */
+.iso-swap path {
+  fill: none;
+  stroke: var(--amber, #c8902a);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+}
+
+.iso-swap polygon {
+  fill: var(--amber, #c8902a);
+}
+
+.iso-swap text {
+  fill: var(--amber, #c8902a);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: var(--sunk, #f4f1ea);
+  stroke-width: 4px;
+}

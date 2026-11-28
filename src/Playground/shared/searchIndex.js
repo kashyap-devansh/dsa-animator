@@ -7,6 +7,8 @@ import StackData from "../Structures/Stack/Stack.js";
 import QueueData from "../Structures/Queue/QueueData.js";
 import BSTData from "../Structures/BST/BSTData.js";
 import AVLData from "../Structures/AVL/AVLData.js";
+import RBTData from "../Structures/RBT/RBTData.js";
+import GraphData from "../Structures/Graph/GraphData.js";
 import RecursionData from "../Recursion/RecursionData.js";
 
 export const categories = [
@@ -19,6 +21,8 @@ export const categories = [
   { label: "Queue", basePath: "/playground/queue", data: QueueData },
   { label: "Binary Search Tree", basePath: "/playground/bst", data: BSTData },
   { label: "AVL Tree", basePath: "/playground/avl", data: AVLData },
+  { label: "Red-Black Tree", basePath: "/playground/rbt", data: RBTData },
+  { label: "Graph", basePath: "/playground/graph", data: GraphData },
   { label: "Recursion", basePath: "/playground/recursion", data: RecursionData },
 ];
 

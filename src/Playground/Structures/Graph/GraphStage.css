@@ -1,0 +1,610 @@
+/* Graph stage: the graph on the left, the algorithm's own structure on the right. */
+
+.gx.lx-stage-wrap {
+  flex-direction: row;
+  align-items: stretch;
+  gap: 14px;
+  inset: 14px 14px 10px;
+  width: calc(100% - 28px);
+  height: calc(100% - 24px);
+}
+
+.gx-graph {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gx-graph > svg {
+  width: 100%;
+  height: 100%;
+}
+
+.gx-panel {
+  flex: 0 0 272px;
+  align-self: center;
+  max-height: 100%;
+  overflow: auto;
+  padding: 14px 14px 16px;
+  background: var(--paper);
+}
+
+/* ---------- edges ---------- */
+
+.gx-edge line {
+  stroke: var(--ink-3);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  transition: stroke 0.3s ease, stroke-width 0.3s ease, opacity 0.3s ease;
+}
+
+.gx-edge polygon {
+  fill: var(--ink-3);
+  transition: fill 0.3s ease;
+}
+
+.gx-edge-ghost line {
+  stroke: var(--iso-ghost);
+  stroke-dasharray: 5 6;
+}
+
+.gx-edge-ghost polygon {
+  fill: var(--iso-ghost);
+}
+
+.gx-edge-hot line {
+  stroke: var(--coral);
+  stroke-width: 4;
+}
+
+.gx-edge-hot polygon {
+  fill: var(--coral);
+}
+
+.gx-edge-tree line {
+  stroke: var(--sage);
+  stroke-width: 4;
+}
+
+.gx-edge-tree polygon {
+  fill: var(--sage);
+}
+
+.gx-edge-skip line {
+  stroke: var(--ink-4);
+  stroke-dasharray: 2 6;
+}
+
+.gx-weight rect {
+  fill: var(--paper);
+  stroke: var(--line-strong);
+  stroke-width: 1;
+  transition: fill 0.3s ease, stroke 0.3s ease;
+}
+
+.gx-weight text {
+  fill: var(--ink-2);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.gx-weight-hot rect {
+  fill: var(--coral);
+  stroke: var(--coral);
+}
+
+.gx-weight-hot text {
+  fill: var(--on-coral);
+}
+
+.gx-weight-tree rect {
+  stroke: var(--sage);
+}
+
+.gx-weight-ghost {
+  opacity: 0.5;
+}
+
+/* ---------- panel ---------- */
+
+.gx-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 0 10px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.gx-title span {
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--ink-4);
+}
+
+.gx-title-gap {
+  margin-top: 16px;
+}
+
+.gx-empty,
+.gx-missnote {
+  font-size: 12px;
+  color: var(--ink-4);
+}
+
+.gx-missnote {
+  margin-left: auto;
+  color: var(--coral);
+  font-weight: 600;
+}
+
+/* Matrix */
+
+.gx-mat,
+.gx-dist {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 3px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+}
+
+.gx-mat th,
+.gx-dist th {
+  font-weight: 700;
+  color: var(--ink-3);
+  text-align: center;
+  transition: color 0.25s ease;
+}
+
+.gx-mat .gx-th-on {
+  color: var(--coral);
+}
+
+.gx-mat td {
+  height: 26px;
+  border-radius: 5px;
+  background: var(--sunk);
+  color: var(--ink-4);
+  text-align: center;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.gx-mat td.gx-on {
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 700;
+}
+
+.gx-mat tr.gx-row td {
+  box-shadow: inset 0 0 0 1.5px var(--coral);
+}
+
+.gx-mat td.gx-hot {
+  background: var(--coral);
+  color: var(--on-coral);
+}
+
+.gx-mat td.gx-miss {
+  background: var(--coral-100);
+  color: var(--coral-ink);
+  box-shadow: inset 0 0 0 1.5px var(--coral);
+}
+
+.gx-mat td.gx-diag {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+}
+
+/* Lists */
+
+.gx-lists {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.gx-lrow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-height: 30px;
+  padding: 2px 6px 2px 2px;
+  border-radius: 7px;
+  transition: background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.gx-lrow-on {
+  background: var(--coral-50);
+  box-shadow: inset 0 0 0 1.5px var(--coral);
+}
+
+.gx-lhead {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.gx-lbar {
+  width: 10px;
+  height: 2px;
+  background: var(--ink-4);
+}
+
+/* Chips */
+
+.gx-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  min-height: 28px;
+  align-items: center;
+}
+
+.gx-line-stack {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.gx-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 24px;
+  padding: 0 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
+.gx-chip small {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--ink-4);
+}
+
+.gx-chip-lg {
+  height: 28px;
+  justify-content: center;
+  font-size: 12.5px;
+}
+
+.gx-chip-top {
+  border-color: var(--coral);
+  color: var(--coral);
+}
+
+.gx-chip-new {
+  border-color: var(--coral);
+  background: var(--coral-50);
+  color: var(--coral-ink);
+}
+
+.gx-chip-hot {
+  border-color: var(--coral);
+  background: var(--coral);
+  color: var(--on-coral);
+}
+
+.gx-chip-hot small {
+  color: var(--on-coral);
+}
+
+.gx-chip-done {
+  border-color: transparent;
+  background: var(--sage-50);
+  color: var(--sage);
+}
+
+.gx-chip-stale {
+  color: var(--ink-4);
+  text-decoration: line-through;
+}
+
+.gx-chip-out {
+  opacity: 0.9;
+}
+
+/* Distance table */
+
+.gx-dist td,
+.gx-dist tbody th {
+  height: 24px;
+  border-radius: 5px;
+  background: var(--sunk);
+  text-align: center;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.gx-dist thead th {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-4);
+}
+
+.gx-dist td {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.gx-dist .gx-dist-flag {
+  width: 24px;
+  color: var(--sage);
+}
+
+.gx-dist tr.gx-dist-done td,
+.gx-dist tr.gx-dist-done th {
+  background: var(--sage-50);
+}
+
+.gx-dist tr.gx-dist-hot td,
+.gx-dist tr.gx-dist-hot th {
+  background: var(--coral);
+  color: var(--on-coral);
+}
+
+.gx-dist tr.gx-dist-path th {
+  box-shadow: inset 0 0 0 1.5px var(--coral);
+  color: var(--coral);
+}
+
+@media (max-width: 900px) {
+  .gx.lx-stage-wrap {
+    flex-direction: column;
+  }
+
+  .gx-panel {
+    flex: 0 0 auto;
+    align-self: stretch;
+    max-height: 46%;
+  }
+}
+
+/* ---------- motion pieces ---------- */
+
+.gx-ring ellipse {
+  fill: none;
+  stroke-width: 2;
+}
+
+.gx-ring-current ellipse {
+  stroke: var(--coral);
+}
+
+.gx-ring-done ellipse {
+  stroke: var(--sage);
+  stroke-width: 1.4;
+  opacity: 0.6;
+}
+
+.gx-ring-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: gx-pulse 1.4s ease-out infinite;
+}
+
+@keyframes gx-pulse {
+  from {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(1.55);
+    opacity: 0;
+  }
+}
+
+.gx-travel line {
+  stroke: var(--coral);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.gx-travel circle {
+  fill: var(--paper);
+  stroke: var(--coral);
+  stroke-width: 3;
+}
+
+.gx-travel-fail line {
+  stroke: var(--ink-4);
+  stroke-width: 3;
+}
+
+.gx-travel-fail circle {
+  stroke: var(--ink-4);
+}
+
+.gx-trail {
+  fill: none;
+  stroke: var(--coral);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.9;
+}
+
+.gx-enote rect {
+  fill: var(--coral);
+}
+
+.gx-enote text {
+  fill: var(--on-coral);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.gx-enote-skip rect {
+  fill: var(--ink-2);
+}
+
+.gx-enote-skip text {
+  fill: var(--paper);
+}
+
+/* Distance table extras */
+
+.gx-dist td {
+  position: relative;
+}
+
+.gx-val {
+  display: inline-block;
+}
+
+.gx-was {
+  margin-right: 5px;
+  font-weight: 500;
+  opacity: 0.75;
+}
+
+.gx-dist tr.gx-dist-check td,
+.gx-dist tr.gx-dist-check th {
+  box-shadow: inset 0 0 0 1.5px var(--ink-4);
+}
+
+.gx-dist tr.gx-dist-settle td,
+.gx-dist tr.gx-dist-settle th {
+  background: var(--sage);
+  color: #fff;
+}
+
+.gx-dist tr.gx-dist-settle .gx-dist-flag {
+  color: #fff;
+}
+
+.gx-pq {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gx-pq-out {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gx-pq-out small {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-4);
+}
+
+.gx-pq-stale .gx-chip {
+  background: var(--ink-4);
+  border-color: var(--ink-4);
+  text-decoration: line-through;
+}
+
+/* Results */
+
+.gx-res {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.gx-res-row {
+  display: grid;
+  grid-template-columns: 26px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  min-height: 30px;
+  padding: 2px 8px 2px 2px;
+  border-radius: 7px;
+  background: var(--sunk);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  transition: background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.gx-res-to {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: var(--sage);
+  color: #fff;
+  font-weight: 700;
+}
+
+.gx-res-route {
+  color: var(--ink-2);
+  font-weight: 600;
+}
+
+.gx-res-route i {
+  margin: 0 4px;
+  font-style: normal;
+  color: var(--ink-4);
+}
+
+.gx-res-cost {
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.gx-res-src .gx-res-to {
+  background: var(--coral);
+}
+
+.gx-res-src .gx-res-route {
+  color: var(--ink-4);
+  font-family: var(--font-sans);
+}
+
+.gx-res-on {
+  background: var(--coral-50);
+  box-shadow: inset 0 0 0 1.5px var(--coral);
+}
+
+.gx-res-on .gx-res-to {
+  background: var(--coral);
+}
+
+.gx-res-on .gx-res-route,
+.gx-res-on .gx-res-cost {
+  color: var(--coral-ink);
+}
+
+.gx-res-foot {
+  margin: 10px 0 0;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--ink-4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gx-ring-pulse {
+    animation: none;
+  }
+}

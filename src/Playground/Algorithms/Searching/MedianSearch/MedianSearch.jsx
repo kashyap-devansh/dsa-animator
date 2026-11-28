@@ -145,7 +145,8 @@ const MedianSearch = () => {
     ];
   }, [seed]);
   const ids = useMemo(() => trackIds(steps.map((s) => s.array)), [steps]);
-  const playback = usePlayback(steps.length);
+  // Swaps stay on screen longer so the exchange can be followed.
+  const playback = usePlayback(steps.length, (i) => (steps[i]?.swap.length === 2 && steps[i].swap[0] !== steps[i].swap[1] ? 1.8 : 1));
   const { index, reset } = playback;
   const s = steps[index];
   const [l, r] = s.range;
@@ -192,7 +193,7 @@ const MedianSearch = () => {
         { label: "worst", value: "O(n²)" },
         { label: "space", value: "O(log n)" },
       ]}
-      stage={<IsoArray cells={cells} slots={SIZE} pointers={pointers} callouts={callouts} label="Quickselect" />}
+      stage={<IsoArray cells={cells} slots={SIZE} pointers={pointers} callouts={callouts} swaps={s.swap.length === 2 ? [s.swap] : []} label="Quickselect" />}
       narration={{
         tag: tagOf(s),
         title: head,

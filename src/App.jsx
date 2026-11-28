@@ -11,7 +11,8 @@ import Classroom from "./components/Classroom/Classroom.jsx";
 import CommandPalette from "./components/CommandPalette/CommandPalette.jsx";
 import TeachPage from "./Classroom/TeachPage.jsx";
 import LessonCover from "./Classroom/LessonCover.jsx";
-import ClassQuiz from "./Classroom/ClassQuiz.jsx";
+import ClassQuiz, { OwnQuestion } from "./Classroom/ClassQuiz.jsx";
+import Handout from "./Classroom/Handout.jsx";
 import LessonBar from "./Classroom/LessonBar.jsx";
 
 import Sorting from "./Playground/Algorithms/Sorting/Sorting";
@@ -23,6 +24,8 @@ import Stack from "./Playground/Structures/Stack/Stack.jsx";
 import Queue from "./Playground/Structures/Queue/Queue.jsx";
 import BST from "./Playground/Structures/BST/BST.jsx";
 import AVL from "./Playground/Structures/AVL/AVL.jsx";
+import RBT from "./Playground/Structures/RBT/RBT.jsx";
+import Graph from "./Playground/Structures/Graph/Graph.jsx";
 import Recursion from "./Playground/Recursion/Recursion.jsx";
 
 import { useState } from "react";
@@ -95,6 +98,8 @@ const App = () => (
       <Route path="/playground/queue/:slug" element={<Lesson><Queue /></Lesson>} />
       <Route path="/playground/bst/:slug" element={<Lesson><BST /></Lesson>} />
       <Route path="/playground/avl/:slug" element={<Lesson><AVL /></Lesson>} />
+      <Route path="/playground/rbt/:slug" element={<Lesson><RBT /></Lesson>} />
+      <Route path="/playground/graph/:slug" element={<Lesson><Graph /></Lesson>} />
       <Route path="/playground/recursion/:slug" element={<Lesson><Recursion /></Lesson>} />
       <Route path="/progress" element={<PageShell><ProgressPage /></PageShell>} />
       <Route path="/notes" element={<PageShell><NotesHub /></PageShell>} />
@@ -102,6 +107,8 @@ const App = () => (
       <Route path="/classroom" element={<PageShell><TeachPage /></PageShell>} />
       <Route path="/lesson" element={<PageShell><LessonCover /><Classroom /></PageShell>} />
       <Route path="/quiz/:slug" element={<PageShell><ClassQuiz /><Classroom /></PageShell>} />
+      <Route path="/question/:index" element={<PageShell><OwnQuestion /><Classroom /></PageShell>} />
+      <Route path="/handout" element={<Handout />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
 

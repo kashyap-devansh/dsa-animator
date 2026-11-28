@@ -7,7 +7,7 @@ import "./AlgorithmSearch.css";
 
 const MAX_RESULTS = 7;
 
-const EXAMPLES = ["bubble sort", "avl rotation", "n-queens", "binary search", "hash table", "permutations", "merge sort"];
+const EXAMPLES = ["bubble sort", "avl rotation", "n-queens", "binary search", "dijkstra", "hash table", "permutations", "merge sort"];
 
 // Types and deletes example queries for the placeholder, like a live terminal.
 function useTypedExample() {

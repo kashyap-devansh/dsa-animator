@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { NOTES, noteBySlug } from "./content";
-import { MiniSort, MiniBinarySearch, MiniTree, MiniList, MiniQueue } from "../components/MiniViz/MiniViz";
+import { MiniSort, MiniBinarySearch, MiniTree, MiniList, MiniQueue, MiniGraph } from "../components/MiniViz/MiniViz";
 import { highlight } from "../Playground/shared/highlight";
 import { trackPointer } from "../components/shared/pointer";
 import NotesSidebar from "./NotesSidebar";
@@ -12,7 +12,7 @@ import { BigO } from "./CheatSheet";
 import { useLearned } from "./useLearned";
 import "./Notes.css";
 
-const VIZ = { sort: MiniSort, binary: MiniBinarySearch, tree: MiniTree, list: MiniList, queue: MiniQueue };
+const VIZ = { sort: MiniSort, binary: MiniBinarySearch, tree: MiniTree, list: MiniList, queue: MiniQueue, graph: MiniGraph };
 const EASE = [0.22, 1, 0.36, 1];
 
 const rise = (i = 0) => ({
@@ -50,6 +50,25 @@ const jumpTo = (id) => {
   else el.scrollIntoView({ behavior: "smooth" });
 };
 
+// Copies the note's code, so students can paste it into their own editor.
+const CopyButton = ({ text }) => {
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1600);
+    } catch {
+      /* clipboard blocked: the code is still selectable */
+    }
+  };
+  return (
+    <button type="button" className="na-copy" onClick={copy} aria-label="Copy code">
+      {copied ? "copied" : "copy"}
+    </button>
+  );
+};
+
 const Section = ({ id, kicker, title, children }) => (
   <motion.section id={id} className="na-section" {...rise()}>
     <span className="na-kicker">{kicker}</span>
@@ -70,11 +89,21 @@ const Article = ({ note }) => {
   const sections = [
     ["intuition", "Intuition"],
     ["steps", "How it works"],
+    note.example && ["example", "Worked example"],
     ["complexity", "Complexity"],
     ["code", "Code"],
+    note.use && ["use", "When to use it"],
     ["pitfalls", "Pitfalls"],
     ["quiz", "Check yourself"],
   ].filter(Boolean);
+  const kicker = (id) => String(sections.findIndex(([k]) => k === id) + 1).padStart(2, "0");
+  const cxRows = note.complexityRows ?? [
+    ["Best", note.complexity.best, "best"],
+    ["Average", note.complexity.average, "average"],
+    ["Worst", note.complexity.worst, "worst"],
+    ["Space", note.complexity.space, "space"],
+  ];
+  const whyRows = note.why ? [["Best", note.why.best], ["Average", note.why.average], ["Worst", note.why.worst], ["Space", note.why.space]].filter(([, t]) => t) : [];
   const active = useActiveSection(sections.map(([id]) => id).join(","));
 
   return (
@@ -145,7 +174,7 @@ const Article = ({ note }) => {
           </motion.div>
         )}
 
-        <Section id="intuition" kicker="01" title="Intuition">
+        <Section id="intuition" kicker={kicker("intuition")} title="Intuition">
           {note.intuition.map((p) => (
             <p key={p.slice(0, 24)} className="na-p">
               {p}
@@ -153,7 +182,7 @@ const Article = ({ note }) => {
           ))}
         </Section>
 
-        <Section id="steps" kicker="02" title="How it works">
+        <Section id="steps" kicker={kicker("steps")} title="How it works">
           <ol className="na-steps">
             {note.steps.map((s, i) => (
               <motion.li key={s} {...rise(i)}>
@@ -164,20 +193,54 @@ const Article = ({ note }) => {
           </ol>
         </Section>
 
-        <Section id="complexity" kicker="03" title="Complexity">
+        {note.example && (
+          <Section id="example" kicker={kicker("example")} title="Worked example">
+            <p className="na-example-input">
+              <span>input</span> {note.example.input}
+            </p>
+            <div className="cs-table-wrap na-example">
+              <table className="cs-table">
+                <thead>
+                  <tr>
+                    {note.example.cols.map((c) => (
+                      <th key={c}>{c}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {note.example.rows.map((row, i) => (
+                    <tr key={i}>
+                      <td className="na-example-step">{row[0]}</td>
+                      <td className="na-example-state">{row[1]}</td>
+                      <td className="na-example-note">{row[2]}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Section>
+        )}
+
+        <Section id="complexity" kicker={kicker("complexity")} title="Complexity">
           <div className="na-cx">
-            {[
-              ["Best", note.complexity.best],
-              ["Average", note.complexity.average],
-              ["Worst", note.complexity.worst],
-              ["Space", note.complexity.space],
-            ].map(([label, value], i) => (
+            {cxRows.map(([label, value], i) => (
               <motion.div key={label} className="na-cx-cell" {...rise(i)}>
                 <span>{label}</span>
                 <BigO value={value} />
               </motion.div>
             ))}
           </div>
+
+          {whyRows.length > 0 && !note.complexityRows && (
+            <dl className="na-why">
+              {whyRows.map(([label, text]) => (
+                <div key={label}>
+                  <dt>{label}</dt>
+                  <dd>{text}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
 
           <div className="na-facts">
             {note.facts.map((f) => (
@@ -188,13 +251,14 @@ const Article = ({ note }) => {
           </div>
         </Section>
 
-        <Section id="code" kicker="04" title="Code">
+        <Section id="code" kicker={kicker("code")} title="Code">
           <div className="na-code">
             <div className="na-code-bar">
               <i />
               <i />
               <i />
               <span>{note.slug.replace(/-/g, "_")}.cpp</span>
+              <CopyButton text={note.code.join("\n")} />
             </div>
             <pre>
               {note.code.map((line, i) => (
@@ -207,7 +271,30 @@ const Article = ({ note }) => {
           </div>
         </Section>
 
-        <Section id="pitfalls" kicker="05" title="Common pitfalls">
+        {note.use && (
+          <Section id="use" kicker={kicker("use")} title="When to use it">
+            <div className="na-use">
+              <div>
+                <span className="na-use-label">use it when</span>
+                <ul className="na-use-list na-use-yes">
+                  {note.use.when.map((t) => (
+                    <li key={t}>{t}</li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <span className="na-use-label">avoid it when</span>
+                <ul className="na-use-list na-use-no">
+                  {note.use.avoid.map((t) => (
+                    <li key={t}>{t}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </Section>
+        )}
+
+        <Section id="pitfalls" kicker={kicker("pitfalls")} title="Common pitfalls">
           <ul className="na-pitfalls">
             {note.pitfalls.map((p) => (
               <li key={p}>{p}</li>
@@ -220,7 +307,7 @@ const Article = ({ note }) => {
           </div>
         </Section>
 
-        <Section id="quiz" kicker="06" title="Check yourself">
+        <Section id="quiz" kicker={kicker("quiz")} title="Check yourself">
           <Quiz key={note.slug} items={note.quiz} />
         </Section>
 

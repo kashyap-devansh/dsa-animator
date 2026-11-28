@@ -84,3 +84,65 @@
     animation: none;
   }
 }
+
+/* Red-black trees: rings say what a step is doing with a node. */
+
+.iso-cyl .iso-face {
+  transition: fill 0.4s ease;
+}
+
+.tree-ring ellipse {
+  fill: none;
+  stroke-width: 2.6;
+  stroke: var(--coral);
+}
+
+.tree-ring-path ellipse {
+  stroke: var(--coral-300);
+  stroke-width: 1.8;
+}
+
+.tree-ring-found ellipse,
+.tree-ring-new ellipse,
+.tree-ring-successor ellipse {
+  stroke: var(--sage);
+  stroke-width: 3;
+}
+
+.tree-ring-pivot ellipse {
+  stroke: var(--amber);
+  stroke-width: 3;
+}
+
+.tree-ring-remove ellipse {
+  stroke: var(--ink);
+  stroke-dasharray: 5 4;
+}
+
+.tree-ring-conflict ellipse {
+  stroke: var(--coral);
+  stroke-width: 3.2;
+}
+
+.tree-ring-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: tree-ring-pulse 1.3s ease-out infinite;
+}
+
+@keyframes tree-ring-pulse {
+  from {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tree-ring-pulse {
+    animation: none;
+  }
+}

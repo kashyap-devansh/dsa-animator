@@ -2,19 +2,20 @@ import { useState } from "react";
 import TreePage from "../../Tree/TreePage";
 import { useTreeRun } from "../../Tree/useTreeRun";
 import { BST_INSERT_CODE } from "../../Tree/treeCode";
-import { buildBST, countNodes, insertSteps, parseKey, randomMissingValue, randomValues, snapshotHeight } from "../../Tree/treeEngine";
+import { balancedKey, countNodes, insertSteps, parseKey, randomBalancedBST, snapshotHeight } from "../../Tree/treeEngine";
 
 const generate = (tree, key) => insertSteps(tree, key);
 
 const MAX_NODES = 15;
 
 const freshRun = (mode = "small") => {
-  const tree = mode === "empty" ? null : buildBST(randomValues(4));
-  return { tree, key: randomMissingValue(tree) };
+  // Automatic trees and keys stay balanced; a key you type goes wherever BST rules put it.
+  const tree = mode === "empty" ? null : randomBalancedBST(4);
+  return { tree, key: balancedKey(tree) };
 };
 
 const session = {
-  nextKey: randomMissingValue,
+  nextKey: balancedKey,
   shouldStop: (root) => countNodes(root) >= MAX_NODES,
   minBounds: { count: MAX_NODES, depth: 4 },
 };
@@ -26,7 +27,7 @@ const BSTInsert = () => {
   const { current } = run;
 
   const insert = () => {
-    run.continueWith(parseKey(inputValue) ?? randomMissingValue(run.result));
+    run.continueWith(parseKey(inputValue) ?? balancedKey(run.result));
     setInputValue("");
   };
 

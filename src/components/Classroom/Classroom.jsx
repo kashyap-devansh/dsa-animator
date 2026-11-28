@@ -5,8 +5,8 @@ import { useTheme } from "../../course/store";
 import "./Classroom.css";
 
 // Classroom toolkit: present mode (fullscreen, chrome hidden, stage scaled to
-// fit the projector), an annotation pen, a laser pointer and keyboard control
-// of whichever visualizer is on screen.
+// fit the projector), an annotation pen, a laser pointer, a blank whiteboard
+// and a random student picker. The lesson page itself owns Space / arrows.
 
 const INKS = ["#e2694f", "#4f9a7e", "#5b6ee1", "#27282c"];
 const PRESENT_WIDTH = 1100;
@@ -14,39 +14,26 @@ const HINT_KEY = "classroomHintSeen";
 
 const SHORTCUTS = [
   ["Space", "Play / pause"],
-  ["→", "Step forward"],
-  ["←", "Step back"],
+  ["→  ←", "Step forward / back"],
   ["R", "Reset"],
   ["F", "Present mode"],
   ["T", "Light / dark theme"],
-  ["PgDn / N", "Next lesson item"],
+  ["PgDn / N", "Next lecture item"],
+  ["PgUp / B", "Previous lecture item"],
+  ["S", "Speaker notes & clock"],
   ["P", "Pen"],
-  ["L", "Laser pointer"],
   ["1 – 4", "Pen colour"],
+  ["Z", "Undo last stroke"],
   ["C", "Clear drawings"],
+  ["L", "Laser pointer"],
+  ["W", "Blank whiteboard"],
+  ["K", "Pick a student"],
   ["Esc", "Exit tool / present"],
   ["?", "This panel"],
 ];
 
-// Every visualizer renders its playback row as [reset, back, play, forward, …].
-// Find it by the play button so the older hand-built pages work too.
-function findControls() {
-  const play = document.querySelector('.page-main [class*="-play-btn"]');
-  if (!play) return null;
-  const row = [...play.parentElement.children].filter((el) => el.tagName === "BUTTON");
-  const i = row.indexOf(play);
-  return { play, back: row[i - 1], forward: row[i + 1], reset: i >= 2 ? row[0] : null };
-}
-
-function presentRoot() {
-  return document.querySelector(".page-main [data-present-root]") ?? findControls()?.play.parentElement.parentElement ?? null;
-}
-
-const press = (btn) => {
-  if (!btn || btn.disabled) return false;
-  btn.click();
-  return true;
-};
+// Pages opt in to being scaled to the projector with data-present-root.
+const presentRoot = () => document.querySelector(".page-main [data-present-root]");
 
 /* ---------- icons ---------- */
 
@@ -62,6 +49,8 @@ const PenIcon = () => <Icon><path d="M4 20l4-1L19 8a2.1 2.1 0 0 0-3-3L5 16l-1 4z
 const LaserIcon = () => <Icon><circle cx="12" cy="12" r="3" /><path d="M12 3v3M12 18v3M3 12h3M18 12h3" /></Icon>;
 const ClearIcon = () => <Icon><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13" /></Icon>;
 const SunIcon = () => <Icon><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></Icon>;
+const BoardIcon = () => <Icon><rect x="3" y="4" width="18" height="13" rx="1.5" /><path d="M8 21l4-4 4 4M7 9.5c1.5-2 3-2 4 0s2.5 2 4 0" /></Icon>;
+const PickIcon = () => <Icon><circle cx="12" cy="8" r="3.2" /><path d="M5.5 20c.8-3.6 3.3-5.5 6.5-5.5s5.7 1.9 6.5 5.5" /><path d="M18.5 3.5l1 1.5 1.7.4-1.2 1.3.2 1.8-1.7-.8-1.6.8.2-1.8-1.2-1.3 1.7-.4z" /></Icon>;
 const KeysIcon = () => <Icon><rect x="2.5" y="6" width="19" height="12" rx="2" /><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10" /></Icon>;
 
 /* ---------- drawing layer ---------- */
@@ -201,7 +190,18 @@ function useInk(tool, color) {
     schedule();
   }, [schedule]);
 
-  return { canvasRef, handlers, clear, undo };
+  // The whiteboard keeps its own drawing; switching swaps the two sets.
+  const swap = useCallback(
+    (saved) => {
+      const current = strokes.current;
+      strokes.current = saved;
+      schedule();
+      return current;
+    },
+    [schedule]
+  );
+
+  return { canvasRef, handlers, clear, undo, swap };
 }
 
 /* ---------- present mode ---------- */
@@ -263,6 +263,145 @@ const DockButton = ({ label, keyHint, active, onClick, children }) => (
   </button>
 );
 
+/* ---------- student picker ---------- */
+
+const ROSTER_KEY = "classRoster";
+
+function readRoster() {
+  try {
+    return { mode: "roll", from: 1, to: 60, names: "", noRepeat: true, ...JSON.parse(localStorage.getItem(ROSTER_KEY)) };
+  } catch {
+    return { mode: "roll", from: 1, to: 60, names: "", noRepeat: true };
+  }
+}
+
+const poolOf = (r) =>
+  r.mode === "names"
+    ? r.names.split(/\n|,/).map((n) => n.trim()).filter(Boolean)
+    : Array.from({ length: Math.max(0, Math.min(500, r.to - r.from + 1)) }, (_, i) => `Roll no. ${r.from + i}`);
+
+// Picks someone at random, cycling through faces first so the room sees it
+// is fair. With "no repeats", everyone is called once before anyone twice.
+const Picker = ({ onClose, pickNow }) => {
+  const [roster, setRoster] = useState(readRoster);
+  const [setup, setSetup] = useState(() => {
+    try {
+      return !localStorage.getItem(ROSTER_KEY);
+    } catch {
+      return true;
+    }
+  });
+  const [shown, setShown] = useState(null);
+  const [rolling, setRolling] = useState(false);
+  const called = useRef(new Set());
+  const timer = useRef(0);
+  const pool = poolOf(roster);
+
+  const save = (next) => {
+    setRoster(next);
+    called.current.clear();
+    try {
+      localStorage.setItem(ROSTER_KEY, JSON.stringify(next));
+    } catch {
+      /* roster lasts for this visit */
+    }
+  };
+
+  const pick = useCallback(() => {
+    if (!pool.length) return setSetup(true);
+    let left = roster.noRepeat ? pool.filter((p) => !called.current.has(p)) : pool;
+    if (!left.length) {
+      called.current.clear();
+      left = pool;
+    }
+    const winner = left[Math.floor(Math.random() * left.length)];
+    called.current.add(winner);
+    setSetup(false);
+    setRolling(true);
+    clearTimeout(timer.current);
+    // Slow down like a wheel: short ticks, then longer ones.
+    let n = 0;
+    const tick = () => {
+      n++;
+      if (n >= 14) {
+        setShown(winner);
+        setRolling(false);
+        return;
+      }
+      setShown(pool[Math.floor(Math.random() * pool.length)]);
+      timer.current = setTimeout(tick, 40 + n * n * 2.4);
+    };
+    tick();
+  }, [pool, roster.noRepeat]);
+
+  useEffect(() => () => clearTimeout(timer.current), []);
+
+  // K while open picks again.
+  useEffect(() => {
+    if (pickNow) pick();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pickNow]);
+
+  const left = roster.noRepeat ? pool.filter((p) => !called.current.has(p)).length : pool.length;
+
+  return (
+    <motion.div className="cr-help-backdrop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
+      <motion.div
+        className="cr-help cr-pick"
+        initial={{ opacity: 0, y: 20, scale: 0.97 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 12, scale: 0.98 }}
+        transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <span className="cr-help-eyebrow">pick a student</span>
+
+        {setup ? (
+          <div className="cr-pick-setup">
+            <div className="cr-seg">
+              {[["roll", "Roll numbers"], ["names", "Names"]].map(([id, label]) => (
+                <button key={id} type="button" className={roster.mode === id ? "is-on" : ""} onClick={() => save({ ...roster, mode: id })}>
+                  {label}
+                </button>
+              ))}
+            </div>
+            {roster.mode === "roll" ? (
+              <div className="cr-pick-range">
+                <label>
+                  from <input type="number" min={0} value={roster.from} onChange={(e) => save({ ...roster, from: Number(e.target.value) || 0 })} />
+                </label>
+                <label>
+                  to <input type="number" min={0} value={roster.to} onChange={(e) => save({ ...roster, to: Number(e.target.value) || 0 })} />
+                </label>
+              </div>
+            ) : (
+              <textarea rows={6} value={roster.names} onChange={(e) => save({ ...roster, names: e.target.value })} placeholder={"Paste the class list, one name per line\nAarav Sharma\nDiya Patel\n…"} />
+            )}
+            <label className="cr-pick-check">
+              <input type="checkbox" checked={roster.noRepeat} onChange={(e) => save({ ...roster, noRepeat: e.target.checked })} /> Don't pick anyone twice until everyone has been picked
+            </label>
+            <p className="cr-pick-note">{pool.length} students · saved in this browser only</p>
+          </div>
+        ) : (
+          <div className={`cr-pick-name ${rolling ? "is-rolling" : "is-done"}`} aria-live="polite">
+            {shown ?? "Ready"}
+          </div>
+        )}
+
+        <div className="cr-pick-actions">
+          <button type="button" className="cq-btn" onClick={pick} disabled={rolling || !pool.length}>
+            {shown ? "Pick again" : "Pick"} <kbd>K</kbd>
+          </button>
+          <button type="button" className="tp-ghost tp-small" onClick={() => setSetup((v) => !v)}>
+            {setup ? "Done" : "Class list"}
+          </button>
+          {!setup && roster.noRepeat && <span className="cr-pick-note">{left} not yet picked</span>}
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
 const Classroom = () => {
   const { pathname } = useLocation();
   // Survive moving between visualizers while the projector is in fullscreen.
@@ -270,10 +409,13 @@ const Classroom = () => {
   const [tool, setTool] = useState(null);
   const [color, setColor] = useState(INKS[0]);
   const [help, setHelp] = useState(false);
+  const [board, setBoard] = useState(false);
+  const [picker, setPicker] = useState(0); // 0 closed; otherwise a counter that asks for a pick
   const { theme, toggle: toggleTheme } = useTheme();
   const [idle, setIdle] = useState(false);
   const [hint, setHint] = useState(false);
-  const { canvasRef, handlers, clear, undo } = useInk(tool, color);
+  const { canvasRef, handlers, clear, undo, swap } = useInk(tool, color);
+  const otherInk = useRef([]);
 
   usePresent(presenting);
 
@@ -290,6 +432,16 @@ const Classroom = () => {
     });
   }, []);
 
+  // The whiteboard covers the page and keeps its own ink; the pen comes up with it.
+  const toggleBoard = useCallback(() => {
+    otherInk.current = swap(otherInk.current);
+    setBoard((b) => {
+      if (!b) setTool("pen");
+      else setTool(null);
+      return !b;
+    });
+  }, [swap]);
+
   // Leaving fullscreen with the browser's own Esc also leaves present mode.
   useEffect(() => {
     const onChange = () => {
@@ -302,6 +454,8 @@ const Classroom = () => {
   // A new page starts clean.
   useEffect(() => {
     clear();
+    otherInk.current = [];
+    setBoard(false);
     setTool(null);
   }, [pathname, clear]);
 
@@ -349,17 +503,14 @@ const Classroom = () => {
     const onKey = (e) => {
       if (e.target.closest?.("input, textarea, select, [contenteditable]") || e.metaKey || e.ctrlKey || e.altKey) return;
       const k = e.key;
-      const controls = findControls();
       let handled = true;
 
-      if (k === " " && controls) press(controls.play);
-      else if (k === "ArrowRight" && controls) press(controls.forward);
-      else if (k === "ArrowLeft" && controls) press(controls.back);
-      else if ((k === "r" || k === "R") && controls) press(controls.reset);
-      else if (k === "f" || k === "F") togglePresent();
+      if (k === "f" || k === "F") togglePresent();
       else if (k === "t" || k === "T") toggleTheme();
       else if (k === "p" || k === "P") setTool((t) => (t === "pen" ? null : "pen"));
       else if (k === "l" || k === "L") setTool((t) => (t === "laser" ? null : "laser"));
+      else if (k === "w" || k === "W") toggleBoard();
+      else if (k === "k" || k === "K") setPicker((n) => (n > 0 ? n + 1 : 1));
       else if (k === "c" || k === "C") clear();
       else if (k === "z" || k === "Z") undo();
       else if (k >= "1" && k <= "4") {
@@ -367,23 +518,20 @@ const Classroom = () => {
         setTool("pen");
       } else if (k === "?") setHelp((h) => !h);
       else if (k === "Escape") {
-        if (help) setHelp(false);
+        if (picker) setPicker(0);
+        else if (help) setHelp(false);
+        else if (board) toggleBoard();
         else if (tool) setTool(null);
         else if (presenting) togglePresent();
         else handled = false;
       } else handled = false;
 
-      if (handled) {
-        e.preventDefault();
-        if (k === " ") document.activeElement?.blur?.();
-      }
+      if (handled) e.preventDefault();
     };
 
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [togglePresent, clear, undo, help, tool, presenting, toggleTheme]);
-
-
+  }, [togglePresent, toggleBoard, clear, undo, help, tool, board, picker, presenting, toggleTheme]);
 
   useEffect(() => {
     document.body.classList.toggle("is-lasering", tool === "laser");
@@ -392,7 +540,15 @@ const Classroom = () => {
 
   return (
     <>
-      <canvas ref={canvasRef} className={`cr-canvas ${tool === "pen" ? "cr-canvas-pen" : ""}`} {...handlers} />
+      <AnimatePresence>
+        {board && (
+          <motion.div className="cr-board" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
+            <span className="cr-board-label">whiteboard · W to return to the lesson</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <canvas ref={canvasRef} className={`cr-canvas ${tool === "pen" ? "cr-canvas-pen" : ""} ${board ? "cr-canvas-board" : ""}`} {...handlers} />
 
       <div className={`cr-dock ${idle ? "cr-dock-idle" : ""}`} role="toolbar" aria-label="Classroom tools">
         <span className="cr-dock-label">classroom</span>
@@ -432,8 +588,16 @@ const Classroom = () => {
           <LaserIcon />
         </DockButton>
 
+        <DockButton label="Whiteboard" keyHint="W" active={board} onClick={toggleBoard}>
+          <BoardIcon />
+        </DockButton>
+
         <DockButton label="Clear ink" keyHint="C" onClick={clear}>
           <ClearIcon />
+        </DockButton>
+
+        <DockButton label="Pick a student" keyHint="K" active={!!picker} onClick={() => setPicker((n) => (n ? 0 : -1))}>
+          <PickIcon />
         </DockButton>
 
         <DockButton label={theme === "dark" ? "Light theme" : "Dark theme"} keyHint="T" onClick={toggleTheme}>
@@ -462,6 +626,8 @@ const Classroom = () => {
         </AnimatePresence>
       </div>
 
+      <AnimatePresence>{picker !== 0 && <Picker key="picker" pickNow={picker > 0 ? picker : 0} onClose={() => setPicker(0)} />}</AnimatePresence>
+
       <AnimatePresence>
         {help && (
           <motion.div className="cr-help-backdrop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setHelp(false)}>
@@ -475,7 +641,7 @@ const Classroom = () => {
             >
               <span className="cr-help-eyebrow">classroom mode</span>
               <h2>Teach from the keyboard</h2>
-              <p>Put the visualizer on the projector, then drive it without touching the mouse.</p>
+              <p>Put the lesson on the projector, then drive it without touching the mouse. A presentation clicker works too.</p>
 
               <ul>
                 {SHORTCUTS.map(([key, what]) => (

@@ -129,9 +129,100 @@ export function randomMissingValue(root) {
   return randomValues(1, collectValues(root))[0];
 }
 
+/* ---------- keeping automatic trees balanced ---------- */
+
+// Values reordered median-first (the middle, then the middle of each half…),
+// so inserting them in this order builds a tree as balanced as it can be.
+export function balancedOrder(values) {
+  const sorted = [...values].sort((a, b) => a - b);
+  const out = [];
+  const queue = [[0, sorted.length - 1]];
+  while (queue.length) {
+    const [lo, hi] = queue.shift();
+    if (lo > hi) continue;
+    const mid = (lo + hi) >> 1;
+    out.push(sorted[mid]);
+    queue.push([lo, mid - 1], [mid + 1, hi]);
+  }
+  return out;
+}
+
+// Random values spread across 10–99 (one from each of `count` equal bands),
+// so the root sits near the middle and both sides have room to grow.
+export function spreadValues(count) {
+  const band = 90 / count;
+  return Array.from({ length: count }, (_, i) => 10 + Math.floor(i * band + Math.random() * Math.max(1, band - 1)));
+}
+
+export const randomBalancedBST = (count) => buildBST(balancedOrder(spreadValues(count)));
+
+const countOf = (n) => (n ? 1 + countOf(n.left) + countOf(n.right) : 0);
+
+// Every empty child slot, with the open range of keys that would land there.
+function openSlots(root, lo = 10, hi = 99, depth = 0, side = null, out = []) {
+  if (!root) {
+    out.push({ lo, hi, depth, side });
+    return out;
+  }
+  const s = side ?? null;
+  openSlots(root.left, lo, root.value - 1, depth + 1, s ?? (depth === 0 ? "left" : null), out);
+  openSlots(root.right, root.value + 1, hi, depth + 1, s ?? (depth === 0 ? "right" : null), out);
+  return out;
+}
+
+// A key that keeps the tree balanced: it lands in the shallowest open slot,
+// on the root's lighter side when there is a choice. Falls back to any
+// missing value if every shallow slot has run out of room for a new key.
+export function balancedKey(root) {
+  if (!root) return randomValues(1)[0];
+  const taken = new Set(collectValues(root));
+  const left = countOf(root.left);
+  const right = countOf(root.right);
+  const lighter = left === right ? null : left < right ? "left" : "right";
+  const slots = openSlots(root)
+    .map((sl) => ({ ...sl, free: Array.from({ length: Math.max(0, sl.hi - sl.lo + 1) }, (_, i) => sl.lo + i).filter((v) => !taken.has(v)) }))
+    .filter((sl) => sl.free.length);
+  if (!slots.length) return randomMissingValue(root);
+
+  const best = Math.min(...slots.map((sl) => sl.depth));
+  let pool = slots.filter((sl) => sl.depth === best);
+  if (lighter && pool.some((sl) => sl.side === lighter)) pool = pool.filter((sl) => sl.side === lighter);
+  const slot = pool[Math.floor(Math.random() * pool.length)];
+  // Prefer a key from the middle of its range, so later keys still have room.
+  const mid = slot.free.slice(Math.floor(slot.free.length * 0.25), Math.ceil(slot.free.length * 0.75));
+  const pick = mid.length ? mid : slot.free;
+  return pick[Math.floor(Math.random() * pick.length)];
+}
+
+// A node to delete that keeps the tree even: taken from the root's heavier side.
+export function balancedVictim(root, pickFrom = (list) => list[Math.floor(Math.random() * list.length)]) {
+  if (!root) return null;
+  const left = countOf(root.left);
+  const right = countOf(root.right);
+  const side = left === right ? null : left > right ? root.left : root.right;
+  const pool = side ? collectNodes(side) : collectNodes(root);
+  return pickFrom(pool);
+}
+
+// The shape check shown on the stage: how far the tree is from the best
+// height for its size, and which way it leans.
+export function shapeOf(nodes) {
+  const attached = nodes.filter((n) => !n.float);
+  const n = attached.length;
+  if (n < 3) return { label: "balanced", even: true };
+  const height = Math.max(...attached.map((k) => k.depth)) + 1;
+  const best = Math.ceil(Math.log2(n + 1));
+  const root = attached.find((k) => k.parentId === null || k.parentId === undefined);
+  const left = root ? attached.filter((k) => k.rank < root.rank).length : 0;
+  const right = n - 1 - left;
+  if (height - best <= 1) return { label: "balanced", even: true };
+  if (Math.abs(left - right) <= 1) return { label: `too tall (${height} levels, could be ${best})`, even: false };
+  return { label: `leans ${left > right ? "left" : "right"} (${left} vs ${right})`, even: false };
+}
+
 /* ---------- structural helpers (tree = { root }) ---------- */
 
-function replaceChild(tree, parent, oldChild, newChild) {
+export function replaceChild(tree, parent, oldChild, newChild) {
   if (newChild) newChild.parent = parent;
 
   if (!parent) tree.root = newChild;
@@ -220,7 +311,7 @@ export function buildAVL(values) {
 // Performs a rotation at `x` in four visible stages and returns the node
 // that ends up on top. dir "right": x's left child y moves up, y's right
 // subtree t2 is handed to x as its left subtree. "left" is the mirror.
-function stagedRotate(tree, x, dir, save, line, marksAbove, badge) {
+export function stagedRotate(tree, x, dir, save, line, marksAbove, badge) {
   const right = dir === "right";
   const y = right ? x.left : x.right;
   const t2 = right ? y.right : y.left;

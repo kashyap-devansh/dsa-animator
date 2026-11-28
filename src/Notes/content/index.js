@@ -2,6 +2,9 @@ import sorting from "./sorting.js";
 import searching from "./searching.js";
 import { hashing, structures } from "./structures.js";
 import { foundations, recursion } from "./recursion.js";
+import { EXTRAS } from "./extras.js";
+import graphs from "./graphs.js";
+import redBlack from "./redBlack.js";
 
 const withVisualizer = (basePath) => (note) => ({
   visualizers: [{ label: note.title, path: `${basePath}/${note.slug}` }],
@@ -17,12 +20,29 @@ export const NOTE_GROUPS = [
   { id: "searching", label: "Searching", tone: "blue", notes: searching.map(withVisualizer("/playground/searching")) },
   { id: "hashing", label: "Hashing", tone: "cyan", notes: hashing },
   { id: "structures", label: "Linear Structures", tone: "lime", notes: linear },
-  { id: "trees", label: "Trees", tone: "blue", notes: trees },
+  { id: "trees", label: "Trees", tone: "blue", notes: [...trees, ...redBlack] },
+  { id: "graphs", label: "Graphs", tone: "cyan", notes: graphs },
   { id: "recursion", label: "Recursion & Backtracking", tone: "orange", notes: recursion },
 ];
 
+// Each note's core text plus its extras (worked example, reasons for each
+// complexity, when to use it, more pitfalls and questions).
+const withExtras = (note) => {
+  const x = EXTRAS[note.slug] ?? {};
+  return {
+    ...note,
+    example: x.example ?? null,
+    why: x.why ?? null,
+    use: x.use ?? null,
+    complexityRows: x.complexityRows ?? note.complexityRows ?? null,
+    facts: x.facts ?? note.facts,
+    pitfalls: [...note.pitfalls, ...(x.pitfalls ?? [])],
+    quiz: [...note.quiz, ...(x.quiz ?? [])],
+  };
+};
+
 export const NOTES = NOTE_GROUPS.flatMap((group) =>
-  group.notes.map((note) => ({ ...note, group: group.label, groupId: group.id, tone: group.tone }))
+  group.notes.map((note) => withExtras({ ...note, group: group.label, groupId: group.id, tone: group.tone }))
 );
 
 export const noteBySlug = (slug) => NOTES.find((n) => n.slug === slug);

@@ -335,7 +335,7 @@ const sorting = [
       },
       {
         q: "Radix sort processes digits starting from…",
-        options: ["The most significant digit (LSD variant)", "The least significant digit", "A random digit", "The middle digit"],
+        options: ["The most significant digit", "The least significant digit", "A random digit", "The middle digit"],
         answer: 1,
         why: "LSD radix sort goes ones → tens → hundreds, relying on stability.",
       },

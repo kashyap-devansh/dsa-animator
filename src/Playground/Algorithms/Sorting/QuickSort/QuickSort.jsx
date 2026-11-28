@@ -363,7 +363,8 @@ const QuickSort = () => {
   const [seed, setSeed] = useState(() => randomArray(10));
   const steps = useMemo(() => quickSortSteps(seed), [seed]);
   const ids = useMemo(() => trackIds(steps.map((s) => s.array)), [steps]);
-  const playback = usePlayback(steps.length);
+  // Swaps stay on screen longer so the exchange can be followed.
+  const playback = usePlayback(steps.length, (i) => (steps[i]?.swap.length === 2 && steps[i].swap[0] !== steps[i].swap[1] ? 1.8 : 1));
   const { index, reset } = playback;
   const s = steps[index];
   const isDone = s.phase === "done";
@@ -432,7 +433,7 @@ const QuickSort = () => {
         { label: "worst", value: "O(n²)" },
         { label: "space", value: "O(log n)" },
       ]}
-      stage={<IsoArray cells={cells} slots={s.array.length} pointers={pointers} callouts={callouts} indexHighlight={s.compare} label="Quick sort array" />}
+      stage={<IsoArray cells={cells} slots={s.array.length} pointers={pointers} callouts={callouts} swaps={s.swap.length === 2 ? [s.swap] : []} indexHighlight={s.compare} label="Quick sort array" />}
       narration={{
         tag: TAGS[s.phase],
         title: s.description,

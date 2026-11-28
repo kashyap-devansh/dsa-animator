@@ -50,9 +50,9 @@ const SYLLABUS = [
     id: "unit-6",
     unit: "Unit 6",
     title: "Trees",
-    outcome: "Maintain binary search trees and keep them balanced with AVL rotations.",
+    outcome: "Maintain binary search trees and keep them balanced with AVL rotations and red-black recolouring.",
     hours: 8,
-    items: [n("bst"), v("bst/insertion"), v("bst/search"), v("bst/deletion"), q("bst"), n("avl-tree"), v("avl/insertion"), v("avl/deletion"), q("avl-tree")],
+    items: [n("bst"), v("bst/insertion"), v("bst/search"), v("bst/deletion"), q("bst"), n("avl-tree"), v("avl/insertion"), v("avl/deletion"), q("avl-tree"), n("red-black-tree"), v("rbt/insertion"), v("rbt/deletion"), q("red-black-tree")],
   },
   {
     id: "unit-7",
@@ -61,6 +61,14 @@ const SYLLABUS = [
     outcome: "Write recursive solutions, read call trees and prune search with backtracking.",
     hours: 6,
     items: [n("factorial"), v("recursion/factorial"), v("recursion/tower-of-hanoi"), v("recursion/fibonacci-sequence"), q("fibonacci-sequence"), v("recursion/permutations"), v("recursion/subset-sum"), v("recursion/n-queens"), q("n-queens")],
+  },
+  {
+    id: "unit-8",
+    unit: "Unit 8",
+    title: "Graphs",
+    outcome: "Represent graphs as matrices and lists, traverse them with BFS and DFS, and find shortest paths with Dijkstra.",
+    hours: 8,
+    items: [n("graphs"), v("graph/adjacency-matrix"), v("graph/adjacency-list"), q("graphs"), n("bfs-dfs"), v("graph/bfs"), v("graph/dfs"), q("bfs-dfs"), n("dijkstra"), v("graph/dijkstra"), q("dijkstra")],
   },
 ];
 

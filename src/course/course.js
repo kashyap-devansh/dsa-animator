@@ -7,6 +7,8 @@ import StackData from "../Playground/Structures/Stack/Stack.js";
 import QueueData from "../Playground/Structures/Queue/QueueData.js";
 import BSTData from "../Playground/Structures/BST/BSTData.js";
 import AVLData from "../Playground/Structures/AVL/AVLData.js";
+import RBTData from "../Playground/Structures/RBT/RBTData.js";
+import GraphData from "../Playground/Structures/Graph/GraphData.js";
 import RecursionData from "../Playground/Recursion/RecursionData.js";
 
 // The course: modules in teaching order, each a list of lessons. Lesson
@@ -37,8 +39,10 @@ const RAW = [
     lessons: [
       ...from(BSTData, "/playground/bst", { insertion: "BST Insertion", search: "BST Search", deletion: "BST Deletion" }),
       ...from(AVLData, "/playground/avl", { insertion: "AVL Insertion", deletion: "AVL Deletion" }),
+      ...from(RBTData, "/playground/rbt", { insertion: "Red-Black Insertion", deletion: "Red-Black Deletion" }),
     ],
   },
+  { id: "graphs", title: "Graphs", lessons: from(GraphData, "/playground/graph", { bfs: "Breadth-First Search (BFS)", dfs: "Depth-First Search (DFS)" }) },
   { id: "recursion", title: "Recursion & Backtracking", lessons: from(RecursionData, "/playground/recursion") },
   { id: "searching", title: "Searching", lessons: from(SearchingData, "/playground/searching") },
   { id: "sorting", title: "Sorting", lessons: from(SortingData, "/playground/sorting") },

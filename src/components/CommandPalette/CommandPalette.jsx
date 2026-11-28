@@ -11,8 +11,8 @@ const PAGES = [
   { title: "Home", hint: "page", path: "/" },
   { title: "Playground", hint: "all visualizers", path: "/playground" },
   { title: "Study notes", hint: "all topics", path: "/notes" },
-  { title: "For faculty", hint: "syllabus map & lesson builder", path: "/classroom" },
-  { title: "Lesson builder", hint: "plan a lecture", path: "/classroom#builder" },
+  { title: "For faculty", hint: "lectures, syllabus units & class quizzes", path: "/classroom" },
+  { title: "My lectures", hint: "plan, edit and teach your saved lectures", path: "/classroom#lectures" },
   { title: "Complexity cheat sheet", hint: "notes", path: "/notes#cheatsheet" },
   { title: "Big-O growth explorer", hint: "notes", path: "/notes#growth" },
 ];

@@ -2,7 +2,7 @@ import { useState } from "react";
 import TreePage from "../../Tree/TreePage";
 import { useTreeRun } from "../../Tree/useTreeRun";
 import { BST_SEARCH_CODE } from "../../Tree/treeCode";
-import { buildBST, collectValues, parseKey, randomMissingValue, randomValues, searchSteps, snapshotHeight } from "../../Tree/treeEngine";
+import { randomBalancedBST, collectValues, parseKey, randomMissingValue, searchSteps, snapshotHeight } from "../../Tree/treeEngine";
 
 const generate = (tree, key) => searchSteps(tree, key);
 
@@ -18,7 +18,7 @@ const randomTarget = (root) => {
 };
 
 const freshRun = () => {
-  const tree = buildBST(randomValues(9));
+  const tree = randomBalancedBST(9);
   return { tree, key: randomTarget(tree) };
 };
 
